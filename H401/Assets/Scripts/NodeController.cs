@@ -21,11 +21,13 @@ public class NodeController : MonoBehaviour {
     [SerializeField] private int row = 0;       // 横配置数
     [SerializeField] private int col = 0;       // 縦配置数
     [SerializeField] private GameObject nodePrefab = null;       // パネルのプレハブ
+    [SerializeField] private float widthMargin  = 0.0f;  // パネル位置の左右間隔の調整値
+    [SerializeField] private float heightMargin = 0.0f;  // パネル位置の上下間隔の調整値
 
     private GameObject[,]   nodePrefabs;     // パネルのプレハブリスト
     private Node[,]         nodeScripts;     // パネルのnodeスクリプトリスト
 
-    private Vector2 nodeSpriteSize = Vector2.zero;  // パネルSpriteのサイズ
+    private Vector2 nodeSize = Vector2.zero;    // 描画するパネルのサイズ
 
     private bool    isDrag = false;                     // マウスドラッグフラグ
     private Vector2 beforeTapNodeID = Vector2.zero;     // 移動させたいノードのID
@@ -64,17 +66,19 @@ public class NodeController : MonoBehaviour {
         // ----- パネル準備
         // 描画するパネルの大きさを取得
         Vector3 pos = transform.position;
-        nodeSpriteSize.x = nodePrefab.GetComponent<SpriteRenderer>().sprite.texture.width * nodePrefab.transform.localScale.x * ADJUST_PIXELS_PER_UNIT;
-        nodeSpriteSize.y = nodePrefab.GetComponent<SpriteRenderer>().sprite.texture.height * nodePrefab.transform.localScale.y * ADJUST_PIXELS_PER_UNIT;
+        nodeSize.x = nodePrefab.GetComponent<SpriteRenderer>().sprite.texture.width * nodePrefab.transform.localScale.x * ADJUST_PIXELS_PER_UNIT;
+        nodeSize.y = nodePrefab.GetComponent<SpriteRenderer>().sprite.texture.height * nodePrefab.transform.localScale.y * ADJUST_PIXELS_PER_UNIT;
+        nodeSize.x -= widthMargin * ADJUST_PIXELS_PER_UNIT;
+        nodeSize.y -= heightMargin * ADJUST_PIXELS_PER_UNIT;
 
         // パネルを生成
         for(int i = 0; i < col; ++i) {
             // パネルの配置位置を調整(Y座標)
-            pos.y = transform.position.y + nodeSpriteSize.y * -(col * 0.5f - (i + 0.5f));
+            pos.y = transform.position.y + nodeSize.y * -(col * 0.5f - (i + 0.5f));
 
             for (int j = 0; j < row; ++j) {
                 // パネルの配置位置を調整(X座標)
-                pos.x = i % 2 == 0 ? transform.position.x + nodeSpriteSize.x * -(row * 0.5f - (j + 0.25f)) : transform.position.x + nodeSpriteSize.x * -(row * 0.5f - (j + 0.75f));
+                pos.x = i % 2 == 0 ? transform.position.x + nodeSize.x * -(row * 0.5f - (j + 0.25f)) : transform.position.x + nodeSize.x * -(row * 0.5f - (j + 0.75f));
 
                 // 生成
         	    nodePrefabs[j,i] = (GameObject)Instantiate(nodePrefab, pos, transform.rotation);
