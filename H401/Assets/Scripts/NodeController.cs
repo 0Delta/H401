@@ -177,7 +177,17 @@ public class NodeController : MonoBehaviour {
         }
     }
     
+
+    //移動したいノードを確定
+    //ドラッグを算出し移動したい方向列を確定
+    //ドラッグされている間、列ごと移動、
+        //タップ点からスワイプ地点まで座標の差分を算出し
+        //列のすべてのノードをその位置へ移動させる
+    //離すと一番近いノード確定位置まで調整
+
     public void SlideNodes() {
+
+
         int subRowID = (int)afterTapNodeID.x - (int)beforeTapNodeID.x;   // ノードIDの差分(横方向)
         int subColID = (int)afterTapNodeID.y - (int)beforeTapNodeID.y;   // ノードIDの差分(縦方向)
         Vector2 dir   = (Vector2)nodePrefabs[(int)afterTapNodeID.x, (int)afterTapNodeID.y].transform.position       // スライド方向ベクトルを算出
@@ -231,4 +241,104 @@ public class NodeController : MonoBehaviour {
     //            break;
     //    }
     //}
+
+    public void CheckLink()
+    {
+        bool bComplete = false;
+
+        //すべてのノードの根本を見る
+        for (int i = 0; i < row; i++)
+        {
+            for(int link = 0 ; link < 6 ; link++)
+            {
+                if(nodeScripts[i, 0].CheckBit())   //親ノードの方向は↓向きのどちらかにしておく
+                {
+                    bComplete = true;
+                }
+                //１走査ごとに閲覧済みフラグを戻す
+                ResetCheckedFragAll();
+            }
+
+            //すべて見終わったあと、完成済の枝に対して処理をここでする
+            if(bComplete)
+            {
+                //枝に使っているノードにはbCompleteが立っているので、それに対していろいろする
+                print("枝が完成しました！");
+            }
+        }
+
+    }
+
+    //閲覧済みフラグを戻す処理
+    public void ResetCheckedFragAll()
+    {
+        foreach (var nodes in nodeScripts)
+        {
+            nodes.bChecked = false;
+        }
+    }
+
+
+    //位置と方向から、指定ノードに隣り合うノードのrowとcolを返す
+    //なければ、(-1,-1)を返す
+    public Vector2 GetDirNode(Vector2 nodeID,_eLinkDir toDir)
+    {
+        //走査方向のノードのcolとrow
+
+        Vector2 nextNodeID;
+
+        nextNodeID.x = (int)nodeID.x;
+        nextNodeID.y = (int)nodeID.y;
+
+        bool Odd = ((((int)nodeID.y) % 2) == 0) ? false : true;
+
+        //次のノード番号の計算
+        switch(toDir)
+        {
+            case _eLinkDir.RU:
+                if (Odd)
+                    nextNodeID.x++;
+                nextNodeID.y++;
+                break;
+            case _eLinkDir.R:
+                nextNodeID.x++;
+                break;
+            case _eLinkDir.RD:
+                if (Odd)
+                    nextNodeID.x++;
+                nextNodeID.y--;
+                break;
+            case _eLinkDir.LD:
+                if(!Odd)
+                    nextNodeID.x--;
+                nextNodeID.y--;
+                break;
+            case _eLinkDir.L:
+                nextNodeID.x--;
+                break;
+            case _eLinkDir.LU:
+                if (!Odd)
+                    nextNodeID.x--;
+                nextNodeID.y++;
+
+                break;
+        }
+
+        if (nextNodeID.x < 0 || nextNodeID.x > row ||nextNodeID.y < 0 || nextNodeID.y > col)
+        {
+            nextNodeID.x = -1;
+            nextNodeID.y = -1;
+        }
+
+        return nextNodeID;
+    }
+
+    //指定した位置のノードのスクリプトをもらう
+    public Node GetNodeScript(Vector2 nodeID)
+    {
+        return nodeScripts[(int)nodeID.x, (int)nodeID.y];
+    }
+
+
+
 }

@@ -9,3 +9,22 @@ public enum _eSlideDir {
 
     NONE            // 無
 };
+
+public enum _eNodeType{
+    CAP = 0,    // キャップ
+    STRAIGHT,   // 直線
+    KU,         // く
+    KAESHI,     // 返し
+    YAI,        // Ｙ
+};
+
+public enum _eLinkDir {
+    RU = 0,
+    R,
+    RD,
+    LD,
+    L,
+    LU,
+
+    MAX,
+}
