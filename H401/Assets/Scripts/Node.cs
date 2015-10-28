@@ -60,15 +60,15 @@ public class Node : MonoBehaviour {
         
         // ----- 回転処理
         // 回転準備
-        float angle = transform.localEulerAngles.z + ROT_HEX_ANGLE;
+        float angle = transform.localEulerAngles.z - ROT_HEX_ANGLE;
 
         // 回転処理(※TODO:new をなんとかしたい)
         transform.DORotate(new Vector3(0.0f, 0.0f, angle), actionTime)
             .OnComplete(() => {
                 // 回転成分を初期化
-                //if(angle <= -360.0f) {
-                //    transform.rotation = Quaternion.identity;
-                //}
+                if(angle <= -360.0f) {
+                    transform.rotation = Quaternion.identity;
+                }
 
                 // アクション終了
 
