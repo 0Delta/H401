@@ -13,7 +13,7 @@ public class Node : MonoBehaviour {
 
     static private NodeController nodeControllerScript = null;      // NodeController のスクリプト
 
-    private Vector2     nodeID      = Vector2.zero;     // パネルリストのID
+    private Vec2Int     nodeID      = Vec2Int.zero;     // パネルリストのID
     private bool        isAction    = false;            // アクションフラグ
     private _eSlideDir  slideDir    = _eSlideDir.NONE;  // 現在のスライド方向
 
@@ -168,7 +168,7 @@ public class Node : MonoBehaviour {
                 //ノードコントローラにIDと走査方向を渡し、ノードがあるかを調べる
                 _eLinkDir parentDir = (i + 3 >= 6) ? (_eLinkDir)( i + 3 - 6) : (_eLinkDir)(i + 3);
                 
-                Vector2 nextPos = nodeControllerScript.GetDirNode(nodeID, (_eLinkDir)i);
+                Vec2Int nextPos = nodeControllerScript.GetDirNode(nodeID, (_eLinkDir)i);
 
                 if (nextPos.x == -1)//ない＝壁なので、その時はおｋを返す
                 {
@@ -222,7 +222,7 @@ public class Node : MonoBehaviour {
                 //ノードコントローラにIDと走査方向を渡し、ノードがあるかを調べる
                 _eLinkDir parentDir = (i + 3 >= 6) ? (_eLinkDir)(i + 3 - 6) : (_eLinkDir)(i + 3);
 
-                Vector2 nextPos = nodeControllerScript.GetDirNode(nodeID, (_eLinkDir)i);
+                Vec2Int nextPos = nodeControllerScript.GetDirNode(nodeID, (_eLinkDir)i);
 
                 if (nextPos.x == -1)//ない＝壁なので、その時はおｋを返す
                 {

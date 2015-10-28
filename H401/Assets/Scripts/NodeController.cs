@@ -30,8 +30,8 @@ public class NodeController : MonoBehaviour {
     private Vector2 nodeSize = Vector2.zero;    // 描画するパネルのサイズ
 
     private bool    isDrag = false;                     // マウスドラッグフラグ
-    private Vector2 beforeTapNodeID = Vector2.zero;     // 移動させたいノードのID
-    private Vector2 afterTapNodeID  = Vector2.zero;     // 移動させられるノードのID(移動方向を判定するため)
+    private Vec2Int beforeTapNodeID = Vec2Int.zero;     // 移動させたいノードのID
+    private Vec2Int afterTapNodeID  = Vec2Int.zero;     // 移動させられるノードのID(移動方向を判定するため)
 
     public int Row {
         get { return this.row; }
@@ -46,12 +46,12 @@ public class NodeController : MonoBehaviour {
         get { return this.isDrag; }
     }
 
-    public Vector2 BeforeTapNodeID {
+    public Vec2Int BeforeTapNodeID {
         set { this.beforeTapNodeID = value; }
         get { return this.beforeTapNodeID; }
     }
 
-    public Vector2 AfterTapNodeID {
+    public Vec2Int AfterTapNodeID {
         set { this.afterTapNodeID = value; }
         get { return this.afterTapNodeID; }
     }
@@ -121,32 +121,32 @@ public class NodeController : MonoBehaviour {
     
     void SlantMove(_eSlideDir slideDir, Vector2 dir) {
         // スライド対象となるノードの準備
-        Vector2 upNodeID   = afterTapNodeID;    // 上方向への探索ノードID
-        Vector2 downNodeID = beforeTapNodeID;   // 下方向への探索ノードID
+        Vec2Int upNodeID   = afterTapNodeID;    // 上方向への探索ノードID
+        Vec2Int downNodeID = beforeTapNodeID;   // 下方向への探索ノードID
 
         switch (slideDir) {
             case _eSlideDir.LEFT:
             case _eSlideDir.RIGHT:
                 for(int i = 0; i < row; ++i) {
-                    nodeScripts[i,(int)beforeTapNodeID.y].SlideNode(slideDir, dir);
+                    nodeScripts[i,beforeTapNodeID.y].SlideNode(slideDir, dir);
                 }
                 break;
 
             case _eSlideDir.LEFTUP:
             case _eSlideDir.RIGHTDOWN:
                 // 移動させられるノードより、上に位置するノードを移動
-                while((int)upNodeID.x >= 0 && (int)upNodeID.y < col) {
-                    nodeScripts[(int)upNodeID.x,(int)upNodeID.y].SlideNode(slideDir, dir);
+                while(upNodeID.x >= 0 && upNodeID.y < col) {
+                    nodeScripts[upNodeID.x,upNodeID.y].SlideNode(slideDir, dir);
 
-                    if((int)upNodeID.y % 2 == 0)
+                    if(upNodeID.y % 2 == 0)
                         --upNodeID.x;
                     ++upNodeID.y;
                 }
                 // 移動させられるノードより、下に位置するノードを移動
-                while((int)downNodeID.x < row && (int)downNodeID.y >= 0) {
-                    nodeScripts[(int)downNodeID.x,(int)downNodeID.y].SlideNode(slideDir, dir);
+                while(downNodeID.x < row && downNodeID.y >= 0) {
+                    nodeScripts[downNodeID.x,downNodeID.y].SlideNode(slideDir, dir);
 
-                    if((int)downNodeID.y % 2 != 0)
+                    if(downNodeID.y % 2 != 0)
                         ++downNodeID.x;
                     --downNodeID.y;
                 }
@@ -155,18 +155,18 @@ public class NodeController : MonoBehaviour {
             case _eSlideDir.RIGHTUP:
             case _eSlideDir.LEFTDOWN:
                 // 移動させられるノードより、上に位置するノードを移動
-                while((int)upNodeID.x < row && (int)upNodeID.y < col) {
-                    nodeScripts[(int)upNodeID.x,(int)upNodeID.y].SlideNode(slideDir, dir);
+                while(upNodeID.x < row && upNodeID.y < col) {
+                    nodeScripts[upNodeID.x,upNodeID.y].SlideNode(slideDir, dir);
 
-                    if((int)upNodeID.y % 2 != 0)
+                    if(upNodeID.y % 2 != 0)
                         ++upNodeID.x;
                     ++upNodeID.y;
                 }
                 // 移動させられるノードより、下に位置するノードを移動
-                while((int)downNodeID.x >= 0 && (int)downNodeID.y >= 0) {
-                    nodeScripts[(int)downNodeID.x,(int)downNodeID.y].SlideNode(slideDir, dir);
+                while(downNodeID.x >= 0 && downNodeID.y >= 0) {
+                    nodeScripts[downNodeID.x,downNodeID.y].SlideNode(slideDir, dir);
 
-                    if((int)downNodeID.y % 2 == 0)
+                    if(downNodeID.y % 2 == 0)
                         --downNodeID.x;
                     --downNodeID.y;
                 }
@@ -188,10 +188,10 @@ public class NodeController : MonoBehaviour {
     public void SlideNodes() {
 
 
-        int subRowID = (int)afterTapNodeID.x - (int)beforeTapNodeID.x;   // ノードIDの差分(横方向)
-        int subColID = (int)afterTapNodeID.y - (int)beforeTapNodeID.y;   // ノードIDの差分(縦方向)
-        Vector2 dir   = (Vector2)nodePrefabs[(int)afterTapNodeID.x, (int)afterTapNodeID.y].transform.position       // スライド方向ベクトルを算出
-            - (Vector2)nodePrefabs[(int)beforeTapNodeID.x, (int)beforeTapNodeID.y].transform.position;
+        int subRowID = afterTapNodeID.x - beforeTapNodeID.x;   // ノードIDの差分(横方向)
+        int subColID = afterTapNodeID.y - beforeTapNodeID.y;   // ノードIDの差分(縦方向)
+        Vector2 dir   = (Vector2)nodePrefabs[afterTapNodeID.x, afterTapNodeID.y].transform.position       // スライド方向ベクトルを算出
+            - (Vector2)nodePrefabs[beforeTapNodeID.x, beforeTapNodeID.y].transform.position;
         
         // 左にスライド
         if(subRowID == -1 && subColID == 0) {
@@ -281,16 +281,16 @@ public class NodeController : MonoBehaviour {
 
     //位置と方向から、指定ノードに隣り合うノードのrowとcolを返す
     //なければ、(-1,-1)を返す
-    public Vector2 GetDirNode(Vector2 nodeID,_eLinkDir toDir)
+    public Vec2Int GetDirNode(Vec2Int nodeID,_eLinkDir toDir)
     {
         //走査方向のノードのcolとrow
 
-        Vector2 nextNodeID;
+        Vec2Int nextNodeID;
 
-        nextNodeID.x = (int)nodeID.x;
-        nextNodeID.y = (int)nodeID.y;
+        nextNodeID.x = nodeID.x;
+        nextNodeID.y = nodeID.y;
 
-        bool Odd = ((((int)nodeID.y) % 2) == 0) ? false : true;
+        bool Odd = ((nodeID.y % 2) == 0) ? false : true;
 
         //次のノード番号の計算
         switch(toDir)
@@ -334,9 +334,9 @@ public class NodeController : MonoBehaviour {
     }
 
     //指定した位置のノードのスクリプトをもらう
-    public Node GetNodeScript(Vector2 nodeID)
+    public Node GetNodeScript(Vec2Int nodeID)
     {
-        return nodeScripts[(int)nodeID.x, (int)nodeID.y];
+        return nodeScripts[nodeID.x, nodeID.y];
     }
 
 

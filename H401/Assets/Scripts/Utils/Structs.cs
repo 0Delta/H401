@@ -23,4 +23,8 @@ public struct Vec2Int
     {
         return "(" + x.ToString() + ", " + y.ToString() + ")";
     }
+
+    public static Vec2Int zero {
+        get { return new Vec2Int(0,0); }
+    }
 };
