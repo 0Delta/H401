@@ -274,7 +274,7 @@ public class NodeController : MonoBehaviour {
     {
         foreach (var nodes in nodeScripts)
         {
-            nodes.bChecked = false;
+            nodes.CheckFlag = false;
         }
     }
 

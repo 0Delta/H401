@@ -21,16 +21,18 @@ public class Node : MonoBehaviour {
                                                 //  5 0
                                                 // 4   1
                                                 //  3 2  とする
-    public bool bChecked                        //走査済みフラグ 枝完成チェックに使用
+    private bool bChecked = false;
+
+    public bool CheckFlag                       //走査済みフラグ 枝完成チェックに使用
     {
         get { return bChecked; }
         set { bChecked = value; }
     }
-
-    public bool bComplete                       //完成済フラグ 走査終了時（枝完成時）に使用
+    private bool bCompleted;
+    public bool CompleteFlag                       //完成済フラグ 走査終了時（枝完成時）に使用
     {
-        get { return bComplete; }
-        set { bComplete = value; }
+        get { return bCompleted; }
+        set { bCompleted = value; }
     }
 
 
@@ -71,7 +73,7 @@ public class Node : MonoBehaviour {
                 // アクション終了
 
                 BitLinkRotate();
-                //nodeControllerScript.CheckLink();
+                nodeControllerScript.CheckLink();
 
                 isAction = false;
             });
@@ -143,14 +145,15 @@ public class Node : MonoBehaviour {
     //ノードごとの道がつながっているか走査(親ビットの方向)
     public bool CheckBit(_eLinkDir linkDir)
     {
-        bComplete = true;   //最初に立てて、ダメだったら戻す
+        bCompleted = true;   //最初に立てて、ダメだったら戻す
 
         //まず元の方向と道が繋がっていないならダメ
-        if (bitLink[(int)linkDir])
+        if (!bitLink[(int)linkDir])
         {
-            bComplete = false;
+            bCompleted = false;
             return false;
         }
+        GetComponent<SpriteRenderer>().color = new Color(255, 0, 0);   //とりあえず赤フィルターを掛けてみる
         //このノードがチェック済ならおｋとする
         if (bChecked)
             return true;
@@ -177,6 +180,7 @@ public class Node : MonoBehaviour {
                 }
                 else
                 {
+                    GetComponent<SpriteRenderer>().color = new Color(255, 0, 0);   //とりあえず赤フィルターを掛けてみる
                     //ある場合は、そこに元来た方向（走査方向＋３(-６)）を渡しさらに走査
                     if(nodeControllerScript.GetNodeScript(nextPos).CheckBit(parentDir))
                     {
@@ -185,7 +189,7 @@ public class Node : MonoBehaviour {
                     }
                     else
                     {
-                        bComplete = false;
+                        bCompleted = false;
                         return false;
                     }
                 }
@@ -201,14 +205,15 @@ public class Node : MonoBehaviour {
     //根本のノードはこっちを呼ぶようにする
     public bool CheckBit()
     {
-        bComplete = true;   //最初に立てて、ダメだったら戻す
+        bCompleted = true;   //最初に立てて、ダメだったら戻す
 
         //基本的に変わらないが、↓２方向のうちどちらかが繋がっていないとダメ
         if (!(bitLink[(int)_eLinkDir.RD] || bitLink[(int)_eLinkDir.LU]))
         {
-            bComplete = false;
+            bCompleted = false;
             return false;
         }
+        GetComponent<SpriteRenderer>().color = new Color(255, 0, 0) ;   //とりあえず赤フィルターを掛けてみる
         //ビット配列をすべて見る
         for (int i = 0; i < (int)_eLinkDir.MAX; i++)
         {
@@ -231,6 +236,7 @@ public class Node : MonoBehaviour {
                 }
                 else
                 {
+                    
                     //ある場合は、そこに元来た方向（走査方向＋３(-６)）を渡しさらに走査
                     if(nodeControllerScript.GetNodeScript(nextPos).CheckBit(parentDir))
                     {
@@ -239,7 +245,7 @@ public class Node : MonoBehaviour {
                     }
                     else
                     {
-                        bComplete = false;
+                        bCompleted = false;
                         return false;
                     }
                 }
