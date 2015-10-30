@@ -87,6 +87,12 @@ public class NodeController : MonoBehaviour {
 
                 // パネルの位置(リストID)を登録
                 nodeScripts[j,i].RegistNodeID(j, i);
+
+                //ここにランダム生成を 
+                nodeScripts[j, i].SetNodeType(_eNodeType.HUB3_B);
+
+                if (j == 0 || i == 0 || j == row - 1 || i == col - 1)
+                    nodeScripts[j, i].GetComponent<SpriteRenderer>().color = new Color(0.1f, 0.1f, 0.1f);
             }
         }
 
@@ -247,26 +253,33 @@ public class NodeController : MonoBehaviour {
         bool bComplete = false;
 
         //すべてのノードの根本を見る
-        for (int i = 0; i < row; i++)
+        for (int i = 1; i < row - 1; i++)
         {
-            for(int link = 0 ; link < 6 ; link++)
+            if(nodeScripts[i, 1].CheckBit(_eLinkDir.NONE))   //親ノードの方向は↓向きのどちらかにしておく
             {
-                if(nodeScripts[i, 0].CheckBit())   //親ノードの方向は↓向きのどちらかにしておく
-                {
-                    bComplete = true;
-                }
-                //１走査ごとに閲覧済みフラグを戻す
-                ResetCheckedFragAll();
+                bComplete = true;
             }
+            //１走査ごとに閲覧済みフラグを戻す
+            ResetCheckedFragAll();
 
-            //すべて見終わったあと、完成済の枝に対して処理をここでする
-            if(bComplete)
+
+
+        }
+        //すべて見終わったあと、完成済の枝に対して処理をここでする
+        if(bComplete)
+        {
+            //枝に使っているノードにはbCompleteが立っているので、それに対していろいろする
+            print("枝が完成しました！");
+        }
+        for (int i = 1; i < col - 1; i++  )
+        {
+            for(int j = 1 ; j < row - 1; j++)
             {
-                //枝に使っているノードにはbCompleteが立っているので、それに対していろいろする
-                print("枝が完成しました！");
+                if(!nodeScripts[j,i].ChainFlag)
+                    nodeScripts[j, i].GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f);
+                nodeScripts[j, i].ChainFlag = false;
             }
         }
-
     }
 
     //閲覧済みフラグを戻す処理
@@ -274,6 +287,8 @@ public class NodeController : MonoBehaviour {
     {
         foreach (var nodes in nodeScripts)
         {
+            //繋がりがない枝は色をここでもどす
+            //nodes.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
             nodes.CheckFlag = false;
         }
     }
@@ -339,6 +354,9 @@ public class NodeController : MonoBehaviour {
         return nodeScripts[nodeID.x, nodeID.y];
     }
 
+    public void CheckLinkAround()
+    {
 
+    }
 
 }
