@@ -22,7 +22,7 @@ public class Node : MonoBehaviour {
                                                 //  5 0
                                                 // 4   1
                                                 //  3 2  とする
-    private bool bChecked = false;
+    private bool bChecked = false;              
 
     public bool CheckFlag                       //走査済みフラグ 枝完成チェックに使用
     {
@@ -30,19 +30,21 @@ public class Node : MonoBehaviour {
         set { bChecked = value; }
     }
     private bool bCompleted;
-    public bool CompleteFlag                       //完成済フラグ 走査終了時（枝完成時）に使用
+    public bool CompleteFlag                    //完成済フラグ 走査終了時（枝完成時）に使用
     {
         get { return bCompleted; }
         set { bCompleted = value; }
     }
-
+    private bool bChain;                        //枝がつながっているか？
+    public bool ChainFlag
+    {
+        get { return bChain; }
+        set { bChain = value; }
+    }
 
 	// Use this for initialization
 	void Start () {
         //とりあえずテスト
-        bitLink.Set(1, true);
-        bitLink.Set(4, true);
-
         //bitLink.
 	}
 	
@@ -166,15 +168,33 @@ public class Node : MonoBehaviour {
     //ノードごとの道がつながっているか走査(親ビットの方向)
     public bool CheckBit(_eLinkDir linkDir)
     {
+        bool bTempChain = true;
         bCompleted = true;   //最初に立てて、ダメだったら戻す
 
+
+
         //まず元の方向と道が繋がっていないならダメ
-        if (!bitLink[(int)linkDir])
+        if(linkDir == _eLinkDir.NONE)
         {
-            bCompleted = false;
-            return false;
+            //根本の場合
+            if (!(bitLink[(int)_eLinkDir.RD] || bitLink[(int)_eLinkDir.LD]))
+            {
+                bCompleted = false;
+                return false;
+            }
         }
-        GetComponent<SpriteRenderer>().color = new Color(255, 0, 0);   //とりあえず赤フィルターを掛けてみる
+        else
+        {
+            //それ以外の時、つまり他のノードから呼ばれている時
+            if (!bitLink[(int)linkDir]) //元のノード側と道がつながっていなければ
+            {
+                bCompleted = false;
+                return false;
+            }
+        }
+
+        bChain = true;
+        GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.0f, 0.0f);   //とりあえず赤フィルターを掛けてみる
         //このノードがチェック済ならおｋとする
         if (bChecked)
             return true;
@@ -182,10 +202,17 @@ public class Node : MonoBehaviour {
         //ビット配列をすべて見る
         for(int i = 0 ; i < (int)_eLinkDir.MAX ;i++)
         {
-            //元の方向は飛ばす
-            if (i == (int)linkDir)
-                continue;
-
+            if (linkDir == _eLinkDir.NONE)
+            {
+                //根本の場合、↓方向は飛ばす
+                if (i == (int)_eLinkDir.RD || i == (int)_eLinkDir.LD)
+                    continue;
+            }
+            else
+            {   //それ以外のときは、元の方向は飛ばす
+                if (i == (int)linkDir)
+                    continue;
+            }
             //道があるならその方向のノードを走査
             if(bitLink[i])
             {
@@ -193,88 +220,124 @@ public class Node : MonoBehaviour {
                 _eLinkDir parentDir = (i + 3 >= 6) ? (_eLinkDir)( i + 3 - 6) : (_eLinkDir)(i + 3);
                 
                 Vec2Int nextPos = nodeControllerScript.GetDirNode(nodeID, (_eLinkDir)i);
-
-                if (nextPos.x == -1)//ない＝壁なので、その時はおｋを返す
+                //ない＝壁なので、その時はおｋを返す
+                if (nextPos.x == 0 || nextPos.y == 0 || nextPos.x == nodeControllerScript.Row - 1 || nextPos.y == nodeControllerScript.Col - 1)
                 {
-                    bChecked = true;
-                    return true;
+                    continue;
                 }
                 else
                 {
-                    GetComponent<SpriteRenderer>().color = new Color(255, 0, 0);   //とりあえず赤フィルターを掛けてみる
                     //ある場合は、そこに元来た方向（走査方向＋３(-６)）を渡しさらに走査
                     if(nodeControllerScript.GetNodeScript(nextPos).CheckBit(parentDir))
                     {
-                        bChecked = true;
-                        return true;
+                        continue;
                     }
                     else
                     {
-                        bCompleted = false;
-                        return false;
+                        bTempChain = false;
+                        continue;
                     }
                 }
             }
         }
 
         //問題なければ閲覧済みフラグを立てておｋを返す
-        bChecked = true;
-        return true;
-    }
-
-
-    //根本のノードはこっちを呼ぶようにする
-    public bool CheckBit()
-    {
-        bCompleted = true;   //最初に立てて、ダメだったら戻す
-
-        //基本的に変わらないが、↓２方向のうちどちらかが繋がっていないとダメ
-        if (!(bitLink[(int)_eLinkDir.RD] || bitLink[(int)_eLinkDir.LU]))
+        if (bTempChain)
+        {
+            bChecked = true;
+            return true;
+        }
+        else
         {
             bCompleted = false;
             return false;
         }
-        GetComponent<SpriteRenderer>().color = new Color(255, 0, 0) ;   //とりあえず赤フィルターを掛けてみる
-        //ビット配列をすべて見る
-        for (int i = 0; i < (int)_eLinkDir.MAX; i++)
+    }
+
+    //ノードにタイプ・テクスチャ・道ビット
+    public void SetNodeType(_eNodeType type)
+    {     
+        //ビットタイプ・テクスチャを設定
+        bitLink[0] = true;
+        switch(type)
         {
-            //元の方向は飛ばす
-            if (i == (int)_eLinkDir.RD || i == (int)_eLinkDir.LD)
-                continue;
-
-            //道があるならその方向のノードを走査
-            if (bitLink[i])
-            {
-                //ノードコントローラにIDと走査方向を渡し、ノードがあるかを調べる
-                _eLinkDir parentDir = (i + 3 >= 6) ? (_eLinkDir)(i + 3 - 6) : (_eLinkDir)(i + 3);
-
-                Vec2Int nextPos = nodeControllerScript.GetDirNode(nodeID, (_eLinkDir)i);
-
-                if (nextPos.x == -1)//ない＝壁なので、その時はおｋを返す
-                {
-                    bChecked = true;
-                    return true;
-                }
-                else
-                {
-                    
-                    //ある場合は、そこに元来た方向（走査方向＋３(-６)）を渡しさらに走査
-                    if(nodeControllerScript.GetNodeScript(nextPos).CheckBit(parentDir))
-                    {
-                        bChecked = true;
-                        return true;
-                    }
-                    else
-                    {
-                        bCompleted = false;
-                        return false;
-                    }
-                }
-            }
+            case _eNodeType.HUB2_A:
+                bitLink[3] = true;
+                break;
+            case _eNodeType.HUB2_B:
+                bitLink[1] = true;
+                break;
+            case _eNodeType.HUB2_C:
+                bitLink[0] = true;
+                bitLink[2] = true;
+                break;
+            case _eNodeType.HUB3_A:
+                bitLink[2] = true;
+                bitLink[3] = true;
+                break;
+            case _eNodeType.HUB3_B:
+                bitLink[2] = true;
+                bitLink[5] = true;
+                break;
+            case _eNodeType.HUB3_C:
+                bitLink[1] = true;
+                bitLink[2] = true;
+                break;
         }
 
-        //問題なければ閲覧済みフラグを立てておｋを返す
-        bChecked = true;
+        //ランダムに回転
+        float angle = 0.0f;
+        for (int i = 0; i < UnityEngine.Random.Range(0, 5); i++)
+        {
+            BitLinkRotate();
+            angle -= ROT_HEX_ANGLE;
+        }
+        transform.Rotate(0.0f, 0.0f, angle);
+
+    }
+
+    //周囲のノードを１つずつ見ていく走査
+    public bool CheckAround()
+    {
+        bChain = true;
+        for (int i = 0,parentDir = 3; i < (int)_eLinkDir.MAX ; i++, parentDir++)
+        {
+            if(parentDir >= 6)
+                parentDir -= 6;
+
+
+
+            Vec2Int nextPos = Vec2Int.zero;
+            
+            nodeControllerScript.GetDirNode(nodeID,(_eLinkDir)i);
+
+            //枠外ノードは常につながっている判定とする
+            if (nextPos.x == 0 || nextPos.y == 0 || nextPos.x == nodeControllerScript.Row - 1 || nextPos.y == nodeControllerScript.Col - 1)
+            {
+                continue;
+            }
+
+            //隣り合うノードの道がこっちにつながっているかどうか
+            if(nodeControllerScript.GetNodeScript(nextPos).GetLinkDir((_eLinkDir)parentDir))
+            {
+
+            }
+            else 
+            {
+                nodeControllerScript.GetNodeScript(nextPos).ChainFlag = false;
+            }
+
+
+            //だめならfalse
+
+
+        }
         return true;
     }
+
+    public bool GetLinkDir(_eLinkDir parentDir)
+    {
+        return bitLink[(int)parentDir];
+    }
+
 }

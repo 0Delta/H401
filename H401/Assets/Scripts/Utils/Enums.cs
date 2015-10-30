@@ -11,12 +11,17 @@ public enum _eSlideDir {
 };
 
 public enum _eNodeType{
-    CAP = 0,    // キャップ
-    STRAIGHT,   // 直線
-    KU,         // く
-    KAESHI,     // 返し
-    YAI,        // Ｙ
+    CAP = 0,    // 先端１つ
+    HUB2_A,     // │
+    HUB2_B,     // 鋭角
+    HUB2_C,     // 鈍角
+    HUB3_A,     // Ｙ
+    HUB3_B,     // 卜
+    HUB3_C,     // ∋
+
+    MAX,
 };
+
 
 public enum _eLinkDir {
     RU = 0,
@@ -27,4 +32,6 @@ public enum _eLinkDir {
     LU,
 
     MAX,
+
+    NONE,       //方向なし、つまり根本の部分
 }
