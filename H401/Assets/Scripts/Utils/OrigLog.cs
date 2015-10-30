@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-public class OrigLog
+abstract public class OrigLog
 {
     static public string ToString(BitArray array)
     {

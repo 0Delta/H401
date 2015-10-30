@@ -15,6 +15,7 @@ public class Node : MonoBehaviour {
 
     private Vec2Int     nodeID      = Vec2Int.zero;     // パネルリストのID
     private bool        isAction    = false;            // アクションフラグ
+    private bool        isSlide     = false;            // スライドフラグ
     private _eSlideDir  slideDir    = _eSlideDir.NONE;  // 現在のスライド方向
 
     public BitArray bitLink = new BitArray(6);  //道の繋がりのビット配列　trueが道
@@ -51,10 +52,19 @@ public class Node : MonoBehaviour {
 	}
 
     void OnMouseDown() {
+    }
+    
+    void OnMouseUp() {
         // アクション中なら未処理
         if(isAction)
             return;
 
+        // スライド中なら回転・拡縮は未処理
+        if(isSlide) {
+            isSlide = false;
+            return;
+        }
+        
         // アクション開始
         isAction = true;
         
@@ -86,15 +96,23 @@ public class Node : MonoBehaviour {
     }
 
     void OnMouseEnter() {
+        // スライド中なら未処理
+        if(nodeControllerScript.SlideDir != _eSlideDir.NONE)
+            return;
+
         if(nodeControllerScript.IsDrag) {
             nodeControllerScript.AfterTapNodeID = nodeID;       // 移動させられるノードのIDを登録
             
             // ----- 移動処理
-            nodeControllerScript.SlideNodes();
+            nodeControllerScript.StartSlideNodes();
         }
     }
 
     void OnMouseExit() {
+        // スライド中なら未処理
+        if(nodeControllerScript.SlideDir != _eSlideDir.NONE)
+            return;
+
         if(nodeControllerScript.IsDrag) {
             nodeControllerScript.BeforeTapNodeID = nodeID;       // 移動させたいノードのIDを登録
         }
@@ -115,15 +133,18 @@ public class Node : MonoBehaviour {
         Node.nodeControllerScript = nodeControllerScript;
     }
 
-    public void SlideNode(_eSlideDir dir, Vector2 vec) {
+    public void SlideNode(_eSlideDir dir, Vector2 pos) {
         slideDir = dir;
 
-        transform.DOMoveX(transform.position.x + vec.x, slideTime)
+        if(!isSlide)
+            isSlide = true;
+
+        transform.DOMoveX(pos.x, slideTime)
             .OnComplete(() => {
                 slideDir = _eSlideDir.NONE;
                 //nodeControllerScript.CheckLink();
             });
-        transform.DOMoveY(transform.position.y + vec.y, slideTime);
+        transform.DOMoveY(pos.y, slideTime);
     }
 
     //道のビット配列を回転させる bitarrayに回転シフトがなかった

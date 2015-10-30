@@ -2,6 +2,8 @@
 using System.Collections;
 using UniRx;
 
+using DG.Tweening;
+
 /*  リストIDに関して
 
             (n,n)
@@ -29,9 +31,13 @@ public class NodeController : MonoBehaviour {
 
     private Vector2 nodeSize = Vector2.zero;    // 描画するパネルのサイズ
 
-    private bool    isDrag = false;                     // マウスドラッグフラグ
-    private Vec2Int beforeTapNodeID = Vec2Int.zero;     // 移動させたいノードのID
-    private Vec2Int afterTapNodeID  = Vec2Int.zero;     // 移動させられるノードのID(移動方向を判定するため)
+    private bool        isDrag          = false;                // マウスドラッグフラグ
+    private Vec2Int     beforeTapNodeID = Vec2Int.zero;         // 移動させたいノードのID
+    private Vec2Int     afterTapNodeID  = Vec2Int.zero;         // 移動させられるノードのID(移動方向を判定するため)
+    private _eSlideDir  slideDir        = _eSlideDir.NONE;      // スライド中の方向
+
+    private Vector2 startTapPos = Vector2.zero;     // タップした瞬間の座標
+    private Vector2 tapPos      = Vector2.zero;     // タップ中の座標
 
     public int Row {
         get { return this.row; }
@@ -54,6 +60,10 @@ public class NodeController : MonoBehaviour {
     public Vec2Int AfterTapNodeID {
         set { this.afterTapNodeID = value; }
         get { return this.afterTapNodeID; }
+    }
+
+    public _eSlideDir SlideDir {
+        get { return slideDir; }
     }
 
     void Awake() {
@@ -93,23 +103,35 @@ public class NodeController : MonoBehaviour {
         // パネルに情報を登録
         nodeScripts[0,0].SetNodeController(this);
 
-        // ----- ドラッグ処理準備
+        // ----- インプット処理
         Observable
             .EveryUpdate()
             .Where(_ => Input.GetMouseButton(0))
             .Subscribe(_ => {
                 isDrag = true;
 
-                //print("clicling");
+                // スライド処理
+                if(slideDir != _eSlideDir.NONE) {
+                    Vector3 worldTapPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    tapPos = new Vector2(worldTapPos.x, worldTapPos.y);
+                    SlantMove(nodeSize);
+                }
+            })
+            .AddTo(this.gameObject);
+        Observable
+            .EveryUpdate()
+            .Where(_ => Input.GetMouseButtonDown(0))
+            .Subscribe(_ => {
+                Vector3 worldTapPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                startTapPos = new Vector2(worldTapPos.x, worldTapPos.y);
             })
             .AddTo(this.gameObject);
         Observable
             .EveryUpdate()
             .Where(_ => Input.GetMouseButtonUp(0))
             .Subscribe(_ => {
-                isDrag = false;
-
-                print("drag end");
+                isDrag   = false;
+                slideDir = _eSlideDir.NONE;
             })
             .AddTo(this.gameObject);
 	}
@@ -119,7 +141,7 @@ public class NodeController : MonoBehaviour {
 	
 	}
     
-    void SlantMove(_eSlideDir slideDir, Vector2 dir) {
+    void SlantMove(Vector2 vec) {
         // スライド対象となるノードの準備
         Vec2Int upNodeID   = afterTapNodeID;    // 上方向への探索ノードID
         Vec2Int downNodeID = beforeTapNodeID;   // 下方向への探索ノードID
@@ -127,8 +149,23 @@ public class NodeController : MonoBehaviour {
         switch (slideDir) {
             case _eSlideDir.LEFT:
             case _eSlideDir.RIGHT:
-                for(int i = 0; i < row; ++i) {
-                    nodeScripts[i,beforeTapNodeID.y].SlideNode(slideDir, dir);
+                // タップしているノードを移動
+                Vector2 pos = tapPos;
+                pos.y = nodePrefabs[beforeTapNodeID.x,beforeTapNodeID.y].transform.position.y;
+                nodeScripts[beforeTapNodeID.x,beforeTapNodeID.y].SlideNode(slideDir, pos);
+                
+                // タップしているノードより右側のノードを移動
+                for(int i = beforeTapNodeID.x + 1, j = 1; i < row; ++i, ++j) {
+                    pos = tapPos + vec * j;
+                    pos.y = nodePrefabs[i,beforeTapNodeID.y].transform.position.y;
+                    nodeScripts[i,beforeTapNodeID.y].SlideNode(slideDir, pos);
+                }
+
+                // タップしているノードより左側のノードを移動
+                for(int i = beforeTapNodeID.x - 1, j = 1; i >= 0; --i, ++j) {
+                    pos = tapPos - vec * j;
+                    pos.y = nodePrefabs[i,beforeTapNodeID.y].transform.position.y;
+                    nodeScripts[i,beforeTapNodeID.y].SlideNode(slideDir, pos);
                 }
                 break;
 
@@ -136,7 +173,7 @@ public class NodeController : MonoBehaviour {
             case _eSlideDir.RIGHTDOWN:
                 // 移動させられるノードより、上に位置するノードを移動
                 while(upNodeID.x >= 0 && upNodeID.y < col) {
-                    nodeScripts[upNodeID.x,upNodeID.y].SlideNode(slideDir, dir);
+                    nodeScripts[upNodeID.x,upNodeID.y].SlideNode(slideDir, vec);
 
                     if(upNodeID.y % 2 == 0)
                         --upNodeID.x;
@@ -144,7 +181,7 @@ public class NodeController : MonoBehaviour {
                 }
                 // 移動させられるノードより、下に位置するノードを移動
                 while(downNodeID.x < row && downNodeID.y >= 0) {
-                    nodeScripts[downNodeID.x,downNodeID.y].SlideNode(slideDir, dir);
+                    nodeScripts[downNodeID.x,downNodeID.y].SlideNode(slideDir, vec);
 
                     if(downNodeID.y % 2 != 0)
                         ++downNodeID.x;
@@ -156,7 +193,7 @@ public class NodeController : MonoBehaviour {
             case _eSlideDir.LEFTDOWN:
                 // 移動させられるノードより、上に位置するノードを移動
                 while(upNodeID.x < row && upNodeID.y < col) {
-                    nodeScripts[upNodeID.x,upNodeID.y].SlideNode(slideDir, dir);
+                    nodeScripts[upNodeID.x,upNodeID.y].SlideNode(slideDir, vec);
 
                     if(upNodeID.y % 2 != 0)
                         ++upNodeID.x;
@@ -164,12 +201,33 @@ public class NodeController : MonoBehaviour {
                 }
                 // 移動させられるノードより、下に位置するノードを移動
                 while(downNodeID.x >= 0 && downNodeID.y >= 0) {
-                    nodeScripts[downNodeID.x,downNodeID.y].SlideNode(slideDir, dir);
+                    nodeScripts[downNodeID.x,downNodeID.y].SlideNode(slideDir, vec);
 
                     if(downNodeID.y % 2 == 0)
                         --downNodeID.x;
                     --downNodeID.y;
                 }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    void SlideNodes() {
+        Vector2 moveDir = tapPos - startTapPos;     // スライドしている移動方向ベクトル
+
+        switch(slideDir) {
+            case _eSlideDir.LEFT:
+            case _eSlideDir.RIGHT:
+                break;
+
+            case _eSlideDir.LEFTUP:
+            case _eSlideDir.RIGHTDOWN:
+                break;
+
+            case _eSlideDir.RIGHTUP:
+            case _eSlideDir.LEFTDOWN:
                 break;
 
             default:
@@ -185,38 +243,40 @@ public class NodeController : MonoBehaviour {
         //列のすべてのノードをその位置へ移動させる
     //離すと一番近いノード確定位置まで調整
 
-    public void SlideNodes() {
-
-
+    public void StartSlideNodes() {
         int subRowID = afterTapNodeID.x - beforeTapNodeID.x;   // ノードIDの差分(横方向)
         int subColID = afterTapNodeID.y - beforeTapNodeID.y;   // ノードIDの差分(縦方向)
-        Vector2 dir   = (Vector2)nodePrefabs[afterTapNodeID.x, afterTapNodeID.y].transform.position       // スライド方向ベクトルを算出
-            - (Vector2)nodePrefabs[beforeTapNodeID.x, beforeTapNodeID.y].transform.position;
+        Vector2 vec   = new Vector2(nodePrefabs[afterTapNodeID.x, afterTapNodeID.y].transform.position.x,   // スライド方向ベクトル兼移動量を算出
+                                    nodePrefabs[afterTapNodeID.x, afterTapNodeID.y].transform.position.y)
+                        - new Vector2(nodePrefabs[beforeTapNodeID.x, beforeTapNodeID.y].transform.position.x,
+                                    nodePrefabs[beforeTapNodeID.x, beforeTapNodeID.y].transform.position.y);
         
         // 左にスライド
         if(subRowID == -1 && subColID == 0) {
-            SlantMove(_eSlideDir.LEFT, dir);
+            slideDir = _eSlideDir.LEFT;
         }
         // 右にスライド
         if(subRowID == 1 && subColID == 0) {
-            SlantMove(_eSlideDir.RIGHT, dir);
+            slideDir = _eSlideDir.RIGHT;
         }
         // 左上にスライド
-        if(subColID == 1 && dir.x < 0.0f && dir.y > 0.0f) {
-            SlantMove(_eSlideDir.LEFTUP, dir);
+        if(subColID == 1 && vec.x < 0.0f && vec.y > 0.0f) {
+            slideDir = _eSlideDir.LEFTUP;
         }
         // 左下にスライド
-        if(subColID == -1 && dir.x < 0.0f && dir.y < 0.0f) {
-            SlantMove(_eSlideDir.LEFTDOWN, dir);
+        if(subColID == -1 && vec.x < 0.0f && vec.y < 0.0f) {
+            slideDir = _eSlideDir.LEFTDOWN;
         }
         // 右上にスライド
-        if(subColID == 1 && dir.x > 0.0f && dir.y > 0.0f) {
-            SlantMove(_eSlideDir.RIGHTUP, dir);
+        if(subColID == 1 && vec.x > 0.0f && vec.y > 0.0f) {
+            slideDir = _eSlideDir.RIGHTUP;
         }
         // 右下にスライド
-        if(subColID == -1 && dir.x > 0.0f && dir.y < 0.0f) {
-            SlantMove(_eSlideDir.RIGHTDOWN, dir);
+        if(subColID == -1 && vec.x > 0.0f && vec.y < 0.0f) {
+            slideDir = _eSlideDir.RIGHTDOWN;
         }
+
+        SlantMove(vec);
     }
 
     //public void LoopBackNode(Vector2 id, _eSlideDir slideDir) {
