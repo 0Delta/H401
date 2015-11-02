@@ -39,6 +39,14 @@ public class NodeController : MonoBehaviour {
     private Vector2 startTapPos = Vector2.zero;     // タップした瞬間の座標
     private Vector2 tapPos      = Vector2.zero;     // タップ中の座標
 
+    [SerializeField] private float CapOdds = 0;          //先端の出現割合
+    [SerializeField] private float Pass2Odds = 0;        //2又の出現割合
+    [SerializeField] private float Pass3Odds = 0;        //3又の出現割合
+
+    private float OddsSum = 0.0f;                           //合計割合 
+
+    //ノードの配置割合を記憶しておく
+
     public int Row {
         get { return this.row; }
     }
@@ -81,6 +89,8 @@ public class NodeController : MonoBehaviour {
         nodeSize.x -= widthMargin * ADJUST_PIXELS_PER_UNIT;
         nodeSize.y -= heightMargin * ADJUST_PIXELS_PER_UNIT;
 
+        OddsSum = CapOdds + Pass2Odds + Pass3Odds;  //全体割合を記憶
+
         // パネルを生成
         for(int i = 0; i < col; ++i) {
             // パネルの配置位置を調整(Y座標)
@@ -98,8 +108,10 @@ public class NodeController : MonoBehaviour {
                 // パネルの位置(リストID)を登録
                 nodeScripts[j,i].RegistNodeID(j, i);
 
-                //ここにランダム生成を 
-                nodeScripts[j, i].SetNodeType(_eNodeType.HUB3_B);
+
+                //ランダムでノードの種類と回転を設定
+                ReplaceNode(nodeScripts[j, i]);
+
 
                 if (j == 0 || i == 0 || j == row - 1 || i == col - 1)
                     nodeScripts[j, i].GetComponent<SpriteRenderer>().color = new Color(0.1f, 0.1f, 0.1f);
@@ -310,7 +322,7 @@ public class NodeController : MonoBehaviour {
 
     public void CheckLink()
     {
-        bool bComplete = false;
+        bool bComplete = false; //完成した枝があるか？
 
         //すべてのノードの根本を見る
         for (int i = 1; i < row - 1; i++)
@@ -325,10 +337,13 @@ public class NodeController : MonoBehaviour {
 
 
         }
-        //すべて見終わったあと、完成済の枝に対して処理をここでする
+        //枝ができていた場合
         if(bComplete)
         {
-            //枝に使っているノードにはbCompleteが立っているので、それに対していろいろする
+            //ここに完成しました的なエフェクトを入れる？
+
+            //枝を構成するノードを再配置
+            ReplaceNodeAll();
             print("枝が完成しました！");
         }
         for (int i = 1; i < col - 1; i++  )
@@ -417,6 +432,64 @@ public class NodeController : MonoBehaviour {
     public void CheckLinkAround()
     {
 
+    }
+
+    //木の繋がりが途絶えていた時、その木の一部であるノードすべてを未開通にする
+    public void ResetTreeBit(BitArray treeBit)
+    {
+        foreach(var node in nodeScripts)
+        {
+            for (int i = 0; i < (int)_eTreePath.MAX; i++)
+            {
+                if (treeBit[i])
+                {
+                    node.bitTreePath[i] = false;
+
+                }
+            }
+        }
+    }
+
+    //ノードの配置
+    void ReplaceNode(Node node)
+    {
+
+        float rand;
+        rand = UnityEngine.Random.Range(0.0f, OddsSum);
+
+        //暫定ランダム処理
+        if (0.0f <= rand || rand <= CapOdds)
+        {
+            node.SetNodeType(_eNodeType.CAP);
+        }
+        else if (CapOdds < rand || rand <= CapOdds + Pass2Odds)
+        {
+            int n2;
+            //2又のどれかはランダムでいいか
+            n2 = UnityEngine.Random.Range(0, 3);                 //マジックナンバーどうにかしたい
+            node.SetNodeType((_eNodeType)((int)(_eNodeType.HUB2_A + n2)));
+        }
+        else if (CapOdds + Pass2Odds < rand || rand <= CapOdds + Pass2Odds + Pass3Odds)
+        {
+            int n3;
+            //3又のどれかはランダムでいいか
+            n3 = UnityEngine.Random.Range(0, 3);                 //マジックナンバーどうにかしたい
+            node.SetNodeType((_eNodeType)((int)(_eNodeType.HUB3_A + n3)));
+        }
+        else
+        {
+            node.SetNodeType(_eNodeType.CAP);
+        }
+    }
+
+    //完成した枝に使用しているノードを再配置する
+    void ReplaceNodeAll()
+    {
+        foreach(var node in nodeScripts)
+        {
+            if (node.CompleteFlag)
+                ReplaceNode(node);
+        }
     }
 
 }

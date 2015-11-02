@@ -22,6 +22,11 @@ public class Node : MonoBehaviour {
                                                 //  5 0
                                                 // 4   1
                                                 //  3 2  とする
+
+    public BitArray bitTreePath = new BitArray(4);//走査時にどの木の一部かを記憶しておく
+    public Vec2Int[] ChainNodes = new Vec2Int[5];
+
+
     private bool bChecked = false;              
 
     public bool CheckFlag                       //走査済みフラグ 枝完成チェックに使用
@@ -287,7 +292,7 @@ public class Node : MonoBehaviour {
 
         //ランダムに回転
         float angle = 0.0f;
-        for (int i = 0; i < UnityEngine.Random.Range(0, 5); i++)
+        for (int i = 0; i < UnityEngine.Random.Range(0, 6); i++)
         {
             BitLinkRotate();
             angle -= ROT_HEX_ANGLE;
@@ -297,13 +302,32 @@ public class Node : MonoBehaviour {
     }
 
     //周囲のノードを１つずつ見ていく走査
-    public bool CheckAround()
+    public bool CheckAround(int row)
     {
         bChain = true;
+
+        //根本ノードの場合
+        //↓2方向を見て、どちらかに道がつながっていなければ、未開通ノードとして、
+        //繋がりフラグ、木ビットをfalseにして終了
+        if(row == 1)
+        {
+            if (!(bitLink[(int)_eLinkDir.RD] || bitLink[(int)_eLinkDir.LD]))
+            {
+                bChain = false;
+                bChecked = true;
+            }
+        }
+
+        //それ以外の場合
+        //
+
+
+
         for (int i = 0,parentDir = 3; i < (int)_eLinkDir.MAX ; i++, parentDir++)
         {
             if(parentDir >= 6)
                 parentDir -= 6;
+
 
 
 
@@ -320,11 +344,17 @@ public class Node : MonoBehaviour {
             //隣り合うノードの道がこっちにつながっているかどうか
             if(nodeControllerScript.GetNodeScript(nextPos).GetLinkDir((_eLinkDir)parentDir))
             {
+                //根本部分ならば、根本のどこかを記憶するように
+                if(row == 1 &&(i == (int)_eLinkDir.LU || i == (int)_eLinkDir.RU))
+                {
 
+                }
             }
             else 
             {
-                nodeControllerScript.GetNodeScript(nextPos).ChainFlag = false;
+                //ダメだった時、このノードに道をつなげようとしているノードを未開通ノードとする
+                nodeControllerScript.ResetTreeBit(bitTreePath);
+                
             }
 
 

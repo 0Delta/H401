@@ -35,3 +35,14 @@ public enum _eLinkDir {
 
     NONE,       //方向なし、つまり根本の部分
 }
+
+//木の根元がどこか 走査に使用
+public enum _eTreePath
+{
+    T1 = 0,
+    T2,
+    T3,
+    T4,
+
+    MAX,
+}
