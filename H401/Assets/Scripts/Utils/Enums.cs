@@ -17,7 +17,7 @@ public enum _eNodeType{
     HUB2_C,     // 鈍角
     HUB3_A,     // Ｙ
     HUB3_B,     // 卜
-    HUB3_C,     // ∋
+    //HUB3_C,     // ∋
 
     MAX,
 };
@@ -34,4 +34,15 @@ public enum _eLinkDir {
     MAX,
 
     NONE,       //方向なし、つまり根本の部分
+}
+
+//木の根元がどこか 走査に使用
+public enum _eTreePath
+{
+    T1 = 0,
+    T2,
+    T3,
+    T4,
+
+    MAX,
 }

@@ -39,6 +39,16 @@ public class NodeController : MonoBehaviour {
     private Vector2 startTapPos = Vector2.zero;     // タップした瞬間の座標
     private Vector2 tapPos      = Vector2.zero;     // タップ中の座標
 
+    [SerializeField] private float Odds_Cap = 0;          //先端の出現割合
+    [SerializeField] private float Odds_Pass2 = 0;        //2又の出現割合
+    [SerializeField] private float Odds_Pass3 = 0;        //3又の出現割合
+
+    private float OddsSum = 0.0f;                           //合計割合
+
+    //[SerializeField] private Sprite[] cashSprites = new Sprite[6];
+
+    //ノードの配置割合を記憶しておく
+
     public int Row {
         get { return this.row; }
     }
@@ -66,10 +76,14 @@ public class NodeController : MonoBehaviour {
         get { return slideDir; }
     }
 
+    
+
     void Awake() {
         nodePrefabs = new GameObject[row, col];
         nodeScripts = new Node[row, col];
     }
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -80,6 +94,9 @@ public class NodeController : MonoBehaviour {
         nodeSize.y = nodePrefab.GetComponent<SpriteRenderer>().sprite.texture.height * nodePrefab.transform.localScale.y * ADJUST_PIXELS_PER_UNIT;
         nodeSize.x -= widthMargin * ADJUST_PIXELS_PER_UNIT;
         nodeSize.y -= heightMargin * ADJUST_PIXELS_PER_UNIT;
+
+        OddsSum = Odds_Cap + Odds_Pass2 + Odds_Pass3;  //全体割合を記憶
+
 
         // パネルを生成
         for(int i = 0; i < col; ++i) {
@@ -98,11 +115,12 @@ public class NodeController : MonoBehaviour {
                 // パネルの位置(リストID)を登録
                 nodeScripts[j,i].RegistNodeID(j, i);
 
-                //ここにランダム生成を 
-                nodeScripts[j, i].SetNodeType(_eNodeType.HUB3_B);
+                //ランダムでノードの種類と回転を設定
+                ReplaceNode(nodeScripts[j, i]);
+
 
                 if (j == 0 || i == 0 || j == row - 1 || i == col - 1)
-                    nodeScripts[j, i].GetComponent<SpriteRenderer>().color = new Color(0.1f, 0.1f, 0.1f);
+                    nodeScripts[j, i].SpRenderer.color = new Color(0.1f, 0.1f, 0.1f);
             }
         }
 
@@ -335,12 +353,12 @@ public class NodeController : MonoBehaviour {
 
     public void CheckLink()
     {
-        bool bComplete = false;
+        bool bComplete = false; //完成した枝があるか？
 
         //すべてのノードの根本を見る
         for (int i = 1; i < row - 1; i++)
         {
-            if(nodeScripts[i, 1].CheckBit(_eLinkDir.NONE))   //親ノードの方向は↓向きのどちらかにしておく
+            if(nodeScripts[i, 1].CheckBit(_eLinkDir.NONE,0) >= 3)   //親ノードの方向は↓向きのどちらかにしておく
             {
                 bComplete = true;
             }
@@ -350,10 +368,13 @@ public class NodeController : MonoBehaviour {
 
 
         }
-        //すべて見終わったあと、完成済の枝に対して処理をここでする
+        //枝ができていた場合
         if(bComplete)
         {
-            //枝に使っているノードにはbCompleteが立っているので、それに対していろいろする
+            //ここに完成しました的なエフェクトを入れる？
+
+            //枝を構成するノードを再配置
+            ReplaceNodeAll();
             print("枝が完成しました！");
         }
         for (int i = 1; i < col - 1; i++  )
@@ -361,7 +382,7 @@ public class NodeController : MonoBehaviour {
             for(int j = 1 ; j < row - 1; j++)
             {
                 if(!nodeScripts[j,i].ChainFlag)
-                    nodeScripts[j, i].GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f);
+                    nodeScripts[j, i].SpRenderer.color = new Color(1.0f, 1.0f, 1.0f);
                 nodeScripts[j, i].ChainFlag = false;
             }
         }
@@ -444,4 +465,65 @@ public class NodeController : MonoBehaviour {
 
     }
 
+    //木の繋がりが途絶えていた時、その木の一部であるノードすべてを未開通にする
+    public void ResetTreeBit(BitArray treeBit)
+    {
+        foreach(var node in nodeScripts)
+        {
+            for (int i = 0; i < (int)_eTreePath.MAX; i++)
+            {
+                if (treeBit[i])
+                {
+                    node.bitTreePath[i] = false;
+
+                }
+            }
+        }
+    }
+
+    //ノードの配置 割合は指定できるが完全ランダムなので再考の余地あり
+    void ReplaceNode(Node node)
+    {
+        node.CompleteFlag = false;
+        node.CheckFlag = false;
+        node.ChainFlag = false;
+
+        float rand;
+        rand = UnityEngine.Random.Range(0.0f, OddsSum);
+
+        //暫定ランダム処理
+        if (0.0f <= rand && rand <= Odds_Cap)
+        {
+            node.SetNodeType(_eNodeType.CAP);
+        }
+        else if (Odds_Cap < rand && rand <= Odds_Cap + Odds_Pass2)
+        {
+            int n2;
+            //2又のどれかはランダムでいいか
+            n2 = UnityEngine.Random.Range(0, 3);                 //マジックナンバーどうにかしたい
+            node.SetNodeType((_eNodeType)((int)(_eNodeType.HUB2_A + n2)));
+        }
+        else if (Odds_Cap + Odds_Pass2 < rand && rand <= Odds_Cap + Odds_Pass2 + Odds_Pass3)
+        {
+            int n3;
+            //3又のどれかはランダムでいいか
+            n3 = UnityEngine.Random.Range(0, 2);                 //マジックナンバーどうにかしたい
+            node.SetNodeType((_eNodeType)((int)(_eNodeType.HUB3_A + n3)));
+        }
+        else
+        {
+            //おかしな値が入力されていた際はキャップになるよう
+            node.SetNodeType(_eNodeType.CAP);
+        }
+    }
+
+    //完成した枝に使用しているノードを再配置する
+    void ReplaceNodeAll()
+    {
+        foreach(var node in nodeScripts)
+        {
+            if (node.CompleteFlag)
+                ReplaceNode(node);
+        }
+    }
 }
