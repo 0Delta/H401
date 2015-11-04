@@ -3,6 +3,7 @@ using System.Collections;
 using DG.Tweening;
 //using Assets.Scripts.Utils;
 
+
 public class Node : MonoBehaviour {
 
     static private readonly float ROT_HEX_ANGLE = 60.0f;      // 六角形パネルの回転角度
@@ -26,6 +27,11 @@ public class Node : MonoBehaviour {
     public BitArray bitTreePath = new BitArray(4);//走査時にどの木の一部かを記憶しておく
     public Vec2Int[] ChainNodes = new Vec2Int[5];
 
+    private SpriteRenderer spRenderer;
+    public SpriteRenderer SpRenderer
+    {
+        get { return spRenderer; }
+    }
 
     private bool bChecked = false;              
 
@@ -47,10 +53,25 @@ public class Node : MonoBehaviour {
         set { bChain = value; }
     }
 
+    static private readonly string[] HEX_TEXTURE = {
+        "Textures/hex0",
+        "Textures/hex1",
+        "Textures/hex2",
+        "Textures/hex3",
+        "Textures/hex4",
+        "Textures/hex5",
+
+    };
+
+    void Awake()
+    {
+        spRenderer = GetComponent<SpriteRenderer>();
+    }
 	// Use this for initialization
 	void Start () {
         //とりあえずテスト
         //bitLink.
+
 	}
 	
 	// Update is called once per frame
@@ -171,7 +192,8 @@ public class Node : MonoBehaviour {
     }
 
     //ノードごとの道がつながっているか走査(親ビットの方向)
-    public bool CheckBit(_eLinkDir linkDir)
+    //途切れがあれば-1,壁か
+    public int CheckBit(_eLinkDir linkDir,int chain)
     {
         bool bTempChain = true;
         bCompleted = true;   //最初に立てて、ダメだったら戻す
@@ -185,7 +207,7 @@ public class Node : MonoBehaviour {
             if (!(bitLink[(int)_eLinkDir.RD] || bitLink[(int)_eLinkDir.LD]))
             {
                 bCompleted = false;
-                return false;
+                return -1;
             }
         }
         else
@@ -194,15 +216,15 @@ public class Node : MonoBehaviour {
             if (!bitLink[(int)linkDir]) //元のノード側と道がつながっていなければ
             {
                 bCompleted = false;
-                return false;
+                return -1;
             }
         }
 
         bChain = true;
-        GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.0f, 0.0f);   //とりあえず赤フィルターを掛けてみる
+        spRenderer.color = new Color(0.5f, 0.0f, 0.0f);   //とりあえず赤フィルターを掛けてみる
         //このノードがチェック済ならおｋとする
         if (bChecked)
-            return true;
+            return 0;
 
         //ビット配列をすべて見る
         for(int i = 0 ; i < (int)_eLinkDir.MAX ;i++)
@@ -233,8 +255,9 @@ public class Node : MonoBehaviour {
                 else
                 {
                     //ある場合は、そこに元来た方向（走査方向＋３(-６)）を渡しさらに走査
-                    if(nodeControllerScript.GetNodeScript(nextPos).CheckBit(parentDir))
+                    if((chain = nodeControllerScript.GetNodeScript(nextPos).CheckBit(parentDir,chain)) != -1)
                     {
+                        
                         continue;
                     }
                     else
@@ -250,45 +273,57 @@ public class Node : MonoBehaviour {
         if (bTempChain)
         {
             bChecked = true;
-            return true;
+            return chain + 1;
         }
         else
         {
             bCompleted = false;
-            return false;
+            return -1;
         }
     }
 
     //ノードにタイプ・テクスチャ・道ビット
     public void SetNodeType(_eNodeType type)
-    {     
+    {
+        //ビットと回転角度をリセット
+        bitLink.SetAll(false);
+        transform.rotation = Quaternion.identity;
+
         //ビットタイプ・テクスチャを設定
-        bitLink[0] = true;
         switch(type)
         {
+            case _eNodeType.CAP:
+                bitLink[5] = true;
+                break;
             case _eNodeType.HUB2_A:
-                bitLink[3] = true;
+                bitLink[5] = true;
+                bitLink[2] = true;
+                
                 break;
             case _eNodeType.HUB2_B:
-                bitLink[1] = true;
+                bitLink[3] = true;
+                bitLink[5] = true;
                 break;
             case _eNodeType.HUB2_C:
-                bitLink[0] = true;
-                bitLink[2] = true;
+                bitLink[5] = true;
+                bitLink[4] = true;
                 break;
             case _eNodeType.HUB3_A:
-                bitLink[2] = true;
+                bitLink[1] = true;
                 bitLink[3] = true;
+                bitLink[5] = true;
                 break;
             case _eNodeType.HUB3_B:
+                bitLink[0] = true;
                 bitLink[2] = true;
                 bitLink[5] = true;
                 break;
-            case _eNodeType.HUB3_C:
-                bitLink[1] = true;
-                bitLink[2] = true;
-                break;
+            //case _eNodeType.HUB3_C:
+            //    bitLink[1] = true;
+            //    bitLink[2] = true;
+            //    break;
         }
+        spRenderer.sprite = Resources.Load<Sprite>(HEX_TEXTURE[(int)type]);//(Sprite)Object.Instantiate(nodeControllerScript.GetSprite(type));
 
         //ランダムに回転
         float angle = 0.0f;
@@ -297,7 +332,7 @@ public class Node : MonoBehaviour {
             BitLinkRotate();
             angle -= ROT_HEX_ANGLE;
         }
-        transform.Rotate(0.0f, 0.0f, angle);
+        transform.rotation = Quaternion.Euler(new Vector3(0.0f,0.0f,angle));
 
     }
 

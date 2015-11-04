@@ -39,11 +39,13 @@ public class NodeController : MonoBehaviour {
     private Vector2 startTapPos = Vector2.zero;     // タップした瞬間の座標
     private Vector2 tapPos      = Vector2.zero;     // タップ中の座標
 
-    [SerializeField] private float CapOdds = 0;          //先端の出現割合
-    [SerializeField] private float Pass2Odds = 0;        //2又の出現割合
-    [SerializeField] private float Pass3Odds = 0;        //3又の出現割合
+    [SerializeField] private float Odds_Cap = 0;          //先端の出現割合
+    [SerializeField] private float Odds_Pass2 = 0;        //2又の出現割合
+    [SerializeField] private float Odds_Pass3 = 0;        //3又の出現割合
 
-    private float OddsSum = 0.0f;                           //合計割合 
+    private float OddsSum = 0.0f;                           //合計割合
+
+    //[SerializeField] private Sprite[] cashSprites = new Sprite[6];
 
     //ノードの配置割合を記憶しておく
 
@@ -74,10 +76,14 @@ public class NodeController : MonoBehaviour {
         get { return slideDir; }
     }
 
+    
+
     void Awake() {
         nodePrefabs = new GameObject[row, col];
         nodeScripts = new Node[row, col];
     }
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -89,7 +95,8 @@ public class NodeController : MonoBehaviour {
         nodeSize.x -= widthMargin * ADJUST_PIXELS_PER_UNIT;
         nodeSize.y -= heightMargin * ADJUST_PIXELS_PER_UNIT;
 
-        OddsSum = CapOdds + Pass2Odds + Pass3Odds;  //全体割合を記憶
+        OddsSum = Odds_Cap + Odds_Pass2 + Odds_Pass3;  //全体割合を記憶
+
 
         // パネルを生成
         for(int i = 0; i < col; ++i) {
@@ -108,13 +115,12 @@ public class NodeController : MonoBehaviour {
                 // パネルの位置(リストID)を登録
                 nodeScripts[j,i].RegistNodeID(j, i);
 
-
                 //ランダムでノードの種類と回転を設定
                 ReplaceNode(nodeScripts[j, i]);
 
 
                 if (j == 0 || i == 0 || j == row - 1 || i == col - 1)
-                    nodeScripts[j, i].GetComponent<SpriteRenderer>().color = new Color(0.1f, 0.1f, 0.1f);
+                    nodeScripts[j, i].SpRenderer.color = new Color(0.1f, 0.1f, 0.1f);
             }
         }
 
@@ -327,7 +333,7 @@ public class NodeController : MonoBehaviour {
         //すべてのノードの根本を見る
         for (int i = 1; i < row - 1; i++)
         {
-            if(nodeScripts[i, 1].CheckBit(_eLinkDir.NONE))   //親ノードの方向は↓向きのどちらかにしておく
+            if(nodeScripts[i, 1].CheckBit(_eLinkDir.NONE,0) >= 3)   //親ノードの方向は↓向きのどちらかにしておく
             {
                 bComplete = true;
             }
@@ -351,7 +357,7 @@ public class NodeController : MonoBehaviour {
             for(int j = 1 ; j < row - 1; j++)
             {
                 if(!nodeScripts[j,i].ChainFlag)
-                    nodeScripts[j, i].GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f);
+                    nodeScripts[j, i].SpRenderer.color = new Color(1.0f, 1.0f, 1.0f);
                 nodeScripts[j, i].ChainFlag = false;
             }
         }
@@ -450,34 +456,38 @@ public class NodeController : MonoBehaviour {
         }
     }
 
-    //ノードの配置
+    //ノードの配置 割合は指定できるが完全ランダムなので再考の余地あり
     void ReplaceNode(Node node)
     {
+        node.CompleteFlag = false;
+        node.CheckFlag = false;
+        node.ChainFlag = false;
 
         float rand;
         rand = UnityEngine.Random.Range(0.0f, OddsSum);
 
         //暫定ランダム処理
-        if (0.0f <= rand || rand <= CapOdds)
+        if (0.0f <= rand && rand <= Odds_Cap)
         {
             node.SetNodeType(_eNodeType.CAP);
         }
-        else if (CapOdds < rand || rand <= CapOdds + Pass2Odds)
+        else if (Odds_Cap < rand && rand <= Odds_Cap + Odds_Pass2)
         {
             int n2;
             //2又のどれかはランダムでいいか
             n2 = UnityEngine.Random.Range(0, 3);                 //マジックナンバーどうにかしたい
             node.SetNodeType((_eNodeType)((int)(_eNodeType.HUB2_A + n2)));
         }
-        else if (CapOdds + Pass2Odds < rand || rand <= CapOdds + Pass2Odds + Pass3Odds)
+        else if (Odds_Cap + Odds_Pass2 < rand && rand <= Odds_Cap + Odds_Pass2 + Odds_Pass3)
         {
             int n3;
             //3又のどれかはランダムでいいか
-            n3 = UnityEngine.Random.Range(0, 3);                 //マジックナンバーどうにかしたい
+            n3 = UnityEngine.Random.Range(0, 2);                 //マジックナンバーどうにかしたい
             node.SetNodeType((_eNodeType)((int)(_eNodeType.HUB3_A + n3)));
         }
         else
         {
+            //おかしな値が入力されていた際はキャップになるよう
             node.SetNodeType(_eNodeType.CAP);
         }
     }
@@ -491,5 +501,4 @@ public class NodeController : MonoBehaviour {
                 ReplaceNode(node);
         }
     }
-
 }
