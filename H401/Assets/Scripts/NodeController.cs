@@ -152,11 +152,12 @@ public class NodeController : MonoBehaviour {
         Vec2Int upNodeID   = afterTapNodeID;    // 上方向への探索ノードID
         Vec2Int downNodeID = beforeTapNodeID;   // 下方向への探索ノードID
 
+        Vector2 pos = tapPos;
+
         switch (slideDir) {
             case _eSlideDir.LEFT:
             case _eSlideDir.RIGHT:
                 // タップしているノードを移動
-                Vector2 pos = tapPos;
                 pos.y = nodePrefabs[beforeTapNodeID.x,beforeTapNodeID.y].transform.position.y;
                 nodeScripts[beforeTapNodeID.x,beforeTapNodeID.y].SlideNode(slideDir, pos);
                 
@@ -173,23 +174,46 @@ public class NodeController : MonoBehaviour {
                     pos.y = nodePrefabs[i,beforeTapNodeID.y].transform.position.y;
                     nodeScripts[i,beforeTapNodeID.y].SlideNode(slideDir, pos);
                 }
+                
                 break;
 
             case _eSlideDir.LEFTUP:
             case _eSlideDir.RIGHTDOWN:
-                // 移動させられるノードより、上に位置するノードを移動
-                while(upNodeID.x >= 0 && upNodeID.y < col) {
-                    nodeScripts[upNodeID.x,upNodeID.y].SlideNode(slideDir, vec);
+                // タップしているノードを移動
+                //pos.y = nodePrefabs[beforeTapNodeID.x,beforeTapNodeID.y].transform.position.y;
+                //nodeScripts[beforeTapNodeID.x,beforeTapNodeID.y].SlideNode(slideDir, pos);
 
-                    if(upNodeID.y % 2 == 0)
+                //// タップしているノードより右側のノードを移動
+                //for(int i = beforeTapNodeID.x + 1, j = 1; i < row; ++i, ++j) {
+                //    pos = tapPos + vec * j;
+                //    pos.y = nodePrefabs[i,beforeTapNodeID.y].transform.position.y;
+                //    nodeScripts[i,beforeTapNodeID.y].SlideNode(slideDir, pos);
+                //}
+
+                //// タップしているノードより左側のノードを移動
+                //for(int i = beforeTapNodeID.x - 1, j = 1; i >= 0; --i, ++j) {
+                //    pos = tapPos - vec * j;
+                //    pos.y = nodePrefabs[i,beforeTapNodeID.y].transform.position.y;
+                //    nodeScripts[i,beforeTapNodeID.y].SlideNode(slideDir, pos);
+                //}
+
+
+
+                // 移動させられるノードより、上に位置するノードを移動
+                while (upNodeID.x >= 0 && upNodeID.y < col)
+                {
+                    nodeScripts[upNodeID.x, upNodeID.y].SlideNode(slideDir, vec);
+
+                    if (upNodeID.y % 2 == 0)
                         --upNodeID.x;
                     ++upNodeID.y;
                 }
                 // 移動させられるノードより、下に位置するノードを移動
-                while(downNodeID.x < row && downNodeID.y >= 0) {
-                    nodeScripts[downNodeID.x,downNodeID.y].SlideNode(slideDir, vec);
+                while (downNodeID.x < row && downNodeID.y >= 0)
+                {
+                    nodeScripts[downNodeID.x, downNodeID.y].SlideNode(slideDir, vec);
 
-                    if(downNodeID.y % 2 != 0)
+                    if (downNodeID.y % 2 != 0)
                         ++downNodeID.x;
                     --downNodeID.y;
                 }
@@ -260,6 +284,7 @@ public class NodeController : MonoBehaviour {
         // 左にスライド
         if(subRowID == -1 && subColID == 0) {
             slideDir = _eSlideDir.LEFT;
+            vec = -vec;
         }
         // 右にスライド
         if(subRowID == 1 && subColID == 0) {
