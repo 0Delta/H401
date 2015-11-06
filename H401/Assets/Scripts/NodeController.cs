@@ -537,4 +537,9 @@ public class NodeController : MonoBehaviour {
         timeScript.PlusTime(nNode, nCap, nPath2, nPath3);
 
     }
+
+    public void SetFieldLevel(int level)
+    {
+        fieldLevel = levelTables.GetFieldLevel(level);
+    }
 }

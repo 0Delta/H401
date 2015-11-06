@@ -52,7 +52,7 @@ public class LimitTime : MonoBehaviour {
         }
 
         //時間経過による難易度変更処理
-        if(nowTimeLevel <= 4 && Time.time - startTime > timeLevelInterval * (nowTimeLevel + 1) )
+        if(nowTimeLevel < levelTable.TimeLevelCount && Time.time - startTime > timeLevelInterval * (nowTimeLevel + 1) )
         {
             nowTimeLevel++;
             timeLevel = levelTable.GetTimeLevel(nowTimeLevel);
