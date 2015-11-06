@@ -38,14 +38,18 @@ public class NodeController : MonoBehaviour {
 
     private Vector2 startTapPos = Vector2.zero;     // タップした瞬間の座標
     private Vector2 tapPos      = Vector2.zero;     // タップ中の座標
-
+/*
     [SerializeField] private float Odds_Cap = 0;          //先端の出現割合
     [SerializeField] private float Odds_Path2 = 0;        //2又の出現割合
     [SerializeField] private float Odds_Path3 = 0;        //3又の出現割合
+    */
+    private FieldLevelInfo fieldLevel;
 
-    private float OddsSum = 0.0f;                           //合計割合
+    private float RatioSum = 0.0f;                           //合計割合
 
     //[SerializeField] private Sprite[] cashSprites = new Sprite[6];
+
+    [SerializeField] LevelTables levelTables = null;
 
     //ノードの配置割合を記憶しておく
 
@@ -93,6 +97,7 @@ public class NodeController : MonoBehaviour {
     {
         scoreScript = GameObject.Find("ScoreNum").GetComponent<Score>();
         timeScript = GameObject.Find("LimitTime").GetComponent<LimitTime>();
+        fieldLevel = levelTables.GetFieldLevel(0);
 
         // ----- パネル準備
         // 描画するパネルの大きさを取得
@@ -102,7 +107,7 @@ public class NodeController : MonoBehaviour {
         nodeSize.x -= widthMargin * ADJUST_PIXELS_PER_UNIT;
         nodeSize.y -= heightMargin * ADJUST_PIXELS_PER_UNIT;
 
-        OddsSum = Odds_Cap + Odds_Path2 + Odds_Path3;  //全体割合を記憶
+        RatioSum = fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3;  //全体割合を記憶
 
 
         // パネルを生成
@@ -470,21 +475,21 @@ public class NodeController : MonoBehaviour {
         node.ChainFlag = false;
 
         float rand;
-        rand = UnityEngine.Random.Range(0.0f, OddsSum);
+        rand = UnityEngine.Random.Range(0.0f, RatioSum);
 
         //暫定ランダム処理
-        if (0.0f <= rand && rand <= Odds_Cap)
+        if (0.0f <= rand && rand <= fieldLevel.Ratio_Cap)
         {
             node.SetNodeType(_eNodeType.CAP);
         }
-        else if (Odds_Cap < rand && rand <= Odds_Cap + Odds_Path2)
+        else if (fieldLevel.Ratio_Cap < rand && rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2)
         {
             int n2;
             //2又のどれかはランダムでいいか
             n2 = UnityEngine.Random.Range(0, 3);                 //マジックナンバーどうにかしたい
             node.SetNodeType((_eNodeType)((int)(_eNodeType.HUB2_A + n2)));
         }
-        else if (Odds_Cap + Odds_Path2 < rand && rand <= Odds_Cap + Odds_Path2 + Odds_Path3)
+        else if (fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 < rand && rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3)
         {
             int n3;
             //3又のどれかはランダムでいいか
