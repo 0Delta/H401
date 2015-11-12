@@ -46,3 +46,8 @@ public enum _eTreePath
 
     MAX,
 }
+public enum _eLevelState
+{
+    STAND,
+    LIE,
+}

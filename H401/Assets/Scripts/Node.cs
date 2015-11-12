@@ -25,7 +25,7 @@ public class Node : MonoBehaviour {
                                                 // 4   1
                                                 //  3 2  とする
 
-    public BitArray bitTreePath = new BitArray(4);//走査時にどの木の一部かを記憶しておく
+    //public BitArray bitTreePath = new BitArray(4);//走査時にどの木の一部かを記憶しておく
     public Vec2Int[] ChainNodes = new Vec2Int[5];
 
     private SpriteRenderer spRenderer;
@@ -337,7 +337,7 @@ public class Node : MonoBehaviour {
         transform.rotation = Quaternion.Euler(new Vector3(0.0f,0.0f,angle));
 
     }
-
+/*
     //周囲のノードを１つずつ見ていく走査
     public bool CheckAround(int row)
     {
@@ -401,10 +401,22 @@ public class Node : MonoBehaviour {
         }
         return true;
     }
+    */
 
     public bool GetLinkDir(_eLinkDir parentDir)
     {
         return bitLink[(int)parentDir];
+    }
+
+    //いちいちfor回すのはどうにかしたい
+    public int GetLinkNum()
+    {
+        int n = 0;
+        for(int i = 0; i < (int)_eLinkDir.MAX; i++)
+        {
+            n += bitLink[i] ? 1 : 0;
+        }
+        return n;
     }
 
     public float GetLeftPos() {

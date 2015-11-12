@@ -22,7 +22,7 @@ public class NodeController : MonoBehaviour {
     private readonly Square CAMERA_AREA = new Square(0.0f, 0.0f, 5.0f * 2.0f * 750.0f / 1334.0f, 5.0f * 2.0f);    // カメラの描画領域
 
     [SerializeField] private int row = 0;       // 横配置数
-    [SerializeField] private int col = 0;       // 縦配置数
+    [SerializeField] private int col = 0;       // 縦配置数 偶数行は＋１とする
     [SerializeField] private GameObject nodePrefab = null;       // パネルのプレハブ
     [SerializeField] private float widthMargin  = 0.0f;  // パネル位置の左右間隔の調整値
     [SerializeField] private float heightMargin = 0.0f;  // パネル位置の上下間隔の調整値
@@ -46,14 +46,14 @@ public class NodeController : MonoBehaviour {
 
     private Vector2 slideLeftUpPerNorm   = Vector2.zero;     // 左上ベクトルの垂線の単位ベクトル(Z軸を90度回転済み)
     private Vector2 slideLeftDownPerNorm = Vector2.zero;     // 左下ベクトルの垂線の単位ベクトル(Z軸を90度回転済み)
+    
+    private FieldLevelInfo fieldLevel;
 
-    [SerializeField] private float Odds_Cap = 0;          //先端の出現割合
-    [SerializeField] private float Odds_Pass2 = 0;        //2又の出現割合
-    [SerializeField] private float Odds_Pass3 = 0;        //3又の出現割合
-
-    private float OddsSum = 0.0f;                           //合計割合
+    private float RatioSum = 0.0f;                           //合計割合
 
     //[SerializeField] private Sprite[] cashSprites = new Sprite[6];
+
+    [SerializeField] LevelTables levelTables = null;
 
     //ノードの配置割合を記憶しておく
 
@@ -87,16 +87,23 @@ public class NodeController : MonoBehaviour {
     public Vector2 NodeSize {
         get { return nodeSize; }
     }
-
+    
+    private Score scoreScript;          //スコアのスクリプト
+    private LimitTime timeScript;            //制限時間のスクリプト
     
 
     void Awake() {
         nodePrefabs = new GameObject[row, col];
         nodeScripts = new Node[row, col];
-    }
 
+    }
+    
 	// Use this for initialization
 	void Start () {
+        scoreScript = GameObject.Find("ScoreNum").GetComponent<Score>();
+        timeScript = GameObject.Find("LimitTime").GetComponent<LimitTime>();
+        fieldLevel = levelTables.GetFieldLevel(0);
+            
         // ----- パネル準備
         // 描画するパネルの大きさを取得
         Vector3 pos = transform.position;
@@ -105,14 +112,13 @@ public class NodeController : MonoBehaviour {
         nodeSize.x -= widthMargin * ADJUST_PIXELS_PER_UNIT;
         nodeSize.y -= heightMargin * ADJUST_PIXELS_PER_UNIT;
 
-        OddsSum = Odds_Cap + Odds_Pass2 + Odds_Pass3;  //全体割合を記憶
+        RatioSum = fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3;  //全体割合を記憶
 
 
         // パネルを生成
         for(int i = 0; i < col; ++i) {
             // パネルの配置位置を調整(Y座標)
             pos.y = transform.position.y + nodeSize.y * -(col * 0.5f - (i + 0.5f));
-
             for (int j = 0; j < row; ++j) {
                 // パネルの配置位置を調整(X座標)
                 pos.x = i % 2 == 0 ? transform.position.x + nodeSize.x * -(row * 0.5f - (j + 0.25f)) : transform.position.x + nodeSize.x * -(row * 0.5f - (j + 0.75f));
@@ -902,13 +908,13 @@ public class NodeController : MonoBehaviour {
     public void CheckLink()
     {
         bool bComplete = false; //完成した枝があるか？
-
+        int nodeNum = 0;
         //すべてのノードの根本を見る
         for (int i = 1; i < row - 1; i++)
         {
-            if(nodeScripts[i, 1].CheckBit(_eLinkDir.NONE,0) >= 3)   //親ノードの方向は↓向きのどちらかにしておく
+            if((nodeNum = nodeScripts[i, 1].CheckBit(_eLinkDir.NONE,0)) >= 3)   //親ノードの方向は↓向きのどちらかにしておく
             {
-                bComplete = true;
+                bComplete = true;                
             }
             //１走査ごとに閲覧済みフラグを戻す
             ResetCheckedFragAll();
@@ -1014,7 +1020,7 @@ public class NodeController : MonoBehaviour {
         return nodeScripts[nodeID.x, nodeID.y];
     }
 
-    public void CheckLinkAround()
+/*    public void CheckLinkAround()
     {
 
     }
@@ -1034,7 +1040,7 @@ public class NodeController : MonoBehaviour {
             }
         }
     }
-
+    */
     //ノードの配置 割合は指定できるが完全ランダムなので再考の余地あり
     void ReplaceNode(Node node)
     {
@@ -1043,21 +1049,21 @@ public class NodeController : MonoBehaviour {
         node.ChainFlag = false;
 
         float rand;
-        rand = UnityEngine.Random.Range(0.0f, OddsSum);
+        rand = UnityEngine.Random.Range(0.0f, RatioSum);
 
         //暫定ランダム処理
-        if (0.0f <= rand && rand <= Odds_Cap)
+        if (0.0f <= rand && rand <= fieldLevel.Ratio_Cap)
         {
             node.SetNodeType(_eNodeType.CAP);
         }
-        else if (Odds_Cap < rand && rand <= Odds_Cap + Odds_Pass2)
+        else if (fieldLevel.Ratio_Cap < rand && rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2)
         {
             int n2;
             //2又のどれかはランダムでいいか
             n2 = UnityEngine.Random.Range(0, 3);                 //マジックナンバーどうにかしたい
             node.SetNodeType((_eNodeType)((int)(_eNodeType.HUB2_A + n2)));
         }
-        else if (Odds_Cap + Odds_Pass2 < rand && rand <= Odds_Cap + Odds_Pass2 + Odds_Pass3)
+        else if (fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 < rand && rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3)
         {
             int n3;
             //3又のどれかはランダムでいいか
@@ -1074,10 +1080,40 @@ public class NodeController : MonoBehaviour {
     //完成した枝に使用しているノードを再配置する
     void ReplaceNodeAll()
     {
+        int nNode = 0;
+        int nCap = 0;
+        int nPath2 = 0;
+        int nPath3 = 0;
         foreach(var node in nodeScripts)
         {
             if (node.CompleteFlag)
+            {
+                nNode++;
+                switch (node.GetLinkNum())
+                {
+                    case 1:
+                        nCap++;
+                        break;
+                    case 2:
+                        nPath2++;
+                        break;
+                    case 3:
+                        nPath3++;
+                        break;
+                }
+
+                
                 ReplaceNode(node);
+            }
+
         }
+        scoreScript.PlusScore(nNode, nCap, nPath2, nPath3);
+        timeScript.PlusTime(nNode, nCap, nPath2, nPath3);
+
+    }
+
+    public void SetFieldLevel(int level)
+    {
+        fieldLevel = levelTables.GetFieldLevel(level);
     }
 }
