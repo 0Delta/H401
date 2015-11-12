@@ -175,9 +175,6 @@ public class NodeController : MonoBehaviour {
                     SlantMove();
                     LoopBackNode();
                     AllCheckOutScreen();
-
-                    // @デバッグ用
-                    print(beforeTapNodeID);
                 }
             })
             .AddTo(this.gameObject);
@@ -207,14 +204,14 @@ public class NodeController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         // @デバッグ用
-        for(int i = 0; i < row; ++i) {
-            for(int j = 0; j < col; ++j) {
-                if(nodeScripts[i,j].IsOutScreen)
-                    nodeScripts[i, j].SpRenderer.color = new Color(0.1f, 0.1f, 1.0f);
-                else
-                    nodeScripts[i, j].SpRenderer.color = new Color(1.0f, 1.0f, 1.0f);
-            }
-        }
+        //for(int i = 0; i < row; ++i) {
+        //    for(int j = 0; j < col; ++j) {
+        //        if(nodeScripts[i,j].IsOutScreen)
+        //            nodeScripts[i, j].SpRenderer.color = new Color(0.1f, 0.1f, 1.0f);
+        //        else
+        //            nodeScripts[i, j].SpRenderer.color = new Color(1.0f, 1.0f, 1.0f);
+        //    }
+        //}
 	}
     
     void SlantMove() {

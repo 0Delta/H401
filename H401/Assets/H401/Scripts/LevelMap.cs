@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using DG.Tweening;
 
 public class LevelMap : MonoBehaviour {
 
@@ -20,8 +21,10 @@ public class LevelMap : MonoBehaviour {
         set { levelController.NextLevel = value; }
     }
 
+    [SerializeField]private GameObject panel;           //ボタン表示用パネル
+    [SerializeField] GameObject buttonPrefab = null;    //ボタンのプレハブ
 
-    [SerializeField] GameObject buttonPrefab = null;
+    [SerializeField]private GameObject debugButton = null;  //デバッグの用ゲームに戻るボタン
 
     void Awake()
     {
@@ -33,22 +36,37 @@ public class LevelMap : MonoBehaviour {
 	// Use this for initialization
     void Start()
     {
+        //levelController.NextLevel = -1;
+
+        levelController = GameObject.Find("levelController").GetComponent<LevelController>();
         levelController.NextLevel = -1;
+        float rot = levelController.LyingAngle;
 
         //ボタンを並べてリンクを付ける
-        Vector3 pos = transform.position;
+        GetComponentInChildren<DebugButton>().SetType(_eDebugState.RETURN);
+        
+
+
         for(int i = 0 ; i < 5 ; i ++)
         {
-            pos.y = 42.0f * ((i % 2) == 0 ? 1.0f : -1.0f);
+            Vector3 pos = transform.position;
+            pos.y += 42.0f * ((i % 2) == 0 ? 1.0f : -1.0f);
             pos.x += -100.0f + 50.0f * i;
 
             buttonObjects[i] = (GameObject)Instantiate(buttonPrefab, pos, transform.rotation);
-            buttonObjects[i].transform.parent = this.transform;
+            buttonObjects[i].transform.parent = panel.transform;
             buttonScripts[i] = buttonObjects[i].GetComponent<LevelButton>();
 
             //その他の設定
-
+            buttonScripts[i].RegistLevelNumber(i);
         }
+
+        LevelButton.SetMap(this);
+
+        panel.transform.Rotate(new Vector3(0.0f, 0.0f, rot));
+
+        //tweenとかで出現エフェクト等
+        
     }
 	
 	// Update is called once per frame
