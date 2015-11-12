@@ -18,6 +18,7 @@ public class Node : MonoBehaviour {
     private bool        isAction    = false;            // アクションフラグ
     private bool        isSlide     = false;            // スライドフラグ
     private _eSlideDir  slideDir    = _eSlideDir.NONE;  // 現在のスライド方向
+    private bool        isOutScreen = false;            // 画面外フラグ
 
     public BitArray bitLink = new BitArray(6);  //道の繋がりのビット配列　trueが道
                                                 //  5 0
@@ -51,6 +52,11 @@ public class Node : MonoBehaviour {
     {
         get { return bChain; }
         set { bChain = value; }
+    }
+
+    public bool IsOutScreen {
+        set { isOutScreen = value; }
+        get { return isOutScreen; }
     }
 
     static private readonly string[] HEX_TEXTURE = {
@@ -146,12 +152,6 @@ public class Node : MonoBehaviour {
         }
     }
 
-    //void OnBecameInvisible() {
-    //    print("Out of screen");
-
-    //    nodeControllerScript.LoopBackNode(nodeID, slideDir);
-    //}
-
     public void RegistNodeID(int row, int col) {
         nodeID.x = row;
         nodeID.y = col;
@@ -167,9 +167,11 @@ public class Node : MonoBehaviour {
         if(!isSlide)
             isSlide = true;
 
+        transform.DOKill();
         transform.DOMoveX(pos.x, slideTime)
             .OnComplete(() => {
                 slideDir = _eSlideDir.NONE;
+                nodeControllerScript.CheckOutScreen(nodeID);
                 //nodeControllerScript.CheckLink();
             });
         transform.DOMoveY(pos.y, slideTime);
@@ -405,4 +407,37 @@ public class Node : MonoBehaviour {
         return bitLink[(int)parentDir];
     }
 
+    public float GetLeftPos() {
+        float left = transform.position.x;
+        left -= nodeControllerScript.NodeSize.x * 0.5f;
+
+        return left;
+    }
+
+    public float GetRightPos() {
+        float right = transform.position.x;
+        right += nodeControllerScript.NodeSize.x * 0.5f;
+
+        return right;
+    }
+
+    public float GetTopPos() {
+        float top = transform.position.y;
+        top += nodeControllerScript.NodeSize.y * 0.5f;
+
+        return top;
+    }
+
+    public float GetBottomPos() {
+        float bottom = transform.position.y;
+        bottom -= nodeControllerScript.NodeSize.y * 0.5f;
+
+        return bottom;
+    }
+
+    public void CopyParameter(Node copy) {
+        spRenderer.sprite = copy.spRenderer.sprite;
+        transform.rotation = copy.transform.rotation;
+        bitLink = copy.bitLink;
+    }
 }
