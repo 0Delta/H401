@@ -18,7 +18,7 @@ using DG.Tweening;
 
 public class NodeController : MonoBehaviour {
 
-    private const float ADJUST_PIXELS_PER_UNIT = 0.01f;     // Pixels Per Unit の調整値
+//    private const float ADJUST_PIXELS_PER_UNIT = 0.01f;     // Pixels Per Unit の調整値
     private readonly Square CAMERA_AREA = new Square(0.0f, 0.0f, 5.0f * 2.0f * 750.0f / 1334.0f, 5.0f * 2.0f);    // カメラの描画領域
 
     [SerializeField] private int row = 0;       // 横配置数
@@ -107,10 +107,10 @@ public class NodeController : MonoBehaviour {
         // ----- パネル準備
         // 描画するパネルの大きさを取得
         Vector3 pos = transform.position;
-        nodeSize.x = nodePrefab.GetComponent<SpriteRenderer>().sprite.texture.width * nodePrefab.transform.localScale.x * ADJUST_PIXELS_PER_UNIT;
-        nodeSize.y = nodePrefab.GetComponent<SpriteRenderer>().sprite.texture.height * nodePrefab.transform.localScale.y * ADJUST_PIXELS_PER_UNIT;
-        nodeSize.x -= widthMargin * ADJUST_PIXELS_PER_UNIT;
-        nodeSize.y -= heightMargin * ADJUST_PIXELS_PER_UNIT;
+        nodeSize.x = nodePrefab.GetComponent<MeshFilter>().sharedMesh.bounds.size.x * nodePrefab.transform.localScale.x;
+        nodeSize.y = nodePrefab.GetComponent<MeshFilter>().sharedMesh.bounds.size.y * nodePrefab.transform.localScale.y;
+        nodeSize.x -= widthMargin;
+        nodeSize.y -= heightMargin;
 
         RatioSum = fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3;  //全体割合を記憶
 
@@ -207,9 +207,9 @@ public class NodeController : MonoBehaviour {
         //for(int i = 0; i < row; ++i) {
         //    for(int j = 0; j < col; ++j) {
         //        if(nodeScripts[i,j].IsOutScreen)
-        //            nodeScripts[i, j].SpRenderer.color = new Color(0.1f, 0.1f, 1.0f);
+        //            nodeScripts[i, j].MeshRenderer.material.color = new Color(0.1f, 0.1f, 1.0f);
         //        else
-        //            nodeScripts[i, j].SpRenderer.color = new Color(1.0f, 1.0f, 1.0f);
+        //            nodeScripts[i, j].MeshRenderer.material.color = new Color(1.0f, 1.0f, 1.0f);
         //    }
         //}
 	}
@@ -933,7 +933,7 @@ public class NodeController : MonoBehaviour {
             for(int j = 1 ; j < row - 1; j++)
             {
                 if(!nodeScripts[j,i].ChainFlag)
-                    nodeScripts[j, i].SpRenderer.color = new Color(1.0f, 1.0f, 1.0f);
+                    nodeScripts[j, i].MeshRenderer.material.color = new Color(1.0f, 1.0f, 1.0f);
                 nodeScripts[j, i].ChainFlag = false;
             }
         }

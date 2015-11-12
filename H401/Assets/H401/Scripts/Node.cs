@@ -28,10 +28,10 @@ public class Node : MonoBehaviour {
     //public BitArray bitTreePath = new BitArray(4);//走査時にどの木の一部かを記憶しておく
     public Vec2Int[] ChainNodes = new Vec2Int[5];
 
-    private SpriteRenderer spRenderer;
-    public SpriteRenderer SpRenderer
+    private MeshRenderer meshRenderer;
+    public MeshRenderer MeshRenderer
     {
-        get { return spRenderer; }
+        get { return meshRenderer; }
     }
 
     private bool bChecked = false;              
@@ -60,18 +60,18 @@ public class Node : MonoBehaviour {
     }
 
     static private readonly string[] HEX_TEXTURE = {
-        "Textures/hex0",
-        "Textures/hex1",
-        "Textures/hex2",
-        "Textures/hex3",
-        "Textures/hex4",
-        "Textures/hex5",
+        "Materials/hex0",
+        "Materials/hex1",
+        "Materials/hex2",
+        "Materials/hex3",
+        "Materials/hex4",
+        "Materials/hex5",
 
     };
 
     void Awake()
     {
-        spRenderer = GetComponent<SpriteRenderer>();
+        meshRenderer = GetComponent<MeshRenderer>();
     }
 	// Use this for initialization
 	void Start () {
@@ -223,7 +223,7 @@ public class Node : MonoBehaviour {
         }
 
         bChain = true;
-        spRenderer.color = new Color(0.5f, 0.0f, 0.0f);   //とりあえず赤フィルターを掛けてみる
+        meshRenderer.material.color = new Color(0.5f, 0.0f, 0.0f);   //とりあえず赤フィルターを掛けてみる
         //このノードがチェック済ならおｋとする
         if (bChecked)
             return 0;
@@ -325,7 +325,7 @@ public class Node : MonoBehaviour {
             //    bitLink[2] = true;
             //    break;
         }
-        spRenderer.sprite = Resources.Load<Sprite>(HEX_TEXTURE[(int)type]);//(Sprite)Object.Instantiate(nodeControllerScript.GetSprite(type));
+        meshRenderer.material = Resources.Load<Material>(HEX_TEXTURE[(int)type]);//(Sprite)Object.Instantiate(nodeControllerScript.GetSprite(type));
 
         //ランダムに回転
         float angle = 0.0f;
@@ -448,7 +448,7 @@ public class Node : MonoBehaviour {
     }
 
     public void CopyParameter(Node copy) {
-        spRenderer.sprite = copy.spRenderer.sprite;
+        meshRenderer.material = copy.meshRenderer.material;
         transform.rotation = copy.transform.rotation;
         bitLink = copy.bitLink;
     }
