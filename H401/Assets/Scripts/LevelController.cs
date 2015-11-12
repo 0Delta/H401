@@ -16,12 +16,18 @@ public class LevelController : MonoBehaviour {
     private GameObject mapObject;
     private LevelMap mapScript;
     private float lyingAngle;
+    public float LyingAngle
+    {
+        get { return lyingAngle; }
+    }
 
     private int nextLevel;  //次のレベル
     public int NextLevel { set { nextLevel = value; } }
 
 	// Use this for initialization
 	void Start () {
+        nextLevel = -1;
+
         levelState = _eLevelState.STAND;
         preState = _eLevelState.STAND;
         Input.gyro.enabled = true;
@@ -43,15 +49,15 @@ public class LevelController : MonoBehaviour {
             lyingAngle = -90;
             levelState = _eLevelState.LIE;
         }
-        else
-            levelState = _eLevelState.STAND;
+        //else
+            //levelState = _eLevelState.STAND;
 
         if(preState != levelState)
         {
             switch(levelState)
             {
                 case _eLevelState.STAND:
-
+                    FieldChangeEnd();
                     break;
                 case _eLevelState.LIE:
                     FieldChangeStart();
@@ -70,22 +76,32 @@ public class LevelController : MonoBehaviour {
 
         //難易度選択をinstantiateする
         mapObject = new GameObject();
+        Transform trans = transform;
+        //trans.Rotate(new Vector3(0.0f,0.0f,lyingAngle));;
         mapObject = (GameObject)Instantiate(mapPrefab, transform.position, transform.rotation);
         mapObject.transform.parent = this.transform;
         mapScript = mapObject.GetComponent<LevelMap>();
-        mapScript.SetLevelController(this);
+        //mapScript.SetLevelController(this);
     }
 
     //切り替え終了
     public void FieldChangeEnd()
     {
         gameController.SetActive(true);
-        gameController.GetComponent<NodeController>().SetFieldLevel(nextLevel);
+        gameController.GetComponentInChildren<NodeController>().SetFieldLevel(nextLevel);
 
         //オブジェクト破棄
         Destroy(mapObject);
 
     }
-
+    public void FChangeTest(float angle)
+    {
+        lyingAngle = angle;
+        levelState = _eLevelState.LIE;
+    }
+    public void FChangeEnd()
+    {
+        levelState = _eLevelState.STAND;
+    }
     
 }

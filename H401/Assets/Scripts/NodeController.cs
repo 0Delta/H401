@@ -540,6 +540,14 @@ public class NodeController : MonoBehaviour {
 
     public void SetFieldLevel(int level)
     {
-        fieldLevel = levelTables.GetFieldLevel(level);
+        if(0 > level || level > levelTables.FieldLevelCount)
+        {
+            print("フィールド変更なし");
+        }
+        else
+        {
+            fieldLevel = levelTables.GetFieldLevel(level);
+            print("フィールド変更：レベル" + level.ToString());
+        }
     }
 }

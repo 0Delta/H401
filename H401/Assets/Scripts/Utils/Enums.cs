@@ -51,3 +51,9 @@ public enum _eLevelState
     STAND,
     LIE,
 }
+public enum _eDebugState
+{
+    LEFT_LIE,
+    RIGHT_LIE,
+    RETURN,
+}
