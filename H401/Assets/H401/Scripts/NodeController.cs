@@ -27,8 +27,8 @@ public class NodeController : MonoBehaviour {
     [SerializeField] private float widthMargin  = 0.0f;  // パネル位置の左右間隔の調整値
     [SerializeField] private float heightMargin = 0.0f;  // パネル位置の上下間隔の調整値
 
-    private GameObject[,]   nodePrefabs;     // パネルのプレハブリスト
-    private Node[,]         nodeScripts;     // パネルのnodeスクリプトリスト
+    private GameObject[,]   nodePrefabs;        // パネルのプレハブリスト
+    private Node[,]         nodeScripts;        // パネルのnodeスクリプトリスト
 
     private Vector2 nodeSize = Vector2.zero;    // 描画するパネルのサイズ
 
@@ -113,7 +113,7 @@ public class NodeController : MonoBehaviour {
         nodeSize.y -= heightMargin;
 
         RatioSum = fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3;  //全体割合を記憶
-
+        
 
         // パネルを生成
         for(int i = 0; i < col; ++i) {
@@ -121,7 +121,7 @@ public class NodeController : MonoBehaviour {
             pos.y = transform.position.y + nodeSize.y * -(col * 0.5f - (i + 0.5f));
             for (int j = 0; j < row; ++j) {
                 // パネルの配置位置を調整(X座標)
-                pos.x = i % 2 == 0 ? transform.position.x + nodeSize.x * -(row * 0.5f - (j + 0.25f)) : transform.position.x + nodeSize.x * -(row * 0.5f - (j + 0.75f));
+                pos.x = i % 2 == 0 ? transform.position.x + nodeSize.x * -(row * 0.5f - j) : transform.position.x + nodeSize.x * -(row * 0.5f - (j + 0.5f));
 
                 // 生成
         	    nodePrefabs[j,i] = (GameObject)Instantiate(nodePrefab, pos, transform.rotation);
