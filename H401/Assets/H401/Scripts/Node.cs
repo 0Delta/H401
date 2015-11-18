@@ -2,7 +2,8 @@
 using System.Collections;
 using DG.Tweening;
 //using Assets.Scripts.Utils;
-
+using UniRx.Triggers;
+using UniRx;
 
 public class Node : MonoBehaviour {
 
@@ -71,14 +72,13 @@ public class Node : MonoBehaviour {
 
     void Awake()
     {
-        spRenderer = GetComponent<SpriteRenderer>();
+        spRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start() {
         //とりあえずテスト
         //bitLink.
-
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -193,96 +193,160 @@ public class Node : MonoBehaviour {
         print(OrigLog.ToString(bitLink));
     }
 
-    //ノードごとの道がつながっているか走査(親ビットの方向)
-    //途切れがあれば-1,壁か
-    public int CheckBit(_eLinkDir linkDir,int chain)
+    ///  こっから妹尾
+    private BitArray Negibor = new BitArray(6);
+    public void UpdateNegibor()
     {
-        bool bTempChain = true;
-        bCompleted = true;   //最初に立てて、ダメだったら戻す
-
-
-
-        //まず元の方向と道が繋がっていないならダメ
-        if(linkDir == _eLinkDir.NONE)
+        for (int n = 0; n < (int)_eLinkDir.MAX; n++)
         {
-            //根本の場合
-            if (!(bitLink[(int)_eLinkDir.RD] || bitLink[(int)_eLinkDir.LD]))
+            Vec2Int Target = nodeControllerScript.GetDirNode(nodeID, (_eLinkDir)n);
+            if (Target.x != -1)
             {
-                bCompleted = false;
-                return -1;
-            }
-        }
-        else
-        {
-            //それ以外の時、つまり他のノードから呼ばれている時
-            if (!bitLink[(int)linkDir]) //元のノード側と道がつながっていなければ
-            {
-                bCompleted = false;
-                return -1;
-            }
-        }
-
-        bChain = true;
-        spRenderer.color = new Color(0.5f, 0.0f, 0.0f);   //とりあえず赤フィルターを掛けてみる
-        //このノードがチェック済ならおｋとする
-        if (bChecked)
-            return 0;
-
-        //ビット配列をすべて見る
-        for(int i = 0 ; i < (int)_eLinkDir.MAX ;i++)
-        {
-            if (linkDir == _eLinkDir.NONE)
-            {
-                //根本の場合、↓方向は飛ばす
-                if (i == (int)_eLinkDir.RD || i == (int)_eLinkDir.LD)
-                    continue;
+                Negibor[n] = nodeControllerScript.GetNodeScript(Target).bitLink[(n + 3 >= 6) ? (n + 3 - 6) : (n + 3)];
             }
             else
-            {   //それ以外のときは、元の方向は飛ばす
-                if (i == (int)linkDir)
-                    continue;
-            }
-            //道があるならその方向のノードを走査
-            if(bitLink[i])
             {
-                //ノードコントローラにIDと走査方向を渡し、ノードがあるかを調べる
-                _eLinkDir parentDir = (i + 3 >= 6) ? (_eLinkDir)( i + 3 - 6) : (_eLinkDir)(i + 3);
-                
-                Vec2Int nextPos = nodeControllerScript.GetDirNode(nodeID, (_eLinkDir)i);
-                //ない＝壁なので、その時はおｋを返す
-                if (nextPos.x == 0 || nextPos.y == 0 || nextPos.x == nodeControllerScript.Row - 1 || nextPos.y == nodeControllerScript.Col - 1)
+                Negibor[n] = false;
+            }
+        }
+    }
+    public bool LinkedNegibor(_eLinkDir n)
+    {
+        return LinkedNegibor((int)n);
+    }
+    public bool LinkedNegibor(int n)
+    {
+        return Negibor[n] && bitLink[n];
+    }
+
+    // デバック出力用
+    public string DLChker(int n)
+    {
+        return DLChker((_eLinkDir)n);
+    }
+    public string DLChker(_eLinkDir n)
+    {
+        string[] DbgLinkStr = { "RU", "R ", "RD", "LD", "L ", "LU" };
+        return DbgLinkStr[(int)n];
+    }
+
+    public void Action(NodeController.NodeLinkTaskChecker Tc, _eLinkDir Link)//, out NodeController.LinkTaskRes[] Res)
+    {
+        // チェック済みでか端であればスキップ
+        if (bChecked ||
+            nodeID.x == 0 || nodeID.x == nodeControllerScript.Row - 1 ||
+            nodeID.y == 0 || nodeID.y == nodeControllerScript.Col - 1
+            ) { Tc.Branch--; return; }
+
+        // 各種変数定義
+        bool bBranch = false;
+        bChecked = true;
+        Tc.SumNode++;
+
+        // お隣さんを更新(将来的に移動時に発行する)
+        UpdateNegibor();
+
+        // [Dbg]状態表示
+        if (Debug.isDebugBuild && nodeControllerScript.bNodeLinkDebugLog)
+            Debug.Log("[" + nodeID.x + "," + nodeID.y + "] " + "Node_Action \n"
+            + (bitLink[0] ? "1" : "0") + (bitLink[1] ? "1" : "0") + (bitLink[2] ? "1" : "0") + (bitLink[3] ? "1" : "0") + (bitLink[4] ? "1" : "0") + (bitLink[5] ? "1" : "0") + "\n"
+             + (Negibor[0] ? "1" : "0") + (Negibor[1] ? "1" : "0") + (Negibor[2] ? "1" : "0") + (Negibor[3] ? "1" : "0") + (Negibor[4] ? "1" : "0") + (Negibor[5] ? "1" : "0"));
+
+
+        // チェックスタート
+        // 接地判定（根本のみ）
+        if (Link == _eLinkDir.NONE)     // 始点の場合下方向チェック
+        {
+            if (!bitLink[(int)_eLinkDir.RD] && !bitLink[(int)_eLinkDir.LD])
+            {
+                Tc.Branch--;
+                Tc.SumNode--;
+                bChecked = false;
+                return;                 // 繋がってないなら未チェックとして処理終了
+            }
+            if (Debug.isDebugBuild && nodeControllerScript.bNodeLinkDebugLog)
+                Debug.Log("Ground");
+        }
+
+        // この時点で枝が繋がっている事が確定
+        GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.0f, 0.0f);
+        Tc.NodeList.Add(this);
+
+        // 終端ノードであれば、周囲チェック飛ばす
+        bool bEndNode = true;
+        for (int n = 0; n < (int)_eLinkDir.MAX && bEndNode; n++)
+        {
+            if (n == (int)_eLinkDir.MAX)
+            {
+                if (n != (int)_eLinkDir.RD && n != (int)_eLinkDir.LD &&
+                    bitLink[n])
+                    bEndNode = false;
+            }
+            else
+            {
+                if (n != (int)Link &&
+                    bitLink[n])
+                    bEndNode = false;
+            }
+        }
+        if (bEndNode)
+        {
+            Tc.Branch--;
+            return;
+        }
+        
+        // 周囲のチェック
+        for (int n = 0; n < (int)_eLinkDir.MAX; n++)
+        {
+
+            // 元の方向と、根本の時の下を除外
+            if (Link == _eLinkDir.NONE && (n == (int)_eLinkDir.RD || n == (int)_eLinkDir.LD)) { continue; }
+            if (n == (int)Link) { continue; }
+
+            // それ以外で繋がっている場所を検索
+            if (bitLink[n])
+            {
+                if (Negibor[n])
                 {
-                    continue;
-                }
-                else
-                {
-                    //ある場合は、そこに元来た方向（走査方向＋３(-６)）を渡しさらに走査
-                    if((chain = nodeControllerScript.GetNodeScript(nextPos).CheckBit(parentDir,chain)) != -1)
+                    bChain = true;
+                    if (Debug.isDebugBuild && nodeControllerScript.bNodeLinkDebugLog)
+                        Debug.Log("Linked [" + DLChker(n) + "]");
+
+                    // 分岐を検出してカウント
+                    if (!bBranch)
                     {
-                        
-                        continue;
+                        bBranch = true;
                     }
                     else
                     {
-                        bTempChain = false;
-                        continue;
+                        Tc.Branch++;
                     }
+
+                    // 周囲のActionをトリガーさせる
+                    Observable
+                        .Return(n)
+                        .Subscribe(_ =>
+                    {
+                        Vec2Int Target = nodeControllerScript.GetDirNode(nodeID, (_eLinkDir)n);
+                        if (Target.x != -1)
+                        {
+                            nodeControllerScript.GetNodeScript(Target).Action(Tc, (_eLinkDir)((n + 3 >= 6) ? (n + 3 - 6) : (n + 3)));
+                        }
+                    }).AddTo(this);
+                }
+                else
+                {
+                    Tc.NotFin = true;
                 }
             }
         }
+        if (Tc.NotFin)
+        {
+            Tc.Branch--;
+        }
 
-        //問題なければ閲覧済みフラグを立てておｋを返す
-        if (bTempChain)
-        {
-            bChecked = true;
-            return chain + 1;
-        }
-        else
-        {
-            bCompleted = false;
-            return -1;
-        }
     }
+    /// ここまで妹尾
 
     //ノードにタイプ・テクスチャ・道ビット
     public void SetNodeType(_eNodeType type)
