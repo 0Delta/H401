@@ -9,11 +9,11 @@ public class LevelTables : MonoBehaviour {
     public int FieldLevelCount{
         get {return fieldLevelCount;}
     }
-    [SerializeField] private FieldLevelInfo[] fieldLevelTable;// = new FieldLevelInfo[5];
+    [SerializeField] private FieldLevelInfo[] fieldLevelTable = null;// = new FieldLevelInfo[5];
 
 
-    [SerializeField] private float maxLimitTime; //制限時間の最大値
-    [SerializeField] private float timeLevelInterval;    //時間難易度の変更感覚
+    [SerializeField] private float maxLimitTime = 0; //制限時間の最大値
+    [SerializeField] private float timeLevelInterval = 0;    //時間難易度の変更感覚
     public float TimeLevelInterval
     {
         get { return timeLevelInterval; }

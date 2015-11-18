@@ -10,6 +10,10 @@ public class LevelMap : MonoBehaviour {
         set { levelTables = value; }
     }
 
+    [SerializeField]private float popTime = 0.0f;
+
+    private GameObject gameController = null;
+    public void SetGameController(GameObject game) { gameController = game; }
     private LevelController levelController;
     public void SetLevelController(LevelController lev) { levelController = lev; }
 
@@ -31,6 +35,8 @@ public class LevelMap : MonoBehaviour {
         //ここのマジックナンバーはどうにかしたいが
         buttonObjects = new GameObject[5];
         buttonScripts = new LevelButton[5];
+
+        gameController = GameObject.Find("GameController");
     }
 
 	// Use this for initialization
@@ -43,7 +49,7 @@ public class LevelMap : MonoBehaviour {
         float rot = levelController.LyingAngle;
 
         //ボタンを並べてリンクを付ける
-        GetComponentInChildren<DebugButton>().SetType(_eDebugState.RETURN);
+        //GetComponentInChildren<DebugButton>().SetType(_eDebugState.RETURN);
         
 
 
@@ -66,6 +72,8 @@ public class LevelMap : MonoBehaviour {
         panel.transform.Rotate(new Vector3(0.0f, 0.0f, rot));
 
         //tweenとかで出現エフェクト等
+        panel.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        panel.transform.DOScale(1.0f, popTime).OnComplete(() => { gameController.SetActive(false); });
         
     }
 	

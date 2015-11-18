@@ -15,6 +15,10 @@ public class Node : MonoBehaviour {
     static private NodeController nodeControllerScript = null;      // NodeController のスクリプト
 
     private Vec2Int     nodeID      = Vec2Int.zero;     // パネルリストのID
+    public Vec2Int NodeID
+    {
+        get { return nodeID; }
+    }
     private bool        isAction    = false;            // アクションフラグ
     private bool        isSlide     = false;            // スライドフラグ
     private _eSlideDir  slideDir    = _eSlideDir.NONE;  // 現在のスライド方向
@@ -172,7 +176,7 @@ public class Node : MonoBehaviour {
             .OnComplete(() => {
                 slideDir = _eSlideDir.NONE;
                 nodeControllerScript.CheckOutScreen(nodeID);
-                //nodeControllerScript.CheckLink();
+                nodeControllerScript.CheckLink();
             });
         transform.DOMoveY(pos.y, slideTime);
     }
@@ -291,33 +295,29 @@ public class Node : MonoBehaviour {
         bitLink.SetAll(false);
         transform.rotation = Quaternion.identity;
 
+        bitLink[0] = true;
+
         //ビットタイプ・テクスチャを設定
         switch(type)
         {
-            case _eNodeType.CAP:
-                bitLink[5] = true;
+            case _eNodeType.CAP: 
                 break;
             case _eNodeType.HUB2_A:
-                bitLink[5] = true;
-                bitLink[2] = true;
+                bitLink[3] = true;
                 
                 break;
             case _eNodeType.HUB2_B:
-                bitLink[3] = true;
-                bitLink[5] = true;
+                bitLink[2] = true;
                 break;
             case _eNodeType.HUB2_C:
-                bitLink[5] = true;
-                bitLink[4] = true;
+                bitLink[1] = true;
                 break;
             case _eNodeType.HUB3_A:
-                bitLink[1] = true;
-                bitLink[3] = true;
-                bitLink[5] = true;
+                bitLink[2] = true;
+                bitLink[4] = true;
                 break;
             case _eNodeType.HUB3_B:
-                bitLink[0] = true;
-                bitLink[2] = true;
+                bitLink[3] = true;
                 bitLink[5] = true;
                 break;
             //case _eNodeType.HUB3_C:

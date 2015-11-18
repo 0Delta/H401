@@ -90,7 +90,7 @@ public class NodeController : MonoBehaviour {
     
     private Score scoreScript;          //スコアのスクリプト
     private LimitTime timeScript;            //制限時間のスクリプト
-    
+    private FeverGauge feverScript;
 
     void Awake() {
         nodePrefabs = new GameObject[row, col];
@@ -102,6 +102,8 @@ public class NodeController : MonoBehaviour {
 	void Start () {
         scoreScript = GameObject.Find("ScoreNum").GetComponent<Score>();
         timeScript = GameObject.Find("LimitTime").GetComponent<LimitTime>();
+        feverScript = GameObject.Find("FeverGauge").GetComponent<FeverGauge>();
+
         fieldLevel = levelTables.GetFieldLevel(0);
             
         // ----- パネル準備
@@ -199,6 +201,8 @@ public class NodeController : MonoBehaviour {
                 afterTapNodeID  = Vec2Int.zero;
             })
             .AddTo(this.gameObject);
+
+        CheckLink();
 	}
 	
 	// Update is called once per frame
@@ -909,7 +913,7 @@ public class NodeController : MonoBehaviour {
         //すべてのノードの根本を見る
         for (int i = 1; i < row - 1; i++)
         {
-            if((nodeNum = nodeScripts[i, 1].CheckBit(_eLinkDir.NONE,0)) >= 3)   //親ノードの方向は↓向きのどちらかにしておく
+            if((nodeNum = nodeScripts[i, 2].CheckBit(_eLinkDir.NONE,0)) >= 3)   //親ノードの方向は↓向きのどちらかにしておく
             {
                 bComplete = true;                
             }
@@ -928,7 +932,7 @@ public class NodeController : MonoBehaviour {
             ReplaceNodeAll();
             print("枝が完成しました！");
         }
-        for (int i = 1; i < col - 1; i++  )
+        for (int i = 2; i < col - 3; i++  )
         {
             for(int j = 1 ; j < row - 1; j++)
             {
@@ -947,6 +951,11 @@ public class NodeController : MonoBehaviour {
             //繋がりがない枝は色をここでもどす
             //nodes.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
             nodes.CheckFlag = false;
+
+            //とりあえず画面外のノードの色を変える
+            Vec2Int id = nodes.NodeID;
+            if (id.x == 0 || id.x == row - 1 || id.y <= 1 || id.y >= col - 3 )
+                nodes.MeshRenderer.material.color= new Color(0,0,0.5f);
         }
     }
 
@@ -1106,11 +1115,22 @@ public class NodeController : MonoBehaviour {
         }
         scoreScript.PlusScore(nNode, nCap, nPath2, nPath3);
         timeScript.PlusTime(nNode, nCap, nPath2, nPath3);
+        feverScript.Gain(nNode,nCap,nPath2,nPath3);
 
     }
 
     public void SetFieldLevel(int level)
     {
-        fieldLevel = levelTables.GetFieldLevel(level);
+        if (level >= 0 && level < levelTables.FieldLevelCount)
+        {
+            fieldLevel = levelTables.GetFieldLevel(level);
+            ReplaceNodeAll();
+            print("レベル変更：" + level.ToString());
+        }
+        else
+        {
+            print("レベル変更なし");
+
+        }
     }
 }
