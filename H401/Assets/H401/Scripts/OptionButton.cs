@@ -9,16 +9,9 @@ public class OptionButton : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
-	}
-
-    void OnClick()
+    void Update()
     {
-        Time.timeScale = 0;
-        //ゲーム本編を非表示
 
-        //オプションのシーンをロード
-        //Application.LoadLevelAdditive("GameOption");
     }
+
 }

@@ -1093,17 +1093,28 @@ public class NodeController : MonoBehaviour {
         int nPath2 = 0;
         int nPath3 = 0;
 
-        //完成ノードの配列を作る
+        //完成時演出のためにマテリアルをコピーしてから、
         List<GameObject> treeNodes = new List<GameObject>();
+        for (int i = 0; i < col; i++)
+        {
+            for (int j = 0; j < row; j++)
+            {
+                if (nodeScripts[j,i].CompleteFlag)
+                    treeNodes.Add(nodePrefabs[j,i]);
+            }
 
-        //foreach(var node in nodeScripts)
+        }
+        GameObject newTree = (GameObject)Instantiate(treePrefab, transform.position, transform.rotation);
+        newTree.GetComponent<treeController>().SetTree(treeNodes);
+
+
+        //ノードを再配置
         for (int i = 0; i < col ; i++)
         {
             for (int j = 0; j < row; j++ )
 
                 if (nodeScripts[j,i].CompleteFlag)
                 {
-                    treeNodes.Add(nodePrefabs[j,i]);
                     nNode++;
                     switch (nodeScripts[j,i].GetLinkNum())
                     {
@@ -1127,8 +1138,7 @@ public class NodeController : MonoBehaviour {
         timeScript.PlusTime(nNode, nCap, nPath2, nPath3);
         feverScript.Gain(nNode,nCap,nPath2,nPath3);
 
-        GameObject newTree = (GameObject)Instantiate(treePrefab, transform.position,transform.rotation);
-        newTree.GetComponent<treeController>().SetTree(treeNodes);
+
     }
 
     public void SetFieldLevel(int level)
