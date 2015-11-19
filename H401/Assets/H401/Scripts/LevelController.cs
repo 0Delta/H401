@@ -94,7 +94,7 @@ public class LevelController : MonoBehaviour {
         //trans.Rotate(new Vector3(0.0f,0.0f,lyingAngle));;
         mapObject = (GameObject)Instantiate(mapPrefab, transform.position, transform.rotation);
         mapObject.transform.parent = this.transform;
-        mapScript = mapObject.GetComponent<LevelMap>();
+        mapScript = mapObject.GetComponentInChildren<LevelMap>();
         //mapScript.SetLevelController(this);
  //       mapObject.transform.localScale.Set(0.1f,0.1f,0.1f);
  //       mapObject.transform.DOScale(1.0f, popTime).OnComplete(() => { gameController.SetActive(false); });
@@ -108,7 +108,9 @@ public class LevelController : MonoBehaviour {
         lyingAngle = 0;
         levelState = _eLevelState.STAND;
         //オブジェクト破棄
-        Destroy(mapObject);
+        //Destroy(mapObject);
+        //小さくなって消えるように
+        mapScript.Delete();
 
     }
     public void FChangeTest(float angle)

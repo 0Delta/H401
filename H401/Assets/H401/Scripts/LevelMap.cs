@@ -12,6 +12,8 @@ public class LevelMap : MonoBehaviour {
 
     [SerializeField]private float popTime = 0.0f;
 
+    [SerializeField]private float popScale = 0.0f;
+
     private GameObject gameController = null;
     public void SetGameController(GameObject game) { gameController = game; }
     private LevelController levelController;
@@ -72,7 +74,7 @@ public class LevelMap : MonoBehaviour {
         panel.transform.Rotate(new Vector3(0.0f, 0.0f, rot));
 
         //tweenとかで出現エフェクト等
-        panel.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        panel.transform.localScale = new Vector3(popScale,popScale,popScale);
         panel.transform.DOScale(1.0f, popTime).OnComplete(() => { gameController.SetActive(false); });
         
     }
@@ -88,5 +90,8 @@ public class LevelMap : MonoBehaviour {
         
     }
 
-    //傾きを
+    public void Delete()
+    {
+        transform.DOScale(popScale, popTime).OnComplete(() => { Destroy(this.gameObject); });
+    }
 }

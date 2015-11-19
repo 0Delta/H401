@@ -3,7 +3,7 @@ using System.Collections;
 using UniRx;
 
 using DG.Tweening;
-
+using System.Collections.Generic;
 /*  リストIDに関して
 
             (n,n)
@@ -29,6 +29,8 @@ public class NodeController : MonoBehaviour {
 
     private GameObject[,]   nodePrefabs;     // パネルのプレハブリスト
     private Node[,]         nodeScripts;     // パネルのnodeスクリプトリスト
+
+    [SerializeField]private GameObject treePrefab = null; 
 
     private Vector2 nodeSize = Vector2.zero;    // 描画するパネルのサイズ
 
@@ -1090,33 +1092,43 @@ public class NodeController : MonoBehaviour {
         int nCap = 0;
         int nPath2 = 0;
         int nPath3 = 0;
-        foreach(var node in nodeScripts)
-        {
-            if (node.CompleteFlag)
-            {
-                nNode++;
-                switch (node.GetLinkNum())
-                {
-                    case 1:
-                        nCap++;
-                        break;
-                    case 2:
-                        nPath2++;
-                        break;
-                    case 3:
-                        nPath3++;
-                        break;
-                }
 
-                
-                ReplaceNode(node);
-            }
+        //完成ノードの配列を作る
+        List<GameObject> treeNodes = new List<GameObject>();
+
+        //foreach(var node in nodeScripts)
+        for (int i = 0; i < col ; i++)
+        {
+            for (int j = 0; j < row; j++ )
+
+                if (nodeScripts[j,i].CompleteFlag)
+                {
+                    treeNodes.Add(nodePrefabs[j,i]);
+                    nNode++;
+                    switch (nodeScripts[j,i].GetLinkNum())
+                    {
+                        case 1:
+                            nCap++;
+                            break;
+                        case 2:
+                            nPath2++;
+                            break;
+                        case 3:
+                            nPath3++;
+                            break;
+                    }
+
+
+                    ReplaceNode(nodeScripts[j,i]);
+                }
 
         }
         scoreScript.PlusScore(nNode, nCap, nPath2, nPath3);
         timeScript.PlusTime(nNode, nCap, nPath2, nPath3);
         feverScript.Gain(nNode,nCap,nPath2,nPath3);
 
+        GameObject newTree = (GameObject)Instantiate(treePrefab, transform.position,transform.rotation);
+        newTree.GetComponent<treeController>().SetTree(treeNodes);
     }
 
     public void SetFieldLevel(int level)
