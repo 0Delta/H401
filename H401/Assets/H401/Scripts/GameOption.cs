@@ -15,21 +15,12 @@ public class GameOption : MonoBehaviour {
 	
 	// Update is called once per frame
 
-	private float realDeltaTime;
-	private float lastRealTime;
  
 	void Update () {
-		CalcRealDeltaTime();
+
 	}
  
-	//現実時間基準でデルタ時間を求める.
-	void CalcRealDeltaTime() {
-		if(lastRealTime == 0) {
-			lastRealTime = Time.realtimeSinceStartup;
-		}
-		realDeltaTime = Time.realtimeSinceStartup - lastRealTime;
-		lastRealTime = Time.realtimeSinceStartup;
-	}
+
 
     public void StartOption()
     {
@@ -55,7 +46,7 @@ public class GameOption : MonoBehaviour {
         panelObject.transform.parent = gameObject.transform.FindChild("PauseCanvas").transform;
 
         //ここでもう終了時処理の設定をしておく
-        panelObject.GetComponentInChildren<Button>().onClick.AddListener(EndOption);
+        panelObject.GetComponentInChildren<Button>().onClick.AddListener( EndOption);
     }
 
     public void EndOption()
@@ -64,10 +55,11 @@ public class GameOption : MonoBehaviour {
         panelObject.transform.DOScale(popScale, popTime)
             .OnComplete(() =>
             {
+                gameObject.GetComponentInChildren<Button>().interactable = true;
                 Destroy(panelObject);
-            }).timeScale = 1.0f;
+            });
         //オプションボタンをノンアクに
-        gameObject.GetComponentInChildren<Button>().interactable = true;
+        
     }
 
 }

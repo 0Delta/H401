@@ -16,6 +16,8 @@ public class LimitTime : MonoBehaviour {
     [SerializeField] private float RegainPer2Path = 0.0f;
     [SerializeField] private float RegainPer3Path = 0.0f;
  */
+    private Animator ojityanAnimator = null;
+
     private TimeLevelInfo timeLevel;
     public TimeLevelInfo TimeLevel
     {
@@ -37,6 +39,8 @@ public class LimitTime : MonoBehaviour {
         startTime = Time.time;
 
         nowTimeLevel = 0;
+
+        ojityanAnimator = GameObject.Find("ojityan").GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -90,6 +94,10 @@ public class LimitTime : MonoBehaviour {
 
     private void SetImage()
     {
-        timeImage.fillAmount = 1.0f - nowTime / maxTime;
+        float lastRate = 1.0f - nowTime / maxTime;
+
+        timeImage.fillAmount = lastRate;
+
+        ojityanAnimator.SetFloat("lastTime", lastRate);
     }
 }
