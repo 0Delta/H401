@@ -66,7 +66,6 @@ public class Node : MonoBehaviour {
         "Materials/hex3",
         "Materials/hex4",
         "Materials/hex5",
-
     };
 
     void Awake()
@@ -89,6 +88,10 @@ public class Node : MonoBehaviour {
     }
     
     void OnMouseUp() {
+        // 画面外ノードなら未処理
+        if(isOutScreen)
+            return;
+
         // アクション中なら未処理
         if(isAction)
             return;
@@ -133,6 +136,8 @@ public class Node : MonoBehaviour {
         // スライド中なら未処理
         if(nodeControllerScript.SlideDir != _eSlideDir.NONE)
             return;
+        if(slideDir != _eSlideDir.NONE)
+            return;
 
         if(nodeControllerScript.IsDrag) {
             nodeControllerScript.AfterTapNodeID = nodeID;       // 移動させられるノードのIDを登録
@@ -143,8 +148,14 @@ public class Node : MonoBehaviour {
     }
 
     void OnMouseExit() {
+        // 画面外ノードなら未処理
+        if(isOutScreen)
+            return;
+
         // スライド中なら未処理
         if(nodeControllerScript.SlideDir != _eSlideDir.NONE)
+            return;
+        if(slideDir != _eSlideDir.NONE)
             return;
 
         if(nodeControllerScript.IsDrag) {
@@ -162,6 +173,10 @@ public class Node : MonoBehaviour {
     }
 
     public void SlideNode(_eSlideDir dir, Vector2 pos) {
+        // スライド方向が指定されていなければ未処理
+        if (dir == _eSlideDir.NONE)
+            return;
+
         slideDir = dir;
 
         if(!isSlide)
@@ -324,6 +339,9 @@ public class Node : MonoBehaviour {
             //    bitLink[1] = true;
             //    bitLink[2] = true;
             //    break;
+
+            default:
+                break;
         }
         meshRenderer.material = Resources.Load<Material>(HEX_TEXTURE[(int)type]);//(Sprite)Object.Instantiate(nodeControllerScript.GetSprite(type));
 
