@@ -84,10 +84,16 @@ public class Node : MonoBehaviour {
 	    
 	}
 
-    void OnMouseDown() {
+    public void RegistNodeID(int row, int col) {
+        nodeID.x = row;
+        nodeID.y = col;
+    }
+
+    public void SetNodeController(NodeController nodeControllerScript) {
+        Node.nodeControllerScript = nodeControllerScript;
     }
     
-    void OnMouseUp() {
+    public void RotationNode() {
         // 画面外ノードなら未処理
         if(isOutScreen)
             return;
@@ -132,46 +138,6 @@ public class Node : MonoBehaviour {
         print(nodeID);
     }
 
-    void OnMouseEnter() {
-        // スライド中なら未処理
-        if(nodeControllerScript.SlideDir != _eSlideDir.NONE)
-            return;
-        if(slideDir != _eSlideDir.NONE)
-            return;
-
-        if(nodeControllerScript.IsDrag) {
-            nodeControllerScript.AfterTapNodeID = nodeID;       // 移動させられるノードのIDを登録
-            
-            // ----- 移動処理
-            nodeControllerScript.StartSlideNodes();
-        }
-    }
-
-    void OnMouseExit() {
-        // 画面外ノードなら未処理
-        if(isOutScreen)
-            return;
-
-        // スライド中なら未処理
-        if(nodeControllerScript.SlideDir != _eSlideDir.NONE)
-            return;
-        if(slideDir != _eSlideDir.NONE)
-            return;
-
-        if(nodeControllerScript.IsDrag) {
-            nodeControllerScript.BeforeTapNodeID = nodeID;       // 移動させたいノードのIDを登録
-        }
-    }
-
-    public void RegistNodeID(int row, int col) {
-        nodeID.x = row;
-        nodeID.y = col;
-    }
-
-    public void SetNodeController(NodeController nodeControllerScript) {
-        Node.nodeControllerScript = nodeControllerScript;
-    }
-
     public void SlideNode(_eSlideDir dir, Vector2 pos) {
         // スライド方向が指定されていなければ未処理
         if (dir == _eSlideDir.NONE)
@@ -182,11 +148,16 @@ public class Node : MonoBehaviour {
         if(!isSlide)
             isSlide = true;
 
+        if(!nodeControllerScript.IsNodeAction)
+            nodeControllerScript.IsNodeAction = true;
+        
         transform.DOKill();
         transform.DOMoveX(pos.x, slideTime)
             .OnComplete(() => {
                 slideDir = _eSlideDir.NONE;
                 nodeControllerScript.CheckOutScreen(nodeID);
+                if(nodeControllerScript.IsNodeAction)
+                    nodeControllerScript.IsNodeAction = false;
                 //nodeControllerScript.CheckLink();
             });
         transform.DOMoveY(pos.y, slideTime);
@@ -463,6 +434,10 @@ public class Node : MonoBehaviour {
         bottom -= nodeControllerScript.NodeSize.y * 0.5f;
 
         return bottom;
+    }
+
+    public void StopTween() {
+        transform.DOKill();
     }
 
     public void CopyParameter(Node copy) {
