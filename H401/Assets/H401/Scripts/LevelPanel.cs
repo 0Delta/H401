@@ -75,7 +75,7 @@ public class LevelPanel : MonoBehaviour {
 
         //tweenとかで出現エフェクト等
         panel.transform.localScale = new Vector3(popScale,popScale,popScale);
-        panel.transform.DOScale(1.0f, popTime).OnComplete(() => { gameController.SetActive(false); });
+        panel.transform.DOScale(1.0f, popTime).OnComplete(() => { /*gameController.SetActive(false);*/ });
         
     }
 	

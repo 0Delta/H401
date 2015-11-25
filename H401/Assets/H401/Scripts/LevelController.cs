@@ -109,7 +109,7 @@ public class LevelController : MonoBehaviour {
     //切り替え終了
     public void FieldChangeEnd()
     {
-        gameController.SetActive(true);
+        //gameController.SetActive(true);
         gameController.GetComponentInChildren<NodeController>().SetFieldLevel(nextLevel);
         lyingAngle = 0;
         levelState = _eLevelState.STAND;

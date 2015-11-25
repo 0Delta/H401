@@ -45,7 +45,7 @@ MonoBehaviour:
   widthMargin: 15
   heightMargin: 30
   treePrefab: {fileID: 154364, guid: 92f8fac9168e74d448a44751d5659f8a, type: 2}
-  levelTables: {fileID: 11426932, guid: 7682f1e4420a2574a8c6efc49799dfd2, type: 2}
+  levelTableObject: {fileID: 153602, guid: 7682f1e4420a2574a8c6efc49799dfd2, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -78,6 +78,10 @@ Prefab:
       value: 
       objectReference: {fileID: 11426932, guid: 7682f1e4420a2574a8c6efc49799dfd2,
         type: 2}
+    - target: {fileID: 0}
+      propertyPath: levelTableObject
+      value: 
+      objectReference: {fileID: 153602, guid: 7682f1e4420a2574a8c6efc49799dfd2, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 174524}
