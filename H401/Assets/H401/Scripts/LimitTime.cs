@@ -29,13 +29,16 @@ public class LimitTime : MonoBehaviour {
     private float timeLevelInterval;    //時間難易度の変更感覚 
 
     private float startTime;
-    [SerializeField]private LevelTables levelTable = null;
+    [SerializeField] private GameObject levelTableObject = null;
+    private LevelTables levelTableScript = null;
 
 	// Use this for initialization
 	void Start () {
 
-        timeLevel = levelTable.GetTimeLevel(0);
-        timeLevelInterval = levelTable.TimeLevelInterval;
+        levelTableScript = levelTableObject.GetComponent<LevelTables>();
+
+        timeLevel = levelTableScript.GetTimeLevel(0);
+        timeLevelInterval = levelTableScript.TimeLevelInterval;
         startTime = Time.time;
 
         nowTimeLevel = 0;
@@ -56,10 +59,10 @@ public class LimitTime : MonoBehaviour {
         }
 
         //時間経過による難易度変更処理
-        if(nowTimeLevel < levelTable.TimeLevelCount && Time.time - startTime > timeLevelInterval * (nowTimeLevel + 1) )
+        if(nowTimeLevel < levelTableScript.TimeLevelCount && Time.time - startTime > timeLevelInterval * (nowTimeLevel + 1) )
         {
             nowTimeLevel++;
-            timeLevel = levelTable.GetTimeLevel(nowTimeLevel);
+            timeLevel = levelTableScript.GetTimeLevel(nowTimeLevel);
             print("時間レベル変更：" + nowTimeLevel.ToString());
         }
 

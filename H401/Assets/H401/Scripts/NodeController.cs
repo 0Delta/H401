@@ -62,7 +62,8 @@ public class NodeController : MonoBehaviour {
 
     //[SerializeField] private Sprite[] cashSprites = new Sprite[6];
 
-    [SerializeField] LevelTables levelTables = null;
+    [SerializeField] private GameObject levelTableObject = null;
+    private LevelTables levelTableScript = null;
 
     //ノードの配置割合を記憶しておく
 
@@ -112,8 +113,9 @@ public class NodeController : MonoBehaviour {
         scoreScript = GameObject.Find("ScoreNum").GetComponent<Score>();
         timeScript = GameObject.Find("LimitTime").GetComponent<LimitTime>();
         feverScript = GameObject.Find("FeverGauge").GetComponent<FeverGauge>();
-
-        fieldLevel = levelTables.GetFieldLevel(0);
+        
+        levelTableScript = levelTableObject.GetComponent<LevelTables>();
+        fieldLevel = levelTableScript.GetFieldLevel(0);
 
         // ----- ゲームの画面領域を設定(コライダーから取得)
         BoxCollider2D gameAreaInfo = transform.parent.GetComponent<BoxCollider2D>();    // ゲームの画面領域を担うコライダー情報を取得
@@ -1227,9 +1229,9 @@ public class NodeController : MonoBehaviour {
 
     public void SetFieldLevel(int level)
     {
-        if (level >= 0 && level < levelTables.FieldLevelCount)
+        if (level >= 0 && level < levelTableScript.FieldLevelCount)
         {
-            fieldLevel = levelTables.GetFieldLevel(level);
+            fieldLevel = levelTableScript.GetFieldLevel(level);
             ReplaceNodeAll();
             print("レベル変更：" + level.ToString());
         }

@@ -874,7 +874,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 150756}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .300000012, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 465906}
@@ -1228,7 +1228,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -1.25}
   serializedVersion: 2
   m_Size: {x: 5.69999981, y: 7.0999999}
 --- !u!81 &8147522
@@ -1307,7 +1307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeImage: {fileID: 11454846}
   maxTime: 60
-  levelTable: {fileID: 11494530}
+  levelTableObject: {fileID: 153602, guid: 7682f1e4420a2574a8c6efc49799dfd2, type: 2}
 --- !u!114 &11412266
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1589,14 +1589,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   row: 7
-  col: 13
-  nodePrefab: {fileID: 166286, guid: 2b5c0c3b71d54834f99dd0e4dd8bcbc2, type: 2}
-  frameNodePrefab: {fileID: 0}
-  widthMargin: .150000006
-  heightMargin: .300000012
-  headerHeight: 0
+  col: 11
+  nodePrefab: {fileID: 166286, guid: d6b46186246d42d48aa54e4a2af5c60b, type: 2}
+  frameNodePrefab: {fileID: 166286, guid: 2c0ab563564bfd2419f398ee7241003e, type: 2}
+  widthMargin: 0
+  heightMargin: .349999994
+  headerHeight: 1.25
   treePrefab: {fileID: 156054, guid: bfa682b4236f0fe4fabad1774f791e29, type: 2}
-  levelTables: {fileID: 11494530}
+  levelTableObject: {fileID: 153602, guid: 7682f1e4420a2574a8c6efc49799dfd2, type: 2}
 --- !u!114 &11454846
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2389,6 +2389,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Size.y
       value: 7.0999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Offset.y
+      value: -1.25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

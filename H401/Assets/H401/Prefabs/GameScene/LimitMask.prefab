@@ -61,7 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeImage: {fileID: 11464774}
   maxTime: 60
-  levelTable: {fileID: 11426932, guid: 7682f1e4420a2574a8c6efc49799dfd2, type: 2}
+  levelTableObject: {fileID: 139172, guid: 9ee8b3a8293b37a499c3f52a2f745260, type: 2}
 --- !u!114 &11464774
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -175,6 +175,10 @@ Prefab:
       value: 
       objectReference: {fileID: 11426932, guid: 7682f1e4420a2574a8c6efc49799dfd2,
         type: 2}
+    - target: {fileID: 0}
+      propertyPath: levelTableObject
+      value: 
+      objectReference: {fileID: 139172, guid: 9ee8b3a8293b37a499c3f52a2f745260, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 161068}
