@@ -5,16 +5,19 @@ public class LevelController : MonoBehaviour {
 
     [SerializeField]private float lyingDeviceAngle;     //デバイスを横と判定する角度範囲
 
-    [SerializeField]private GameObject gameController = null; 
+    [SerializeField]private GameObject gameController = null;
 
     //ボタンのスクリプト
     //ボタン実体
     private _eLevelState levelState;
     private _eLevelState preState;
 
-    [SerializeField] private GameObject mapPrefab;
-    private GameObject mapObject;
-    private LevelMap mapScript;
+    [SerializeField] private GameObject canvasPrefab;
+
+    private GameObject canvasObject;
+
+    private GameObject panelObject;
+    private LevelPanel panelScript;
     private float lyingAngle;
     public float LyingAngle
     {
@@ -35,20 +38,33 @@ public class LevelController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+        preState = levelState;
         //姿勢が45度以上135度以下
-        if (Input.gyro.attitude.eulerAngles.y > 90 - lyingDeviceAngle && Input.gyro.attitude.eulerAngles.y < 90 + lyingDeviceAngle)
+        switch(levelState)
         {
-            //難易度選択用オブジェクトを90度回転して
-            lyingAngle = 90;
-            levelState = _eLevelState.LIE;
-        }
-        else if (Input.gyro.attitude.eulerAngles.y > -90 - lyingDeviceAngle && Input.gyro.attitude.eulerAngles.y < -90 + lyingDeviceAngle)
-        {
+            case _eLevelState.STAND:
+                if (Input.GetKeyDown(KeyCode.Q) || (Input.gyro.attitude.eulerAngles.y > 90 - lyingDeviceAngle && Input.gyro.attitude.eulerAngles.y < 90 + lyingDeviceAngle))
+                {
+                    //難易度選択用オブジェクトを90度回転して
+                    lyingAngle = 90;
+                    levelState = _eLevelState.LIE;
+                }
+                if (Input.GetKeyDown(KeyCode.W) || (Input.gyro.attitude.eulerAngles.y > -90 - lyingDeviceAngle && Input.gyro.attitude.eulerAngles.y < -90 + lyingDeviceAngle))
+                {
 
-            lyingAngle = -90;
-            levelState = _eLevelState.LIE;
+                    lyingAngle = -90;
+                    levelState = _eLevelState.LIE;
+                }
+                break;
+            case _eLevelState.LIE:
+                if (Input.GetKeyDown(KeyCode.E))// || (Input.gyro.attitude.eulerAngles.y < 90 && Input.gyro.attitude.eulerAngles.y > -90))
+                {
+                    lyingAngle = 0;
+                    levelState = _eLevelState.STAND;
+                }
+                break;
         }
+
         //else
             //levelState = _eLevelState.STAND;
 
@@ -60,28 +76,32 @@ public class LevelController : MonoBehaviour {
                     FieldChangeEnd();
                     break;
                 case _eLevelState.LIE:
+
+   
                     FieldChangeStart();
                     break;
             }
         }
 
-        preState = levelState;
+        //preState = levelState;
 	}
 
     //難易度切り替え状態へ
     public void FieldChangeStart()
     {
         //ゲームをノンアクに
-        gameController.SetActive(false);
+        //gameController.SetActive(false);
 
         //難易度選択をinstantiateする
-        mapObject = new GameObject();
-        Transform trans = transform;
+        //Transform trans = transform;
         //trans.Rotate(new Vector3(0.0f,0.0f,lyingAngle));;
-        mapObject = (GameObject)Instantiate(mapPrefab, transform.position, transform.rotation);
-        mapObject.transform.parent = this.transform;
-        mapScript = mapObject.GetComponent<LevelMap>();
-        //mapScript.SetLevelController(this);
+        canvasObject = (GameObject)Instantiate(canvasPrefab, transform.position, transform.rotation);
+        canvasObject.transform.SetParent(this.transform);
+        
+        panelScript = canvasObject.GetComponentInChildren<LevelPanel>();
+        //panelScript.SetLevelController(this);
+ //       panelObject.transform.localScale.Set(0.1f,0.1f,0.1f);
+ //       panelObject.transform.DOScale(1.0f, popTime).OnComplete(() => { gameController.SetActive(false); });
     }
 
     //切り替え終了
@@ -89,9 +109,12 @@ public class LevelController : MonoBehaviour {
     {
         gameController.SetActive(true);
         gameController.GetComponentInChildren<NodeController>().SetFieldLevel(nextLevel);
-
+        lyingAngle = 0;
+        levelState = _eLevelState.STAND;
         //オブジェクト破棄
-        Destroy(mapObject);
+        //Destroy(panelObject);
+        //小さくなって消えるように
+        panelScript.Delete();
 
     }
     public void FChangeTest(float angle)

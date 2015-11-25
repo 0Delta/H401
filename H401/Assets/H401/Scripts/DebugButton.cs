@@ -11,6 +11,8 @@ public class DebugButton : MonoBehaviour {
 	void Start () {
         if (levelController == null)
             levelController = GameObject.Find("levelController").GetComponent<LevelController>();
+
+        SetType(lr);
 	
 	}
 	
@@ -18,9 +20,10 @@ public class DebugButton : MonoBehaviour {
 	void Update () {
 	
 	}
-
+        /*
     void OnClick()
     {
+
         switch(lr)
         {
             case _eDebugState.RIGHT_LIE:
@@ -34,7 +37,7 @@ public class DebugButton : MonoBehaviour {
                 break;
         }
     }
-
+        */
     public void SetType(_eDebugState type)
     {
         lr = type;

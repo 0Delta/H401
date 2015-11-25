@@ -57,3 +57,8 @@ public enum _eDebugState
     RIGHT_LIE,
     RETURN,
 }
+public enum _eFeverState
+{
+    NORMAL,
+    FEVER,
+}

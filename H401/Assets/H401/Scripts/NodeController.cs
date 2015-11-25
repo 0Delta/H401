@@ -3,7 +3,7 @@ using System.Collections;
 using UniRx;
 
 using DG.Tweening;
-
+using System.Collections.Generic;
 /*  リストIDに関して
 　　col のIDが奇数の行は +1 とする
 
@@ -30,6 +30,7 @@ public class NodeController : MonoBehaviour {
     [SerializeField] private float widthMargin  = 0.0f;  // ノード位置の左右間隔の調整値
     [SerializeField] private float heightMargin = 0.0f;  // ノード位置の上下間隔の調整値
     [SerializeField] private float headerHeight = 0.0f;  // ヘッダーの高さ
+    [SerializeField] private GameObject treePrefab = null; 
 
     private GameObject[][]  nodePrefabs;        // ノードのプレハブリスト
     private Node[][]        nodeScripts;        // ノードのnodeスクリプトリスト
@@ -93,7 +94,7 @@ public class NodeController : MonoBehaviour {
     
     private Score scoreScript;          //スコアのスクリプト
     private LimitTime timeScript;            //制限時間のスクリプト
-    
+    private FeverGauge feverScript;
 
     void Awake() {
         nodePrefabs      = new GameObject[col][];
@@ -110,6 +111,8 @@ public class NodeController : MonoBehaviour {
 	void Start () {
         scoreScript = GameObject.Find("ScoreNum").GetComponent<Score>();
         timeScript = GameObject.Find("LimitTime").GetComponent<LimitTime>();
+        feverScript = GameObject.Find("FeverGauge").GetComponent<FeverGauge>();
+
         fieldLevel = levelTables.GetFieldLevel(0);
 
         // ----- ゲームの画面領域を設定(コライダーから取得)
@@ -282,6 +285,8 @@ public class NodeController : MonoBehaviour {
                 }
             })
             .AddTo(this.gameObject);
+
+        CheckLink();
 	}
 	
 	// Update is called once per frame
@@ -526,7 +531,6 @@ public class NodeController : MonoBehaviour {
     void AdjustNodeStop() {
         Vector2 pos         = Vector2.zero;
         Vector2 standardPos = Vector2.zero;
-        Vector2 slideDist   = tapPos - startTapPos;       // スライド量
         Vec2Int nextNodeID  = Vec2Int.zero;
 
         // ノードIDを調整
@@ -964,7 +968,8 @@ public class NodeController : MonoBehaviour {
         //すべてのノードの根本を見る
         for (int i = 1; i < AdjustRow(1) - 1; i++)
         {
-            if((nodeNum = nodeScripts[1][i].CheckBit(_eLinkDir.NONE,0)) >= 3)   //親ノードの方向は↓向きのどちらかにしておく
+            nodeNum = nodeScripts[1][i].CheckBit(_eLinkDir.NONE,0);
+            if(nodeNum >= 3)   //親ノードの方向は↓向きのどちらかにしておく
             {
                 bComplete = true;                
             }
@@ -983,7 +988,7 @@ public class NodeController : MonoBehaviour {
             ReplaceNodeAll();
             print("枝が完成しました！");
         }
-        for (int i = 1; i < col - 1; i++  )
+        for (int i = 2; i < col - 3; i++  )
         {
             for(int j = 1 ; j < AdjustRow(i) - 1; j++)
             {
@@ -1000,7 +1005,6 @@ public class NodeController : MonoBehaviour {
         for(int i = 0; i < col; ++i) {
             foreach (var nodes in nodeScripts[i]) {
                 //繋がりがない枝は色をここでもどす
-                //nodes.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
                 nodes.CheckFlag = false;
             }
         }
@@ -1174,13 +1178,31 @@ public class NodeController : MonoBehaviour {
         int nCap = 0;
         int nPath2 = 0;
         int nPath3 = 0;
-        for(int i = 0; i < col; ++i) {
-            foreach(var node in nodeScripts[i])
+
+        //完成時演出のためにマテリアルをコピーしてから、
+        List<GameObject> treeNodes = new List<GameObject>();
+        for (int i = 0; i < col; i++)
+        {
+            for (int j = 0; j < AdjustRow(i); j++)
             {
-                if (node.CompleteFlag)
+                if (nodeScripts[i][j].CompleteFlag)
+                    treeNodes.Add(nodePrefabs[i][j]);
+            }
+
+        }
+        GameObject newTree = (GameObject)Instantiate(treePrefab, transform.position, transform.rotation);
+        newTree.GetComponent<treeController>().SetTree(treeNodes);
+
+
+        //ノードを再配置
+        for (int i = 0; i < col ; i++)
+        {
+            for (int j = 0; j < AdjustRow(i); j++ )
+
+                if (nodeScripts[i][j].CompleteFlag)
                 {
                     nNode++;
-                    switch (node.GetLinkNum())
+                    switch (nodeScripts[i][j].GetLinkNum())
                     {
                         case 1:
                             nCap++;
@@ -1193,18 +1215,28 @@ public class NodeController : MonoBehaviour {
                             break;
                     }
 
-                
-                    ReplaceNode(node);
+                    ReplaceNode(nodeScripts[i][j]);
                 }
-            }
         }
         scoreScript.PlusScore(nNode, nCap, nPath2, nPath3);
         timeScript.PlusTime(nNode, nCap, nPath2, nPath3);
+        feverScript.Gain(nNode,nCap,nPath2,nPath3);
+
 
     }
 
     public void SetFieldLevel(int level)
     {
-        fieldLevel = levelTables.GetFieldLevel(level);
+        if (level >= 0 && level < levelTables.FieldLevelCount)
+        {
+            fieldLevel = levelTables.GetFieldLevel(level);
+            ReplaceNodeAll();
+            print("レベル変更：" + level.ToString());
+        }
+        else
+        {
+            print("レベル変更なし");
+
+        }
     }
 }

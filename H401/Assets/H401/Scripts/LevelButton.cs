@@ -3,8 +3,8 @@ using System.Collections;
 using UnityEngine.UI;
 public class LevelButton : MonoBehaviour {
 
-    static private LevelMap levelMap;
-    static public void SetMap(LevelMap map) { levelMap = map; }
+    static private LevelPanel levelPanel;
+    static public void SetPanel(LevelPanel panel) { levelPanel = panel; }
 
     private int levelNumber;
     public void RegistLevelNumber(int level){levelNumber = level;} 
@@ -23,7 +23,7 @@ public class LevelButton : MonoBehaviour {
 
     void SetLevel()
     {
-        levelMap.NextLevel = levelNumber;
+        levelPanel.NextLevel = levelNumber;
         print("レベル選択：" + levelNumber.ToString());
         //色変えとかここに
     }
