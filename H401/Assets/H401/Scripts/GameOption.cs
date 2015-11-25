@@ -43,7 +43,7 @@ public class GameOption : MonoBehaviour {
         panelObject.transform.localScale = new Vector3(popScale, popScale, popScale);
 
         panelObject.transform.DOScale(1.0f, popTime).SetUpdate(true);
-        panelObject.transform.parent = gameObject.transform.FindChild("PauseCanvas").transform;
+        panelObject.transform.SetParent(gameObject.transform.FindChild("PauseCanvas").transform);
 
         //ここでもう終了時処理の設定をしておく
         panelObject.GetComponentInChildren<Button>().onClick.AddListener( EndOption);
