@@ -12,7 +12,7 @@ public class LevelTables : MonoBehaviour {
     [SerializeField] private FieldLevelInfo[] fieldLevelTable = null;// = new FieldLevelInfo[5];
 
 
-    [SerializeField] private float maxLimitTime = 0; //制限時間の最大値
+//    [SerializeField] private float maxLimitTime = 0; //制限時間の最大値
     [SerializeField] private float timeLevelInterval = 0;    //時間難易度の変更感覚
     public float TimeLevelInterval
     {
