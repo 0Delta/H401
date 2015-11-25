@@ -15,7 +15,6 @@ public class LevelController : MonoBehaviour {
     [SerializeField] private GameObject canvasPrefab;
 
     private GameObject canvasObject;
-    private LevelCanvas canvasScript;
 
     private GameObject panelObject;
     private LevelPanel panelScript;
@@ -94,12 +93,11 @@ public class LevelController : MonoBehaviour {
         //gameController.SetActive(false);
 
         //難易度選択をinstantiateする
-        Transform trans = transform;
+        //Transform trans = transform;
         //trans.Rotate(new Vector3(0.0f,0.0f,lyingAngle));;
         canvasObject = (GameObject)Instantiate(canvasPrefab, transform.position, transform.rotation);
         canvasObject.transform.SetParent(this.transform);
-
-        canvasScript = canvasObject.GetComponent<LevelCanvas>();
+        
         panelScript = canvasObject.GetComponentInChildren<LevelPanel>();
         //panelScript.SetLevelController(this);
  //       panelObject.transform.localScale.Set(0.1f,0.1f,0.1f);

@@ -35,46 +35,93 @@ public struct Vec2Int
 // 四角形構造体(原点を中心とする)
 public struct Square
 {
-    public float x;
-    public float y;
-    public float width;
-    public float height;
-    public float left;
-    public float right;
-    public float top;
-    public float bottom;
+    private float _x;
+    private float _y;
+    private float _width;
+    private float _height;
+    private float _left;
+    private float _right;
+    private float _top;
+    private float _bottom;
 
-    public Square(float _x, float _y, float _width, float _height) {
-        x       = _x;
-        y       = _y;
-        width   = _width;
-        height  = _height;
+    public Square(float x, float y, float width, float height) {
+        _x       = x;
+        _y       = y;
+        _width   = width;
+        _height  = height;
+        
+        _left    = 0.0f;
+        _right   = 0.0f;
+        _top     = 0.0f;
+        _bottom  = 0.0f;
 
-        left    = x - width * 0.5f;
-        right   = x + width * 0.5f;
-        top     = y + height * 0.5f;
-        bottom  = y - height * 0.5f;
+        CalcArea();
     }
 
     public Square(Vector2 pos, Vector2 size) {
-        x       = pos.x;
-        y       = pos.y;
-        width   = size.x;
-        height  = size.y;
+        _x       = pos.x;
+        _y       = pos.y;
+        _width   = size.x;
+        _height  = size.y;
 
-        left    = x - width * 0.5f;
-        right   = x + width * 0.5f;
-        top     = y + height * 0.5f;
-        bottom  = y - height * 0.5f;
+        _left    = 0.0f;
+        _right   = 0.0f;
+        _top     = 0.0f;
+        _bottom  = 0.0f;
+
+        CalcArea();
+    }
+
+    public float x {
+        set { _x = value; CalcArea();}
+        get { return _x;}
+    }
+
+    public float y {
+        set { _y = value; CalcArea();}
+        get { return _y;}
+    }
+
+    public float width {
+        set { _width = value; CalcArea();}
+        get { return _width;}
+    }
+
+    public float height {
+        set { _height = value; CalcArea();}
+        get { return _height;}
+    }
+
+    public float left {
+        get { return _left; }
+    }
+
+    public float right {
+        get { return _right; }
+    }
+
+    public float top {
+        get { return _top; }
+    }
+
+    public float bottom {
+        get { return _bottom; }
     }
 
     public override string ToString()
     {
-        return "(x:" + x.ToString() + ", y:" + y.ToString() + ", width:" + width.ToString() + ", height:" + height.ToString() + ")";
+        return "(x:" + _x.ToString() + ", y:" + _y.ToString() + ", width:" + _width.ToString() + ", height:" + _height.ToString() + ")";
     }
 
     public static Square zero {
         get { return new Square(0.0f,0.0f,0.0f,0.0f); }
+    }
+
+    private void CalcArea() {
+        _left    = _x - _width * 0.5f;
+        _right   = _x + _width * 0.5f;
+        _top     = _y + _height * 0.5f;
+        _bottom  = _y - _height * 0.5f;
     }
 };
 

@@ -29,7 +29,9 @@ public class LimitTime : MonoBehaviour {
     private float timeLevelInterval;    //時間難易度の変更感覚 
 
     private float startTime;
-    [SerializeField]private GameObject levelTableObject = null;
+
+    [SerializeField] private GameObject levelTableObject = null;
+
     private LevelTables levelTableScript = null;
 
 	// Use this for initialization

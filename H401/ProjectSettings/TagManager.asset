@@ -14,10 +14,10 @@ TagManager:
   - UI
   - 
   - 
-  - GameObject
-  - GameInfoUI
-  - GameInfoObect
-  - UserUI
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 
@@ -41,16 +41,4 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: GameObject
-    uniqueID: 1768857469
-    locked: 0
-  - name: GameInfoUI
-    uniqueID: 952768463
-    locked: 0
-  - name: GameInfoObject
-    uniqueID: 4017057875
-    locked: 0
-  - name: UI
-    uniqueID: 206298093
     locked: 0

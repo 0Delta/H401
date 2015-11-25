@@ -4,12 +4,6 @@ using DG.Tweening;
 
 public class LevelPanel : MonoBehaviour {
 
-    private LevelTables levelTables;
-    public LevelTables LevelTables
-    {
-        set { levelTables = value; }
-    }
-
     [SerializeField]private float popTime = 0.0f;
 
     [SerializeField]private float popScale = 0.0f;
@@ -29,8 +23,6 @@ public class LevelPanel : MonoBehaviour {
 
     [SerializeField]private GameObject panel;           //ボタン表示用パネル
     [SerializeField] GameObject buttonPrefab = null;    //ボタンのプレハブ
-
-    [SerializeField]private GameObject debugButton = null;  //デバッグの用ゲームに戻るボタン
 
     void Awake()
     {

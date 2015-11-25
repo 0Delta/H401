@@ -40,10 +40,11 @@ public class GameOption : MonoBehaviour {
         //とりあえずフィールド変更と同じにしておく
 
         //ただし、タイムスケールに左右されない
+        panelObject.transform.SetParent(gameObject.transform.FindChild("PauseCanvas").transform);
         panelObject.transform.localScale = new Vector3(popScale, popScale, popScale);
 
+ 
         panelObject.transform.DOScale(1.0f, popTime).SetUpdate(true);
-        panelObject.transform.SetParent(gameObject.transform.FindChild("PauseCanvas").transform);
 
         //ここでもう終了時処理の設定をしておく
         panelObject.GetComponentInChildren<Button>().onClick.AddListener( EndOption);

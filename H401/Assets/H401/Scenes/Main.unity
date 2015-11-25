@@ -85,43 +85,77 @@ NavMeshSettings:
     cellSize: .166666672
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &523504593
-GameObject:
+--- !u!1001 &961355819
+Prefab:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 523504594}
-  - 114: {fileID: 523504595}
-  m_Layer: 0
-  m_Name: AppliController
-  m_TagString: GameController
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &523504594
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 523504593}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
---- !u!114 &523504595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 523504593}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5af7abafd6f0ccc4e86725b79b3fba4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gamePrefab: {fileID: 183888, guid: 41055a24218e30c44ab4fcbba42e0aae, type: 2}
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: scenePrefabs.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 475860, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 475860, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 475860, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 475860, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 475860, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 475860, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 475860, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 475860, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: scenePrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 187854, guid: 6cf35cb41ab682f4183854b1b5518f43, type: 2}
+    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: scenePrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 183888, guid: 9ee8b3a8293b37a499c3f52a2f745260, type: 2}
+    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: scenePrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 173940, guid: 2da4db010ad14e1408c5899a7f5a18c5, type: 2}
+    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: scenePrefabs.Array.data[3]
+      value: 
+      objectReference: {fileID: 176670, guid: 822d012ed3fdab440a9b19b1fc809509, type: 2}
+    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: scenePrefabs.Array.data[4]
+      value: 
+      objectReference: {fileID: 183740, guid: b8b85d7b24dd47f43893c08abb873c94, type: 2}
+    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: scenePrefabs.Array.data[5]
+      value: 
+      objectReference: {fileID: 116258, guid: 96b8bba368661e646a2c0ea274081da7, type: 2}
+    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: startSceneID
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+  m_IsPrefabParent: 0

@@ -21,7 +21,6 @@ public class Node : MonoBehaviour {
     }
     private bool        isAction    = false;            // アクションフラグ
     private bool        isSlide     = false;            // スライドフラグ
-    private _eSlideDir  slideDir    = _eSlideDir.NONE;  // 現在のスライド方向
     private bool        isOutScreen = false;            // 画面外フラグ
 
     public BitArray bitLink = new BitArray(6);  //道の繋がりのビット配列　trueが道
@@ -88,10 +87,20 @@ public class Node : MonoBehaviour {
 	    
 	}
 
-    void OnMouseDown() {
+    public void RegistNodeID(int row, int col) {
+        nodeID.x = row;
+        nodeID.y = col;
+    }
+
+    public void SetNodeController(NodeController nodeControllerScript) {
+        Node.nodeControllerScript = nodeControllerScript;
     }
     
-    void OnMouseUp() {
+    public void RotationNode() {
+        // 画面外ノードなら未処理
+        if(isOutScreen)
+            return;
+
         // アクション中なら未処理
         if(isAction)
             return;
@@ -132,50 +141,24 @@ public class Node : MonoBehaviour {
         print(nodeID);
     }
 
-    void OnMouseEnter() {
-        // スライド中なら未処理
-        if(nodeControllerScript.SlideDir != _eSlideDir.NONE)
-            return;
-
-        if(nodeControllerScript.IsDrag) {
-            nodeControllerScript.AfterTapNodeID = nodeID;       // 移動させられるノードのIDを登録
-            
-            // ----- 移動処理
-            nodeControllerScript.StartSlideNodes();
-        }
-    }
-
-    void OnMouseExit() {
-        // スライド中なら未処理
-        if(nodeControllerScript.SlideDir != _eSlideDir.NONE)
-            return;
-
-        if(nodeControllerScript.IsDrag) {
-            nodeControllerScript.BeforeTapNodeID = nodeID;       // 移動させたいノードのIDを登録
-        }
-    }
-
-    public void RegistNodeID(int row, int col) {
-        nodeID.x = row;
-        nodeID.y = col;
-    }
-
-    public void SetNodeController(NodeController nodeControllerScript) {
-        Node.nodeControllerScript = nodeControllerScript;
-    }
-
     public void SlideNode(_eSlideDir dir, Vector2 pos) {
-        slideDir = dir;
-
+        // スライド方向が指定されていなければ未処理
+        if (dir == _eSlideDir.NONE)
+            return;
+        
         if(!isSlide)
             isSlide = true;
 
+        if(!nodeControllerScript.IsNodeAction)
+            nodeControllerScript.IsNodeAction = true;
+        
         transform.DOKill();
         transform.DOMoveX(pos.x, slideTime)
             .OnComplete(() => {
-                slideDir = _eSlideDir.NONE;
                 nodeControllerScript.CheckOutScreen(nodeID);
                 nodeControllerScript.CheckLink();
+                if(nodeControllerScript.IsNodeAction)
+                    nodeControllerScript.IsNodeAction = false;
             });
         transform.DOMoveY(pos.y, slideTime);
     }
@@ -323,6 +306,9 @@ public class Node : MonoBehaviour {
             //    bitLink[1] = true;
             //    bitLink[2] = true;
             //    break;
+
+            default:
+                break;
         }
         meshRenderer.material = Resources.Load<Material>(HEX_TEXTURE[(int)type]);//(Sprite)Object.Instantiate(nodeControllerScript.GetSprite(type));
 
@@ -444,6 +430,10 @@ public class Node : MonoBehaviour {
         bottom -= nodeControllerScript.NodeSize.y * 0.5f;
 
         return bottom;
+    }
+
+    public void StopTween() {
+        transform.DOKill();
     }
 
     public void CopyParameter(Node copy) {
