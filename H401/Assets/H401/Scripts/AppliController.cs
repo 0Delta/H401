@@ -24,6 +24,9 @@ public class AppliController : MonoBehaviour {
 //===============================================================
 // メンバ変数
 //===============================================================
+// ----- public:
+    public _eSceneID startSceneID;      // ゲーム開始時のシーンID
+
 // ----- private:
 	[SerializeField] private GameObject[] scenePrefabs;		// シーン Prefab リスト
 
@@ -45,7 +48,7 @@ public class AppliController : MonoBehaviour {
 	//---------------------------------------------------------------
 	void Start() {
 		// 次のシーンへ
-		ChangeScene(_eSceneID.TITLE);	// タイトルへ
+		ChangeScene(startSceneID);
 	}
 	
 	//---------------------------------------------------------------

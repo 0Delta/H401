@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:H401/Assets/Plugins/DOTween/Editor/DOTweenEditor.dll.mdb.meta
 guid: 11c0babdb513037478ecf5b9abac55ed
 timeCreated: 1448431432
+=======
+guid: 0b069715051f25e438f5f6cb7228967d
+timeCreated: 1448437742
+>>>>>>> goto/master:H401/Assets/Plugins/DOTween/Editor/DOTweenEditor.dll.mdb.meta
 licenseType: Free
 DefaultImporter:
   userData: 

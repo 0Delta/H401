@@ -10,7 +10,6 @@ public class LevelTables : MonoBehaviour {
         get {return fieldLevelCount;}
     }
     [SerializeField] private FieldLevelInfo[] fieldLevelTable = null;// = new FieldLevelInfo[5];
-    
     [SerializeField] private float timeLevelInterval = 0;    //時間難易度の変更感覚
     public float TimeLevelInterval
     {

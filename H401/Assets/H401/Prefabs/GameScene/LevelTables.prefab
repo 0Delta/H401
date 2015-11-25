@@ -55,7 +55,6 @@ MonoBehaviour:
   - Ratio_Cap: 1
     Ratio_Path2: 2
     Ratio_Path3: 3
-  maxLimitTime: 60
   timeLevelInterval: 60
   timeLevelTable:
   - MaxRegainRatio: .800000012

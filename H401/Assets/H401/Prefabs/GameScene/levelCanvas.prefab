@@ -216,7 +216,6 @@ MonoBehaviour:
   popScale: .0500000007
   panel: {fileID: 117072}
   buttonPrefab: {fileID: 137608, guid: 8f460de34ccd4d44f96a7cf43dc75e56, type: 2}
-  debugButton: {fileID: 159552}
 --- !u!114 &11476736
 MonoBehaviour:
   m_ObjectHideFlags: 1

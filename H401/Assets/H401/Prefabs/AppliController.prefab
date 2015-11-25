@@ -39,9 +39,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5af7abafd6f0ccc4e86725b79b3fba4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startSceneID: 1
   scenePrefabs:
   - {fileID: 187854, guid: 6cf35cb41ab682f4183854b1b5518f43, type: 2}
-  - {fileID: 183888, guid: 41055a24218e30c44ab4fcbba42e0aae, type: 2}
+  - {fileID: 183888, guid: 9ee8b3a8293b37a499c3f52a2f745260, type: 2}
   - {fileID: 173940, guid: 2da4db010ad14e1408c5899a7f5a18c5, type: 2}
   - {fileID: 176670, guid: 822d012ed3fdab440a9b19b1fc809509, type: 2}
   - {fileID: 183740, guid: b8b85d7b24dd47f43893c08abb873c94, type: 2}
