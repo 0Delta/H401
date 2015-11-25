@@ -1,18 +1,61 @@
-﻿using UnityEngine;
+﻿//===============================================================
+// AppliController
+// Author : Kei Hashimoto
+//===============================================================
+using UnityEngine;
 using System.Collections;
 
 public class AppliController : MonoBehaviour {
+//===============================================================
+// メンバ定数
+//===============================================================
+// ----- public:
+	public enum _eSceneID : int {
+		TITLE,              // タイトル
+		GAME,               // ゲーム本編
+		RESULT,             // リザルト
+		OFFLINE_RANKING,	// オフラインランキング
+		ONLINE_RANKING,		// オンラインランキング
+        OPTION,             // オプション
 
-    [SerializeField]GameObject gamePrefab = null;
-    private GameObject currentObject = null;
+		MAX_NUM
+	}
 
-	// Use this for initialization
-	void Start () {
-        currentObject = (GameObject)Instantiate(gamePrefab,transform.position,transform.rotation);
-    }
+//===============================================================
+// メンバ変数
+//===============================================================
+// ----- private:
+	[SerializeField] private GameObject[] scenePrefabs;		// シーン Prefab リスト
+
+    private GameObject  currentScenePrefab;       // 現在のシーンの Prefab
+
+//===============================================================
+// メンバ関数
+//===============================================================
+// ----- private:
+	//---------------------------------------------------------------
+	// ゼロクリア
+	//---------------------------------------------------------------
+	void Awake() {
+        currentScenePrefab = new GameObject();
+	}
+    
+	//---------------------------------------------------------------
+	// 初期化
+	//---------------------------------------------------------------
+	void Start() {
+		// 次のシーンへ
+		ChangeScene(_eSceneID.TITLE);	// タイトルへ
+	}
 	
-	// Update is called once per frame
-	void Update () {
-	
+	//---------------------------------------------------------------
+	// シーン切り替え
+	//---------------------------------------------------------------
+	public void ChangeScene(_eSceneID id) {
+        // 現在のシーンを削除
+        Destroy(currentScenePrefab);
+
+        // 新しいシーンを生成
+        currentScenePrefab = (GameObject)Instantiate(scenePrefabs[(int)id], transform.position, transform.rotation);
 	}
 }

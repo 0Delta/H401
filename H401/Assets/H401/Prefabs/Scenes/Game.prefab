@@ -401,7 +401,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lyingDeviceAngle: 30
   gameController: {fileID: 173536}
-  mapPrefab: {fileID: 121142, guid: 1461311ab92bbbe469e81c69edc8bf51, type: 2}
+  canvasPrefab: {fileID: 0}
 --- !u!114 &11441276
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -450,6 +450,7 @@ MonoBehaviour:
   widthMargin: 0
   heightMargin: .349999994
   headerHeight: 1.25
+  treePrefab: {fileID: 0}
   levelTables: {fileID: 0}
 --- !u!114 &11459644
 MonoBehaviour:
