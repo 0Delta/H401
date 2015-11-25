@@ -21,12 +21,6 @@ public struct Vec2Int
     public static Vec2Int operator / (Vec2Int a, Vec2Int b) {
         return new Vec2Int(a.x / b.x, a.y / b.y);
     }
-    public static bool operator == (Vec2Int a, Vec2Int b) {
-        return a.x == b.x && a.y == b.y ? true : false;
-    }
-    public static bool operator != (Vec2Int a, Vec2Int b) {
-        return a.x != b.x || a.y != b.y ? true : false;
-    }
 
     public override string ToString()
     {

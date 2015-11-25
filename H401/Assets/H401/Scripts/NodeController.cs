@@ -151,7 +151,7 @@ public class NodeController : MonoBehaviour {
                 // 生成
         	    nodePrefabs[i][j] = (GameObject)Instantiate(nodePrefab, pos, transform.rotation);
                 nodeScripts[i][j] = nodePrefabs[i][j].GetComponent<Node>();
-                nodePrefabs[i][j].transform.parent = transform;
+                nodePrefabs[i][j].transform.SetParent(transform);
                 nodePlacePosList[i][j] = nodePrefabs[i][j].transform.position;
 
                 // ノードの位置(リストID)を登録

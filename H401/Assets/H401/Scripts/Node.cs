@@ -17,7 +17,6 @@ public class Node : MonoBehaviour {
     private Vec2Int     nodeID      = Vec2Int.zero;     // パネルリストのID
     private bool        isAction    = false;            // アクションフラグ
     private bool        isSlide     = false;            // スライドフラグ
-    private _eSlideDir  slideDir    = _eSlideDir.NONE;  // 現在のスライド方向
     private bool        isOutScreen = false;            // 画面外フラグ
 
     public BitArray bitLink = new BitArray(6);  //道の繋がりのビット配列　trueが道
@@ -142,9 +141,7 @@ public class Node : MonoBehaviour {
         // スライド方向が指定されていなければ未処理
         if (dir == _eSlideDir.NONE)
             return;
-
-        slideDir = dir;
-
+        
         if(!isSlide)
             isSlide = true;
 
@@ -154,7 +151,6 @@ public class Node : MonoBehaviour {
         transform.DOKill();
         transform.DOMoveX(pos.x, slideTime)
             .OnComplete(() => {
-                slideDir = _eSlideDir.NONE;
                 nodeControllerScript.CheckOutScreen(nodeID);
                 if(nodeControllerScript.IsNodeAction)
                     nodeControllerScript.IsNodeAction = false;
