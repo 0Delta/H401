@@ -96,9 +96,9 @@ public class NodeController : MonoBehaviour {
     
 
     void Awake() {
-        nodePrefabs         = new GameObject[col][];
-        nodeScripts         = new Node[col][];
-        nodePlacePosList    = new Vector3[col][];
+        nodePrefabs      = new GameObject[col][];
+        nodeScripts      = new Node[col][];
+        nodePlacePosList = new Vector3[col][];
         for(int i = 0; i < col; ++i) {
             nodePrefabs[i]      = i % 2 == 0 ? new GameObject[row] : new GameObject[row + 1];
             nodeScripts[i]      = i % 2 == 0 ? new Node[row] : new Node[row + 1];
@@ -252,66 +252,10 @@ public class NodeController : MonoBehaviour {
                 Vector3 worldTapPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 startTapPos = new Vector2(worldTapPos.x, worldTapPos.y);
                 
-                // タップしているノードのIDを検索(Y方向)
-                for(int i = 1; i < col; ++i) {
-                    if(worldTapPos.y < nodePlacePosList[i][0].y) {
-                        // 上のノードと下のノードで、距離が近い方を選択ノードとして設定する
-                        if(nodePlacePosList[i][0].y - worldTapPos.y < worldTapPos.y - nodePlacePosList[i - 1][0].y) {
-                            // フレームをタップしていたら -1 を設定
-                            if(i >= col - 1) {
-                                tapNodeID.x = -1;
-                                tapNodeID.y = -1;
-                                break;
-                            }
+                // タップしているノードのIDを検索
+                tapNodeID = SearchTapNode(worldTapPos);
 
-                            // 上のノードを設定
-                            tapNodeID.y = i;
-                        } else {
-                            // フレームをタップしていたら -1 を設定
-                            if(i - 1 <= 0) {
-                                tapNodeID.x = -1;
-                                tapNodeID.y = -1;
-                                break;
-                            }
-
-                            // 下のノードを設定
-                            tapNodeID.y = i - 1;
-                        }
-
-                        break;
-                    }
-                }
-                if(tapNodeID.y > 0) {
-                    // タップしているノードのIDを検索(X方向)
-                    for(int i = 1; i < AdjustRow(tapNodeID.y); ++i) {
-                        if(worldTapPos.x < nodePlacePosList[tapNodeID.y][i].x) {
-                            // 右のノードと左のノードで、距離が近い方を選択ノードとして設定する
-                            if(nodePlacePosList[tapNodeID.y][i].x - worldTapPos.x < worldTapPos.x - nodePlacePosList[tapNodeID.y][i - 1].x) {
-                                // フレームをタップしていたら -1 を設定
-                                if(i >= AdjustRow(tapNodeID.y) - 1) {
-                                    tapNodeID.x = -1;
-                                    tapNodeID.y = -1;
-                                    break;
-                                }
-
-                                // 右のノードを設定
-                                tapNodeID.x = i;
-                            } else {
-                                // フレームをタップしていたら -1 を設定
-                                if(i - 1 <= 0) {
-                                    tapNodeID.x = -1;
-                                    tapNodeID.y = -1;
-                                    break;
-                                }
-
-                                // 左のノードを設定
-                                tapNodeID.x = i - 1;
-                            }
-
-                            break;
-                        }
-                    }
-                }
+                print(tapNodeID);
             })
             .AddTo(this.gameObject);
         Observable
@@ -585,6 +529,9 @@ public class NodeController : MonoBehaviour {
         Vector2 slideDist   = tapPos - startTapPos;       // スライド量
         Vec2Int nextNodeID  = Vec2Int.zero;
 
+        // ノードIDを調整
+        tapNodeID = SearchTapNode(nodePrefabs[tapNodeID.y][tapNodeID.x].transform.position);
+
         switch (slideDir) {
             case _eSlideDir.LEFT:
             case _eSlideDir.RIGHT:
@@ -836,6 +783,74 @@ public class NodeController : MonoBehaviour {
         
         // 選択中のノードIDを更新
         tapNodeID = GetDirNode(tapNodeID, _eLinkDir.LD);
+    }
+
+    // タップしているノードのIDを、座標を基準に検索する
+    Vec2Int SearchTapNode(Vector3 pos) {
+        Vec2Int id = new Vec2Int(-1, -1);
+
+        // タップしているノードのIDを検索(Y方向)
+        for(int i = 1; i < col; ++i) {
+            if(pos.y < nodePlacePosList[i][0].y) {
+                // 上のノードと下のノードで、距離が近い方を選択ノードとして設定する
+                if(nodePlacePosList[i][0].y - pos.y < pos.y - nodePlacePosList[i - 1][0].y) {
+                    // フレームをタップしていたら -1 を設定
+                    if(i >= col - 1) {
+                        id.x = -1;
+                        id.y = -1;
+                        break;
+                    }
+
+                    // 上のノードを設定
+                    id.y = i;
+                } else {
+                    // フレームをタップしていたら -1 を設定
+                    if(i - 1 <= 0) {
+                        id.x = -1;
+                        id.y = -1;
+                        break;
+                    }
+
+                    // 下のノードを設定
+                    id.y = i - 1;
+                }
+
+                break;
+            }
+        }
+        if(id.y > 0) {
+            // タップしているノードのIDを検索(X方向)
+            for(int i = 1; i < AdjustRow(id.y); ++i) {
+                if(pos.x < nodePlacePosList[id.y][i].x) {
+                    // 右のノードと左のノードで、距離が近い方を選択ノードとして設定する
+                    if(nodePlacePosList[id.y][i].x - pos.x < pos.x - nodePlacePosList[id.y][i - 1].x) {
+                        // フレームをタップしていたら -1 を設定
+                        if(i >= AdjustRow(id.y) - 1) {
+                            id.x = -1;
+                            id.y = -1;
+                            break;
+                        }
+
+                        // 右のノードを設定
+                        id.x = i;
+                    } else {
+                        // フレームをタップしていたら -1 を設定
+                        if(i - 1 <= 0) {
+                            id.x = -1;
+                            id.y = -1;
+                            break;
+                        }
+
+                        // 左のノードを設定
+                        id.x = i - 1;
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        return id;
     }
 
     // ゲーム画面外にはみ出ているかチェックする
