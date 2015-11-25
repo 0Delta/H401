@@ -70,9 +70,8 @@ public class Node : MonoBehaviour {
         "Materials/hex3",
         "Materials/hex4",
         "Materials/hex5",
-
     };
-
+                                                   
     void Awake()
     {
         meshRenderer = GetComponent<MeshRenderer>();

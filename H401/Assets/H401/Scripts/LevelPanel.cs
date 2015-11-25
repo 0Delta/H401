@@ -2,7 +2,7 @@
 using System.Collections;
 using DG.Tweening;
 
-public class LevelMap : MonoBehaviour {
+public class LevelPanel : MonoBehaviour {
 
     private LevelTables levelTables;
     public LevelTables LevelTables
@@ -62,14 +62,14 @@ public class LevelMap : MonoBehaviour {
             pos.x += -100.0f + 50.0f * i;
 
             buttonObjects[i] = (GameObject)Instantiate(buttonPrefab, pos, transform.rotation);
-            buttonObjects[i].transform.parent = panel.transform;
+            buttonObjects[i].transform.SetParent(panel.transform);
             buttonScripts[i] = buttonObjects[i].GetComponent<LevelButton>();
 
             //その他の設定
             buttonScripts[i].RegistLevelNumber(i);
         }
 
-        LevelButton.SetMap(this);
+        LevelButton.SetPanel(this);
 
         panel.transform.Rotate(new Vector3(0.0f, 0.0f, rot));
 
@@ -92,6 +92,6 @@ public class LevelMap : MonoBehaviour {
 
     public void Delete()
     {
-        transform.DOScale(popScale, popTime).OnComplete(() => { Destroy(this.gameObject); });
+        transform.DOScale(popScale, popTime).OnComplete(() => { Destroy(this.transform.parent.gameObject); });
     }
 }

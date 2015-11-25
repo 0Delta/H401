@@ -12,9 +12,13 @@ public class LevelController : MonoBehaviour {
     private _eLevelState levelState;
     private _eLevelState preState;
 
-    [SerializeField] private GameObject mapPrefab;
-    private GameObject mapObject;
-    private LevelMap mapScript;
+    [SerializeField] private GameObject canvasPrefab;
+
+    private GameObject canvasObject;
+    private LevelCanvas canvasScript;
+
+    private GameObject panelObject;
+    private LevelPanel panelScript;
     private float lyingAngle;
     public float LyingAngle
     {
@@ -92,12 +96,14 @@ public class LevelController : MonoBehaviour {
         //難易度選択をinstantiateする
         Transform trans = transform;
         //trans.Rotate(new Vector3(0.0f,0.0f,lyingAngle));;
-        mapObject = (GameObject)Instantiate(mapPrefab, transform.position, transform.rotation);
-        mapObject.transform.parent = this.transform;
-        mapScript = mapObject.GetComponentInChildren<LevelMap>();
-        //mapScript.SetLevelController(this);
- //       mapObject.transform.localScale.Set(0.1f,0.1f,0.1f);
- //       mapObject.transform.DOScale(1.0f, popTime).OnComplete(() => { gameController.SetActive(false); });
+        canvasObject = (GameObject)Instantiate(canvasPrefab, transform.position, transform.rotation);
+        canvasObject.transform.SetParent(this.transform);
+
+        canvasScript = canvasObject.GetComponent<LevelCanvas>();
+        panelScript = canvasObject.GetComponentInChildren<LevelPanel>();
+        //panelScript.SetLevelController(this);
+ //       panelObject.transform.localScale.Set(0.1f,0.1f,0.1f);
+ //       panelObject.transform.DOScale(1.0f, popTime).OnComplete(() => { gameController.SetActive(false); });
     }
 
     //切り替え終了
@@ -108,9 +114,9 @@ public class LevelController : MonoBehaviour {
         lyingAngle = 0;
         levelState = _eLevelState.STAND;
         //オブジェクト破棄
-        //Destroy(mapObject);
+        //Destroy(panelObject);
         //小さくなって消えるように
-        mapScript.Delete();
+        panelScript.Delete();
 
     }
     public void FChangeTest(float angle)
