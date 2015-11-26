@@ -995,8 +995,9 @@ public class NodeController : MonoBehaviour {
         {
             for(int j = 1 ; j < AdjustRow(i) - 1; j++)
             {
-                if(!nodeScripts[i][j].ChainFlag)
-                    nodeScripts[i][j].MeshRenderer.material.color = new Color(1.0f, 1.0f, 1.0f);
+                if (!nodeScripts[i][j].ChainFlag)
+                    nodeScripts[i][j].ChangeEmissionColor(0);
+                    //nodeScripts[i][j].MeshRenderer.material.color = new Color(1.0f, 1.0f, 1.0f);
                 nodeScripts[i][j].ChainFlag = false;
             }
         }
@@ -1241,5 +1242,10 @@ public class NodeController : MonoBehaviour {
             print("レベル変更なし");
 
         }
+    }
+
+    public Color GetNodeColor(int colorNum)
+    {
+        return levelTableScript.GetNodeColor(colorNum);
     }
 }

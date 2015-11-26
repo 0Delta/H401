@@ -139,6 +139,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &115028
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 473178}
+  - 114: {fileID: 11421038}
+  m_Layer: 0
+  m_Name: LevelTables
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &115854
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,22 +249,6 @@ GameObject:
   - 114: {fileID: 11415818}
   m_Layer: 9
   m_Name: FieldImage
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &139172
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 489246}
-  - 114: {fileID: 11494530}
-  m_Layer: 0
-  m_Name: LevelTables
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1063,11 +1063,23 @@ Transform:
   - {fileID: 430454}
   - {fileID: 459632}
   - {fileID: 439304}
-  - {fileID: 489246}
+  - {fileID: 473178}
   - {fileID: 409976}
   - {fileID: 481946}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!4 &473178
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 115028}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 470162}
+  m_RootOrder: 6
 --- !u!4 &477054
 Transform:
   m_ObjectHideFlags: 1
@@ -1146,18 +1158,6 @@ Transform:
   - {fileID: 468298}
   m_Father: {fileID: 495400}
   m_RootOrder: 0
---- !u!4 &489246
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 139172}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 470162}
-  m_RootOrder: 6
 --- !u!4 &495400
 Transform:
   m_ObjectHideFlags: 1
@@ -1307,7 +1307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeImage: {fileID: 11454846}
   maxTime: 60
-  levelTableObject: {fileID: 153602, guid: 7682f1e4420a2574a8c6efc49799dfd2, type: 2}
+  levelTableObject: {fileID: 115028}
 --- !u!114 &11412266
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1365,6 +1365,77 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ForceModuleActive: 0
+--- !u!114 &11421038
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 115028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b956e7b33fed4b3418c1835de940967a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fieldLevelTable:
+  - fieldName: japan
+    Ratio_Cap: 2
+    Ratio_Path2: 9
+    Ratio_Path3: 1
+  - fieldName: america
+    Ratio_Cap: 1
+    Ratio_Path2: 6
+    Ratio_Path3: 1
+  - fieldName: china
+    Ratio_Cap: 1
+    Ratio_Path2: 3
+    Ratio_Path3: 1
+  - fieldName: italy
+    Ratio_Cap: 1
+    Ratio_Path2: 3
+    Ratio_Path3: 2
+  - fieldName: egipt
+    Ratio_Cap: 1
+    Ratio_Path2: 2
+    Ratio_Path3: 3
+  timeLevelInterval: 60
+  timeLevelTable:
+  - MaxRegainRatio: .800000012
+    SlipRatio: 1
+    RegainPer3Nodes: .200000003
+    RegainPerCap: 0
+    RegainPer2Path: .0500000007
+    RegainPer3Path: .100000001
+  - MaxRegainRatio: .699999988
+    SlipRatio: 1.20000005
+    RegainPer3Nodes: .150000006
+    RegainPerCap: 0
+    RegainPer2Path: .0250000004
+    RegainPer3Path: .075000003
+  - MaxRegainRatio: .600000024
+    SlipRatio: 1.29999995
+    RegainPer3Nodes: .100000001
+    RegainPerCap: 0
+    RegainPer2Path: .00999999978
+    RegainPer3Path: .0500000007
+  - MaxRegainRatio: .5
+    SlipRatio: 1.5
+    RegainPer3Nodes: .075000003
+    RegainPerCap: 0
+    RegainPer2Path: 0
+    RegainPer3Path: .0500000007
+  - MaxRegainRatio: .300000012
+    SlipRatio: 2
+    RegainPer3Nodes: .0500000007
+    RegainPerCap: 0
+    RegainPer2Path: 0
+    RegainPer3Path: .0500000007
+  feverGainRatio: .739000022
+  feverDecreaseRatio: .00100000005
+  nodeColorList:
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: .0882353187, g: .0395761356, b: .0395761356, a: 0}
+  - {r: .191176474, g: .0843425617, b: .0843425617, a: 0}
+  - {r: .360294104, g: .169550151, b: .169550151, a: 0}
 --- !u!114 &11427768
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1396,7 +1467,7 @@ MonoBehaviour:
   lyingDeviceAngle: 30
   gameController: {fileID: 173536}
   canvasPrefab: {fileID: 121142, guid: 1461311ab92bbbe469e81c69edc8bf51, type: 2}
-  LevelTableObject: {fileID: 139172}
+  LevelTableObject: {fileID: 115028}
 --- !u!114 &11430166
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1597,7 +1668,7 @@ MonoBehaviour:
   heightMargin: .349999994
   headerHeight: 1.25
   treePrefab: {fileID: 156054, guid: bfa682b4236f0fe4fabad1774f791e29, type: 2}
-  levelTableObject: {fileID: 153602, guid: 7682f1e4420a2574a8c6efc49799dfd2, type: 2}
+  levelTableObject: {fileID: 115028}
 --- !u!114 &11454846
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1867,7 +1938,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FGImage: {fileID: 11456854}
   FLightPrefab: {fileID: 176210, guid: 84a73999c9cec4b4a96781a02ec84e39, type: 2}
-  levelTableObject: {fileID: 139172}
+  levelTableObject: {fileID: 115028}
   lightPosition: {x: 0, y: -1.25, z: -3}
   FGEmission: {r: .737931013, g: 1, b: 0, a: 0}
 --- !u!114 &11494306
@@ -1897,72 +1968,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &11494530
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 139172}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b956e7b33fed4b3418c1835de940967a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fieldLevelTable:
-  - fieldName: japan
-    Ratio_Cap: 2
-    Ratio_Path2: 9
-    Ratio_Path3: 1
-  - fieldName: america
-    Ratio_Cap: 1
-    Ratio_Path2: 6
-    Ratio_Path3: 1
-  - fieldName: china
-    Ratio_Cap: 1
-    Ratio_Path2: 3
-    Ratio_Path3: 1
-  - fieldName: italy
-    Ratio_Cap: 1
-    Ratio_Path2: 3
-    Ratio_Path3: 2
-  - fieldName: egipt
-    Ratio_Cap: 1
-    Ratio_Path2: 2
-    Ratio_Path3: 3
-  timeLevelInterval: 60
-  timeLevelTable:
-  - MaxRegainRatio: .800000012
-    SlipRatio: 1
-    RegainPer3Nodes: .200000003
-    RegainPerCap: 0
-    RegainPer2Path: .0500000007
-    RegainPer3Path: .100000001
-  - MaxRegainRatio: .699999988
-    SlipRatio: 1.20000005
-    RegainPer3Nodes: .150000006
-    RegainPerCap: 0
-    RegainPer2Path: .0250000004
-    RegainPer3Path: .075000003
-  - MaxRegainRatio: .600000024
-    SlipRatio: 1.29999995
-    RegainPer3Nodes: .100000001
-    RegainPerCap: 0
-    RegainPer2Path: .00999999978
-    RegainPer3Path: .0500000007
-  - MaxRegainRatio: .5
-    SlipRatio: 1.5
-    RegainPer3Nodes: .075000003
-    RegainPerCap: 0
-    RegainPer2Path: 0
-    RegainPer3Path: .0500000007
-  - MaxRegainRatio: .300000012
-    SlipRatio: 2
-    RegainPer3Nodes: .0500000007
-    RegainPerCap: 0
-    RegainPer2Path: 0
-    RegainPer3Path: .0500000007
-  feverGainRatio: .739000022
-  feverDecreaseRatio: .00100000005
 --- !u!114 &11497854
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -209,7 +209,8 @@ public class Node : MonoBehaviour {
         }
 
         bChain = true;
-        meshRenderer.material.color = new Color(0.5f, 0.0f, 0.0f);   //とりあえず赤フィルターを掛けてみる
+//        meshRenderer.material.color = new Color(0.5f, 0.0f, 0.0f);   //とりあえず赤フィルターを掛けてみる
+        ChangeEmissionColor(3);
         //このノードがチェック済ならおｋとする
         if (bChecked)
             return 0;
@@ -440,5 +441,11 @@ public class Node : MonoBehaviour {
         meshRenderer.material = copy.meshRenderer.material;
         transform.rotation = copy.transform.rotation;
         bitLink = copy.bitLink;
+    }
+
+    public void ChangeEmissionColor(int colorNum)
+    {
+        meshRenderer.material.EnableKeyword("_EMISSION");
+        meshRenderer.material.SetColor("_EmissionColor", nodeControllerScript.GetNodeColor(colorNum));
     }
 }

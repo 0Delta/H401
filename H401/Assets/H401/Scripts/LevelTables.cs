@@ -33,6 +33,9 @@ public class LevelTables : MonoBehaviour {
     {
         get { return feverDecreaseRatio; }
     }
+
+    [SerializeField]private Color[] nodeColorList = null;
+
 	// Use this for initialization
 	void Start () {
         fieldLevelCount = fieldLevelTable.Length;
@@ -51,5 +54,9 @@ public class LevelTables : MonoBehaviour {
     public FieldLevelInfo GetFieldLevel(int i)
     {
         return fieldLevelTable[i];
+    }
+    public Color GetNodeColor(int i)
+    {
+        return nodeColorList[i];
     }
 }
