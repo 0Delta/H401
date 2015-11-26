@@ -27,6 +27,9 @@ public class LevelController : MonoBehaviour {
     private int nextLevel;  //次のレベル
     public int NextLevel { set { nextLevel = value; } }
 
+    [SerializeField] GameObject LevelTableObject = null;
+    private LevelTables levelTableScript = null;
+
 	// Use this for initialization
 	void Start () {
         nextLevel = -1;
@@ -34,6 +37,8 @@ public class LevelController : MonoBehaviour {
         levelState = _eLevelState.STAND;
         preState = _eLevelState.STAND;
         Input.gyro.enabled = true;
+
+        levelTableScript = LevelTableObject.GetComponent<LevelTables>();
 	}
 	
 	// Update is called once per frame
@@ -125,6 +130,11 @@ public class LevelController : MonoBehaviour {
     public void FChangeEnd()
     {
         levelState = _eLevelState.STAND;
+    }
+
+    public string GetFieldName(int stage)
+    {
+        return levelTableScript.GetFieldLevel(stage).fieldName;
     }
     
 }

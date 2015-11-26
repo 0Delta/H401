@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 05b8d4b2b8230f644b3f9bf6a23c1890, type: 2}
   m_Color: {r: .445674777, g: .296712786, b: .823529422, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -74,8 +74,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FGImage: {fileID: 11408822}
-  GAUGE_MAX: 1
-  decreaseRatio: .0199999996
+  FLightPrefab: {fileID: 176210, guid: 84a73999c9cec4b4a96781a02ec84e39, type: 2}
+  levelTableObject: {fileID: 0}
+  lightPosition: {x: 0, y: 0, z: 0}
+  FGEmission: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &11498606
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -156,7 +158,15 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: FLightPrefab
+      value: 
+      objectReference: {fileID: 176210, guid: 84a73999c9cec4b4a96781a02ec84e39, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: 05b8d4b2b8230f644b3f9bf6a23c1890, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 186288}

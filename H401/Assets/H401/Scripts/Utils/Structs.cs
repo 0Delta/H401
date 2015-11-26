@@ -127,6 +127,7 @@ public struct Square
 
 [System.Serializable] public struct FieldLevelInfo
 {
+    public string fieldName; 
     //ノードの出現率
     public float Ratio_Cap;
     public float Ratio_Path2;

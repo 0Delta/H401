@@ -25,6 +25,7 @@ public class LevelButton : MonoBehaviour {
     {
         levelPanel.NextLevel = levelNumber;
         print("レベル選択：" + levelNumber.ToString());
+        levelPanel.ChangeText(levelNumber);
         //色変えとかここに
     }
 }

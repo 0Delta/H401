@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class LevelPanel : MonoBehaviour {
 
@@ -8,8 +9,8 @@ public class LevelPanel : MonoBehaviour {
 
     [SerializeField]private float popScale = 0.0f;
 
-    private GameObject gameController = null;
-    public void SetGameController(GameObject game) { gameController = game; }
+//    private GameObject gameController = null;
+//    public void SetGameController(GameObject game) { gameController = game; }
     private LevelController levelController;
     public void SetLevelController(LevelController lev) { levelController = lev; }
 
@@ -24,13 +25,16 @@ public class LevelPanel : MonoBehaviour {
     [SerializeField]private GameObject panel;           //ボタン表示用パネル
     [SerializeField] GameObject buttonPrefab = null;    //ボタンのプレハブ
 
+    [SerializeField]private GameObject textObject = null;
+    private Text fieldText = null;
+
     void Awake()
     {
         //ここのマジックナンバーはどうにかしたいが
         buttonObjects = new GameObject[5];
         buttonScripts = new LevelButton[5];
 
-        gameController = GameObject.Find("GameController");
+//        gameController = GameObject.Find("GameController");
     }
 
 	// Use this for initialization
@@ -41,6 +45,11 @@ public class LevelPanel : MonoBehaviour {
         levelController = GameObject.Find("levelController").GetComponent<LevelController>();
         levelController.NextLevel = -1;
         float rot = levelController.LyingAngle;
+
+
+        //テキストオブジェクトと関連つけ
+        fieldText = textObject.GetComponent<Text>();
+
 
         //ボタンを並べてリンクを付ける
         //GetComponentInChildren<DebugButton>().SetType(_eDebugState.RETURN);
@@ -67,7 +76,7 @@ public class LevelPanel : MonoBehaviour {
 
         //tweenとかで出現エフェクト等
         panel.transform.localScale = new Vector3(popScale,popScale,popScale);
-        panel.transform.DOScale(1.0f, popTime).OnComplete(() => { /*gameController.SetActive(false);*/ });
+        panel.transform.DOScale(1.0f, popTime);//.OnComplete(() => { /*gameController.SetActive(false);*/ });
         
     }
 	
@@ -86,4 +95,10 @@ public class LevelPanel : MonoBehaviour {
     {
         transform.DOScale(popScale, popTime).OnComplete(() => { Destroy(this.transform.parent.gameObject); });
     }
+
+    public void ChangeText(int stage)
+    {
+        fieldText.text = levelController.GetFieldName(stage);
+    }
+
 }

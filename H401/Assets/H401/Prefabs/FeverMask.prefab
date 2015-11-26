@@ -74,8 +74,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FGImage: {fileID: 11408822}
-  GAUGE_MAX: 1
-  decreaseRatio: .0199999996
+  FLightPrefab: {fileID: 176210, guid: 84a73999c9cec4b4a96781a02ec84e39, type: 2}
+  levelTableObject: {fileID: 139172, guid: 9ee8b3a8293b37a499c3f52a2f745260, type: 2}
 --- !u!114 &11498606
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -156,7 +156,15 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: FLightPrefab
+      value: 
+      objectReference: {fileID: 176210, guid: 84a73999c9cec4b4a96781a02ec84e39, type: 2}
+    - target: {fileID: 0}
+      propertyPath: levelTableObject
+      value: 
+      objectReference: {fileID: 139172, guid: 9ee8b3a8293b37a499c3f52a2f745260, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 186288}
