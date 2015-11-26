@@ -84,12 +84,11 @@ public class Node : MonoBehaviour {
         //bitLink.
         Observable
             .EveryUpdate()
-            .Select(_ => !isAction)
+            .Select(_ => nodeID)
             .DistinctUntilChanged()
-            .Where(x => x)
             .Subscribe(_ =>
             {
-                isOutPuzzle = (nodeID.y < 1 || nodeControllerScript.Col < nodeID.y || nodeID.x < 1 || nodeControllerScript.AdjustRow(nodeID.y) < nodeID.x);
+                isOutPuzzle = (nodeID.y < 1 || nodeControllerScript.Col-2 < nodeID.y || nodeID.x < 1 || nodeControllerScript.AdjustRow(nodeID.y)-2 < nodeID.x);
             }).AddTo(this);
     }
     
@@ -149,7 +148,7 @@ public class Node : MonoBehaviour {
         transform.DOScale(scaleSize, actionTime * 0.5f).SetLoops(2, LoopType.Yoyo);
 
         // @Test ... タップしたノードのID
-        print(nodeID);
+        //print(nodeID);
     }
 
     public void SlideNode(_eSlideDir dir, Vector2 pos) {
@@ -186,7 +185,7 @@ public class Node : MonoBehaviour {
         bitLink[0] = b5;
 
         //とりあえず表示してみる
-        print(OrigLog.ToString(bitLink));
+        //print(OrigLog.ToString(bitLink));
     }
 
     ///  こっから妹尾
@@ -254,15 +253,15 @@ public class Node : MonoBehaviour {
         bChecked = true;
         Tc.SumNode++;
 
-        // お隣さんを更新(将来的に移動時に発行する)
+        // お隣さんを更新
         UpdateNegibor();
 
         // 状態表示
         if (Debug.isDebugBuild && NodeController.bNodeLinkDebugLog)
-            Debug.Log("[" + nodeID.x + "," + nodeID.y + "] " + "Node_Action \n"
+            Tc += ("[" + nodeID.x + "," + nodeID.y + "] " + "Node_Action \n"
             + (bitLink[0] ? "1" : "0") + (bitLink[1] ? "1" : "0") + (bitLink[2] ? "1" : "0") + (bitLink[3] ? "1" : "0") + (bitLink[4] ? "1" : "0") + (bitLink[5] ? "1" : "0") + "\n"
              + (Negibor[0] ? "1" : "0") + (Negibor[1] ? "1" : "0") + (Negibor[2] ? "1" : "0") + (Negibor[3] ? "1" : "0") + (Negibor[4] ? "1" : "0") + (Negibor[5] ? "1" : "0"));
-
+        Tc += Tc.NotFin + " : " + Tc.Branch.ToString();
 
         // チェックスタート
         // 接地判定（根本のみ）
@@ -277,7 +276,7 @@ public class Node : MonoBehaviour {
             }
             // 繋がっている
             if (Debug.isDebugBuild && NodeController.bNodeLinkDebugLog)
-                Debug.Log("Ground");
+                Tc += ("Ground");
         }
 
         // この時点で枝が繋がっている事が確定
@@ -329,7 +328,7 @@ public class Node : MonoBehaviour {
 
                     // デバック表示
                     if (Debug.isDebugBuild && NodeController.bNodeLinkDebugLog)
-                        Debug.Log("Linked [" + DLChker(n) + "]");
+                        Tc += ("Linked [" + DLChker(n) + "]");
 
 
                     // 接続先がおかしいならノーカンで
@@ -370,6 +369,7 @@ public class Node : MonoBehaviour {
                 else
                 {
                     // 隣と繋がってないので、枝未完成として登録
+                    Tc += ("NotFin");
                     Tc.NotFin = true;
                 }
             }

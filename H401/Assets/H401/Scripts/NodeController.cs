@@ -973,55 +973,74 @@ public class NodeController : MonoBehaviour {
     }
 
     #region // ノードとノードが繋がっているかを確認する
+    // 接続に関するデバックログのON/OFF
+    public static bool bNodeLinkDebugLog = false;
+
     // ノードの接続を確認するチェッカー
     public class NodeLinkTaskChecker : System.IDisposable
     {
-        static int IDCnt = 0;
-        static public List<NodeLinkTaskChecker> Collector = new List<NodeLinkTaskChecker>();
+        static int IDCnt = 0;           // 管理用IDの発行に使用
+        static public List<NodeLinkTaskChecker> Collector = new List<NodeLinkTaskChecker>();    // 動いているチェッカをしまっておくリスト
 
-        public int ID = 0;
-        public int Branch = 0;
-        public bool NotFin = false;
-        public int SumNode = 0;
-        public ArrayList NodeList = new ArrayList();
+        public int ID = 0;              // 管理用ID
+        public int Branch = 0;          // 枝の数
+        public bool NotFin = false;     // 枝の"非"完成フラグ
+        public int SumNode = 0;         // 合計ノード数(下の数取得で良いような。)
+        public ArrayList NodeList = new ArrayList();    // 枝に含まれるノード。これを永続させて、クリック判定と組めば大幅な負荷軽減できるかも、
+        private string Log = "";
 
+        // コンストラクタ
         public NodeLinkTaskChecker()
         {
+            // IDを発行し、コレクタに格納
             ID = ++IDCnt;
             Collector.Add(this);
+            Log += "ID : " + ID.ToString() + "\n";
         }
 
+        // Disposeできるように
         public void Dispose()
         {
+            // コレクタから削除
             Collector.Remove(this);
         }
 
+        // デバック用ToString
         public override string ToString()
         {
-            string str = 
+            string str = "";
+            if (bNodeLinkDebugLog) {
+                str += Log + "\n--------\n";
+            }
+            str += 
                 "ID : " + ID.ToString() + "  " + NotFin + "\n" + 
                 " Branch : " + Branch.ToString() + "\n" + 
                 "SumNode : " + SumNode.ToString() + "\n";
-
             foreach (var it in NodeList)
             {
                 str += it.ToString() + "\n";
             }
             return str;
         }
+
+        // デバック用ログに書き出す
+        static public NodeLinkTaskChecker operator+(NodeLinkTaskChecker Ins,string str)
+        {
+            Ins.Log += str + "\n";
+            return Ins;
+        }
     }
-    public static bool bNodeLinkDebugLog = true;
+
 
     // 接続をチェックする関数
-    public void CheckLink()
+    public void CheckLink(bool NoCheckLeftCallback = false)
     {
         if (Debug.isDebugBuild && bNodeLinkDebugLog)
             Debug.Log("CheckLink");
-
-        ResetCheckedFragAll();
-
-        // ノードチェッカが帰ってきてないかチェック
-        if(NodeLinkTaskChecker.Collector.Count != 0){
+        
+        // ノードチェッカが帰ってきてないかチェック。これは結構クリティカルなんでログOFFでも出る仕様。
+        if(NodeLinkTaskChecker.Collector.Count != 0 && Debug.isDebugBuild && !NoCheckLeftCallback)
+        {
             string str = "Left Callback :" + NodeLinkTaskChecker.Collector.Count.ToString() + "\n";
             foreach (var it in NodeLinkTaskChecker.Collector)
             {
@@ -1029,7 +1048,9 @@ public class NodeController : MonoBehaviour {
             }
             Debug.LogWarning(str);
         }
-        
+
+        ResetCheckedFragAll();          // 接続フラグを一度クリア
+
         // 根っこ分繰り返し
         for (int i = 1; i < row; i++)
         {
@@ -1042,9 +1063,9 @@ public class NodeController : MonoBehaviour {
                 .Subscribe(x =>
                 {
                     if (Debug.isDebugBuild && bNodeLinkDebugLog)
-                        Debug.Log("firstNodeAct_Subscribe [" + Checker.ID + "]");
-                    Checker.Branch++;
-                    nodeScripts[1][x].NodeCheckAction(Checker, _eLinkDir.NONE);
+                        Checker += "firstNodeAct_Subscribe [" + Checker.ID + "]";
+                    Checker.Branch++;                                               // 最初に枝カウンタを1にしておく(規定値が0なので+でいいはず)
+                    nodeScripts[1][x].NodeCheckAction(Checker, _eLinkDir.NONE);     // 下から順にチェックスタート。来た方向はNONEにしておいて根っこを識別。
                 }).AddTo(this);
 
             // キャッチャを起動
@@ -1056,19 +1077,21 @@ public class NodeController : MonoBehaviour {
                 {
                     if (Debug.isDebugBuild && bNodeLinkDebugLog)
                         Debug.Log("CheckedCallback_Subscribe [" + Checker.ID + "]" + Checker.SumNode.ToString() + "/" + (Checker.NotFin ? "" : "Fin") + "\n" + Checker.ToString());
-                    if (Checker.SumNode >= 3 &&
-                    Checker.NotFin == false)
+
+                    // ノード数3以上、非完成フラグが立ってないなら
+                    if (Checker.SumNode >= 3 && Checker.NotFin == false)
                     {
+                        // その枝のノードに完成フラグを立てる
                         foreach (Node Nodes in Checker.NodeList)
                         {
                             Nodes.CompleteFlag = true;
                         };
-                        // 消去処理
-                        ReplaceNodeAll();
+                        ReplaceNodeAll();   // 消去処理
+                        CheckLink(true);    // もう一度チェッカを起動
                         if (Debug.isDebugBuild && bNodeLinkDebugLog)
                             print("枝が完成しました！");
                     }
-                    Checker.Dispose();
+                    Checker.Dispose();      // チェッカは役目を終えたので消す
                 }).AddTo(this);
         }
     }
