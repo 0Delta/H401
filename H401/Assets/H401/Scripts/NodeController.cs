@@ -870,9 +870,9 @@ public class NodeController : MonoBehaviour {
 
     // ゲーム画面外にはみ出ているかチェックする
     public void CheckOutScreen(int x, int y) {
-        if(nodeScripts[y][x].GetLeftPos()   > gameArea.right  ||
-           nodeScripts[y][x].GetRightPos()  < gameArea.left   ||
-           nodeScripts[y][x].GetTopPos()    < gameArea.bottom ||
+        if (nodeScripts[y][x].GetLeftPos() > gameArea.right ||
+           nodeScripts[y][x].GetRightPos() < gameArea.left ||
+           nodeScripts[y][x].GetTopPos() < gameArea.bottom ||
            nodeScripts[y][x].GetBottomPos() > gameArea.top)
             nodeScripts[y][x].IsOutScreen = true;
         else
@@ -894,7 +894,7 @@ public class NodeController : MonoBehaviour {
     }
 
     // 検索したい col に合わせた row を返す
-    int AdjustRow(int col) {
+    public int AdjustRow(int col) {
         return col % 2 == 0 ? row : row + 1;
     }
     
@@ -972,6 +972,7 @@ public class NodeController : MonoBehaviour {
         return newPos;
     }
 
+    #region // ノードとノードが繋がっているかを確認する
     // ノードの接続を確認するチェッカー
     public class NodeLinkTaskChecker : System.IDisposable
     {
@@ -1009,13 +1010,14 @@ public class NodeController : MonoBehaviour {
             return str;
         }
     }
-    public static bool bNodeLinkDebugLog = false;
+    public static bool bNodeLinkDebugLog = true;
 
     // 接続をチェックする関数
     public void CheckLink()
     {
         if (Debug.isDebugBuild && bNodeLinkDebugLog)
             Debug.Log("CheckLink");
+
         ResetCheckedFragAll();
 
         // ノードチェッカが帰ってきてないかチェック
@@ -1029,13 +1031,13 @@ public class NodeController : MonoBehaviour {
         }
         
         // 根っこ分繰り返し
-        for (int i = 1; i <= row; i++)
+        for (int i = 1; i < row; i++)
         {
             // チェッカを初期化
             var Checker = new NodeLinkTaskChecker();
 
             // 根っこを叩いて処理スタート
-            var firstNodeAct = Observable
+            Observable
                 .Return(i)
                 .Subscribe(x =>
                 {
@@ -1046,14 +1048,14 @@ public class NodeController : MonoBehaviour {
                 }).AddTo(this);
 
             // キャッチャを起動
-            var CheckedCallback = Observable
+            Observable
                 .NextFrame()
                 .Repeat()
                 .First(_ => Checker.Branch == 0)    // 処理中の枝が0なら終了
                 .Subscribe(_ =>
                 {
                     if (Debug.isDebugBuild && bNodeLinkDebugLog)
-                        Debug.Log("CheckedCallback_Subscribe [" + Checker.ID + "]" + Checker.SumNode.ToString() + "/" + (Checker.NotFin ? "" : "Fin"));
+                        Debug.Log("CheckedCallback_Subscribe [" + Checker.ID + "]" + Checker.SumNode.ToString() + "/" + (Checker.NotFin ? "" : "Fin") + "\n" + Checker.ToString());
                     if (Checker.SumNode >= 3 &&
                     Checker.NotFin == false)
                     {
@@ -1082,6 +1084,7 @@ public class NodeController : MonoBehaviour {
             }
         }
     }
+    #endregion
 
     //位置と方向から、指定ノードに隣り合うノードのrowとcolを返す
     //なければ、(-1,-1)を返す
