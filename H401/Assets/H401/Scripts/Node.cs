@@ -82,14 +82,17 @@ public class Node : MonoBehaviour {
     {
         //とりあえずテスト
         //bitLink.
+        
+        // IDが変化したときにパズル外フラグを更新
         Observable
             .EveryUpdate()
             .Select(_ => nodeID)
             .DistinctUntilChanged()
             .Subscribe(_ =>
             {
-                isOutPuzzle = (nodeID.y < 1 || nodeControllerScript.Col-2 < nodeID.y || nodeID.x < 1 || nodeControllerScript.AdjustRow(nodeID.y)-2 < nodeID.x);
+                CheckOutPuzzle();
             }).AddTo(this);
+        CheckOutPuzzle();       // 初回だけ手動
     }
     
     // Update is called once per frame
@@ -452,6 +455,12 @@ public class Node : MonoBehaviour {
             n += bitLink[i] ? 1 : 0;
         }
         return n;
+    }
+
+    private bool CheckOutPuzzle()
+    {
+        isOutPuzzle = (nodeID.y < 1 || nodeControllerScript.Col - 2 < nodeID.y || nodeID.x < 1 || nodeControllerScript.AdjustRow(nodeID.y) - 2 < nodeID.x);
+        return isOutPuzzle;
     }
 
     public float GetLeftPos() {
