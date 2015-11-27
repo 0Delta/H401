@@ -70,6 +70,8 @@ public class Node : MonoBehaviour {
         "Materials/hex4",
         "Materials/hex5",
     };
+
+    [SerializeField]private float colorDuration;
                                                    
     void Awake()
     {
@@ -446,6 +448,6 @@ public class Node : MonoBehaviour {
     public void ChangeEmissionColor(int colorNum)
     {
         meshRenderer.material.EnableKeyword("_EMISSION");
-        meshRenderer.material.SetColor("_EmissionColor", nodeControllerScript.GetNodeColor(colorNum));
+        meshRenderer.material.DOColor(nodeControllerScript.GetNodeColor(colorNum),"_EmissionColor",colorDuration);
     }
 }
