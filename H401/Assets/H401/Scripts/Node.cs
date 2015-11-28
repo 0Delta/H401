@@ -2,6 +2,7 @@
 using System.Collections;
 using DG.Tweening;
 using UniRx;
+using BitArrayExtension;
 //using Assets.Scripts.Utils;
 
 
@@ -235,14 +236,24 @@ public class Node : MonoBehaviour {
     }
 
     // _eLinkDirのToStringもどき。デバック出力用。
-    public string DLChker(int n)
+    public string LinkDirToString(int n)
     {
-        return DLChker((_eLinkDir)n);
+        return LinkDirToString((_eLinkDir)n);
     }
-    public string DLChker(_eLinkDir n)
+    public string LinkDirToString(_eLinkDir n)
     {
         string[] DbgLinkStr = { "RU", "R ", "RD", "LD", "L ", "LU" };
         return DbgLinkStr[(int)n];
+    }
+
+    // BitArrayのToStringもどき。デバック出力用。
+    public string ToString(BitArray array)
+    {
+        string str = "";
+        for (int n = 0;n<array.Length ; n++){
+            str += (array[n] ? "1" : "0");
+        }
+        return str;
     }
 
     // 隣接判定、ノードごとの処理
@@ -260,10 +271,7 @@ public class Node : MonoBehaviour {
         UpdateNegibor();
 
         // 状態表示
-        if (Debug.isDebugBuild && NodeController.bNodeLinkDebugLog)
-            Tc += ("[" + nodeID.x + "," + nodeID.y + "] " + "Node_Action \n"
-            + (bitLink[0] ? "1" : "0") + (bitLink[1] ? "1" : "0") + (bitLink[2] ? "1" : "0") + (bitLink[3] ? "1" : "0") + (bitLink[4] ? "1" : "0") + (bitLink[5] ? "1" : "0") + "\n"
-             + (Negibor[0] ? "1" : "0") + (Negibor[1] ? "1" : "0") + (Negibor[2] ? "1" : "0") + (Negibor[3] ? "1" : "0") + (Negibor[4] ? "1" : "0") + (Negibor[5] ? "1" : "0"));
+        Tc += (ToString() + "Action \n     Link : " + ToString(bitLink) + "\nNegibor : " + ToString(Negibor));
         Tc += Tc.NotFin + " : " + Tc.Branch.ToString();
 
         // チェックスタート
@@ -278,8 +286,7 @@ public class Node : MonoBehaviour {
                 return;                 // 繋がってないなら未チェックとして処理終了
             }
             // 繋がっている
-            if (Debug.isDebugBuild && NodeController.bNodeLinkDebugLog)
-                Tc += ("Ground");
+            Tc += ("Ground");
         }
 
         // この時点で枝が繋がっている事が確定
@@ -287,96 +294,82 @@ public class Node : MonoBehaviour {
         Tc.NodeList.Add(this);  // チェッカに自身を登録しておく
 
         // 終端ノードであれば、周囲チェック飛ばす
-        bool bEndNode = true;
-        for (int n = 0; n < (int)_eLinkDir.MAX && bEndNode; n++)    // 周囲ぐるっと
+        var TempBit = new BitArray(6);
+        // 除外方向設定
+        TempBit.SetAll(false);
+        if (Link == _eLinkDir.NONE)
         {
-            if (Link == _eLinkDir.NONE)
-            {
-                // 根本なら、下方向は除外
-                if (n != (int)_eLinkDir.RD && n != (int)_eLinkDir.LD && bitLink[n])
-                {
-                    bEndNode = false;   // !!デバックトレース時に必ず経由するけど、動作には影響なし!!
-                }
-            }
-            else
-            {
-                // それ以外は来た方向を除外して判定
-                if (n != (int)Link && bitLink[n])
-                {
-                    bEndNode = false;
-                }
-            }
+            TempBit.Set((int)_eLinkDir.RD, true);
+            TempBit.Set((int)_eLinkDir.LD, true);
         }
-        if (bEndNode)   // 終端ノードであればそこで終了
+        else
         {
-            Tc.Branch--;
+            TempBit.Set((int)Link, true);
+        }
+        TempBit.And(bitLink).Xor(bitLink);    // 自身の道とAND後、自身の道とXOR。
+        if (TempBit.isZero())                           // 比較して一致なら除外方向以外に道がない = XOR後に全0なら終端
+        {
+            Tc.Branch--;                                // 終端ノードであればそこで終了
             return;
         }
 
         // 周囲のチェック
+        // この時点で、TempBitは先が壁の道を除いた自分の道を示している。
+        Tc += "ExcludeFrom MyWay : " + ToString(TempBit);
+        
+        if (TempBit.retAnd(Negibor.retNot()).isNotZero())  // 隣接ノードのうち、道が無い場所に自分の道が伸びてたらそこは途切れている。
+        {
+            Tc += ("NotFin");
+            Tc.NotFin = true;                       // 隣と繋がってないので、枝未完成として登録
+        }
+
+        Tc += ("Negibor : " + ToString(Negibor));
+        TempBit.And(Negibor);                       // 隣接ノードと繋がっている場所を特定
+        Tc += "Linked : "+ToString(TempBit);
         for (int n = 0; n < (int)_eLinkDir.MAX; n++)
         {
+            if (!TempBit[n]) { continue; }          // ビット立ってないならスキップ
 
-            // 元の方向と、根本の時の下を除外
-            if (Link == _eLinkDir.NONE && (n == (int)_eLinkDir.RD || n == (int)_eLinkDir.LD)) { continue; }
-            if (n == (int)Link) { continue; }
+            // お隣さんと繋がっているので、処理引き渡しの準備
+            bChain = true;
 
-            // それ以外で繋がっている場所を検索
-            if (bitLink[n])
+            // デバック表示
+            Tc += ("Linked [" + LinkDirToString(n) + "]");
+
+
+            // 接続先がおかしいならノーカンで
+            Vec2Int Target = nodeControllerScript.GetDirNode(nodeID, (_eLinkDir)n);
+            if (Target.x == -1) { continue; }
+
+            // 分岐を検出してカウント
+            if (!bBranch)
             {
-                if (Negibor[n])
-                {
-                    // お隣さんと繋がっているので、処理引き渡しの準備
-                    bChain = true;
-
-                    // デバック表示
-                    if (Debug.isDebugBuild && NodeController.bNodeLinkDebugLog)
-                        Tc += ("Linked [" + DLChker(n) + "]");
-
-
-                    // 接続先がおかしいならノーカンで
-                    Vec2Int Target = nodeControllerScript.GetDirNode(nodeID, (_eLinkDir)n);
-                    if (Target.x != -1)
-                    {
-                        // 分岐を検出してカウント
-                        if (!bBranch)
-                        {
-                            // 一回目ならノーカン
-                            bBranch = true;
-                        }
-                        else
-                        {
-                            // 二回目以降は分岐なので、枝カウンタを+1
-                            Tc.Branch++;
-                        }
-
-                        // 次へ引き渡す
-                        Node TgtNode = nodeControllerScript.GetNodeScript(Target);
-                        if (TgtNode.isOutPuzzle)
-                        {
-                        // 接続先が壁なら処理飛ばして枝解決
-                            Tc.Branch--;
-                        }
-                        else
-                        {
-                            // 周囲のActionをトリガーさせる
-                            Observable
-                            .Return(TgtNode)
-                            .Subscribe(_ =>
-                            {
-                                TgtNode.NodeCheckAction(Tc, (_eLinkDir)((n + 3 >= 6) ? (n + 3 - 6) : (n + 3)));
-                            }).AddTo(this);
-                        }
-                    }
-                }
-                else
-                {
-                    // 隣と繋がってないので、枝未完成として登録
-                    Tc += ("NotFin");
-                    Tc.NotFin = true;
-                }
+                bBranch = true;     // 一回目ならノーカン
             }
+            else
+            {
+                Tc.Branch++;        // 二回目以降は分岐なので、枝カウンタを+1
+            }
+
+            // 次へ引き渡す
+            Node TgtNode = nodeControllerScript.GetNodeScript(Target);
+            if (TgtNode.isOutPuzzle)
+            {
+                Tc.Branch--;        // 接続先が壁なら処理飛ばして枝解決
+            }
+            else
+            {
+                // 周囲のActionをトリガーさせる
+                Observable
+                .Return(TgtNode)
+                .Subscribe(_ =>
+                {
+                    TgtNode.NodeCheckAction(Tc, (_eLinkDir)((n + 3 >= 6) ? (n + 3 - 6) : (n + 3)));
+                }).AddTo(this);
+            }
+
         }
+        
         if (Tc.NotFin && Tc.Branch > 0)
         {
             Tc.Branch--;

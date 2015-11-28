@@ -974,7 +974,7 @@ public class NodeController : MonoBehaviour {
 
     #region // ノードとノードが繋がっているかを確認する
     // 接続に関するデバックログのON/OFF
-    public static bool bNodeLinkDebugLog = false;
+    static bool bNodeLinkDebugLog = false;
 
     // ノードの接続を確認するチェッカー
     public class NodeLinkTaskChecker : System.IDisposable
@@ -1062,8 +1062,7 @@ public class NodeController : MonoBehaviour {
                 .Return(i)
                 .Subscribe(x =>
                 {
-                    if (Debug.isDebugBuild && bNodeLinkDebugLog)
-                        Checker += "firstNodeAct_Subscribe [" + Checker.ID + "]";
+                    Checker += "firstNodeAct_Subscribe [" + Checker.ID + "]";
                     Checker.Branch++;                                               // 最初に枝カウンタを1にしておく(規定値が0なので+でいいはず)
                     nodeScripts[1][x].NodeCheckAction(Checker, _eLinkDir.NONE);     // 下から順にチェックスタート。来た方向はNONEにしておいて根っこを識別。
                 }).AddTo(this);
