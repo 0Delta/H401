@@ -91,9 +91,9 @@ public class LevelPanel : MonoBehaviour {
         
     }
 
-    public void Delete()
+    public void Delete(NodeController nC)
     {
-        transform.DOScale(popScale, popTime).OnComplete(() => { Destroy(this.transform.parent.gameObject); });
+        transform.DOScale(popScale, popTime).OnComplete(() => { Destroy(this.transform.parent.gameObject); nC.currentLevel = levelController.NextLevel;});
     }
 
     public void ChangeText(int stage)

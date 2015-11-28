@@ -25,7 +25,7 @@ public class LevelController : MonoBehaviour {
     }
 
     private int nextLevel;  //次のレベル
-    public int NextLevel { set { nextLevel = value; } }
+    public int NextLevel { set { nextLevel = value; } get { return nextLevel; } }
 
     [SerializeField] GameObject LevelTableObject = null;
     private LevelTables levelTableScript = null;
@@ -113,13 +113,13 @@ public class LevelController : MonoBehaviour {
     public void FieldChangeEnd()
     {
         //gameController.SetActive(true);
-        gameController.GetComponentInChildren<NodeController>().SetFieldLevel(nextLevel);
+        //gameController.GetComponentInChildren<NodeController>().SetFieldLevel(nextLevel);
         lyingAngle = 0;
         levelState = _eLevelState.STAND;
         //オブジェクト破棄
         //Destroy(panelObject);
         //小さくなって消えるように
-        panelScript.Delete();
+        panelScript.Delete(gameController.GetComponentInChildren<NodeController>());
 
     }
     public void FChangeTest(float angle)

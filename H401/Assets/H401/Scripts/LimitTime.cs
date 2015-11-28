@@ -8,14 +8,7 @@ public class LimitTime : MonoBehaviour {
 
     private float nowTime;  //現在時間
     [SerializeField] private float maxTime = 0.0f;  //時間の最大値(秒？)
-/*
-    [SerializeField] private float MaxRegainRatio = 0.0f;  //回復する最大値（割合）
-    [SerializeField] private float SlipRatio = 0.0f;    //現象割合（秒間）
-    [SerializeField] private float RegainPer3Nodes = 0.0f;
-    [SerializeField] private float RegainPerCap = 0.0f;
-    [SerializeField] private float RegainPer2Path = 0.0f;
-    [SerializeField] private float RegainPer3Path = 0.0f;
- */
+
     private Animator ojityanAnimator = null;
 
     private TimeLevelInfo timeLevel;

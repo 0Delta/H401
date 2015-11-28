@@ -98,6 +98,23 @@ public class NodeController : MonoBehaviour {
     private LimitTime timeScript;            //制限時間のスクリプト
     private FeverGauge feverScript;
 
+    [SerializeField]private float repRotateTime = 0;//ノード再配置時の時間
+
+    public delegate void Replace();             //回転再配置用のデリゲート
+
+    [SerializeField]private Material[] nodeMaterials = null;
+    public Material GetMaterial(int nodeType){return nodeMaterials[nodeType];}
+
+    private int _currentLevel;
+    public int currentLevel
+    {
+        get { return _currentLevel; }
+        set { _currentLevel = value;
+        fieldLevel = levelTableScript.GetFieldLevel(_currentLevel);
+        StartCoroutine(ReplaceRotate(ReplaceNodeAll));
+        }
+    }
+
     void Awake() {
         nodePrefabs      = new GameObject[col][];
         nodeScripts      = new Node[col][];
@@ -141,6 +158,8 @@ public class NodeController : MonoBehaviour {
         frameController = new GameObject();
         frameController.transform.parent = transform.parent;
         frameController.name = "FrameController";
+
+        Node.SetNodeController(this); //ノードにコントローラーを設定
 
         // ノードを生成
         for(int i = 0; i < col; ++i) {
@@ -192,9 +211,6 @@ public class NodeController : MonoBehaviour {
             frameObject = (GameObject)Instantiate(frameNodePrefab, pos, transform.rotation);
             frameObject.transform.parent = frameController.transform;
         }
-        
-        // ノードに情報を登録
-        nodeScripts[0][0].SetNodeController(this);
 
         // 画面外ノードを登録
         AllCheckOutScreen();
@@ -988,7 +1004,7 @@ public class NodeController : MonoBehaviour {
             //ここに完成しました的なエフェクトを入れる？
 
             //枝を構成するノードを再配置
-            ReplaceNodeAll();
+            ReplaceNodeTree();
             print("枝が完成しました！");
         }
         for (int i = 2; i < col - 3; i++  )
@@ -1176,7 +1192,7 @@ public class NodeController : MonoBehaviour {
     }
 
     //完成した枝に使用しているノードを再配置する
-    void ReplaceNodeAll()
+    void ReplaceNodeTree()
     {
         int nNode = 0;
         int nCap = 0;
@@ -1229,23 +1245,61 @@ public class NodeController : MonoBehaviour {
 
     }
 
-    public void SetFieldLevel(int level)
+    public void ReplaceNodeAll()
     {
-        if (level >= 0 && level < levelTableScript.FieldLevelCount)
+        for (int i = 0; i < col; i++)
         {
-            fieldLevel = levelTableScript.GetFieldLevel(level);
-            ReplaceNodeAll();
-            print("レベル変更：" + level.ToString());
-        }
-        else
-        {
-            print("レベル変更なし");
-
+            for (int j = 0; j < AdjustRow(i); j++)
+            {
+                ReplaceNode(nodeScripts[i][j]);
+            }
         }
     }
 
+    //ノードにテーブルもたせたくなかったので
     public Color GetNodeColor(int colorNum)
     {
         return levelTableScript.GetNodeColor(colorNum);
+    }
+
+    //ノード全変更時の演出
+    public void RotateAllNode()
+    {
+        for (int i = 0; i < col ; i++)
+        {
+            for (int j = 0; j < AdjustRow(i); j++ )
+            {
+                Vector3 angle = nodeScripts[i][j].transform.localEulerAngles;
+                angle.y += 90.0f;
+                nodeScripts[i][j].transform.DORotate(angle, (repRotateTime / 2.0f));
+            }
+        }
+
+    }
+
+    //全ノードがくるっと回転して状態遷移するやつ 再配置関数を引数に
+    public IEnumerator ReplaceRotate(Replace repMethod)
+    {
+        //全ノードを90°回転tween
+        RotateAllNode();
+
+        yield return new WaitForSeconds(repRotateTime / 2.0f);
+        //置き換え処理
+        repMethod();
+        //全ノードを-90°回転
+        for (int i = 0; i < col; i++)
+        {
+            for (int j = 0; j < AdjustRow(i); j++)
+            {
+                nodeScripts[i][j].transform.DOKill();
+                Vector3 angle = nodeScripts[i][j].transform.localEulerAngles;
+                angle.y -= 180.0f;
+                nodeScripts[i][j].transform.rotation = Quaternion.identity;
+                nodeScripts[i][j].transform.Rotate(angle);
+            }
+        }
+
+        //全ノードを90°回転
+        RotateAllNode();
     }
 }

@@ -1433,9 +1433,9 @@ MonoBehaviour:
   feverDecreaseRatio: .00100000005
   nodeColorList:
   - {r: 0, g: 0, b: 0, a: 0}
-  - {r: .0882353187, g: .0395761356, b: .0395761356, a: 0}
-  - {r: .191176474, g: .0843425617, b: .0843425617, a: 0}
-  - {r: .360294104, g: .169550151, b: .169550151, a: 0}
+  - {r: .41911763, g: .178741336, b: .178741336, a: 0}
+  - {r: .757352948, g: .317419976, b: .317419976, a: 0}
+  - {r: 1, g: .389705896, b: .389705896, a: 0}
 --- !u!114 &11427768
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1669,6 +1669,14 @@ MonoBehaviour:
   headerHeight: 1.25
   treePrefab: {fileID: 156054, guid: bfa682b4236f0fe4fabad1774f791e29, type: 2}
   levelTableObject: {fileID: 115028}
+  repRotateTime: 1
+  nodeMaterials:
+  - {fileID: 2100000, guid: c597a0e298eed8a4782dfedfbe26e40c, type: 2}
+  - {fileID: 2100000, guid: 085a46a378cce104e83280bbbbd0fba0, type: 2}
+  - {fileID: 2100000, guid: 2ac80a55603cc794d9ec15286b51c756, type: 2}
+  - {fileID: 2100000, guid: 57942eac3fcb71042a6ca3b3b1325860, type: 2}
+  - {fileID: 2100000, guid: 99235450fb9fea042b230f1bec48fcfc, type: 2}
+  - {fileID: 2100000, guid: 80f76cfc4ebaa2c4a9fbe0c4cc93eb4b, type: 2}
 --- !u!114 &11454846
 MonoBehaviour:
   m_ObjectHideFlags: 1

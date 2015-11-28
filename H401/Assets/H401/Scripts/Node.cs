@@ -62,16 +62,7 @@ public class Node : MonoBehaviour {
         get { return isOutScreen; }
     }
 
-    static private readonly string[] HEX_TEXTURE = {
-        "Materials/hex0",
-        "Materials/hex1",
-        "Materials/hex2",
-        "Materials/hex3",
-        "Materials/hex4",
-        "Materials/hex5",
-    };
-
-    [SerializeField]private float colorDuration;
+    [SerializeField]private float colorDuration = 0.0f;
                                                    
     void Awake()
     {
@@ -94,7 +85,7 @@ public class Node : MonoBehaviour {
         nodeID.y = col;
     }
 
-    public void SetNodeController(NodeController nodeControllerScript) {
+    static public void SetNodeController(NodeController nodeControllerScript) {
         Node.nodeControllerScript = nodeControllerScript;
     }
     
@@ -178,7 +169,7 @@ public class Node : MonoBehaviour {
         bitLink[0] = b5;
 
         //とりあえず表示してみる
-        print(OrigLog.ToString(bitLink));
+        //print(OrigLog.ToString(bitLink));
     }
 
     //ノードごとの道がつながっているか走査(親ビットの方向)
@@ -278,7 +269,12 @@ public class Node : MonoBehaviour {
     {
         //ビットと回転角度をリセット
         bitLink.SetAll(false);
-        transform.rotation = Quaternion.identity;
+        //transform.rotation = Quaternion.identity;
+        //フィールド変更時とかの回転で困ったので、ｚ回転だけ初期化するように
+        Vector3 rot = transform.eulerAngles;
+        rot.z = 0.0f;
+        //transform.eulerAngles.Set(rot.x,rot.y,0.0f);
+        //transform.localEulerAngles.Set(rot.x, rot.y, 0.0f);
 
         bitLink[0] = true;
 
@@ -305,15 +301,11 @@ public class Node : MonoBehaviour {
                 bitLink[3] = true;
                 bitLink[5] = true;
                 break;
-            //case _eNodeType.HUB3_C:
-            //    bitLink[1] = true;
-            //    bitLink[2] = true;
-            //    break;
 
             default:
                 break;
         }
-        meshRenderer.material = Resources.Load<Material>(HEX_TEXTURE[(int)type]);//(Sprite)Object.Instantiate(nodeControllerScript.GetSprite(type));
+        meshRenderer.material = nodeControllerScript.GetMaterial((int)type);//(Sprite)Object.Instantiate(nodeControllerScript.GetSprite(type));
 
         //ランダムに回転
         float angle = 0.0f;
@@ -322,74 +314,12 @@ public class Node : MonoBehaviour {
             BitLinkRotate();
             angle -= ROT_HEX_ANGLE;
         }
-        transform.rotation = Quaternion.Euler(new Vector3(0.0f,0.0f,angle));
+        //rot = transform.eulerAngles;
+        rot.z += angle;
 
+        transform.rotation = Quaternion.identity;
+        transform.Rotate(rot);
     }
-/*
-    //周囲のノードを１つずつ見ていく走査
-    public bool CheckAround(int row)
-    {
-        bChain = true;
-
-        //根本ノードの場合
-        //↓2方向を見て、どちらかに道がつながっていなければ、未開通ノードとして、
-        //繋がりフラグ、木ビットをfalseにして終了
-        if(row == 1)
-        {
-            if (!(bitLink[(int)_eLinkDir.RD] || bitLink[(int)_eLinkDir.LD]))
-            {
-                bChain = false;
-                bChecked = true;
-            }
-        }
-
-        //それ以外の場合
-        //
-
-
-
-        for (int i = 0,parentDir = 3; i < (int)_eLinkDir.MAX ; i++, parentDir++)
-        {
-            if(parentDir >= 6)
-                parentDir -= 6;
-
-
-
-
-            Vec2Int nextPos = Vec2Int.zero;
-            
-            nodeControllerScript.GetDirNode(nodeID,(_eLinkDir)i);
-
-            //枠外ノードは常につながっている判定とする
-            if (nextPos.x == 0 || nextPos.y == 0 || nextPos.x == nodeControllerScript.Row - 1 || nextPos.y == nodeControllerScript.Col - 1)
-            {
-                continue;
-            }
-
-            //隣り合うノードの道がこっちにつながっているかどうか
-            if(nodeControllerScript.GetNodeScript(nextPos).GetLinkDir((_eLinkDir)parentDir))
-            {
-                //根本部分ならば、根本のどこかを記憶するように
-                if(row == 1 &&(i == (int)_eLinkDir.LU || i == (int)_eLinkDir.RU))
-                {
-
-                }
-            }
-            else 
-            {
-                //ダメだった時、このノードに道をつなげようとしているノードを未開通ノードとする
-                nodeControllerScript.ResetTreeBit(bitTreePath);
-                
-            }
-
-
-            //だめならfalse
-
-
-        }
-        return true;
-    }
-    */
 
     public bool GetLinkDir(_eLinkDir parentDir)
     {
