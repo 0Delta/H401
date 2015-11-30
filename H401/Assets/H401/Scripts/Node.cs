@@ -20,6 +20,10 @@ public class Node : MonoBehaviour {
         get { return nodeID; }
     }
     private bool        isAction    = false;            // アクションフラグ
+    public bool IsAction
+    {
+        set { isAction = value; }
+    }
     private bool        isSlide     = false;            // スライドフラグ
     private bool        isOutScreen = false;            // 画面外フラグ
 

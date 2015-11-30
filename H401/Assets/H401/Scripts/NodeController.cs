@@ -1260,25 +1260,45 @@ public class NodeController : MonoBehaviour {
     }
 
     //ノード全変更時の演出
-    public void RotateAllNode()
+    public void RotateAllNode(float movedAngle)
     {
         for (int i = 0; i < col ; i++)
         {
             for (int j = 0; j < AdjustRow(i); j++ )
             {
-                Vector3 angle = nodeScripts[i][j].transform.localEulerAngles;
+                Node currentNode = nodeScripts[i][j];
+                Vector3 angle = currentNode.transform.localEulerAngles;
                 angle.y += 90.0f;
-                nodeScripts[i][j].transform.DORotate(angle, (repRotateTime / 2.0f));
+                currentNode.transform.DORotate(angle, (repRotateTime / 2.0f))
+                    .OnComplete(() => {
+                        //終了時の角度がずれたので無理やり補正するように
+                        Vector3 movedVec =  currentNode.transform.localEulerAngles;
+                        movedVec.x = 0.0f;
+                        movedVec.y = movedAngle;
+                        currentNode.transform.rotation = Quaternion.identity;
+                        currentNode.transform.Rotate(movedVec);
+                    
+                    });
             }
         }
-
     }
 
+    public void SetActionAll(bool action)
+    {
+        for (int i = 0; i < col; i++)
+        {
+            for (int j = 0; j < AdjustRow(i); j++)
+            {
+                nodeScripts[i][j].IsAction = action;
+            }
+        }
+    }
     //全ノードがくるっと回転して状態遷移するやつ 再配置関数を引数に
     public IEnumerator ReplaceRotate(Replace repMethod)
     {
         //全ノードを90°回転tween
-        RotateAllNode();
+        SetActionAll(true);
+        RotateAllNode(90.0f);
 
         yield return new WaitForSeconds(repRotateTime / 2.0f);
         //置き換え処理
@@ -1288,7 +1308,6 @@ public class NodeController : MonoBehaviour {
         {
             for (int j = 0; j < AdjustRow(i); j++)
             {
-                nodeScripts[i][j].transform.DOKill();
                 Vector3 angle = nodeScripts[i][j].transform.localEulerAngles;
                 angle.y -= 180.0f;
                 nodeScripts[i][j].transform.rotation = Quaternion.identity;
@@ -1297,7 +1316,10 @@ public class NodeController : MonoBehaviour {
         }
 
         //全ノードを90°回転
-        RotateAllNode();
+        RotateAllNode(0.0f);
+        yield return new WaitForSeconds(repRotateTime / 2.0f);
+
+        SetActionAll(false);
     }
 
     //操作終了時の処理をここで
