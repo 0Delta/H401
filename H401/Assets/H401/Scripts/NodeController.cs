@@ -5,7 +5,7 @@ using UniRx;
 using DG.Tweening;
 using System.Collections.Generic;
 /*  リストIDに関して
-  col のIDが奇数の行は +1 とする
+　　col のIDが奇数の行は +1 とする
 
      ◇◇・・・   (col, row)
     ・・・・◇◇  (col - 1, row + 1)
@@ -134,12 +134,12 @@ public class NodeController : MonoBehaviour {
         }
     }
     
-    // Use this for initialization
-    void Start () {
+	// Use this for initialization
+	void Start () {
         scoreScript = GameObject.Find("ScoreNum").GetComponent<Score>();
         timeScript = GameObject.Find("LimitTime").GetComponent<LimitTime>();
         feverScript = GameObject.Find("FeverGauge").GetComponent<FeverGauge>();
-
+        
         levelControllerScript = levelControllerObject.GetComponent<LevelController>();
         pauseScript = pauseObject.GetComponent<GameOption>();
 
@@ -185,7 +185,7 @@ public class NodeController : MonoBehaviour {
                 pos.z = transform.position.z;
 
                 // 生成
-                nodePrefabs[i][j] = (GameObject)Instantiate(nodePrefab, pos, transform.rotation);
+        	    nodePrefabs[i][j] = (GameObject)Instantiate(nodePrefab, pos, transform.rotation);
                 nodeScripts[i][j] = nodePrefabs[i][j].GetComponent<Node>();
                 nodePrefabs[i][j].transform.SetParent(transform);
                 nodePlacePosList[i][j] = nodePrefabs[i][j].transform.position;
@@ -222,7 +222,7 @@ public class NodeController : MonoBehaviour {
             frameObject = (GameObject)Instantiate(frameNodePrefab, pos, transform.rotation);
             frameObject.transform.parent = frameController.transform;
         }
-
+        
         // 画面外ノードを登録
         AllCheckOutScreen();
 
@@ -278,7 +278,7 @@ public class NodeController : MonoBehaviour {
                 // ノードがアクション中なら未処理
                 if(isNodeAction)
                     return;
-
+                
                 if (pauseScript.pauseState == _ePauseState.PAUSE)
                     return;
 
@@ -329,13 +329,13 @@ public class NodeController : MonoBehaviour {
             .DistinctUntilChanged()
             .Where(x => x)
             .Subscribe(_ => {
-                CheckLink();
+        CheckLink();
             }).AddTo(gameObject);
 
-    }
-    
-    // Update is called once per frame
-    void Update () {
+	}
+	
+	// Update is called once per frame
+	void Update () {
         // @デバッグ用
         //for(int i = 0; i < col; ++i) {
         //    for(int j = 0; j < AdjustRow(i); ++j) {
@@ -345,7 +345,7 @@ public class NodeController : MonoBehaviour {
         //            nodeScripts[i][j].MeshRenderer.material.color = new Color(1.0f, 1.0f, 1.0f);
         //    }
         //}
-    }
+	}
     
     // ノード移動処理
     void SlantMove() {
@@ -1034,7 +1034,7 @@ public class NodeController : MonoBehaviour {
 
         // Disposeできるように
         public void Dispose()
-        {
+            {
             // コレクタから削除
             Collector.Remove(this);
         }
@@ -1056,14 +1056,14 @@ public class NodeController : MonoBehaviour {
             }
             return str;
         }
-        
+
         // デバック用ログに書き出す
         static public NodeLinkTaskChecker operator+(NodeLinkTaskChecker Ins,string str)
         {
             Ins.Log += str + "\n";
             return Ins;
         }
-    }
+            }
 
 
     // 接続をチェックする関数
@@ -1107,23 +1107,23 @@ public class NodeController : MonoBehaviour {
                 .Repeat()
                 .First(_ => Checker.Branch == 0)    // 処理中の枝が0なら終了
                 .Subscribe(_ =>
-                {
+        {
                     if (Debug.isDebugBuild && bNodeLinkDebugLog)
                         Debug.Log("CheckedCallback_Subscribe [" + Checker.ID + "]" + Checker.SumNode.ToString() + "/" + (Checker.NotFin ? "" : "Fin") + "\n" + Checker.ToString());
 
                     // ノード数3以上、非完成フラグが立ってないなら
                     if (Checker.SumNode >= 3 && Checker.NotFin == false)
-                    {
+        {
                         // その枝のノードに完成フラグを立てる
                         foreach (Node Nodes in Checker.NodeList)
-                        {
+            {
                             Nodes.CompleteFlag = true;
                         };
                         ReplaceNodeAll();   // 消去処理
                         CheckLink(true);    // もう一度チェッカを起動
                         if (Debug.isDebugBuild && bNodeLinkDebugLog)
                             print("枝が完成しました！");
-                    }
+            }
                     Checker.Dispose();      // チェッカは役目を終えたので消す
                 }).AddTo(this);
         }
@@ -1408,9 +1408,9 @@ public class NodeController : MonoBehaviour {
         repMethod();
         //全ノードを-90°回転
         for (int i = 0; i < col; i++)
-        {
+    {
             for (int j = 0; j < AdjustRow(i); j++)
-            {
+        {
                 Vector3 angle = nodeScripts[i][j].transform.localEulerAngles;
                 angle.y -= 180.0f;
                 nodeScripts[i][j].transform.rotation = Quaternion.identity;
@@ -1423,7 +1423,7 @@ public class NodeController : MonoBehaviour {
         yield return new WaitForSeconds(repRotateTime / 2.0f);
 
         SetActionAll(false);
-    }
+        }
 
     //操作終了時の処理をここで
     public void TouchEnd()
