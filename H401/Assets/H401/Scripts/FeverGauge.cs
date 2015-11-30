@@ -11,7 +11,11 @@ public class FeverGauge : MonoBehaviour {
     
     private float feverValue;   //現在フィーバー値
 
-    private _eFeverState feverState;
+    private _eFeverState _feverState;
+    public _eFeverState feverState
+    {
+        get { return _feverState; }
+    }
 
     [SerializeField]private GameObject FLightPrefab = null;
     private GameObject FLightObject = null;
@@ -28,7 +32,7 @@ public class FeverGauge : MonoBehaviour {
         feverValue = 0.0f;
         FGImage.fillAmount = 0.0f;
 
-        feverState = _eFeverState.NORMAL;
+        _feverState = _eFeverState.NORMAL;
 
         LevelTables ltScript = levelTableObject.GetComponent<LevelTables>();
         gainRatio = ltScript.FeverGainRatio;
@@ -40,7 +44,7 @@ public class FeverGauge : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (feverState == _eFeverState.FEVER)
+        if (_feverState == _eFeverState.FEVER)
         {
 
             feverValue -= decreaseRatio;
@@ -61,7 +65,7 @@ public class FeverGauge : MonoBehaviour {
         //MAXになったらフィーバーモードへ
         //今はとりあえず0に戻す
 
-        if (feverState == _eFeverState.FEVER)
+        if (_feverState == _eFeverState.FEVER)
             return;
 
         if(feverValue > GAUGE_MAX)
@@ -73,8 +77,8 @@ public class FeverGauge : MonoBehaviour {
 
     void ChangeState(_eFeverState state)
     {
-        feverState = state;
-        switch(feverState)
+        _feverState = state;
+        switch(_feverState)
         {
             case _eFeverState.NORMAL:
                 feverValue = 0.0f;
@@ -85,8 +89,6 @@ public class FeverGauge : MonoBehaviour {
                 break;
             case _eFeverState.FEVER:
                 //中心地点を設定しなければならないらしい
-
-
                 FLightObject = (GameObject)Instantiate(FLightPrefab,lightPosition,transform.rotation);
                 FGImage.material.EnableKeyword("_EMISSION");
                 FGImage.material.SetColor("_EmissionColor",FGEmission);

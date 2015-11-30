@@ -994,9 +994,6 @@ public class NodeController : MonoBehaviour {
             }
             //１走査ごとに閲覧済みフラグを戻す
             ResetCheckedFragAll();
-
-
-
         }
         //枝ができていた場合
         if(bComplete)
@@ -1301,5 +1298,21 @@ public class NodeController : MonoBehaviour {
 
         //全ノードを90°回転
         RotateAllNode();
+    }
+
+    //操作終了時の処理をここで
+    public void TouchEnd()
+    {
+        //状況に応じて別の処理をする
+
+        switch(feverScript.feverState)
+        {
+            case _eFeverState.NORMAL:
+                break;
+
+            case _eFeverState.FEVER:
+                break;
+        }
+
     }
 }
