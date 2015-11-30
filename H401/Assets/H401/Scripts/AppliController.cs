@@ -60,5 +60,6 @@ public class AppliController : MonoBehaviour {
 
         // 新しいシーンを生成
         currentScenePrefab = (GameObject)Instantiate(scenePrefabs[(int)id], transform.position, transform.rotation);
+        currentScenePrefab.transform.SetParent(transform);
 	}
 }
