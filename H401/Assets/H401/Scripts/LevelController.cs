@@ -30,6 +30,8 @@ public class LevelController : MonoBehaviour {
     [SerializeField] GameObject LevelTableObject = null;
     private LevelTables levelTableScript = null;
 
+    private bool isDebug;
+
 	// Use this for initialization
 	void Start () {
         nextLevel = -1;
@@ -46,25 +48,41 @@ public class LevelController : MonoBehaviour {
         switch(levelState)
         {
             case _eLevelState.STAND:
-                if (Input.GetKeyDown(KeyCode.Q) || (Input.gyro.attitude.eulerAngles.y > 90 - lyingDeviceAngle && Input.gyro.attitude.eulerAngles.y < 90 + lyingDeviceAngle))
+                if (Input.GetKeyDown(KeyCode.Q))
                 {
+                    isDebug = true;
                     //難易度選択用オブジェクトを90度回転して
                     lyingAngle = 90;
                     FieldChangeStart();
                 }
-                if (Input.GetKeyDown(KeyCode.W) || (Input.gyro.attitude.eulerAngles.y > -90 - lyingDeviceAngle && Input.gyro.attitude.eulerAngles.y < -90 + lyingDeviceAngle))
+                if (Input.GetKeyDown(KeyCode.W))
+                {
+                    isDebug = true;
+                    lyingAngle = -90;
+                    FieldChangeStart();
+                }
+                if(Input.gyro.attitude.eulerAngles.y > 90 - lyingDeviceAngle && Input.gyro.attitude.eulerAngles.y < 90 + lyingDeviceAngle)
+                {
+                    lyingAngle = 90;
+                    FieldChangeStart();
+                }
+                if(Input.gyro.attitude.eulerAngles.y > -90 - lyingDeviceAngle && Input.gyro.attitude.eulerAngles.y < -90 + lyingDeviceAngle)
                 {
                     lyingAngle = -90;
                     FieldChangeStart();
                 }
                 break;
             case _eLevelState.LIE:
-                if (Input.GetKeyDown(KeyCode.E) || (Input.gyro.attitude.eulerAngles.y < lyingAngle  && Input.gyro.attitude.eulerAngles.y > -lyingAngle))
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    isDebug = false;
+                    lyingAngle = 0;
+                    FieldChangeEnd();
+                }
+                if(!isDebug && Input.gyro.attitude.eulerAngles.y < lyingAngle  && Input.gyro.attitude.eulerAngles.y > -lyingAngle)
                 {
                     lyingAngle = 0;
                     FieldChangeEnd();
-
-
                 }
                 break;
         }
