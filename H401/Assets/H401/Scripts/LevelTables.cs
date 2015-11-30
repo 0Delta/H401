@@ -23,6 +23,19 @@ public class LevelTables : MonoBehaviour {
     }
     [SerializeField] public TimeLevelInfo[] timeLevelTable;// = new TimeLevelInfo[5];
 
+    [SerializeField,Range(0.0f, 1.0f)]private float feverGainRatio = 0.0f;
+    public float FeverGainRatio
+    {
+        get { return feverGainRatio;}
+    }
+    [SerializeField, Range(0.0f, 1.0f)]private float feverDecreaseRatio = 0.0f;
+    public float FeverDecreaseRatio
+    {
+        get { return feverDecreaseRatio; }
+    }
+
+    [SerializeField]private Color[] nodeColorList = null;
+
 	// Use this for initialization
 	void Start () {
         fieldLevelCount = fieldLevelTable.Length;
@@ -41,5 +54,9 @@ public class LevelTables : MonoBehaviour {
     public FieldLevelInfo GetFieldLevel(int i)
     {
         return fieldLevelTable[i];
+    }
+    public Color GetNodeColor(int i)
+    {
+        return nodeColorList[i];
     }
 }

@@ -5,13 +5,26 @@ using UnityEngine.UI;
 public class FeverGauge : MonoBehaviour {
 
     [SerializeField]private Image FGImage;
-    [SerializeField]private float GAUGE_MAX = 1.0f;   //最大値
-    [SerializeField]private float decreaseRatio = 0.0f;
+    private float GAUGE_MAX = 1.0f;   //最大値
+    private float decreaseRatio = 0.0f;
+    private float gainRatio = 0.0f;
     
     private float feverValue;   //現在フィーバー値
 
-    private _eFeverState feverState;
-    private _eFeverState prevState;
+    private _eFeverState _feverState;
+    public _eFeverState feverState
+    {
+        get { return _feverState; }
+    }
+
+    [SerializeField]private GameObject FLightPrefab = null;
+    private GameObject FLightObject = null;
+
+    [SerializeField]private GameObject levelTableObject = null;
+    [SerializeField]private Vector3 lightPosition;
+
+    [SerializeField]private Color FGEmission;
+
 
     //private FeverLevelInfo feverLevel;
 	// Use this for initialization
@@ -19,55 +32,68 @@ public class FeverGauge : MonoBehaviour {
         feverValue = 0.0f;
         FGImage.fillAmount = 0.0f;
 
-        feverState = _eFeverState.NORMAL;
-        prevState = _eFeverState.NORMAL;
+        _feverState = _eFeverState.NORMAL;
+
+        LevelTables ltScript = levelTableObject.GetComponent<LevelTables>();
+        gainRatio = ltScript.FeverGainRatio;
+        decreaseRatio = ltScript.FeverDecreaseRatio;
+
+        
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-        prevState = feverState;
-        if (feverState == _eFeverState.FEVER)
+        if (_feverState == _eFeverState.FEVER)
         {
 
             feverValue -= decreaseRatio;
 
             if (feverValue < 0.0f)
             {
-                feverState = _eFeverState.NORMAL;
+                ChangeState(_eFeverState.NORMAL);
             }
         }
-        ChangeState();
+
 
         FGImage.fillAmount = feverValue;
 	}
     public void Gain(int nodeNum, int cap, int path2, int path3)
     {
-        if(nodeNum != 0)
-            feverValue += 0.05f;
+        if (nodeNum != 0)
+            feverValue += gainRatio;
         //MAXになったらフィーバーモードへ
         //今はとりあえず0に戻す
 
+        if (_feverState == _eFeverState.FEVER)
+            return;
+
         if(feverValue > GAUGE_MAX)
         {
-            feverState = _eFeverState.FEVER;
+            ChangeState(_eFeverState.FEVER);
         }
 
     }
 
-    void ChangeState()
+    void ChangeState(_eFeverState state)
     {
-        if(feverState != prevState)
+        _feverState = state;
+        switch(_feverState)
         {
-            switch(feverState)
-            {
-                case _eFeverState.NORMAL:
-                    feverValue = 0.0f;
-                    break;
-                case _eFeverState.FEVER:
-                    feverValue = GAUGE_MAX;
-                    break;
-            }
+            case _eFeverState.NORMAL:
+                feverValue = 0.0f;
+                if (FLightObject != null)
+                    Destroy(FLightObject);
+                FGImage.material.EnableKeyword("_EMISSION");
+                FGImage.material.SetColor("_EmissionColor", Color.black);
+                break;
+            case _eFeverState.FEVER:
+                //中心地点を設定しなければならないらしい
+                FLightObject = (GameObject)Instantiate(FLightPrefab,lightPosition,transform.rotation);
+                FGImage.material.EnableKeyword("_EMISSION");
+                FGImage.material.SetColor("_EmissionColor",FGEmission);
+                feverValue = GAUGE_MAX;
+                break;
         }
     }
 }

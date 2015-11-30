@@ -48,6 +48,8 @@ MonoBehaviour:
   headerHeight: 1.25
   treePrefab: {fileID: 154364, guid: 92f8fac9168e74d448a44751d5659f8a, type: 2}
   levelTableObject: {fileID: 139172, guid: 9ee8b3a8293b37a499c3f52a2f745260, type: 2}
+  repRotateTime: .5
+  nodeMaterials: []
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -99,6 +101,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: headerHeight
       value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: repRotateTime
+      value: .5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
