@@ -1669,6 +1669,8 @@ MonoBehaviour:
   headerHeight: 1.25
   treePrefab: {fileID: 156054, guid: bfa682b4236f0fe4fabad1774f791e29, type: 2}
   levelTableObject: {fileID: 115028}
+  levelControllerObject: {fileID: 177698}
+  pauseObject: {fileID: 101240}
   repRotateTime: .5
   nodeMaterials:
   - {fileID: 2100000, guid: c597a0e298eed8a4782dfedfbe26e40c, type: 2}
@@ -2177,7 +2179,7 @@ Canvas:
   serializedVersion: 2
   m_RenderMode: 1
   m_Camera: {fileID: 2007606}
-  m_PlaneDistance: 8
+  m_PlaneDistance: 7
   m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0

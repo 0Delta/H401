@@ -3,14 +3,14 @@ using System.Collections;
 
 public class LevelController : MonoBehaviour {
 
-    [SerializeField]private float lyingDeviceAngle;     //デバイスを横と判定する角度範囲
+    [SerializeField]private float lyingDeviceAngle = 0.0f;     //デバイスを横と判定する角度範囲
 
     [SerializeField]private GameObject gameController = null;
 
     //ボタンのスクリプト
     //ボタン実体
     private _eLevelState levelState;
-    private _eLevelState preState;
+    public _eLevelState LevelState { get { return levelState; } set { levelState = value; } }
 
     [SerializeField] private GameObject canvasPrefab;
 
@@ -35,7 +35,6 @@ public class LevelController : MonoBehaviour {
         nextLevel = -1;
 
         levelState = _eLevelState.STAND;
-        preState = _eLevelState.STAND;
         Input.gyro.enabled = true;
 
         levelTableScript = LevelTableObject.GetComponent<LevelTables>();
@@ -43,7 +42,6 @@ public class LevelController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        preState = levelState;
         //姿勢が45度以上135度以下
         switch(levelState)
         {
@@ -52,20 +50,21 @@ public class LevelController : MonoBehaviour {
                 {
                     //難易度選択用オブジェクトを90度回転して
                     lyingAngle = 90;
-                    levelState = _eLevelState.LIE;
+                    FieldChangeStart();
                 }
                 if (Input.GetKeyDown(KeyCode.W) || (Input.gyro.attitude.eulerAngles.y > -90 - lyingDeviceAngle && Input.gyro.attitude.eulerAngles.y < -90 + lyingDeviceAngle))
                 {
-
                     lyingAngle = -90;
-                    levelState = _eLevelState.LIE;
+                    FieldChangeStart();
                 }
                 break;
             case _eLevelState.LIE:
-                if (Input.GetKeyDown(KeyCode.E))// || (Input.gyro.attitude.eulerAngles.y < 90 && Input.gyro.attitude.eulerAngles.y > -90))
+                if (Input.GetKeyDown(KeyCode.E) || (Input.gyro.attitude.eulerAngles.y < lyingAngle  && Input.gyro.attitude.eulerAngles.y > -lyingAngle))
                 {
                     lyingAngle = 0;
-                    levelState = _eLevelState.STAND;
+                    FieldChangeEnd();
+
+
                 }
                 break;
         }
@@ -73,63 +72,31 @@ public class LevelController : MonoBehaviour {
         //else
             //levelState = _eLevelState.STAND;
 
-        if(preState != levelState)
-        {
-            switch(levelState)
-            {
-                case _eLevelState.STAND:
-                    FieldChangeEnd();
-                    break;
-                case _eLevelState.LIE:
-
-   
-                    FieldChangeStart();
-                    break;
-            }
-        }
-
         //preState = levelState;
 	}
 
     //難易度切り替え状態へ
     public void FieldChangeStart()
     {
-        //ゲームをノンアクに
-        //gameController.SetActive(false);
-
+        
         //難易度選択をinstantiateする
-        //Transform trans = transform;
-        //trans.Rotate(new Vector3(0.0f,0.0f,lyingAngle));;
+
         canvasObject = (GameObject)Instantiate(canvasPrefab, transform.position, transform.rotation);
         canvasObject.transform.SetParent(this.transform);
         
         panelScript = canvasObject.GetComponentInChildren<LevelPanel>();
-        //panelScript.SetLevelController(this);
- //       panelObject.transform.localScale.Set(0.1f,0.1f,0.1f);
- //       panelObject.transform.DOScale(1.0f, popTime).OnComplete(() => { gameController.SetActive(false); });
+        levelState = _eLevelState.LIE;
     }
 
     //切り替え終了
     public void FieldChangeEnd()
     {
-        //gameController.SetActive(true);
-        //gameController.GetComponentInChildren<NodeController>().SetFieldLevel(nextLevel);
+
         lyingAngle = 0;
-        levelState = _eLevelState.STAND;
         //オブジェクト破棄
-        //Destroy(panelObject);
         //小さくなって消えるように
         panelScript.Delete(gameController.GetComponentInChildren<NodeController>());
 
-    }
-    public void FChangeTest(float angle)
-    {
-        lyingAngle = angle;
-        levelState = _eLevelState.LIE;
-    }
-    public void FChangeEnd()
-    {
-        levelState = _eLevelState.STAND;
     }
 
     public string GetFieldName(int stage)

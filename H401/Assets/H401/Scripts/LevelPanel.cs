@@ -52,7 +52,6 @@ public class LevelPanel : MonoBehaviour {
 
 
         //ボタンを並べてリンクを付ける
-        //GetComponentInChildren<DebugButton>().SetType(_eDebugState.RETURN);
         
 
 
@@ -93,7 +92,12 @@ public class LevelPanel : MonoBehaviour {
 
     public void Delete(NodeController nC)
     {
-        transform.DOScale(popScale, popTime).OnComplete(() => { Destroy(this.transform.parent.gameObject); nC.currentLevel = levelController.NextLevel;});
+        transform.DOScale(popScale, popTime)
+            .OnComplete(() => {
+                Destroy(this.transform.parent.gameObject);
+                nC.currentLevel = levelController.NextLevel;
+                levelController.LevelState = _eLevelState.STAND;
+            });
     }
 
     public void ChangeText(int stage)

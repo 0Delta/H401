@@ -2,12 +2,17 @@
 using System.Collections;
 using DG.Tweening;
 using UnityEngine.UI;
+
+
 public class GameOption : MonoBehaviour {
 
     [SerializeField]private GameObject panelPrefab = null;
     [SerializeField]private float popTime = 0.0f;
     [SerializeField]private float popScale = 0.0f;
     private GameObject panelObject = null;
+
+    private _ePauseState _pauseState;
+    public _ePauseState pauseState{ get{return _pauseState;}}
 	// Use this for initialization
 	void Start () {
 	
@@ -26,6 +31,8 @@ public class GameOption : MonoBehaviour {
     {
         //時間を止める
         Time.timeScale = 0.0f;
+
+        _pauseState = _ePauseState.PAUSE;
         
         //オプションボタンをノンアクに
         gameObject.GetComponentInChildren<Button>().interactable = false;
@@ -58,8 +65,9 @@ public class GameOption : MonoBehaviour {
             {
                 gameObject.GetComponentInChildren<Button>().interactable = true;
                 Destroy(panelObject);
+
+                _pauseState = _ePauseState.GAME;
             });
-        //オプションボタンをノンアクに
         
     }
 

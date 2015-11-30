@@ -66,6 +66,13 @@ public class NodeController : MonoBehaviour {
 
     private LevelTables levelTableScript = null;
 
+    [SerializeField]private GameObject levelControllerObject = null;
+    private LevelController levelControllerScript;
+
+    [SerializeField]private GameObject pauseObject = null;
+    private GameOption pauseScript;
+
+
     //ノードの配置割合を記憶しておく
 
     public int Row {
@@ -132,6 +139,9 @@ public class NodeController : MonoBehaviour {
         scoreScript = GameObject.Find("ScoreNum").GetComponent<Score>();
         timeScript = GameObject.Find("LimitTime").GetComponent<LimitTime>();
         feverScript = GameObject.Find("FeverGauge").GetComponent<FeverGauge>();
+
+        levelControllerScript = levelControllerObject.GetComponent<LevelController>();
+        pauseScript = pauseObject.GetComponent<GameOption>();
 
         levelTableScript = levelTableObject.GetComponent<LevelTables>();
         fieldLevel = levelTableScript.GetFieldLevel(0);
@@ -267,6 +277,12 @@ public class NodeController : MonoBehaviour {
             .Subscribe(_ => {
                 // ノードがアクション中なら未処理
                 if(isNodeAction)
+                    return;
+
+                if (pauseScript.pauseState == _ePauseState.PAUSE)
+                    return;
+
+                if (levelControllerScript.LevelState == _eLevelState.LIE)
                     return;
                 
                 // タップ成功
