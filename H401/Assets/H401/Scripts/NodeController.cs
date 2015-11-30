@@ -111,6 +111,7 @@ public class NodeController : MonoBehaviour {
         get { return _currentLevel; }
         set { _currentLevel = value;
         fieldLevel = levelTableScript.GetFieldLevel(_currentLevel);
+        RatioSum = fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3;
         StartCoroutine(ReplaceRotate(ReplaceNodeAll));
         }
     }
@@ -1162,30 +1163,16 @@ public class NodeController : MonoBehaviour {
         float rand;
         rand = UnityEngine.Random.Range(0.0f, RatioSum);
 
-        //暫定ランダム処理
-        if (0.0f <= rand && rand <= fieldLevel.Ratio_Cap)
-        {
-            node.SetNodeType(_eNodeType.CAP);
-        }
-        else if (fieldLevel.Ratio_Cap < rand && rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2)
-        {
-            int n2;
-            //2又のどれかはランダムでいいか
-            n2 = UnityEngine.Random.Range(0, 3);                 //マジックナンバーどうにかしたい
-            node.SetNodeType((_eNodeType)((int)(_eNodeType.HUB2_A + n2)));
-        }
-        else if (fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 < rand && rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3)
-        {
-            int n3;
-            //3又のどれかはランダムでいいか
-            n3 = UnityEngine.Random.Range(0, 2);                 //マジックナンバーどうにかしたい
-            node.SetNodeType((_eNodeType)((int)(_eNodeType.HUB3_A + n3)));
-        }
-        else
-        {
-            //おかしな値が入力されていた際はキャップになるよう
-            node.SetNodeType(_eNodeType.CAP);
-        }
+        _eNodeType type =
+            (rand <= fieldLevel.Ratio_Cap) ? _eNodeType.CAP :
+            (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 / 3.0f)                          ? _eNodeType.HUB2_A :
+            (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 / 3.0f * 2.0f)                   ? _eNodeType.HUB2_B :
+            (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 )                                ? _eNodeType.HUB2_C :
+            (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3 / 2.0f) ? _eNodeType.HUB3_A :
+            (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3)        ? _eNodeType.HUB3_B :
+            _eNodeType.CAP;
+
+        node.SetNodeType(type);
     }
 
     //完成した枝に使用しているノードを再配置する
@@ -1260,7 +1247,7 @@ public class NodeController : MonoBehaviour {
     }
 
     //ノード全変更時の演出
-    public void RotateAllNode(float movedAngle)
+    public void RotateAllNode(float movedAngle,Ease easeType)
     {
         for (int i = 0; i < col ; i++)
         {
@@ -1278,7 +1265,8 @@ public class NodeController : MonoBehaviour {
                         currentNode.transform.rotation = Quaternion.identity;
                         currentNode.transform.Rotate(movedVec);
                     
-                    });
+                    })
+                    .SetEase(easeType);
             }
         }
     }
@@ -1298,7 +1286,8 @@ public class NodeController : MonoBehaviour {
     {
         //全ノードを90°回転tween
         SetActionAll(true);
-        RotateAllNode(90.0f);
+
+        RotateAllNode(90.0f,Ease.InSine);
 
         yield return new WaitForSeconds(repRotateTime / 2.0f);
         //置き換え処理
@@ -1316,7 +1305,7 @@ public class NodeController : MonoBehaviour {
         }
 
         //全ノードを90°回転
-        RotateAllNode(0.0f);
+        RotateAllNode(0.0f,Ease.OutSine);
         yield return new WaitForSeconds(repRotateTime / 2.0f);
 
         SetActionAll(false);
