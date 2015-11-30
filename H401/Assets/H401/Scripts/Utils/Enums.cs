@@ -62,3 +62,8 @@ public enum _eFeverState
     NORMAL,
     FEVER,
 }
+public enum _ePauseState
+{
+    GAME,
+    PAUSE,
+}

@@ -63,7 +63,15 @@ public class NodeController : MonoBehaviour {
     //[SerializeField] private Sprite[] cashSprites = new Sprite[6];
 
     [SerializeField] private GameObject levelTableObject = null;
+
     private LevelTables levelTableScript = null;
+
+    [SerializeField]private GameObject levelControllerObject = null;
+    private LevelController levelControllerScript;
+
+    [SerializeField]private GameObject pauseObject = null;
+    private GameOption pauseScript;
+
 
     //ノードの配置割合を記憶しておく
 
@@ -97,6 +105,24 @@ public class NodeController : MonoBehaviour {
     private LimitTime timeScript;            //制限時間のスクリプト
     private FeverGauge feverScript;
 
+    [SerializeField]private float repRotateTime = 0;//ノード再配置時の時間
+
+    public delegate void Replace();             //回転再配置用のデリゲート
+
+    [SerializeField]private Material[] nodeMaterials = null;
+    public Material GetMaterial(int nodeType){return nodeMaterials[nodeType];}
+
+    private int _currentLevel;
+    public int currentLevel
+    {
+        get { return _currentLevel; }
+        set { _currentLevel = value;
+        fieldLevel = levelTableScript.GetFieldLevel(_currentLevel);
+        RatioSum = fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3;
+        StartCoroutine(ReplaceRotate(ReplaceNodeAll));
+        }
+    }
+
     void Awake() {
         nodePrefabs      = new GameObject[col][];
         nodeScripts      = new Node[col][];
@@ -113,7 +139,10 @@ public class NodeController : MonoBehaviour {
         scoreScript = GameObject.Find("ScoreNum").GetComponent<Score>();
         timeScript = GameObject.Find("LimitTime").GetComponent<LimitTime>();
         feverScript = GameObject.Find("FeverGauge").GetComponent<FeverGauge>();
-        
+
+        levelControllerScript = levelControllerObject.GetComponent<LevelController>();
+        pauseScript = pauseObject.GetComponent<GameOption>();
+
         levelTableScript = levelTableObject.GetComponent<LevelTables>();
         fieldLevel = levelTableScript.GetFieldLevel(0);
 
@@ -140,6 +169,8 @@ public class NodeController : MonoBehaviour {
         frameController = new GameObject();
         frameController.transform.parent = transform.parent;
         frameController.name = "FrameController";
+
+        Node.SetNodeController(this); //ノードにコントローラーを設定
 
         // ノードを生成
         for(int i = 0; i < col; ++i) {
@@ -191,9 +222,6 @@ public class NodeController : MonoBehaviour {
             frameObject = (GameObject)Instantiate(frameNodePrefab, pos, transform.rotation);
             frameObject.transform.parent = frameController.transform;
         }
-        
-        // ノードに情報を登録
-        nodeScripts[0][0].SetNodeController(this);
 
         // 画面外ノードを登録
         AllCheckOutScreen();
@@ -249,6 +277,12 @@ public class NodeController : MonoBehaviour {
             .Subscribe(_ => {
                 // ノードがアクション中なら未処理
                 if(isNodeAction)
+                    return;
+
+                if (pauseScript.pauseState == _ePauseState.PAUSE)
+                    return;
+
+                if (levelControllerScript.LevelState == _eLevelState.LIE)
                     return;
                 
                 // タップ成功
@@ -1022,7 +1056,7 @@ public class NodeController : MonoBehaviour {
             }
             return str;
         }
-
+        
         // デバック用ログに書き出す
         static public NodeLinkTaskChecker operator+(NodeLinkTaskChecker Ins,string str)
         {
@@ -1243,34 +1277,20 @@ public class NodeController : MonoBehaviour {
         float rand;
         rand = UnityEngine.Random.Range(0.0f, RatioSum);
 
-        //暫定ランダム処理
-        if (0.0f <= rand && rand <= fieldLevel.Ratio_Cap)
-        {
-            node.SetNodeType(_eNodeType.CAP);
-        }
-        else if (fieldLevel.Ratio_Cap < rand && rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2)
-        {
-            int n2;
-            //2又のどれかはランダムでいいか
-            n2 = UnityEngine.Random.Range(0, 3);                 //マジックナンバーどうにかしたい
-            node.SetNodeType((_eNodeType)((int)(_eNodeType.HUB2_A + n2)));
-        }
-        else if (fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 < rand && rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3)
-        {
-            int n3;
-            //3又のどれかはランダムでいいか
-            n3 = UnityEngine.Random.Range(0, 2);                 //マジックナンバーどうにかしたい
-            node.SetNodeType((_eNodeType)((int)(_eNodeType.HUB3_A + n3)));
-        }
-        else
-        {
-            //おかしな値が入力されていた際はキャップになるよう
-            node.SetNodeType(_eNodeType.CAP);
-        }
+        _eNodeType type =
+            (rand <= fieldLevel.Ratio_Cap) ? _eNodeType.CAP :
+            (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 / 3.0f)                          ? _eNodeType.HUB2_A :
+            (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 / 3.0f * 2.0f)                   ? _eNodeType.HUB2_B :
+            (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 )                                ? _eNodeType.HUB2_C :
+            (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3 / 2.0f) ? _eNodeType.HUB3_A :
+            (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3)        ? _eNodeType.HUB3_B :
+            _eNodeType.CAP;
+
+        node.SetNodeType(type);
     }
 
     //完成した枝に使用しているノードを再配置する
-    void ReplaceNodeAll()
+    void ReplaceNodeTree()
     {
         int nNode = 0;
         int nCap = 0;
@@ -1323,18 +1343,101 @@ public class NodeController : MonoBehaviour {
 
     }
 
-    public void SetFieldLevel(int level)
+    public void ReplaceNodeAll()
     {
-        if (level >= 0 && level < levelTableScript.FieldLevelCount)
+        for (int i = 0; i < col; i++)
         {
-            fieldLevel = levelTableScript.GetFieldLevel(level);
-            ReplaceNodeAll();
-            print("レベル変更：" + level.ToString());
+            for (int j = 0; j < AdjustRow(i); j++)
+            {
+                ReplaceNode(nodeScripts[i][j]);
+            }
         }
-        else
-        {
-            print("レベル変更なし");
+    }
 
+    //ノードにテーブルもたせたくなかったので
+    public Color GetNodeColor(int colorNum)
+    {
+        return levelTableScript.GetNodeColor(colorNum);
+    }
+
+    //ノード全変更時の演出
+    public void RotateAllNode(float movedAngle,Ease easeType)
+    {
+        for (int i = 0; i < col ; i++)
+        {
+            for (int j = 0; j < AdjustRow(i); j++ )
+            {
+                Node currentNode = nodeScripts[i][j];
+                Vector3 angle = currentNode.transform.localEulerAngles;
+                angle.y += 90.0f;
+                currentNode.transform.DORotate(angle, (repRotateTime / 2.0f))
+                    .OnComplete(() => {
+                        //終了時の角度がずれたので無理やり補正するように
+                        Vector3 movedVec =  currentNode.transform.localEulerAngles;
+                        movedVec.x = 0.0f;
+                        movedVec.y = movedAngle;
+                        currentNode.transform.rotation = Quaternion.identity;
+                        currentNode.transform.Rotate(movedVec);
+                    
+                    })
+                    .SetEase(easeType);
+            }
         }
+    }
+
+    public void SetActionAll(bool action)
+    {
+        for (int i = 0; i < col; i++)
+        {
+            for (int j = 0; j < AdjustRow(i); j++)
+            {
+                nodeScripts[i][j].IsAction = action;
+            }
+        }
+    }
+    //全ノードがくるっと回転して状態遷移するやつ 再配置関数を引数に
+    public IEnumerator ReplaceRotate(Replace repMethod)
+    {
+        //全ノードを90°回転tween
+        SetActionAll(true);
+
+        RotateAllNode(90.0f,Ease.InSine);
+
+        yield return new WaitForSeconds(repRotateTime / 2.0f);
+        //置き換え処理
+        repMethod();
+        //全ノードを-90°回転
+        for (int i = 0; i < col; i++)
+        {
+            for (int j = 0; j < AdjustRow(i); j++)
+            {
+                Vector3 angle = nodeScripts[i][j].transform.localEulerAngles;
+                angle.y -= 180.0f;
+                nodeScripts[i][j].transform.rotation = Quaternion.identity;
+                nodeScripts[i][j].transform.Rotate(angle);
+            }
+        }
+
+        //全ノードを90°回転
+        RotateAllNode(0.0f,Ease.OutSine);
+        yield return new WaitForSeconds(repRotateTime / 2.0f);
+
+        SetActionAll(false);
+    }
+
+    //操作終了時の処理をここで
+    public void TouchEnd()
+    {
+        //状況に応じて別の処理をする
+
+        switch(feverScript.feverState)
+        {
+            case _eFeverState.NORMAL:
+                break;
+
+            case _eFeverState.FEVER:
+                break;
+        }
+
     }
 }
