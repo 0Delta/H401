@@ -1662,23 +1662,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 7
   col: 11
-  nodePrefab: {fileID: 166286, guid: d6b46186246d42d48aa54e4a2af5c60b, type: 2}
-  frameNodePrefab: {fileID: 166286, guid: 2c0ab563564bfd2419f398ee7241003e, type: 2}
+  gameNodePrefabPath: Prefabs/GameScene/GameNode
+  frameNodePrefabPath: Prefabs/GameScene/FrameNode
+  treeNodePrefabPath: Prefabs/GameScene/TreeNode
   widthMargin: 0
   heightMargin: .349999994
   headerHeight: 1.25
-  treePrefab: {fileID: 156054, guid: bfa682b4236f0fe4fabad1774f791e29, type: 2}
-  levelTableObject: {fileID: 115028}
-  levelControllerObject: {fileID: 177698}
-  pauseObject: {fileID: 101240}
+  levelTableObjectPath: 
+  levelControllerObjectPath: 
+  pauseObjectPath: 
   repRotateTime: .5
-  nodeMaterials:
-  - {fileID: 2100000, guid: c597a0e298eed8a4782dfedfbe26e40c, type: 2}
-  - {fileID: 2100000, guid: 085a46a378cce104e83280bbbbd0fba0, type: 2}
-  - {fileID: 2100000, guid: 2ac80a55603cc794d9ec15286b51c756, type: 2}
-  - {fileID: 2100000, guid: 57942eac3fcb71042a6ca3b3b1325860, type: 2}
-  - {fileID: 2100000, guid: 99235450fb9fea042b230f1bec48fcfc, type: 2}
-  - {fileID: 2100000, guid: 80f76cfc4ebaa2c4a9fbe0c4cc93eb4b, type: 2}
+  nodeMaterialsPath: []
 --- !u!114 &11454846
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2017,7 +2011,9 @@ SkinnedMeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -2073,7 +2069,9 @@ SkinnedMeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}

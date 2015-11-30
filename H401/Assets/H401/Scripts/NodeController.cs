@@ -25,14 +25,23 @@ public class NodeController : MonoBehaviour {
 
     [SerializeField] private int row = 0;       // 横配置数 リストIDが奇数の行は＋１とする
     [SerializeField] private int col = 0;       // 縦配置数
-    [SerializeField] private GameObject nodePrefab = null;       // ノードのプレハブ
-    [SerializeField] private GameObject frameNodePrefab = null;       // フレームノードのプレハブ
+    [SerializeField] private string gameNodePrefabPath  = null;     // ノードのプレハブのパス
+    [SerializeField] private string frameNodePrefabPath = null;     // フレームノードのプレハブのパス
+    [SerializeField] private string treeNodePrefabPath  = null;     // 完成ノードのプレハブのパス
     [SerializeField] private float widthMargin  = 0.0f;  // ノード位置の左右間隔の調整値
     [SerializeField] private float heightMargin = 0.0f;  // ノード位置の上下間隔の調整値
     [SerializeField] private float headerHeight = 0.0f;  // ヘッダーの高さ
-    [SerializeField] private GameObject treePrefab = null; 
+    [SerializeField] private string levelTableObjectPath = null;
+    [SerializeField] private string levelControllerObjectPath = null;
+    [SerializeField] private string pauseObjectPath = null;
+    [SerializeField] private float repRotateTime = 0;//ノード再配置時の時間
+    [SerializeField] private string[] nodeMaterialsPath = null;
+    
+    private GameObject gameNodePrefab   = null;     // ノードのプレハブ
+    private GameObject frameNodePrefab  = null;     // フレームノードのプレハブ
+    private GameObject treeNodePrefab   = null;     // 完成ノードのプレハブ
 
-    private GameObject[][]  nodePrefabs;        // ノードのプレハブリスト
+    private GameObject[][]  gameNodePrefabs;    // ノードのプレハブリスト
     private Node[][]        nodeScripts;        // ノードのnodeスクリプトリスト
     private Vector3[][]     nodePlacePosList;   // ノードの配置位置リスト
     private GameObject      frameController;    // フレームコントローラープレハブ
@@ -59,18 +68,14 @@ public class NodeController : MonoBehaviour {
     private FieldLevelInfo fieldLevel;
 
     private float RatioSum = 0.0f;                           //合計割合
-
-    //[SerializeField] private Sprite[] cashSprites = new Sprite[6];
-
-    [SerializeField] private GameObject levelTableObject = null;
-
+    
     private LevelTables levelTableScript = null;
-
-    [SerializeField]private GameObject levelControllerObject = null;
     private LevelController levelControllerScript;
-
-    [SerializeField]private GameObject pauseObject = null;
     private GameOption pauseScript;
+    
+    private GameObject levelTableObject = null;
+    private GameObject levelControllerObject = null;
+    private GameObject pauseObject = null;
 
 
     //ノードの配置割合を記憶しておく
@@ -104,12 +109,10 @@ public class NodeController : MonoBehaviour {
     private Score scoreScript;          //スコアのスクリプト
     private LimitTime timeScript;            //制限時間のスクリプト
     private FeverGauge feverScript;
-
-    [SerializeField]private float repRotateTime = 0;//ノード再配置時の時間
-
+    
     public delegate void Replace();             //回転再配置用のデリゲート
 
-    [SerializeField]private Material[] nodeMaterials = null;
+    private Material[] nodeMaterials = null;
     public Material GetMaterial(int nodeType){return nodeMaterials[nodeType];}
 
     private int _currentLevel;
@@ -124,11 +127,11 @@ public class NodeController : MonoBehaviour {
     }
 
     void Awake() {
-        nodePrefabs      = new GameObject[col][];
+        gameNodePrefabs      = new GameObject[col][];
         nodeScripts      = new Node[col][];
         nodePlacePosList = new Vector3[col][];
         for(int i = 0; i < col; ++i) {
-            nodePrefabs[i]      = i % 2 == 0 ? new GameObject[row] : new GameObject[row + 1];
+            gameNodePrefabs[i]      = i % 2 == 0 ? new GameObject[row] : new GameObject[row + 1];
             nodeScripts[i]      = i % 2 == 0 ? new Node[row] : new Node[row + 1];
             nodePlacePosList[i] = i % 2 == 0 ? new Vector3[row] : new Vector3[row + 1];
         }
@@ -136,6 +139,17 @@ public class NodeController : MonoBehaviour {
     
 	// Use this for initialization
 	void Start () {
+        // ----- プレハブデータを Resources から取得
+        gameNodePrefab  = Resources.Load<GameObject>(gameNodePrefabPath);
+        frameNodePrefab = Resources.Load<GameObject>(frameNodePrefabPath);
+        treeNodePrefab  = Resources.Load<GameObject>(treeNodePrefabPath);
+        levelTableObject = Resources.Load<GameObject>(levelTableObjectPath);
+        levelControllerObject = Resources.Load<GameObject>(levelControllerObjectPath);
+        pauseObject     = Resources.Load<GameObject>(pauseObjectPath);
+        for(int i = 0; i < nodeMaterialsPath.Length; ++i) {
+            nodeMaterials[i] = Resources.Load<Material>(nodeMaterialsPath[i]);
+        }
+
         scoreScript = GameObject.Find("ScoreNum").GetComponent<Score>();
         timeScript = GameObject.Find("LimitTime").GetComponent<LimitTime>();
         feverScript = GameObject.Find("FeverGauge").GetComponent<FeverGauge>();
@@ -155,10 +169,10 @@ public class NodeController : MonoBehaviour {
         
         // ----- ノード準備
         // 描画するノードの大きさを取得
-        MeshFilter nodeMeshInfo = nodePrefab.GetComponent<MeshFilter>();    // ノードのメッシュ情報を取得
+        MeshFilter nodeMeshInfo = gameNodePrefab.GetComponent<MeshFilter>();    // ノードのメッシュ情報を取得
         Vector3 pos = transform.position;
-        nodeSize.x = nodeMeshInfo.sharedMesh.bounds.size.x * nodePrefab.transform.localScale.x;
-        nodeSize.y = nodeMeshInfo.sharedMesh.bounds.size.y * nodePrefab.transform.localScale.y;
+        nodeSize.x = nodeMeshInfo.sharedMesh.bounds.size.x * gameNodePrefab.transform.localScale.x;
+        nodeSize.y = nodeMeshInfo.sharedMesh.bounds.size.y * gameNodePrefab.transform.localScale.y;
         nodeSize.x -= widthMargin;
         nodeSize.y -= heightMargin;
 
@@ -185,10 +199,10 @@ public class NodeController : MonoBehaviour {
                 pos.z = transform.position.z;
 
                 // 生成
-        	    nodePrefabs[i][j] = (GameObject)Instantiate(nodePrefab, pos, transform.rotation);
-                nodeScripts[i][j] = nodePrefabs[i][j].GetComponent<Node>();
-                nodePrefabs[i][j].transform.SetParent(transform);
-                nodePlacePosList[i][j] = nodePrefabs[i][j].transform.position;
+        	    gameNodePrefabs[i][j] = (GameObject)Instantiate(gameNodePrefab, pos, transform.rotation);
+                nodeScripts[i][j] = gameNodePrefabs[i][j].GetComponent<Node>();
+                gameNodePrefabs[i][j].transform.SetParent(transform);
+                nodePlacePosList[i][j] = gameNodePrefabs[i][j].transform.position;
 
                 // ノードの位置(リストID)を登録
                 nodeScripts[i][j].RegistNodeID(j, i);
@@ -227,8 +241,8 @@ public class NodeController : MonoBehaviour {
         AllCheckOutScreen();
 
         // スライドベクトルの垂線を算出
-        Vector3 leftUp = nodePrefabs[0][1].transform.position - nodePrefabs[0][0].transform.position;
-        Vector3 leftDown = nodePrefabs[1][1].transform.position - nodePrefabs[0][0].transform.position;
+        Vector3 leftUp = gameNodePrefabs[0][1].transform.position - gameNodePrefabs[0][0].transform.position;
+        Vector3 leftDown = gameNodePrefabs[1][1].transform.position - gameNodePrefabs[0][0].transform.position;
         Matrix4x4 mtx = Matrix4x4.identity;
         mtx.SetTRS(new Vector3(0.0f, 0.0f, 0.0f), Quaternion.Euler(0.0f, 0.0f, 90.0f), new Vector3(1.0f, 1.0f, 1.0f));
         leftUp = mtx.MultiplyVector(leftUp).normalized;
@@ -262,8 +276,8 @@ public class NodeController : MonoBehaviour {
                 if(tapNodeID.x > -1) {
                     Vec2Int nextNodeID = GetDirNode(tapNodeID, CheckSlideDir(startTapPos, worldTapPos));
                     if(nextNodeID.x > -1) {
-                        if (Vector3.Distance(nodePrefabs[tapNodeID.y][tapNodeID.x].transform.position, worldTapPos) >
-                            Vector3.Distance(nodePrefabs[nextNodeID.y][nextNodeID.x].transform.position, worldTapPos)) {
+                        if (Vector3.Distance(gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position, worldTapPos) >
+                            Vector3.Distance(gameNodePrefabs[nextNodeID.y][nextNodeID.x].transform.position, worldTapPos)) {
                             isSlide = true;
                             StartSlideNodes(nextNodeID, CheckSlideDir(startTapPos, worldTapPos));
                         }
@@ -370,7 +384,7 @@ public class NodeController : MonoBehaviour {
 
                 // タップしているノードを移動
                 pos = AdjustGameScreen(pos);    // タップ位置調整
-                pos.y = nodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.y;
+                pos.y = gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.y;
                 nodeScripts[tapNodeID.y][tapNodeID.x].SlideNode(slideDir, pos);
 
                 // タップしているノードより左側のノードを移動
@@ -486,9 +500,9 @@ public class NodeController : MonoBehaviour {
     //離すと一番近いノード確定位置まで調整
 
     public void StartSlideNodes(Vec2Int nextNodeID, _eSlideDir newSlideDir) {
-        moveNodeDist = new Vector2(nodePrefabs[nextNodeID.y][nextNodeID.x].transform.position.x, nodePrefabs[nextNodeID.y][nextNodeID.x].transform.position.y)
-                     - new Vector2(nodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.x, nodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.y);   // スライド方向ベクトル兼移動量を算出
-        moveNodeInitPos = nodePrefabs[tapNodeID.y][tapNodeID.x].transform.position;      // ノードの移動開始位置を保存
+        moveNodeDist = new Vector2(gameNodePrefabs[nextNodeID.y][nextNodeID.x].transform.position.x, gameNodePrefabs[nextNodeID.y][nextNodeID.x].transform.position.y)
+                     - new Vector2(gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.x, gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.y);   // スライド方向ベクトル兼移動量を算出
+        moveNodeInitPos = gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position;      // ノードの移動開始位置を保存
         
         // スライド方向を設定
         slideDir = newSlideDir;
@@ -579,18 +593,18 @@ public class NodeController : MonoBehaviour {
         Vec2Int nextNodeID  = Vec2Int.zero;
 
         // ノードIDを調整
-        tapNodeID = SearchTapNode(nodePrefabs[tapNodeID.y][tapNodeID.x].transform.position);
+        tapNodeID = SearchTapNode(gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position);
 
         switch (slideDir) {
             case _eSlideDir.LEFT:
             case _eSlideDir.RIGHT:
                 // タップしているノードを移動
                 if(tapNodeID.y + 2 < col) {
-                    standardPos.x = nodePrefabs[tapNodeID.y + 2][tapNodeID.x].transform.position.x;
+                    standardPos.x = gameNodePrefabs[tapNodeID.y + 2][tapNodeID.x].transform.position.x;
                 } else {
-                    standardPos.x = nodePrefabs[tapNodeID.y - 2][tapNodeID.x].transform.position.x;
+                    standardPos.x = gameNodePrefabs[tapNodeID.y - 2][tapNodeID.x].transform.position.x;
                 }
-                standardPos.y = nodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.y;
+                standardPos.y = gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.y;
                 nodeScripts[tapNodeID.y][tapNodeID.x].SlideNode(slideDir, standardPos);
 
                 // タップしているノードより左側のノードを移動
@@ -611,14 +625,14 @@ public class NodeController : MonoBehaviour {
             case _eSlideDir.RIGHTDOWN:
                 // タップしているノードを移動
                 if(tapNodeID.y + 2 < col) {
-                    standardPos.x = nodePrefabs[tapNodeID.y + 2][tapNodeID.x].transform.position.x;
+                    standardPos.x = gameNodePrefabs[tapNodeID.y + 2][tapNodeID.x].transform.position.x;
                 } else {
-                    standardPos.x = nodePrefabs[tapNodeID.y - 2][tapNodeID.x].transform.position.x;
+                    standardPos.x = gameNodePrefabs[tapNodeID.y - 2][tapNodeID.x].transform.position.x;
                 }
                 if(tapNodeID.x + 1 < AdjustRow(tapNodeID.y)) {
-                    standardPos.y = nodePrefabs[tapNodeID.y][tapNodeID.x + 1].transform.position.y;
+                    standardPos.y = gameNodePrefabs[tapNodeID.y][tapNodeID.x + 1].transform.position.y;
                 } else {
-                    standardPos.y = nodePrefabs[tapNodeID.y][tapNodeID.x - 1].transform.position.y;
+                    standardPos.y = gameNodePrefabs[tapNodeID.y][tapNodeID.x - 1].transform.position.y;
                 }
                 nodeScripts[tapNodeID.y][tapNodeID.x].SlideNode(slideDir, standardPos);
                 
@@ -645,14 +659,14 @@ public class NodeController : MonoBehaviour {
             case _eSlideDir.LEFTDOWN:
                 // タップしているノードを移動
                 if(tapNodeID.y + 2 < col) {
-                    standardPos.x = nodePrefabs[tapNodeID.y + 2][tapNodeID.x].transform.position.x;
+                    standardPos.x = gameNodePrefabs[tapNodeID.y + 2][tapNodeID.x].transform.position.x;
                 } else {
-                    standardPos.x = nodePrefabs[tapNodeID.y - 2][tapNodeID.x].transform.position.x;
+                    standardPos.x = gameNodePrefabs[tapNodeID.y - 2][tapNodeID.x].transform.position.x;
                 }
                 if(tapNodeID.x + 1 < AdjustRow(tapNodeID.y)) {
-                    standardPos.y = nodePrefabs[tapNodeID.y][tapNodeID.x + 1].transform.position.y;
+                    standardPos.y = gameNodePrefabs[tapNodeID.y][tapNodeID.x + 1].transform.position.y;
                 } else {
-                    standardPos.y = nodePrefabs[tapNodeID.y][tapNodeID.x - 1].transform.position.y;
+                    standardPos.y = gameNodePrefabs[tapNodeID.y][tapNodeID.x - 1].transform.position.y;
                 }
                 nodeScripts[tapNodeID.y][tapNodeID.x].SlideNode(slideDir, standardPos);
 
@@ -679,27 +693,27 @@ public class NodeController : MonoBehaviour {
 
     // 任意のノード情報をコピーする
     void CopyNodeInfo(int x, int y, GameObject prefab, Node script) {
-        nodePrefabs[y][x] = prefab;
+        gameNodePrefabs[y][x] = prefab;
         nodeScripts[y][x] = script;
         nodeScripts[y][x].RegistNodeID(x, y);
     }
 
     // 左にはみ出たノードを逆側に移動し、ノード情報をソートする
     void SortLeftOutNode() {
-        GameObject outNode = nodePrefabs[tapNodeID.y][0];
+        GameObject outNode = gameNodePrefabs[tapNodeID.y][0];
         Node outNodeScript = nodeScripts[tapNodeID.y][0];
         
         // ノード入れ替え処理
         for (int i = 1; i < AdjustRow(tapNodeID.y); ++i) {
-            CopyNodeInfo(i - 1, tapNodeID.y, nodePrefabs[tapNodeID.y][i], nodeScripts[tapNodeID.y][i]);
+            CopyNodeInfo(i - 1, tapNodeID.y, gameNodePrefabs[tapNodeID.y][i], nodeScripts[tapNodeID.y][i]);
         }
         CopyNodeInfo(AdjustRow(tapNodeID.y) - 1, tapNodeID.y, outNode, outNodeScript);
 
         // 位置を調整
-        Vector3 pos = nodePrefabs[tapNodeID.y][AdjustRow(tapNodeID.y) - 2].transform.position;
+        Vector3 pos = gameNodePrefabs[tapNodeID.y][AdjustRow(tapNodeID.y) - 2].transform.position;
         pos.x += moveNodeDistAbs.x;
         nodeScripts[tapNodeID.y][AdjustRow(tapNodeID.y) - 1].StopTween();
-        nodePrefabs[tapNodeID.y][AdjustRow(tapNodeID.y) - 1].transform.position = pos;
+        gameNodePrefabs[tapNodeID.y][AdjustRow(tapNodeID.y) - 1].transform.position = pos;
 
         // 選択中のノードIDを更新
         tapNodeID = GetDirNode(tapNodeID, _eLinkDir.L);
@@ -707,20 +721,20 @@ public class NodeController : MonoBehaviour {
 
     // 右にはみ出たノードを逆側に移動し、ノード情報をソートする
     void SortRightOutNode() {
-        GameObject outNode = nodePrefabs[tapNodeID.y][AdjustRow(tapNodeID.y) - 1];
+        GameObject outNode = gameNodePrefabs[tapNodeID.y][AdjustRow(tapNodeID.y) - 1];
         Node outNodeScript = nodeScripts[tapNodeID.y][AdjustRow(tapNodeID.y) - 1];
         
         // ノード入れ替え処理
         for (int i = AdjustRow(tapNodeID.y) - 1; i >= 1; --i) {
-            CopyNodeInfo(i, tapNodeID.y, nodePrefabs[tapNodeID.y][i - 1], nodeScripts[tapNodeID.y][i - 1]);
+            CopyNodeInfo(i, tapNodeID.y, gameNodePrefabs[tapNodeID.y][i - 1], nodeScripts[tapNodeID.y][i - 1]);
         }
         CopyNodeInfo(0, tapNodeID.y, outNode, outNodeScript);
 
         // 位置を調整
-        Vector3 pos = nodePrefabs[tapNodeID.y][1].transform.position;
+        Vector3 pos = gameNodePrefabs[tapNodeID.y][1].transform.position;
         pos.x -= moveNodeDistAbs.x;
         nodeScripts[tapNodeID.y][0].StopTween();
-        nodePrefabs[tapNodeID.y][0].transform.position = pos;
+        gameNodePrefabs[tapNodeID.y][0].transform.position = pos;
         
         // 選択中のノードIDを更新
         tapNodeID = GetDirNode(tapNodeID, _eLinkDir.R);
@@ -728,7 +742,7 @@ public class NodeController : MonoBehaviour {
 
     // 左上にはみ出たノードを逆側に移動し、ノード情報をソートする
     void SortLeftUpOutNode(Vec2Int outNodeID) {
-        GameObject outNode = nodePrefabs[outNodeID.y][outNodeID.x];
+        GameObject outNode = gameNodePrefabs[outNodeID.y][outNodeID.x];
         Node outNodeScript = nodeScripts[outNodeID.y][outNodeID.x];
 
         // ノード入れ替え処理(右下方向に探索)
@@ -737,17 +751,17 @@ public class NodeController : MonoBehaviour {
         while(GetDirNode(limitNodeID, _eLinkDir.RD).x > -1) {
             prevSearchID = limitNodeID;
             limitNodeID = GetDirNode(limitNodeID, _eLinkDir.RD);
-            CopyNodeInfo(prevSearchID.x, prevSearchID.y, nodePrefabs[limitNodeID.y][limitNodeID.x], nodeScripts[limitNodeID.y][limitNodeID.x]);
+            CopyNodeInfo(prevSearchID.x, prevSearchID.y, gameNodePrefabs[limitNodeID.y][limitNodeID.x], nodeScripts[limitNodeID.y][limitNodeID.x]);
         }
         CopyNodeInfo(limitNodeID.x, limitNodeID.y, outNode, outNodeScript);
 
         // 位置を調整
         prevSearchID = GetDirNode(limitNodeID, _eLinkDir.LU);
-        Vector3 pos = nodePrefabs[prevSearchID.y][prevSearchID.x].transform.position;
+        Vector3 pos = gameNodePrefabs[prevSearchID.y][prevSearchID.x].transform.position;
         pos.x += moveNodeDistAbs.x;
         pos.y -= moveNodeDistAbs.y;
         nodeScripts[limitNodeID.y][limitNodeID.x].StopTween();
-        nodePrefabs[limitNodeID.y][limitNodeID.x].transform.position = pos;
+        gameNodePrefabs[limitNodeID.y][limitNodeID.x].transform.position = pos;
         
         // 選択中のノードIDを更新
         tapNodeID = GetDirNode(tapNodeID, _eLinkDir.LU);
@@ -755,7 +769,7 @@ public class NodeController : MonoBehaviour {
 
     // 右下にはみ出たノードを逆側に移動し、ノード情報をソートする
     void SortRightDownOutNode(Vec2Int outNodeID) {
-        GameObject outNode = nodePrefabs[outNodeID.y][outNodeID.x];
+        GameObject outNode = gameNodePrefabs[outNodeID.y][outNodeID.x];
         Node outNodeScript = nodeScripts[outNodeID.y][outNodeID.x];
 
         // ノード入れ替え処理(左上方向に探索)
@@ -764,17 +778,17 @@ public class NodeController : MonoBehaviour {
         while(GetDirNode(limitNodeID, _eLinkDir.LU).x > -1) {
             prevSearchID = limitNodeID;
             limitNodeID = GetDirNode(limitNodeID, _eLinkDir.LU);
-            CopyNodeInfo(prevSearchID.x, prevSearchID.y, nodePrefabs[limitNodeID.y][limitNodeID.x], nodeScripts[limitNodeID.y][limitNodeID.x]);
+            CopyNodeInfo(prevSearchID.x, prevSearchID.y, gameNodePrefabs[limitNodeID.y][limitNodeID.x], nodeScripts[limitNodeID.y][limitNodeID.x]);
         }
         CopyNodeInfo(limitNodeID.x, limitNodeID.y, outNode, outNodeScript);
 
         // 位置を調整
         prevSearchID = GetDirNode(limitNodeID, _eLinkDir.RD);
-        Vector3 pos = nodePrefabs[prevSearchID.y][prevSearchID.x].transform.position;
+        Vector3 pos = gameNodePrefabs[prevSearchID.y][prevSearchID.x].transform.position;
         pos.x -= moveNodeDistAbs.x;
         pos.y += moveNodeDistAbs.y;
         nodeScripts[limitNodeID.y][limitNodeID.x].StopTween();
-        nodePrefabs[limitNodeID.y][limitNodeID.x].transform.position = pos;
+        gameNodePrefabs[limitNodeID.y][limitNodeID.x].transform.position = pos;
         
         // 選択中のノードIDを更新
         tapNodeID = GetDirNode(tapNodeID, _eLinkDir.RD);
@@ -782,7 +796,7 @@ public class NodeController : MonoBehaviour {
 
     // 右上にはみ出たノードを逆側に移動し、ノード情報をソートする
     void SortRightUpOutNode(Vec2Int outNodeID) {
-        GameObject outNode = nodePrefabs[outNodeID.y][outNodeID.x];
+        GameObject outNode = gameNodePrefabs[outNodeID.y][outNodeID.x];
         Node outNodeScript = nodeScripts[outNodeID.y][outNodeID.x];
 
         // ノード入れ替え処理(左下方向に探索)
@@ -791,17 +805,17 @@ public class NodeController : MonoBehaviour {
         while(GetDirNode(limitNodeID, _eLinkDir.LD).x > -1) {
             prevSearchID = limitNodeID;
             limitNodeID = GetDirNode(limitNodeID, _eLinkDir.LD);
-            CopyNodeInfo(prevSearchID.x, prevSearchID.y, nodePrefabs[limitNodeID.y][limitNodeID.x], nodeScripts[limitNodeID.y][limitNodeID.x]);
+            CopyNodeInfo(prevSearchID.x, prevSearchID.y, gameNodePrefabs[limitNodeID.y][limitNodeID.x], nodeScripts[limitNodeID.y][limitNodeID.x]);
         }
         CopyNodeInfo(limitNodeID.x, limitNodeID.y, outNode, outNodeScript);
 
         // 位置を調整
         prevSearchID = GetDirNode(limitNodeID, _eLinkDir.RU);
-        Vector3 pos = nodePrefabs[prevSearchID.y][prevSearchID.x].transform.position;
+        Vector3 pos = gameNodePrefabs[prevSearchID.y][prevSearchID.x].transform.position;
         pos.x -= moveNodeDistAbs.x;
         pos.y -= moveNodeDistAbs.y;
         nodeScripts[limitNodeID.y][limitNodeID.x].StopTween();
-        nodePrefabs[limitNodeID.y][limitNodeID.x].transform.position = pos;
+        gameNodePrefabs[limitNodeID.y][limitNodeID.x].transform.position = pos;
         
         // 選択中のノードIDを更新
         tapNodeID = GetDirNode(tapNodeID, _eLinkDir.RU);
@@ -809,7 +823,7 @@ public class NodeController : MonoBehaviour {
 
     // 左下にはみ出たノードを逆側に移動し、ノード情報をソートする
     void SortLeftDownOutNode(Vec2Int outNodeID) {
-        GameObject outNode = nodePrefabs[outNodeID.y][outNodeID.x];
+        GameObject outNode = gameNodePrefabs[outNodeID.y][outNodeID.x];
         Node outNodeScript = nodeScripts[outNodeID.y][outNodeID.x];
 
         // ノード入れ替え処理(右上方向に探索)
@@ -818,17 +832,17 @@ public class NodeController : MonoBehaviour {
         while(GetDirNode(limitNodeID, _eLinkDir.RU).x > -1) {
             prevSearchID = limitNodeID;
             limitNodeID = GetDirNode(limitNodeID, _eLinkDir.RU);
-            CopyNodeInfo(prevSearchID.x, prevSearchID.y, nodePrefabs[limitNodeID.y][limitNodeID.x], nodeScripts[limitNodeID.y][limitNodeID.x]);
+            CopyNodeInfo(prevSearchID.x, prevSearchID.y, gameNodePrefabs[limitNodeID.y][limitNodeID.x], nodeScripts[limitNodeID.y][limitNodeID.x]);
         }
         CopyNodeInfo(limitNodeID.x, limitNodeID.y, outNode, outNodeScript);
 
         // 位置を調整
         prevSearchID = GetDirNode(limitNodeID, _eLinkDir.LD);
-        Vector3 pos = nodePrefabs[prevSearchID.y][prevSearchID.x].transform.position;
+        Vector3 pos = gameNodePrefabs[prevSearchID.y][prevSearchID.x].transform.position;
         pos.x += moveNodeDistAbs.x;
         pos.y += moveNodeDistAbs.y;
         nodeScripts[limitNodeID.y][limitNodeID.x].StopTween();
-        nodePrefabs[limitNodeID.y][limitNodeID.x].transform.position = pos;
+        gameNodePrefabs[limitNodeID.y][limitNodeID.x].transform.position = pos;
         
         // 選択中のノードIDを更新
         tapNodeID = GetDirNode(tapNodeID, _eLinkDir.LD);
@@ -1304,11 +1318,11 @@ public class NodeController : MonoBehaviour {
             for (int j = 0; j < AdjustRow(i); j++)
             {
                 if (nodeScripts[i][j].CompleteFlag)
-                    treeNodes.Add(nodePrefabs[i][j]);
+                    treeNodes.Add(gameNodePrefabs[i][j]);
             }
 
         }
-        GameObject newTree = (GameObject)Instantiate(treePrefab, transform.position, transform.rotation);
+        GameObject newTree = (GameObject)Instantiate(treeNodePrefab, transform.position, transform.rotation);
         newTree.GetComponent<treeController>().SetTree(treeNodes);
 
 
