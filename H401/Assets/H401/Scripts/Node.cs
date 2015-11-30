@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using DG.Tweening;
+using UniRx;
+using BitArrayExtension;
 //using Assets.Scripts.Utils;
 
 
@@ -22,6 +24,7 @@ public class Node : MonoBehaviour {
     private bool        isAction    = false;            // アクションフラグ
     private bool        isSlide     = false;            // スライドフラグ
     private bool        isOutScreen = false;            // 画面外フラグ
+    private bool        isOutPuzzle = false;            // パズル外フラグ
 
     public BitArray bitLink = new BitArray(6);  //道の繋がりのビット配列　trueが道
                                                 //  5 0
@@ -75,17 +78,28 @@ public class Node : MonoBehaviour {
     {
         meshRenderer = GetComponent<MeshRenderer>();
     }
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         //とりあえずテスト
         //bitLink.
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	    
-	}
+        
+        // IDが変化したときにパズル外フラグを更新
+        Observable
+            .EveryUpdate()
+            .Select(_ => nodeID)
+            .DistinctUntilChanged()
+            .Subscribe(_ =>
+            {
+                CheckOutPuzzle();
+            }).AddTo(this);
+        CheckOutPuzzle();       // 初回だけ手動
+    }
+    
+    // Update is called once per frame
+    void Update () {
+        
+    }
 
     public void RegistNodeID(int row, int col) {
         nodeID.x = row;
@@ -138,7 +152,7 @@ public class Node : MonoBehaviour {
         transform.DOScale(scaleSize, actionTime * 0.5f).SetLoops(2, LoopType.Yoyo);
 
         // @Test ... タップしたノードのID
-        print(nodeID);
+        //print(nodeID);
     }
 
     public void SlideNode(_eSlideDir dir, Vector2 pos) {
@@ -156,7 +170,6 @@ public class Node : MonoBehaviour {
         transform.DOMoveX(pos.x, slideTime)
             .OnComplete(() => {
                 nodeControllerScript.CheckOutScreen(nodeID);
-                nodeControllerScript.CheckLink();
                 if(nodeControllerScript.IsNodeAction)
                     nodeControllerScript.IsNodeAction = false;
             });
@@ -176,98 +189,196 @@ public class Node : MonoBehaviour {
         bitLink[0] = b5;
 
         //とりあえず表示してみる
-        print(OrigLog.ToString(bitLink));
+        //print(OrigLog.ToString(bitLink));
     }
 
-    //ノードごとの道がつながっているか走査(親ビットの方向)
-    //途切れがあれば-1,壁か
-    public int CheckBit(_eLinkDir linkDir,int chain)
+    ///  こっから妹尾
+     
+    // お隣さんから自分への道を保持する。
+    private BitArray Negibor = new BitArray(6);
+    // 情報の更新
+    public void UpdateNegibor()
     {
-        bool bTempChain = true;
-        bCompleted = true;   //最初に立てて、ダメだったら戻す
-
-
-
-        //まず元の方向と道が繋がっていないならダメ
-        if(linkDir == _eLinkDir.NONE)
+        for (int n = 0; n < (int)_eLinkDir.MAX; n++)
         {
-            //根本の場合
-            if (!(bitLink[(int)_eLinkDir.RD] || bitLink[(int)_eLinkDir.LD]))
+            // 周辺ノードを一周ぐるっと
+            Vec2Int Target = nodeControllerScript.GetDirNode(nodeID, (_eLinkDir)n);
+            if (Target.x != -1)
             {
-                bCompleted = false;
-                return -1;
-            }
-        }
-        else
-        {
-            //それ以外の時、つまり他のノードから呼ばれている時
-            if (!bitLink[(int)linkDir]) //元のノード側と道がつながっていなければ
-            {
-                bCompleted = false;
-                return -1;
-            }
-        }
-
-        bChain = true;
-        meshRenderer.material.color = new Color(0.5f, 0.0f, 0.0f);   //とりあえず赤フィルターを掛けてみる
-        //このノードがチェック済ならおｋとする
-        if (bChecked)
-            return 0;
-
-        //ビット配列をすべて見る
-        for(int i = 0 ; i < (int)_eLinkDir.MAX ;i++)
-        {
-            if (linkDir == _eLinkDir.NONE)
-            {
-                //根本の場合、↓方向は飛ばす
-                if (i == (int)_eLinkDir.RD || i == (int)_eLinkDir.LD)
-                    continue;
-            }
-            else
-            {   //それ以外のときは、元の方向は飛ばす
-                if (i == (int)linkDir)
-                    continue;
-            }
-            //道があるならその方向のノードを走査
-            if(bitLink[i])
-            {
-                //ノードコントローラにIDと走査方向を渡し、ノードがあるかを調べる
-                _eLinkDir parentDir = (i + 3 >= 6) ? (_eLinkDir)( i + 3 - 6) : (_eLinkDir)(i + 3);
-                
-                Vec2Int nextPos = nodeControllerScript.GetDirNode(nodeID, (_eLinkDir)i);
-                //ない＝壁なので、その時はおｋを返す
-                if (nextPos.x == 0 || nextPos.y == 0 || nextPos.x == nodeControllerScript.Row - 1 || nextPos.y == nodeControllerScript.Col - 1)
+                Node TgtNode = nodeControllerScript.GetNodeScript(Target);
+                if (TgtNode.isOutPuzzle)
                 {
-                    continue;
+                    // 壁だったら繋がっている判定
+                    Negibor[n] = true;
                 }
                 else
                 {
-                    //ある場合は、そこに元来た方向（走査方向＋３(-６)）を渡しさらに走査
-                    if((chain = nodeControllerScript.GetNodeScript(nextPos).CheckBit(parentDir,chain)) != -1)
-                    {
-                        
-                        continue;
-                    }
-                    else
-                    {
-                        bTempChain = false;
-                        continue;
-                    }
+                    // ノードがあれば、自分と接している場所を見て、取得する。
+                    Negibor[n] = nodeControllerScript.GetNodeScript(Target).bitLink[(n + 3 >= 6) ? (n + 3 - 6) : (n + 3)];
                 }
             }
+            else
+            {
+                // 壁だったら繋がっている判定
+                Negibor[n] = true;
+            }
+        }
+    }
+
+    // 隣と繋がっているかのANDがめんどくさかったんで関数化。
+    public bool LinkedNegibor(_eLinkDir n)
+    {
+        return LinkedNegibor((int)n);
+    }
+    public bool LinkedNegibor(int n)
+    {
+        return Negibor[n] && bitLink[n];
+    }
+
+    // _eLinkDirのToStringもどき。デバック出力用。
+    public string LinkDirToString(int n)
+    {
+        return LinkDirToString((_eLinkDir)n);
+    }
+    public string LinkDirToString(_eLinkDir n)
+    {
+        string[] DbgLinkStr = { "RU", "R ", "RD", "LD", "L ", "LU" };
+        return DbgLinkStr[(int)n];
+    }
+
+    // BitArrayのToStringもどき。デバック出力用。
+    public string ToString(BitArray array)
+    {
+        string str = "";
+        for (int n = 0;n<array.Length ; n++){
+            str += (array[n] ? "1" : "0");
+        }
+        return str;
+    }
+
+    // 隣接判定、ノードごとの処理
+    public void NodeCheckAction(NodeController.NodeLinkTaskChecker Tc, _eLinkDir Link)
+    {
+        // チェック済みでスキップ
+        if (bChecked) { Tc.Branch--; return; }
+
+        // 各種変数定義
+        bool bBranch = false;
+        bChecked = true;
+        Tc.SumNode++;
+
+        // お隣さんを更新
+        UpdateNegibor();
+
+        // 状態表示
+        Tc += (ToString() + "Action \n     Link : " + ToString(bitLink) + "\nNegibor : " + ToString(Negibor));
+        Tc += Tc.NotFin + " : " + Tc.Branch.ToString();
+
+        // チェックスタート
+        // 接地判定（根本のみ）
+        if (Link == _eLinkDir.NONE)     // 根本か確認
+        {
+            if (!bitLink[(int)_eLinkDir.RD] && !bitLink[(int)_eLinkDir.LD]) // 下方向チェック
+            {
+                Tc.Branch--;
+                Tc.SumNode--;
+                bChecked = false;
+                return;                 // 繋がってないなら未チェックとして処理終了
+            }
+            // 繋がっている
+            Tc += ("Ground");
         }
 
-        //問題なければ閲覧済みフラグを立てておｋを返す
-        if (bTempChain)
+        // この時点で枝が繋がっている事が確定
+        meshRenderer.material.color = new Color(0.5f, 0.0f, 0.0f);   //とりあえず赤フィルターを掛けてみる
+        Tc.NodeList.Add(this);  // チェッカに自身を登録しておく
+
+        // 終端ノードであれば、周囲チェック飛ばす
+        var TempBit = new BitArray(6);
+        // 除外方向設定
+        TempBit.SetAll(false);
+        if (Link == _eLinkDir.NONE)
         {
-            bChecked = true;
-            return chain + 1;
+            TempBit.Set((int)_eLinkDir.RD, true);
+            TempBit.Set((int)_eLinkDir.LD, true);
         }
         else
         {
-            bCompleted = false;
-            return -1;
+            TempBit.Set((int)Link, true);
         }
+        TempBit.And(bitLink).Xor(bitLink);    // 自身の道とAND後、自身の道とXOR。
+        if (TempBit.isZero())                           // 比較して一致なら除外方向以外に道がない = XOR後に全0なら終端
+        {
+            Tc.Branch--;                                // 終端ノードであればそこで終了
+            return;
+        }
+
+        // 周囲のチェック
+        // この時点で、TempBitは先が壁の道を除いた自分の道を示している。
+        Tc += "ExcludeFrom MyWay : " + ToString(TempBit);
+        
+        if (TempBit.retAnd(Negibor.retNot()).isNotZero())  // 隣接ノードのうち、道が無い場所に自分の道が伸びてたらそこは途切れている。
+        {
+            Tc += ("NotFin");
+            Tc.NotFin = true;                       // 隣と繋がってないので、枝未完成として登録
+        }
+
+        Tc += ("Negibor : " + ToString(Negibor));
+        TempBit.And(Negibor);                       // 隣接ノードと繋がっている場所を特定
+        Tc += "Linked : "+ToString(TempBit);
+        for (int n = 0; n < (int)_eLinkDir.MAX; n++)
+        {
+            if (!TempBit[n]) { continue; }          // ビット立ってないならスキップ
+
+            // お隣さんと繋がっているので、処理引き渡しの準備
+            bChain = true;
+
+            // デバック表示
+            Tc += ("Linked [" + LinkDirToString(n) + "]");
+
+
+            // 接続先がおかしいならノーカンで
+            Vec2Int Target = nodeControllerScript.GetDirNode(nodeID, (_eLinkDir)n);
+            if (Target.x == -1) { continue; }
+
+            // 分岐を検出してカウント
+            if (!bBranch)
+            {
+                bBranch = true;     // 一回目ならノーカン
+            }
+            else
+            {
+                Tc.Branch++;        // 二回目以降は分岐なので、枝カウンタを+1
+            }
+
+            // 次へ引き渡す
+            Node TgtNode = nodeControllerScript.GetNodeScript(Target);
+            if (TgtNode.isOutPuzzle)
+            {
+                Tc.Branch--;        // 接続先が壁なら処理飛ばして枝解決
+            }
+            else
+            {
+                // 周囲のActionをトリガーさせる
+                Observable
+                .Return(TgtNode)
+                .Subscribe(_ =>
+                {
+                    TgtNode.NodeCheckAction(Tc, (_eLinkDir)((n + 3 >= 6) ? (n + 3 - 6) : (n + 3)));
+                }).AddTo(this);
+            }
+
+        }
+        
+        if (Tc.NotFin && Tc.Branch > 0)
+        {
+            Tc.Branch--;
+        }
+    }
+
+    public override string ToString()
+    {
+        return "Node[" + NodeID.y.ToString() + "][" + NodeID.x.ToString() + "]";
     }
 
     //ノードにタイプ・テクスチャ・道ビット
@@ -322,71 +433,6 @@ public class Node : MonoBehaviour {
         transform.rotation = Quaternion.Euler(new Vector3(0.0f,0.0f,angle));
 
     }
-/*
-    //周囲のノードを１つずつ見ていく走査
-    public bool CheckAround(int row)
-    {
-        bChain = true;
-
-        //根本ノードの場合
-        //↓2方向を見て、どちらかに道がつながっていなければ、未開通ノードとして、
-        //繋がりフラグ、木ビットをfalseにして終了
-        if(row == 1)
-        {
-            if (!(bitLink[(int)_eLinkDir.RD] || bitLink[(int)_eLinkDir.LD]))
-            {
-                bChain = false;
-                bChecked = true;
-            }
-        }
-
-        //それ以外の場合
-        //
-
-
-
-        for (int i = 0,parentDir = 3; i < (int)_eLinkDir.MAX ; i++, parentDir++)
-        {
-            if(parentDir >= 6)
-                parentDir -= 6;
-
-
-
-
-            Vec2Int nextPos = Vec2Int.zero;
-            
-            nodeControllerScript.GetDirNode(nodeID,(_eLinkDir)i);
-
-            //枠外ノードは常につながっている判定とする
-            if (nextPos.x == 0 || nextPos.y == 0 || nextPos.x == nodeControllerScript.Row - 1 || nextPos.y == nodeControllerScript.Col - 1)
-            {
-                continue;
-            }
-
-            //隣り合うノードの道がこっちにつながっているかどうか
-            if(nodeControllerScript.GetNodeScript(nextPos).GetLinkDir((_eLinkDir)parentDir))
-            {
-                //根本部分ならば、根本のどこかを記憶するように
-                if(row == 1 &&(i == (int)_eLinkDir.LU || i == (int)_eLinkDir.RU))
-                {
-
-                }
-            }
-            else 
-            {
-                //ダメだった時、このノードに道をつなげようとしているノードを未開通ノードとする
-                nodeControllerScript.ResetTreeBit(bitTreePath);
-                
-            }
-
-
-            //だめならfalse
-
-
-        }
-        return true;
-    }
-    */
 
     public bool GetLinkDir(_eLinkDir parentDir)
     {
@@ -402,6 +448,12 @@ public class Node : MonoBehaviour {
             n += bitLink[i] ? 1 : 0;
         }
         return n;
+    }
+
+    private bool CheckOutPuzzle()
+    {
+        isOutPuzzle = (nodeID.y < 1 || nodeControllerScript.Col - 2 < nodeID.y || nodeID.x < 1 || nodeControllerScript.AdjustRow(nodeID.y) - 2 < nodeID.x);
+        return isOutPuzzle;
     }
 
     public float GetLeftPos() {

@@ -5,7 +5,7 @@ using UniRx;
 using DG.Tweening;
 using System.Collections.Generic;
 /*  リストIDに関して
-　　col のIDが奇数の行は +1 とする
+  col のIDが奇数の行は +1 とする
 
      ◇◇・・・   (col, row)
     ・・・・◇◇  (col - 1, row + 1)
@@ -108,8 +108,8 @@ public class NodeController : MonoBehaviour {
         }
     }
     
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         scoreScript = GameObject.Find("ScoreNum").GetComponent<Score>();
         timeScript = GameObject.Find("LimitTime").GetComponent<LimitTime>();
         feverScript = GameObject.Find("FeverGauge").GetComponent<FeverGauge>();
@@ -154,7 +154,7 @@ public class NodeController : MonoBehaviour {
                 pos.z = transform.position.z;
 
                 // 生成
-        	    nodePrefabs[i][j] = (GameObject)Instantiate(nodePrefab, pos, transform.rotation);
+                nodePrefabs[i][j] = (GameObject)Instantiate(nodePrefab, pos, transform.rotation);
                 nodeScripts[i][j] = nodePrefabs[i][j].GetComponent<Node>();
                 nodePrefabs[i][j].transform.SetParent(transform);
                 nodePlacePosList[i][j] = nodePrefabs[i][j].transform.position;
@@ -288,11 +288,20 @@ public class NodeController : MonoBehaviour {
             })
             .AddTo(this.gameObject);
 
-        CheckLink();
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        // ノードのアニメーション終了と同時に接続チェック
+        Observable
+            .EveryUpdate()
+            .Select(_ => !IsNodeAction)
+            .DistinctUntilChanged()
+            .Where(x => x)
+            .Subscribe(_ => {
+                CheckLink();
+            }).AddTo(gameObject);
+
+    }
+    
+    // Update is called once per frame
+    void Update () {
         // @デバッグ用
         //for(int i = 0; i < col; ++i) {
         //    for(int j = 0; j < AdjustRow(i); ++j) {
@@ -302,7 +311,7 @@ public class NodeController : MonoBehaviour {
         //            nodeScripts[i][j].MeshRenderer.material.color = new Color(1.0f, 1.0f, 1.0f);
         //    }
         //}
-	}
+    }
     
     // ノード移動処理
     void SlantMove() {
@@ -861,9 +870,9 @@ public class NodeController : MonoBehaviour {
 
     // ゲーム画面外にはみ出ているかチェックする
     public void CheckOutScreen(int x, int y) {
-        if(nodeScripts[y][x].GetLeftPos()   > gameArea.right  ||
-           nodeScripts[y][x].GetRightPos()  < gameArea.left   ||
-           nodeScripts[y][x].GetTopPos()    < gameArea.bottom ||
+        if (nodeScripts[y][x].GetLeftPos() > gameArea.right ||
+           nodeScripts[y][x].GetRightPos() < gameArea.left ||
+           nodeScripts[y][x].GetTopPos() < gameArea.bottom ||
            nodeScripts[y][x].GetBottomPos() > gameArea.top)
             nodeScripts[y][x].IsOutScreen = true;
         else
@@ -885,7 +894,7 @@ public class NodeController : MonoBehaviour {
     }
 
     // 検索したい col に合わせた row を返す
-    int AdjustRow(int col) {
+    public int AdjustRow(int col) {
         return col % 2 == 0 ? row : row + 1;
     }
     
@@ -963,41 +972,126 @@ public class NodeController : MonoBehaviour {
         return newPos;
     }
 
-    public void CheckLink()
+    #region // ノードとノードが繋がっているかを確認する
+    // 接続に関するデバックログのON/OFF
+    static bool bNodeLinkDebugLog = false;
+
+    // ノードの接続を確認するチェッカー
+    public class NodeLinkTaskChecker : System.IDisposable
     {
-        bool bComplete = false; //完成した枝があるか？
-        int nodeNum = 0;
-        //すべてのノードの根本を見る
-        for (int i = 1; i < AdjustRow(1) - 1; i++)
+        static int IDCnt = 0;           // 管理用IDの発行に使用
+        static public List<NodeLinkTaskChecker> Collector = new List<NodeLinkTaskChecker>();    // 動いているチェッカをしまっておくリスト
+
+        public int ID = 0;              // 管理用ID
+        public int Branch = 0;          // 枝の数
+        public bool NotFin = false;     // 枝の"非"完成フラグ
+        public int SumNode = 0;         // 合計ノード数(下の数取得で良いような。)
+        public ArrayList NodeList = new ArrayList();    // 枝に含まれるノード。これを永続させて、クリック判定と組めば大幅な負荷軽減できるかも、
+        private string Log = "";
+
+        // コンストラクタ
+        public NodeLinkTaskChecker()
         {
-            nodeNum = nodeScripts[1][i].CheckBit(_eLinkDir.NONE,0);
-            if(nodeNum >= 3)   //親ノードの方向は↓向きのどちらかにしておく
-            {
-                bComplete = true;                
-            }
-            //１走査ごとに閲覧済みフラグを戻す
-            ResetCheckedFragAll();
-
-
-
+            // IDを発行し、コレクタに格納
+            ID = ++IDCnt;
+            Collector.Add(this);
+            Log += "ID : " + ID.ToString() + "\n";
         }
-        //枝ができていた場合
-        if(bComplete)
-        {
-            //ここに完成しました的なエフェクトを入れる？
 
-            //枝を構成するノードを再配置
-            ReplaceNodeAll();
-            print("枝が完成しました！");
-        }
-        for (int i = 2; i < col - 3; i++  )
+        // Disposeできるように
+        public void Dispose()
         {
-            for(int j = 1 ; j < AdjustRow(i) - 1; j++)
-            {
-                if(!nodeScripts[i][j].ChainFlag)
-                    nodeScripts[i][j].MeshRenderer.material.color = new Color(1.0f, 1.0f, 1.0f);
-                nodeScripts[i][j].ChainFlag = false;
+            // コレクタから削除
+            Collector.Remove(this);
+        }
+
+        // デバック用ToString
+        public override string ToString()
+        {
+            string str = "";
+            if (bNodeLinkDebugLog) {
+                str += Log + "\n--------\n";
             }
+            str += 
+                "ID : " + ID.ToString() + "  " + NotFin + "\n" + 
+                " Branch : " + Branch.ToString() + "\n" + 
+                "SumNode : " + SumNode.ToString() + "\n";
+            foreach (var it in NodeList)
+            {
+                str += it.ToString() + "\n";
+            }
+            return str;
+        }
+
+        // デバック用ログに書き出す
+        static public NodeLinkTaskChecker operator+(NodeLinkTaskChecker Ins,string str)
+        {
+            Ins.Log += str + "\n";
+            return Ins;
+        }
+    }
+
+
+    // 接続をチェックする関数
+    public void CheckLink(bool NoCheckLeftCallback = false)
+    {
+        if (Debug.isDebugBuild && bNodeLinkDebugLog)
+            Debug.Log("CheckLink");
+        
+        // ノードチェッカが帰ってきてないかチェック。これは結構クリティカルなんでログOFFでも出る仕様。
+        if(NodeLinkTaskChecker.Collector.Count != 0 && Debug.isDebugBuild && !NoCheckLeftCallback)
+        {
+            string str = "Left Callback :" + NodeLinkTaskChecker.Collector.Count.ToString() + "\n";
+            foreach (var it in NodeLinkTaskChecker.Collector)
+            {
+                str += it.ToString();
+            }
+            Debug.LogWarning(str);
+        }
+
+        ResetCheckedFragAll();          // 接続フラグを一度クリア
+
+        // 根っこ分繰り返し
+        for (int i = 1; i < row; i++)
+        {
+            // チェッカを初期化
+            var Checker = new NodeLinkTaskChecker();
+
+            // 根っこを叩いて処理スタート
+            Observable
+                .Return(i)
+                .Subscribe(x =>
+                {
+                    Checker += "firstNodeAct_Subscribe [" + Checker.ID + "]";
+                    Checker.Branch++;                                               // 最初に枝カウンタを1にしておく(規定値が0なので+でいいはず)
+                    nodeScripts[1][x].NodeCheckAction(Checker, _eLinkDir.NONE);     // 下から順にチェックスタート。来た方向はNONEにしておいて根っこを識別。
+                }).AddTo(this);
+
+            // キャッチャを起動
+            Observable
+                .NextFrame()
+                .Repeat()
+                .First(_ => Checker.Branch == 0)    // 処理中の枝が0なら終了
+                .Subscribe(_ =>
+                {
+                    if (Debug.isDebugBuild && bNodeLinkDebugLog)
+                        Debug.Log("CheckedCallback_Subscribe [" + Checker.ID + "]" + Checker.SumNode.ToString() + "/" + (Checker.NotFin ? "" : "Fin") + "\n" + Checker.ToString());
+
+                    // ノード数3以上、非完成フラグが立ってないなら
+                    if (Checker.SumNode >= 3 && Checker.NotFin == false)
+                    {
+                        // その枝のノードに完成フラグを立てる
+                        foreach (Node Nodes in Checker.NodeList)
+                        {
+                            Nodes.CompleteFlag = true;
+                        };
+                        ReplaceNodeAll();   // 消去処理
+                        CheckLink(true);    // もう一度チェッカを起動
+                        if (Debug.isDebugBuild && bNodeLinkDebugLog)
+                            print("枝が完成しました！");
+                    }
+                    Checker.Dispose();      // チェッカは役目を終えたので消す
+                }).AddTo(this);
         }
     }
 
@@ -1006,11 +1100,13 @@ public class NodeController : MonoBehaviour {
     {
         for(int i = 0; i < col; ++i) {
             foreach (var nodes in nodeScripts[i]) {
-                //繋がりがない枝は色をここでもどす
+                nodes.MeshRenderer.material.color = new Color(1.0f, 1.0f, 1.0f);  //繋がりがない枝は色をここでもどす
                 nodes.CheckFlag = false;
+
             }
         }
     }
+    #endregion
 
     //位置と方向から、指定ノードに隣り合うノードのrowとcolを返す
     //なければ、(-1,-1)を返す

@@ -23,7 +23,7 @@ public enum _eNodeType{
 };
 
 
-public enum _eLinkDir {
+public enum _eLinkDir : int{
     RU = 0,
     R,
     RD,
