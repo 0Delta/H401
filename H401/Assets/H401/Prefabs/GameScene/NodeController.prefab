@@ -47,7 +47,10 @@ MonoBehaviour:
   heightMargin: .349999994
   headerHeight: 1.25
   treePrefab: {fileID: 154364, guid: 92f8fac9168e74d448a44751d5659f8a, type: 2}
-  levelTableObject: {fileID: 139172, guid: 9ee8b3a8293b37a499c3f52a2f745260, type: 2}
+  levelTableObject: {fileID: 183728, guid: 7682f1e4420a2574a8c6efc49799dfd2, type: 2}
+  levelControllerObject: {fileID: 177698, guid: 9ee8b3a8293b37a499c3f52a2f745260,
+    type: 2}
+  pauseObject: {fileID: 177068, guid: 21ed943c5da952b4d821f14cc3db48d3, type: 2}
   repRotateTime: .5
   nodeMaterials: []
 --- !u!1001 &100100000
@@ -89,7 +92,7 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: levelTableObject
       value: 
-      objectReference: {fileID: 139172, guid: 9ee8b3a8293b37a499c3f52a2f745260, type: 2}
+      objectReference: {fileID: 183728, guid: 7682f1e4420a2574a8c6efc49799dfd2, type: 2}
     - target: {fileID: 0}
       propertyPath: widthMargin
       value: 0
@@ -106,6 +109,14 @@ Prefab:
       propertyPath: repRotateTime
       value: .5
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: pauseObject
+      value: 
+      objectReference: {fileID: 177068, guid: 21ed943c5da952b4d821f14cc3db48d3, type: 2}
+    - target: {fileID: 0}
+      propertyPath: levelControllerObject
+      value: 
+      objectReference: {fileID: 177698, guid: 9ee8b3a8293b37a499c3f52a2f745260, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 174524}
