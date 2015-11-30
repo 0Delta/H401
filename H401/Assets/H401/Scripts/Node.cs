@@ -285,7 +285,7 @@ public class Node : MonoBehaviour {
         }
 
         // この時点で枝が繋がっている事が確定
-        meshRenderer.material.color = new Color(0.5f, 0.0f, 0.0f);   //とりあえず赤フィルターを掛けてみる
+        ChangeEmissionColor(3);  //とりあえず赤フィルターを掛けてみる
         Tc.NodeList.Add(this);  // チェッカに自身を登録しておく
 
         // 終端ノードであれば、周囲チェック飛ばす

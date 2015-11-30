@@ -50,6 +50,11 @@ public class LimitTime : MonoBehaviour {
         if(nowTime > maxTime)
         {
             //ここにゲームオーバー処理
+
+            //スコアをもってくる
+            //ゲームオーバー時のパネルを出して、タップでリザルト画面に行く
+            Resources.Load("GameOverPanel");
+
             print("タイムオーバー");
         }
 

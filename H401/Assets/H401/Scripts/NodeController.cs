@@ -1119,7 +1119,7 @@ public class NodeController : MonoBehaviour {
             {
                             Nodes.CompleteFlag = true;
                         };
-                        ReplaceNodeAll();   // 消去処理
+                        ReplaceNodeTree();   // 消去処理
                         CheckLink(true);    // もう一度チェッカを起動
                         if (Debug.isDebugBuild && bNodeLinkDebugLog)
                             print("枝が完成しました！");
@@ -1134,7 +1134,7 @@ public class NodeController : MonoBehaviour {
     {
         for(int i = 0; i < col; ++i) {
             foreach (var nodes in nodeScripts[i]) {
-                nodes.MeshRenderer.material.color = new Color(1.0f, 1.0f, 1.0f);  //繋がりがない枝は色をここでもどす
+                nodes.ChangeEmissionColor(0);
                 nodes.CheckFlag = false;
 
             }
