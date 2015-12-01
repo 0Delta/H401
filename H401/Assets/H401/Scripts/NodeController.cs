@@ -27,7 +27,7 @@ public class NodeController : MonoBehaviour {
     [SerializeField] private int col = 0;       // 縦配置数
     [SerializeField] private string gameNodePrefabPath  = null;     // ノードのプレハブのパス
     [SerializeField] private string frameNodePrefabPath = null;     // フレームノードのプレハブのパス
-    [SerializeField] private string treeNodePrefabPath  = null;     // 完成ノードのプレハブのパス
+    [SerializeField] private string treeControllerPrefabPath  = null;     // 完成ノードのプレハブのパス
     [SerializeField] private float widthMargin  = 0.0f;  // ノード位置の左右間隔の調整値
     [SerializeField] private float heightMargin = 0.0f;  // ノード位置の上下間隔の調整値
     [SerializeField] private float headerHeight = 0.0f;  // ヘッダーの高さ
@@ -39,7 +39,7 @@ public class NodeController : MonoBehaviour {
     
     private GameObject gameNodePrefab   = null;     // ノードのプレハブ
     private GameObject frameNodePrefab  = null;     // フレームノードのプレハブ
-    private GameObject treeNodePrefab   = null;     // 完成ノードのプレハブ
+    private GameObject treeControllerPrefab   = null;     // 完成ノードのプレハブ
 
     private GameObject[][]  gameNodePrefabs;    // ノードのプレハブリスト
     private Node[][]        nodeScripts;        // ノードのnodeスクリプトリスト
@@ -69,14 +69,42 @@ public class NodeController : MonoBehaviour {
 
     private float RatioSum = 0.0f;                           //合計割合
     
-    private LevelTables levelTableScript = null;
-    private LevelController levelControllerScript;
-    private GameOption pauseScript;
-    
-    private GameObject levelTableObject = null;
-    private GameObject levelControllerObject = null;
-    private GameObject pauseObject = null;
-
+    private LevelTables _levelTableScript = null;
+    public LevelTables levelTableScript
+    {
+        get
+        {
+            if (!_levelTableScript)
+            {
+                _levelTableScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.levelTables;
+            }
+            return _levelTableScript;
+        }
+    }
+    private LevelController _levelControllerScript;
+    public LevelController levelControllerScript
+    {
+        get
+        {
+            if (!_levelControllerScript)
+            {
+                _levelControllerScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.gameUI.levelCotroller;
+            }
+            return _levelControllerScript;
+        }
+    }
+    private GameOption _pauseScript;
+    public GameOption pauseScript
+    {
+        get
+        {
+            if (!_pauseScript)
+            {
+                _pauseScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.gameUI.gamePause;
+            }
+            return _pauseScript;
+        }
+    }
 
     //ノードの配置割合を記憶しておく
 
@@ -106,9 +134,39 @@ public class NodeController : MonoBehaviour {
         get { return nodeSize; }
     }
     
-    private Score scoreScript;          //スコアのスクリプト
-    private LimitTime timeScript;            //制限時間のスクリプト
-    private FeverGauge feverScript;
+    private Score _scoreScript = null;          //スコアのスクリプト
+    public Score scoreScript { 
+        get {
+            if(!_scoreScript)
+            {
+                _scoreScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.gameUI.gameInfoCanvas.score;
+            }
+            return _scoreScript;
+        } 
+    }
+    private LimitTime _timeScript = null;             //制限時間のスクリプト
+    public LimitTime timeScript
+    {
+        get {
+            if (!_timeScript)
+            {
+                _timeScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.gameUI.gameInfoCanvas.limitTime;
+            }
+            return _timeScript;
+        }
+    }
+    private FeverGauge _feverScript = null; 
+    public FeverGauge feverScript
+    {
+        get
+        {
+            if (!_feverScript)
+            {
+                _feverScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.gameUI.gameInfoCanvas.feverGauge;
+            }
+            return _feverScript;
+        }
+    }
     
     public delegate void Replace();             //回転再配置用のデリゲート
 
@@ -135,31 +193,30 @@ public class NodeController : MonoBehaviour {
             nodeScripts[i]      = i % 2 == 0 ? new Node[row] : new Node[row + 1];
             nodePlacePosList[i] = i % 2 == 0 ? new Vector3[row] : new Vector3[row + 1];
         }
+
+        nodeMaterials = new Material[nodeMaterialsPath.Length];
+
+        
+
     }
     
 	// Use this for initialization
 	void Start () {
         // ----- プレハブデータを Resources から取得
-        gameNodePrefab  = Resources.Load<GameObject>(gameNodePrefabPath);
-        frameNodePrefab = Resources.Load<GameObject>(frameNodePrefabPath);
-        treeNodePrefab  = Resources.Load<GameObject>(treeNodePrefabPath);
-        levelTableObject = Resources.Load<GameObject>(levelTableObjectPath);
-        levelControllerObject = Resources.Load<GameObject>(levelControllerObjectPath);
-        pauseObject     = Resources.Load<GameObject>(pauseObjectPath);
-        for(int i = 0; i < nodeMaterialsPath.Length; ++i) {
+
+        gameNodePrefab =  Resources.Load<GameObject>(gameNodePrefabPath);
+        frameNodePrefab =  Resources.Load<GameObject>(frameNodePrefabPath);
+        treeControllerPrefab = Resources.Load<GameObject>(treeControllerPrefabPath);
+
+        for (int i = 0; i < nodeMaterialsPath.Length; ++i)
+        {
             nodeMaterials[i] = Resources.Load<Material>(nodeMaterialsPath[i]);
         }
-        
-        AppliController appController = transform.root.GetComponent<AppliController>();
-        scoreScript = appController.gameScene.gameUI.gameInfoCanvas.gameInfoPanel.score;//GameObject.Find("ScoreNum").GetComponent<Score>();
-        timeScript =  appController.gameScene.gameUI.gameInfoCanvas.gameInfoPanel.limitTime;
-        feverScript = appController.gameScene.gameUI.gameInfoCanvas.gameInfoPanel.feverGauge;
 
-        levelControllerScript = appController.gameScene.gameUI.levelCotroller;
-        pauseScript = appController.gameScene.gameUI.gamePause;
+        //levelControllerScript = appController.gameScene.gameUI.levelCotroller;
+        //pauseScript = appController.gameScene.gameUI.gamePause;
+        //levelTableScript = appController.gameScene.levelTables;
 
-        levelTableScript = appController.gameScene.levelTables;
-        fieldLevel = levelTableScript.GetFieldLevel(0);
 
         // ----- ゲームの画面領域を設定(コライダーから取得)
         BoxCollider2D gameAreaInfo = transform.parent.GetComponent<BoxCollider2D>();    // ゲームの画面領域を担うコライダー情報を取得
@@ -177,7 +234,7 @@ public class NodeController : MonoBehaviour {
         nodeSize.x -= widthMargin;
         nodeSize.y -= heightMargin;
 
-        RatioSum = fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3;  //全体割合を記憶
+
 
 
         // フレームを生成
@@ -186,6 +243,9 @@ public class NodeController : MonoBehaviour {
         frameController.name = "FrameController";
 
         Node.SetNodeController(this); //ノードにコントローラーを設定
+
+        fieldLevel = levelTableScript.GetFieldLevel(0);
+        RatioSum = fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3;  //全体割合を記憶
 
         // ノードを生成
         for(int i = 0; i < col; ++i) {
@@ -1323,7 +1383,7 @@ public class NodeController : MonoBehaviour {
             }
 
         }
-        GameObject newTree = (GameObject)Instantiate(treeNodePrefab, transform.position, transform.rotation);
+        GameObject newTree = (GameObject)Instantiate(treeControllerPrefab, transform.position, transform.rotation);
         newTree.GetComponent<treeController>().SetTree(treeNodes);
 
 

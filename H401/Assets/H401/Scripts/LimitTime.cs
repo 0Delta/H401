@@ -4,10 +4,12 @@ using UnityEngine.UI;
 
 public class LimitTime : MonoBehaviour {
 
-    public Image timeImage;
 
-    private float nowTime;  //現在時間
     [SerializeField] private float maxTime = 0.0f;  //時間の最大値(秒？)
+
+    public Image timeImage;
+    private float nowTime;  //現在時間
+
 
     private Animator ojityanAnimator = null;
 
@@ -25,12 +27,19 @@ public class LimitTime : MonoBehaviour {
 
 //    [SerializeField] private GameObject levelTableObject = null;
 
-    private LevelTables levelTableScript = null;
+    private LevelTables _levelTableScript = null;
+    public LevelTables levelTableScript{
+        get{
+            if(!_levelTableScript)
+                _levelTableScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.levelTables;
+            return _levelTableScript;
+        }
+    }
 
 	// Use this for initialization
 	void Start () {
 
-        levelTableScript = transform.root.GetComponent<AppliController>().gameScene.levelTables;
+        //levelTableScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.levelTables;
 
         timeLevel = levelTableScript.GetTimeLevel(0);
         timeLevelInterval = levelTableScript.TimeLevelInterval;
@@ -38,7 +47,7 @@ public class LimitTime : MonoBehaviour {
 
         nowTimeLevel = 0;
 
-        ojityanAnimator = GameObject.Find("ojityan").GetComponent<Animator>();
+        ojityanAnimator = transform.root.gameObject.GetComponent<AppliController>().gameScene.gameUI.ojityanAnimator;
 	}
 	
 	// Update is called once per frame

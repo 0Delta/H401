@@ -11,7 +11,7 @@ public class TitleButtons : MonoBehaviour {
         // 回転処理(※TODO:new をなんとかしたい)
         trans.DORotate(new Vector3(0.0f, 0.0f, 60.0f), actionTime)
             .OnComplete(() => {
-                transform.root.GetComponent<AppliController>().ChangeScene(AppliController._eSceneID.GAME);
+                transform.root.gameObject.GetComponent<AppliController>().ChangeScene(AppliController._eSceneID.GAME);
             });
         
         // 拡縮処理

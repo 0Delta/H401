@@ -9,6 +9,7 @@ public class LevelController : MonoBehaviour {
     private LevelTables levelTableScript = null;
     private GameController gameController = null;
     private GameObject levelCanvasObject = null;
+    private GameObject levelCanvasPrefab = null;
 
     //ボタンのスクリプト
     //ボタン実体
@@ -37,13 +38,15 @@ public class LevelController : MonoBehaviour {
 	void Start () {
 
         //levelCanvasObject = Resources.Load<GameObject>(levelCanvasString);
-        gameController = transform.root.GetComponent<AppliController>().gameScene.gameController;
+        gameController = transform.root.gameObject.GetComponent<AppliController>().gameScene.gameController;
         nextLevel = -1;
 
         levelState = _eLevelState.STAND;
         Input.gyro.enabled = true;
 
-        levelTableScript = transform.root.GetComponent<AppliController>().gameScene.levelTables;
+        levelTableScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.levelTables;
+
+        levelCanvasPrefab = Resources.Load<GameObject>(levelCanvasPath);
 	}
 	
 	// Update is called once per frame
@@ -103,7 +106,7 @@ public class LevelController : MonoBehaviour {
         
         //難易度選択をinstantiateする
 
-        levelCanvasObject = Resources.Load<GameObject>(levelCanvasPath);//(GameObject)Instantiate(canvasPrefab, transform.position, transform.rotation);
+        levelCanvasObject = Instantiate(levelCanvasPrefab);//(GameObject)Instantiate(canvasPrefab, transform.position, transform.rotation);
         levelCanvasObject.transform.SetParent(this.transform);
         
         panelScript = levelCanvasObject.GetComponentInChildren<LevelPanel>();

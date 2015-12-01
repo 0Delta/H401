@@ -17,7 +17,7 @@ public class GameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        nodeControllerObject    = Resources.Load<GameObject>(nodeControllerPath);
+        nodeControllerObject    = Instantiate(Resources.Load<GameObject>(nodeControllerPath));
 
         _nodeController = nodeControllerObject.GetComponent<NodeController>();
 

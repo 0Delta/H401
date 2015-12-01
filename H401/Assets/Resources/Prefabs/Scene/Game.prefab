@@ -39,18 +39,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1606d6956cd4cb44f9019e99fcf90238, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameControllerPath: Prefabs/GameScene/GameCotroller
+  gameControllerPath: Prefabs/GameScene/GameController
   eventSystemPath: Prefabs/GameScene/EventSystem
   gameUIPath: Prefabs/GameScene/GameUI
   levelTablePath: Prefabs/GameScene/LevelTables
-  mainCameraPath: Prefabs/GameScene/MainCamera
+  mainCameraPath: Prefabs/GameScene/Main Camera
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: gameControllerPath
+      value: Prefabs/GameScene/GameController
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: mainCameraPath
+      value: Prefabs/GameScene/Main Camera
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 168570}

@@ -49,9 +49,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -63,11 +61,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 166286}
-<<<<<<< HEAD:H401/Assets/H401/Prefabs/GameScene/Node.prefab
-  m_Mesh: {fileID: 4300000, guid: 5dbd8112b346f3144bf3feb9bd9aa453, type: 3}
-=======
-  m_Mesh: {fileID: 4300000, guid: 581e2fc5d1946324abb01c8445a53fb8, type: 3}
->>>>>>> UpStream/master:H401/Assets/Resources/Prefabs/GameScene/GameNode.prefab
+  m_Mesh: {fileID: 4300000, guid: 9ea6f047a8ff7ed4e9285551fa4cda1e, type: 3}
 --- !u!64 &6414486
 MeshCollider:
   m_ObjectHideFlags: 1
@@ -121,11 +115,7 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Mesh
       value: 
-<<<<<<< HEAD:H401/Assets/H401/Prefabs/GameScene/Node.prefab
-      objectReference: {fileID: 4300000, guid: 5dbd8112b346f3144bf3feb9bd9aa453, type: 3}
-=======
-      objectReference: {fileID: 4300000, guid: 581e2fc5d1946324abb01c8445a53fb8, type: 3}
->>>>>>> UpStream/master:H401/Assets/Resources/Prefabs/GameScene/GameNode.prefab
+      objectReference: {fileID: 4300000, guid: 9ea6f047a8ff7ed4e9285551fa4cda1e, type: 3}
     - target: {fileID: 0}
       propertyPath: colorDuration
       value: .5

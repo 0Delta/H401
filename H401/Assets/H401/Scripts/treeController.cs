@@ -13,13 +13,20 @@ public class treeController : MonoBehaviour {
     [SerializeField]private float popPostionY = 0.0f;
     [SerializeField]private float popSize = 0.0f;
     [SerializeField]private float movePositionY = 0.0f;
-    [SerializeField]private GameObject treePrefab = null;
-
+    [SerializeField]private string treePrefabPath = null;
     [SerializeField]private Color emissionColor;
+
+    static private GameObject treeNodePrefab = null;
+
+    void Awake()
+    {
+        if (!treeNodePrefab)
+            treeNodePrefab = Resources.Load<GameObject>(treePrefabPath);
+    }
 
 	// Use this for initialization
 	void Start () {
-	
+
 	}
 	
 	// Update is called once per frame
@@ -37,7 +44,10 @@ public class treeController : MonoBehaviour {
         foreach(var node in trees)
         {
             //場所
-            treeObjects[i] = (GameObject)Instantiate(treePrefab, node.transform.position + new Vector3(0.0f,0.0f,-1.0f), node.transform.rotation);
+            treeObjects[i] = Instantiate(treeNodePrefab);
+            treeObjects[i].transform.position = node.transform.position + new Vector3(0.0f,0.0f,-1.0f);
+            treeObjects[i].transform.rotation = node.transform.rotation;
+            //    (GameObject)Instantiate(treePrefab, node.transform.position + , node.transform.rotation);
             Material mat = treeObjects[i].GetComponent<MeshRenderer>().material;
             mat = node.GetComponent<MeshRenderer>().material;
             mat.EnableKeyword("_EMISSION");

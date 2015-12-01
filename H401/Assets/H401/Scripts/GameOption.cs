@@ -17,7 +17,8 @@ public class GameOption : MonoBehaviour {
 	// Use this for initialization
     void Start()
     {
-
+        AppliController app = transform.root.gameObject.GetComponent<AppliController>();
+        GetComponentInChildren<Canvas>().worldCamera= app.gameScene.mainCamera;
     }
 	
 	// Update is called once per frame

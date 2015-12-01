@@ -3,22 +3,26 @@ using System.Collections;
 
 public class GameInfoCanvas : MonoBehaviour {
 
-    [SerializeField]private string gameInfoPanelPath = null;
 
     private GameObject gameInfoPanelObject = null;
 
-    private GameInfoPanel _gameInfoPanel = null;
+    private Score _score;
+    public Score score { get { return _score; } }
+    private LimitTime _limitTime;
+    public LimitTime limitTime { get { return _limitTime; } }
+    private FeverGauge _feverGauge;
+    public FeverGauge feverGauge {get {return _feverGauge;}}
 
-    public GameInfoPanel gameInfoPanel {get {return _gameInfoPanel;}}
 
 
 	// Use this for initialization
 	void Start () {
-        gameInfoPanelObject = Resources.Load<GameObject>(gameInfoPanelPath);
+        GetComponentInChildren<Canvas>().worldCamera = Camera.main;//transform.root.gameObject.GetComponent<AppliController>().gameScene.mainCamera;
 
-        _gameInfoPanel = gameInfoPanelObject.GetComponent<GameInfoPanel>();
+        _score = GetComponentInChildren<Score>();
+        _limitTime = GetComponentInChildren<LimitTime>();
+        _feverGauge = GetComponentInChildren<FeverGauge>();
 
-        gameInfoPanelObject.transform.SetParent(transform);
 	
 	}
 	

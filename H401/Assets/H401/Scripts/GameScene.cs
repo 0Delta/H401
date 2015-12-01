@@ -25,26 +25,33 @@ public class GameScene : MonoBehaviour {
     public LevelTables      levelTables { get { return _levelTables; } }
     public Camera mainCamera { get { return _mainCamera; } }
 
-
+    void Awake()
+    {
+  
+    }
 
 	// Use this for initialization
 	void Start () {
-        gameControllerObject    = Resources.Load<GameObject>(gameControllerPath);
-        eventSystemObject       = Resources.Load<GameObject>(eventSystemPath);
-        gameUIObject            = Resources.Load<GameObject>(gameUIPath);
-        levelTableObject        = Resources.Load<GameObject>(levelTablePath);
-        mainCameraObject        = Resources.Load<GameObject>(mainCameraPath);
-
-        gameControllerObject.transform.SetParent(transform);
-        eventSystemObject.transform.SetParent(transform);
-        gameUIObject.transform.SetParent(transform);
-        levelTableObject.transform.SetParent(transform);
-        mainCameraObject.transform.SetParent(transform);
-
-        _gameController = gameControllerObject.GetComponent<GameController>();
-        _gameUI = gameUIObject.GetComponent<GameUI>();
+        levelTableObject =  Instantiate(Resources.Load<GameObject>(levelTablePath));
+        levelTableObject.transform.SetParent(transform);   
         _levelTables = levelTableObject.GetComponent<LevelTables>();
+
+
+        mainCameraObject =  Instantiate(Resources.Load<GameObject>(mainCameraPath));
+        mainCameraObject.transform.SetParent(transform);
         _mainCamera = mainCameraObject.GetComponent<Camera>();
+
+        eventSystemObject =  Instantiate(Resources.Load<GameObject>(eventSystemPath));
+        eventSystemObject.transform.SetParent(transform);
+
+        gameUIObject =  Instantiate(Resources.Load<GameObject>(gameUIPath));
+        gameUIObject.transform.SetParent(transform);
+        _gameUI = gameUIObject.GetComponent<GameUI>();
+
+        gameControllerObject = Instantiate(Resources.Load<GameObject>(gameControllerPath));
+        _gameController = gameControllerObject.GetComponent<GameController>();
+        gameControllerObject.transform.SetParent(transform);
+
 
 	}
 	

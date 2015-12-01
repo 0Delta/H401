@@ -23,12 +23,18 @@ public class GameUI : MonoBehaviour {
     public GameOption       gamePause { get { return  _gamePause; } }
     public Animator         ojityanAnimator { get { return _ojityanAnimator; } }
 
+    void Awake()
+    {
+
+    }
+
 	// Use this for initialization
 	void Start () {
-        levelControllerObject   = Resources.Load<GameObject>(levelControllerPath);
-        ojityanObject           = Resources.Load<GameObject>(ojityanPath);
-        gameInfoCanvasObject    = Resources.Load<GameObject>(gameInfoCanvasPath);
-        gamePauseObject         = Resources.Load<GameObject>(gamePausePath);
+
+        levelControllerObject   = Instantiate(Resources.Load<GameObject>(levelControllerPath));
+        ojityanObject           = Instantiate(Resources.Load<GameObject>(ojityanPath));
+        gameInfoCanvasObject    = Instantiate(Resources.Load<GameObject>(gameInfoCanvasPath));
+        gamePauseObject         = Instantiate(Resources.Load<GameObject>(gamePausePath));
 
         levelControllerObject.transform.SetParent(transform);
         ojityanObject.transform.SetParent(transform);    

@@ -93,10 +93,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
-      propertyPath: scenePrefabs.Array.size
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 475860, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -128,34 +124,6 @@ Prefab:
     - target: {fileID: 475860, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
       propertyPath: m_RootOrder
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
-      propertyPath: scenePrefabs.Array.data[0]
-      value: 
-      objectReference: {fileID: 187854, guid: 6cf35cb41ab682f4183854b1b5518f43, type: 2}
-    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
-      propertyPath: scenePrefabs.Array.data[1]
-      value: 
-      objectReference: {fileID: 183888, guid: 9ee8b3a8293b37a499c3f52a2f745260, type: 2}
-    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
-      propertyPath: scenePrefabs.Array.data[2]
-      value: 
-      objectReference: {fileID: 173940, guid: 2da4db010ad14e1408c5899a7f5a18c5, type: 2}
-    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
-      propertyPath: scenePrefabs.Array.data[3]
-      value: 
-      objectReference: {fileID: 176670, guid: 822d012ed3fdab440a9b19b1fc809509, type: 2}
-    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
-      propertyPath: scenePrefabs.Array.data[4]
-      value: 
-      objectReference: {fileID: 183740, guid: b8b85d7b24dd47f43893c08abb873c94, type: 2}
-    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
-      propertyPath: scenePrefabs.Array.data[5]
-      value: 
-      objectReference: {fileID: 116258, guid: 96b8bba368661e646a2c0ea274081da7, type: 2}
-    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
-      propertyPath: startSceneID
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
