@@ -23,14 +23,14 @@ public class LimitTime : MonoBehaviour {
 
     private float startTime;
 
-    [SerializeField] private GameObject levelTableObject = null;
+//    [SerializeField] private GameObject levelTableObject = null;
 
     private LevelTables levelTableScript = null;
 
 	// Use this for initialization
 	void Start () {
 
-        levelTableScript = levelTableObject.GetComponent<LevelTables>();
+        levelTableScript = transform.root.GetComponent<AppliController>().gameScene.levelTables;
 
         timeLevel = levelTableScript.GetTimeLevel(0);
         timeLevelInterval = levelTableScript.TimeLevelInterval;

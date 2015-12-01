@@ -3,11 +3,15 @@ using System.Collections;
 
 public class LevelCanvas : MonoBehaviour {
 
-    private Canvas canvas;
+    [SerializeField]private string levelPanelString;
+    private GameObject levelPanelObject;
+
 	// Use this for initialization
 	void Start () {
-        canvas = GetComponent<Canvas>();
-        canvas.worldCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        levelPanelObject = Resources.Load<GameObject>(levelPanelString);
+
+        levelPanelObject.transform.SetParent(gameObject.transform);
+
 	}
 	
 	// Update is called once per frame

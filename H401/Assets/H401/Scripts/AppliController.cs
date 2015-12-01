@@ -32,6 +32,9 @@ public class AppliController : MonoBehaviour {
 
     private GameObject  currentScenePrefab;       // 現在のシーンの Prefab
 
+    private GameScene _gameScene = null;
+    public GameScene gameScene { get { return _gameScene; } }
+
 //===============================================================
 // メンバ関数
 //===============================================================
@@ -61,5 +64,12 @@ public class AppliController : MonoBehaviour {
         // 新しいシーンを生成
         currentScenePrefab = (GameObject)Instantiate(scenePrefabs[(int)id], transform.position, transform.rotation);
         currentScenePrefab.transform.SetParent(transform);
+
+        switch (id)
+        {
+            case _eSceneID.GAME:
+                _gameScene = currentScenePrefab.GetComponent<GameScene>();
+                break;
+        }
 	}
 }

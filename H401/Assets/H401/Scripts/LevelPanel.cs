@@ -42,7 +42,7 @@ public class LevelPanel : MonoBehaviour {
     {
         //levelController.NextLevel = -1;
 
-        levelController = GameObject.Find("levelController").GetComponent<LevelController>();
+        levelController = GetComponentInParent<LevelController>();
         levelController.NextLevel = -1;
         float rot = levelController.LyingAngle;
 

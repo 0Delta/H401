@@ -17,10 +17,10 @@ public class FeverGauge : MonoBehaviour {
         get { return _feverState; }
     }
 
-    [SerializeField]private GameObject FLightPrefab = null;
+    [SerializeField]private string FLightPath = null;
     private GameObject FLightObject = null;
 
-    [SerializeField]private GameObject levelTableObject = null;
+//    [SerializeField]private GameObject levelTableObject = null;
     [SerializeField]private Vector3 lightPosition;
 
     [SerializeField]private Color FGEmission;
@@ -34,7 +34,7 @@ public class FeverGauge : MonoBehaviour {
 
         _feverState = _eFeverState.NORMAL;
 
-        LevelTables ltScript = levelTableObject.GetComponent<LevelTables>();
+        LevelTables ltScript = transform.root.GetComponent<AppliController>().gameScene.levelTables;
         gainRatio = ltScript.FeverGainRatio;
         decreaseRatio = ltScript.FeverDecreaseRatio;
 
@@ -89,7 +89,9 @@ public class FeverGauge : MonoBehaviour {
                 break;
             case _eFeverState.FEVER:
                 //中心地点を設定しなければならないらしい
-                FLightObject = (GameObject)Instantiate(FLightPrefab,lightPosition,transform.rotation);
+                FLightObject = Resources.Load<GameObject>(FLightPath);
+                FLightObject.transform.position = lightPosition;
+                    //lightPosition,transform.rotation);
                 FGImage.material.EnableKeyword("_EMISSION");
                 FGImage.material.SetColor("_EmissionColor",FGEmission);
                 feverValue = GAUGE_MAX;

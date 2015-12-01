@@ -149,15 +149,16 @@ public class NodeController : MonoBehaviour {
         for(int i = 0; i < nodeMaterialsPath.Length; ++i) {
             nodeMaterials[i] = Resources.Load<Material>(nodeMaterialsPath[i]);
         }
-
-        scoreScript = GameObject.Find("ScoreNum").GetComponent<Score>();
-        timeScript = GameObject.Find("LimitTime").GetComponent<LimitTime>();
-        feverScript = GameObject.Find("FeverGauge").GetComponent<FeverGauge>();
         
-        levelControllerScript = levelControllerObject.GetComponent<LevelController>();
-        pauseScript = pauseObject.GetComponent<GameOption>();
+        AppliController appController = transform.root.GetComponent<AppliController>();
+        scoreScript = appController.gameScene.gameUI.gameInfoCanvas.gameInfoPanel.score;//GameObject.Find("ScoreNum").GetComponent<Score>();
+        timeScript =  appController.gameScene.gameUI.gameInfoCanvas.gameInfoPanel.limitTime;
+        feverScript = appController.gameScene.gameUI.gameInfoCanvas.gameInfoPanel.feverGauge;
 
-        levelTableScript = levelTableObject.GetComponent<LevelTables>();
+        levelControllerScript = appController.gameScene.gameUI.levelCotroller;
+        pauseScript = appController.gameScene.gameUI.gamePause;
+
+        levelTableScript = appController.gameScene.levelTables;
         fieldLevel = levelTableScript.GetFieldLevel(0);
 
         // ----- ゲームの画面領域を設定(コライダーから取得)

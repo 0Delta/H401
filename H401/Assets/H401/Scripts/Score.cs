@@ -30,7 +30,7 @@ public class Score : MonoBehaviour {
 
     void Awake()
     {
-        scoreText = GameObject.Find("ScoreNum").GetComponent<Text>();
+        //scoreText = GameObject.Find("ScoreNum").GetComponent<Text>();
     }
 
 	// Use this for initialization
