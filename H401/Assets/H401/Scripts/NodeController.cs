@@ -31,9 +31,9 @@ public class NodeController : MonoBehaviour {
     [SerializeField] private float widthMargin  = 0.0f;  // ノード位置の左右間隔の調整値
     [SerializeField] private float heightMargin = 0.0f;  // ノード位置の上下間隔の調整値
     [SerializeField] private float headerHeight = 0.0f;  // ヘッダーの高さ
-    [SerializeField] private string levelTableObjectPath = null;
-    [SerializeField] private string levelControllerObjectPath = null;
-    [SerializeField] private string pauseObjectPath = null;
+//    [SerializeField] private string levelTableObjectPath = null;
+//    [SerializeField] private string levelControllerObjectPath = null;
+//    [SerializeField] private string pauseObjectPath = null;
     [SerializeField] private float repRotateTime = 0;//ノード再配置時の時間
     [SerializeField] private string[] nodeMaterialsPath = null;
     
