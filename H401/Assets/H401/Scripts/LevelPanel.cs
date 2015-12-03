@@ -7,7 +7,6 @@ public class LevelPanel : MonoBehaviour {
 
     [SerializeField]private float popTime = 0.0f;
     [SerializeField]private float popScale = 0.0f;
-    [SerializeField]private string buttonPrefabPath = null;
     private GameObject buttonPrefab = null;    //ボタンのプレハブ
 //    private GameObject gameController = null;
 //    public void SetGameController(GameObject game) { gameController = game; }
@@ -28,8 +27,6 @@ public class LevelPanel : MonoBehaviour {
     void Awake()
     {
         //ここのマジックナンバーはどうにかしたいが
-        buttonObjects = new GameObject[5];
-        buttonScripts = new LevelButton[5];
 
 //        gameController = GameObject.Find("GameController");
     }
@@ -37,7 +34,6 @@ public class LevelPanel : MonoBehaviour {
 	// Use this for initialization
     void Start()
     {
-        buttonPrefab = Resources.Load<GameObject>(buttonPrefabPath);
         //levelController.NextLevel = -1;
 
         levelController = GetComponentInParent<LevelController>();
@@ -50,21 +46,14 @@ public class LevelPanel : MonoBehaviour {
 
 
         //ボタンを並べてリンクを付ける
-        
 
-
-        for(int i = 0 ; i < 5 ; i ++)
+        buttonScripts = GetComponentsInChildren<LevelButton>();
+        int i = 0;
+        foreach(var button in buttonScripts)
         {
-            Vector3 pos = transform.position;
-            pos.y += 42.0f * ((i % 2) == 0 ? 1.0f : -1.0f);
-            pos.x += -100.0f + 50.0f * i;
 
-            buttonObjects[i] = (GameObject)Instantiate(buttonPrefab, pos, transform.rotation);
-            buttonObjects[i].transform.SetParent(transform);
-            buttonScripts[i] = buttonObjects[i].GetComponent<LevelButton>();
-
-            //その他の設定
-            buttonScripts[i].RegistLevelNumber(i);
+            button.RegistLevelNumber(i);
+            i++;
         }
 
         LevelButton.SetPanel(this);

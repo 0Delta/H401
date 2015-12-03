@@ -41,7 +41,7 @@ public class GameOption : MonoBehaviour {
         gameObject.GetComponentInChildren<Button>().interactable = false;
 
         //パネル生成
-        Transform trans = gameObject.transform.FindChild("PauseCanvas").transform;
+        //Transform trans = gameObject.transform.FindChild("PauseCanvas").transform;
         panelObject = Resources.Load<GameObject>(pausePanelPath);
         
 

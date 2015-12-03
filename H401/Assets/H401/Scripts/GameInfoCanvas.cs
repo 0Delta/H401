@@ -4,7 +4,7 @@ using System.Collections;
 public class GameInfoCanvas : MonoBehaviour {
 
 
-    private GameObject gameInfoPanelObject = null;
+//    private GameObject gameInfoPanelObject = null;
 
     private Score _score;
     public Score score { get { return _score; } }
