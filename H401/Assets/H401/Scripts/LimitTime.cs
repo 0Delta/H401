@@ -30,14 +30,17 @@ public class LimitTime : MonoBehaviour {
     private LevelTables _levelTableScript = null;
     public LevelTables levelTableScript{
         get{
-            if(!_levelTableScript)
-                _levelTableScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.levelTables;
+            if(!_levelTableScript) {
+                GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+                _levelTableScript = gameScene.levelTables;
+            }
             return _levelTableScript;
         }
     }
 
 	// Use this for initialization
 	void Start () {
+        GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
 
         //levelTableScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.levelTables;
 
@@ -47,7 +50,7 @@ public class LimitTime : MonoBehaviour {
 
         nowTimeLevel = 0;
 
-        ojityanAnimator = transform.root.gameObject.GetComponent<AppliController>().gameScene.gameUI.ojityanAnimator;
+        ojityanAnimator = gameScene.gameUI.ojityanAnimator;
 	}
 	
 	// Update is called once per frame

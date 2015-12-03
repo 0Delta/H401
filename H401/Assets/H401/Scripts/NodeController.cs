@@ -76,7 +76,8 @@ public class NodeController : MonoBehaviour {
         {
             if (!_levelTableScript)
             {
-                _levelTableScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.levelTables;
+                GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+                _levelTableScript = gameScene.levelTables;
             }
             return _levelTableScript;
         }
@@ -88,7 +89,8 @@ public class NodeController : MonoBehaviour {
         {
             if (!_levelControllerScript)
             {
-                _levelControllerScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.gameUI.levelCotroller;
+                GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+                _levelControllerScript = gameScene.gameUI.levelCotroller;
             }
             return _levelControllerScript;
         }
@@ -100,7 +102,8 @@ public class NodeController : MonoBehaviour {
         {
             if (!_pauseScript)
             {
-                _pauseScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.gameUI.gamePause;
+                GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+                _pauseScript = gameScene.gameUI.gamePause;
             }
             return _pauseScript;
         }
@@ -139,7 +142,8 @@ public class NodeController : MonoBehaviour {
         get {
             if(!_scoreScript)
             {
-                _scoreScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.gameUI.gameInfoCanvas.score;
+                GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+                _scoreScript = gameScene.gameUI.gameInfoCanvas.score;
             }
             return _scoreScript;
         } 
@@ -150,7 +154,8 @@ public class NodeController : MonoBehaviour {
         get {
             if (!_timeScript)
             {
-                _timeScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.gameUI.gameInfoCanvas.limitTime;
+                GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+                _timeScript = gameScene.gameUI.gameInfoCanvas.limitTime;
             }
             return _timeScript;
         }
@@ -162,7 +167,8 @@ public class NodeController : MonoBehaviour {
         {
             if (!_feverScript)
             {
-                _feverScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.gameUI.gameInfoCanvas.feverGauge;
+                GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+                _feverScript = gameScene.gameUI.gameInfoCanvas.feverGauge;
             }
             return _feverScript;
         }
@@ -189,9 +195,10 @@ public class NodeController : MonoBehaviour {
         gameNodeScripts  = new Node[col][];
         nodePlacePosList = new Vector3[col][];
         for(int i = 0; i < col; ++i) {
-            gameNodePrefabs[i]      = i % 2 == 0 ? new GameObject[row] : new GameObject[row + 1];
-            gameNodeScripts[i]      = i % 2 == 0 ? new Node[row] : new Node[row + 1];
-            nodePlacePosList[i] = i % 2 == 0 ? new Vector3[row] : new Vector3[row + 1];
+            int adjustRow = AdjustRow(i);
+            gameNodePrefabs[i]  = new GameObject[adjustRow];
+            gameNodeScripts[i]  = new Node[adjustRow];
+            nodePlacePosList[i] = new Vector3[adjustRow];
         }
 
         nodeMaterials = new Material[nodeMaterialsPath.Length];
@@ -999,7 +1006,7 @@ public class NodeController : MonoBehaviour {
 
 	// 検索したい col に合わせた row を返す
 	public int AdjustRow(int col) {
-		return col % 2 == 0 ? row : row + 1;
+		return col % 2 == 0 ? row + 1 : row;
 	}
 	
 	// リンク方向の端のノードIDを算出する
@@ -1223,7 +1230,7 @@ public class NodeController : MonoBehaviour {
 		nextNodeID.x = x;
 		nextNodeID.y = y;
 
-		bool Odd = ((y % 2) == 0) ? false : true;
+		bool Odd = ((y % 2) == 0) ? true : false;
 
 		//次のノード番号の計算
 		switch(toDir)

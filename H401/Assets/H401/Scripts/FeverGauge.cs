@@ -31,12 +31,14 @@ public class FeverGauge : MonoBehaviour {
     //private FeverLevelInfo feverLevel;
 	// Use this for initialization
 	void Start () {
+        GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+
         feverValue = 0.0f;
         FGImage.fillAmount = 0.0f;
 
         _feverState = _eFeverState.NORMAL;
 
-        LevelTables ltScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.levelTables;
+        LevelTables ltScript = gameScene.levelTables;
         gainRatio = ltScript.FeverGainRatio;
         decreaseRatio = ltScript.FeverDecreaseRatio;
 

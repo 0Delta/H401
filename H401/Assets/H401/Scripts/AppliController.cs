@@ -28,12 +28,9 @@ public class AppliController : MonoBehaviour {
     public _eSceneID startSceneID;      // ゲーム開始時のシーンID
 
 // ----- private:
-    [SerializeField]private string[] scenePaths;//GameObject[] scenePrefabs;		// シーン Prefab リスト
+    [SerializeField] private string[] scenePrefabPaths;     // シーン Prefab の Path リスト
 
     private GameObject  currentScenePrefab;       // 現在のシーンの Prefab
-
-    private GameScene _gameScene = null;
-    public GameScene gameScene { get { return _gameScene; } }
 
 //===============================================================
 // メンバ関数
@@ -62,22 +59,14 @@ public class AppliController : MonoBehaviour {
         Destroy(currentScenePrefab);
 
         // 新しいシーンを生成
-        currentScenePrefab = Instantiate(Resources.Load<GameObject>(scenePaths[(int)id]));
+        currentScenePrefab = Instantiate(Resources.Load<GameObject>(scenePrefabPaths[(int)id]));
         currentScenePrefab.transform.SetParent(transform);
-        //currentScenePrefab.transform.position = transform.position;
-        //currentScenePrefab.transform.rotation = transform.rotation;
-
-            //(GameObject)Instantiate(scenePrefabs[(int)id], transform.position, transform.rotation);
-        switch (id)
-        {
-            case _eSceneID.GAME:
-                _gameScene = currentScenePrefab.GetComponent<GameScene>();
-                break;
-        }
-
-
- 
-
-
 	}
+
+	//---------------------------------------------------------------
+	// 現在のシーンを取得
+	//---------------------------------------------------------------
+    public GameObject GetCurrentScene() {
+        return currentScenePrefab;
+    }
 }

@@ -36,15 +36,16 @@ public class LevelController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
 
         //levelCanvasObject = Resources.Load<GameObject>(levelCanvasString);
-        gameController = transform.root.gameObject.GetComponent<AppliController>().gameScene.gameController;
+        gameController = gameScene.gameController;
         nextLevel = -1;
 
         levelState = _eLevelState.STAND;
         Input.gyro.enabled = true;
 
-        levelTableScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.levelTables;
+        levelTableScript = gameScene.levelTables;
 
         levelCanvasPrefab = Resources.Load<GameObject>(levelCanvasPath);
 	}

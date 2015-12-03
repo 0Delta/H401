@@ -40,12 +40,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startSceneID: 1
-  scenePaths:
+  scenePrefabPaths:
   - Prefabs/Scene/Title
   - Prefabs/Scene/Game
   - Prefabs/Scene/Result
-  - Prefabs/Scene/OnlineRanking
   - Prefabs/Scene/OfflineRanking
+  - Prefabs/Scene/OnlineRanking
   - Prefabs/Scene/Option
 --- !u!1001 &100100000
 Prefab:
