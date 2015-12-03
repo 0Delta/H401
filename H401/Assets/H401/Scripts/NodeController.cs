@@ -1189,7 +1189,7 @@ public class NodeController : MonoBehaviour {
 			{
 							Nodes.CompleteFlag = true;
 						};
-						ReplaceNodeAll();   // 消去処理
+						ReplaceNodeTree();   // 消去処理
 						CheckLink(true);    // もう一度チェッカを起動
 						if (Debug.isDebugBuild && bNodeLinkDebugLog)
 							print("枝が完成しました！");
@@ -1378,7 +1378,7 @@ public class NodeController : MonoBehaviour {
 			}
 
 		}
-		GameObject newTree = (GameObject)Instantiate(frameNodePrefab, transform.position, transform.rotation);
+		GameObject newTree = (GameObject)Instantiate(treeControllerPrefab, transform.position, transform.rotation);
 		newTree.GetComponent<treeController>().SetTree(treeNodes);
 
 

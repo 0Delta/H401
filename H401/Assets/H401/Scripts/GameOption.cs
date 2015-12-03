@@ -42,7 +42,7 @@ public class GameOption : MonoBehaviour {
 
         //パネル生成
         //Transform trans = gameObject.transform.FindChild("PauseCanvas").transform;
-        panelObject = Resources.Load<GameObject>(pausePanelPath);
+        panelObject = Instantiate(Resources.Load<GameObject>(pausePanelPath));
         
 
 

@@ -48,8 +48,7 @@ public class treeController : MonoBehaviour {
             treeObjects[i].transform.position = node.transform.position + new Vector3(0.0f,0.0f,-1.0f);
             treeObjects[i].transform.rotation = node.transform.rotation;
             //    (GameObject)Instantiate(treePrefab, node.transform.position + , node.transform.rotation);
-            Material mat = treeObjects[i].GetComponent<MeshRenderer>().material;
-            mat = node.GetComponent<MeshRenderer>().material;
+            Material mat = treeObjects[i].GetComponent<MeshRenderer>().material = node.GetComponent<MeshRenderer>().material;
             mat.EnableKeyword("_EMISSION");
             mat.DOColor(emissionColor, "_EmissionColor", popTime);
             treeObjects[i].transform.parent = this.transform;
