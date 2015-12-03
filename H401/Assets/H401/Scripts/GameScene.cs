@@ -9,6 +9,7 @@ public class GameScene : MonoBehaviour {
     [SerializeField]private string levelTablePath;
     [SerializeField]private string mainCameraPath;
     [SerializeField]private string lightPath;
+    [SerializeField]private string probePath;
 
     private GameObject gameControllerObject;
     private GameObject eventSystemObject;
@@ -16,6 +17,7 @@ public class GameScene : MonoBehaviour {
     private GameObject levelTableObject;
     private GameObject mainCameraObject;
     private GameObject lightObject;
+    private GameObject probeObject;
 
     private GameController      _gameController;
     private GameUI              _gameUI;
@@ -42,6 +44,9 @@ public class GameScene : MonoBehaviour {
         mainCameraObject =  Instantiate(Resources.Load<GameObject>(mainCameraPath));
         mainCameraObject.transform.SetParent(transform);
         _mainCamera = mainCameraObject.GetComponent<Camera>();
+
+        probeObject = Instantiate(Resources.Load<GameObject>(probePath));
+        probeObject.transform.SetParent(transform);
 
         lightObject = Instantiate(Resources.Load<GameObject>(lightPath));
         lightObject.transform.SetParent(transform);
