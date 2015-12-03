@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class LevelPanel : MonoBehaviour {
 
     [SerializeField]private float popTime = 0.0f;
-
     [SerializeField]private float popScale = 0.0f;
-
+    [SerializeField]private string buttonPrefabPath = null;
+    private GameObject buttonPrefab = null;    //ボタンのプレハブ
 //    private GameObject gameController = null;
 //    public void SetGameController(GameObject game) { gameController = game; }
     private LevelController levelController;
@@ -22,10 +22,7 @@ public class LevelPanel : MonoBehaviour {
         set { levelController.NextLevel = value; }
     }
 
-    [SerializeField]private GameObject panel;           //ボタン表示用パネル
-    [SerializeField] GameObject buttonPrefab = null;    //ボタンのプレハブ
 
-    [SerializeField]private GameObject textObject = null;
     private Text fieldText = null;
 
     void Awake()
@@ -40,15 +37,16 @@ public class LevelPanel : MonoBehaviour {
 	// Use this for initialization
     void Start()
     {
+        buttonPrefab = Resources.Load<GameObject>(buttonPrefabPath);
         //levelController.NextLevel = -1;
 
-        levelController = GameObject.Find("levelController").GetComponent<LevelController>();
+        levelController = GetComponentInParent<LevelController>();
         levelController.NextLevel = -1;
         float rot = levelController.LyingAngle;
 
 
         //テキストオブジェクトと関連つけ
-        fieldText = textObject.GetComponent<Text>();
+        fieldText = transform.FindChild("FieldNameImage").FindChild("fieldNameText").GetComponent<Text>();
 
 
         //ボタンを並べてリンクを付ける
@@ -62,7 +60,7 @@ public class LevelPanel : MonoBehaviour {
             pos.x += -100.0f + 50.0f * i;
 
             buttonObjects[i] = (GameObject)Instantiate(buttonPrefab, pos, transform.rotation);
-            buttonObjects[i].transform.SetParent(panel.transform);
+            buttonObjects[i].transform.SetParent(transform);
             buttonScripts[i] = buttonObjects[i].GetComponent<LevelButton>();
 
             //その他の設定
@@ -71,11 +69,11 @@ public class LevelPanel : MonoBehaviour {
 
         LevelButton.SetPanel(this);
 
-        panel.transform.Rotate(new Vector3(0.0f, 0.0f, rot));
+        transform.Rotate(new Vector3(0.0f, 0.0f, rot));
 
         //tweenとかで出現エフェクト等
-        panel.transform.localScale = new Vector3(popScale,popScale,popScale);
-        panel.transform.DOScale(1.0f, popTime);//.OnComplete(() => { /*gameController.SetActive(false);*/ });
+        transform.localScale = new Vector3(popScale,popScale,popScale);
+        transform.DOScale(1.0f, popTime);//.OnComplete(() => { /*gameController.SetActive(false);*/ });
         
     }
 	
@@ -95,7 +93,8 @@ public class LevelPanel : MonoBehaviour {
         transform.DOScale(popScale, popTime)
             .OnComplete(() => {
                 Destroy(this.transform.parent.gameObject);
-                nC.currentLevel = levelController.NextLevel;
+                if (levelController.NextLevel != -1)
+                    nC.currentLevel = levelController.NextLevel;
                 levelController.LevelState = _eLevelState.STAND;
             });
     }

@@ -6,17 +6,20 @@ using UnityEngine.UI;
 
 public class GameOption : MonoBehaviour {
 
-    [SerializeField]private GameObject panelPrefab = null;
+    [SerializeField]private string pausePanelPath = null;
     [SerializeField]private float popTime = 0.0f;
     [SerializeField]private float popScale = 0.0f;
+
     private GameObject panelObject = null;
 
     private _ePauseState _pauseState;
     public _ePauseState pauseState{ get{return _pauseState;}}
 	// Use this for initialization
-	void Start () {
-	
-	}
+    void Start()
+    {
+        AppliController app = transform.root.gameObject.GetComponent<AppliController>();
+        GetComponentInChildren<Canvas>().worldCamera= app.gameScene.mainCamera;
+    }
 	
 	// Update is called once per frame
 
@@ -39,7 +42,7 @@ public class GameOption : MonoBehaviour {
 
         //パネル生成
         Transform trans = gameObject.transform.FindChild("PauseCanvas").transform;
-        panelObject = (GameObject)Instantiate(panelPrefab, trans.position, trans.rotation);
+        panelObject = Resources.Load<GameObject>(pausePanelPath);
         
 
 

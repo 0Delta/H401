@@ -4,17 +4,20 @@ using System.Collections;
 public class LevelController : MonoBehaviour {
 
     [SerializeField]private float lyingDeviceAngle = 0.0f;     //デバイスを横と判定する角度範囲
-
-    [SerializeField]private GameObject gameController = null;
+    [SerializeField]private string levelCanvasPath= null;
+   
+    private LevelTables levelTableScript = null;
+    private GameController gameController = null;
+    private GameObject levelCanvasObject = null;
+    private GameObject levelCanvasPrefab = null;
 
     //ボタンのスクリプト
     //ボタン実体
     private _eLevelState levelState;
     public _eLevelState LevelState { get { return levelState; } set { levelState = value; } }
 
-    [SerializeField] private GameObject canvasPrefab;
 
-    private GameObject canvasObject;
+
 
     private GameObject panelObject;
     private LevelPanel panelScript;
@@ -27,19 +30,23 @@ public class LevelController : MonoBehaviour {
     private int nextLevel;  //次のレベル
     public int NextLevel { set { nextLevel = value; } get { return nextLevel; } }
 
-    [SerializeField] GameObject LevelTableObject = null;
-    private LevelTables levelTableScript = null;
+
 
     private bool isDebug;
 
 	// Use this for initialization
 	void Start () {
+
+        //levelCanvasObject = Resources.Load<GameObject>(levelCanvasString);
+        gameController = transform.root.gameObject.GetComponent<AppliController>().gameScene.gameController;
         nextLevel = -1;
 
         levelState = _eLevelState.STAND;
         Input.gyro.enabled = true;
 
-        levelTableScript = LevelTableObject.GetComponent<LevelTables>();
+        levelTableScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.levelTables;
+
+        levelCanvasPrefab = Resources.Load<GameObject>(levelCanvasPath);
 	}
 	
 	// Update is called once per frame
@@ -99,10 +106,10 @@ public class LevelController : MonoBehaviour {
         
         //難易度選択をinstantiateする
 
-        canvasObject = (GameObject)Instantiate(canvasPrefab, transform.position, transform.rotation);
-        canvasObject.transform.SetParent(this.transform);
+        levelCanvasObject = Instantiate(levelCanvasPrefab);//(GameObject)Instantiate(canvasPrefab, transform.position, transform.rotation);
+        levelCanvasObject.transform.SetParent(this.transform);
         
-        panelScript = canvasObject.GetComponentInChildren<LevelPanel>();
+        panelScript = levelCanvasObject.GetComponentInChildren<LevelPanel>();
         levelState = _eLevelState.LIE;
     }
 
