@@ -1204,8 +1204,8 @@ public class NodeController : MonoBehaviour {
 	{
 		for(int i = 0; i < col; ++i) {
 			foreach (var nodes in gameNodeScripts[i]) {
-				nodes.MeshRenderer.material.color = new Color(1.0f, 1.0f, 1.0f);  //繋がりがない枝は色をここでもどす
-				nodes.CheckFlag = false;
+                nodes.ChangeEmissionColor(0);  //繋がりがない枝は色をここでもどす
+                nodes.CheckFlag = false;
 
 			}
 		}
