@@ -186,6 +186,7 @@ public class NodeController : MonoBehaviour {
         set { _currentLevel = value;
         fieldLevel = levelTableScript.GetFieldLevel(_currentLevel);
         RatioSum = fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3;
+        
         StartCoroutine(ReplaceRotate(ReplaceNodeAll));
         }
     }
@@ -1364,6 +1365,7 @@ public class NodeController : MonoBehaviour {
 			_eNodeType.CAP;
 
 		node.SetNodeType(type);
+        node.MeshRenderer.material.color = levelTableScript.GetFieldLevel(_currentLevel).NodeColor;
 	}
 
 	//完成した枝に使用しているノードを再配置する
@@ -1485,13 +1487,14 @@ public class NodeController : MonoBehaviour {
 		repMethod();
 		//全ノードを-90°回転
 		for (int i = 0; i < col; i++)
-	{
+	    {
 			for (int j = 0; j < AdjustRow(i); j++)
-		{
+		    {
 				Vector3 angle = gameNodeScripts[i][j].transform.localEulerAngles;
 				angle.y -= 180.0f;
 				gameNodeScripts[i][j].transform.rotation = Quaternion.identity;
 				gameNodeScripts[i][j].transform.Rotate(angle);
+                gameNodeScripts[i][j].MeshRenderer.material.color = levelTableScript.GetFieldLevel(_currentLevel).NodeColor;
 			}
 		}
 
