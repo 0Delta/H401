@@ -43,17 +43,17 @@ public class GameOption : MonoBehaviour {
 
         //パネル生成
         //Transform trans = gameObject.transform.FindChild("PauseCanvas").transform;
-        panelObject = Instantiate(Resources.Load<GameObject>(pausePanelPath));
+        panelObject = (GameObject)Instantiate(Resources.Load<GameObject>(pausePanelPath));
         
 
 
         //tweenによる出現演出
         //とりあえずフィールド変更と同じにしておく
-
         //ただし、タイムスケールに左右されない
-        panelObject.transform.SetParent(gameObject.transform.FindChild("PauseCanvas").transform);
-        panelObject.transform.localScale = new Vector3(popScale, popScale, popScale);
-
+ 
+        panelObject.transform.SetParent(transform.FindChild("PauseCanvas").transform);
+        panelObject.transform.localPosition = panelObject.transform.parent.position; //addChildほしい
+        panelObject.transform.localScale = new Vector3(popScale, popScale, 1.0f);
  
         panelObject.transform.DOScale(1.0f, popTime).SetUpdate(true);
 

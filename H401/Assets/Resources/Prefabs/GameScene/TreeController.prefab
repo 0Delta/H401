@@ -45,7 +45,7 @@ MonoBehaviour:
   popSize: 1.04999995
   movePositionY: 10
   treePrefabPath: Prefabs/GameScene/TreeNode
-  emissionColor: {r: .166414365, g: .838235259, b: .282245576, a: 0}
+  emissionColor: {r: .0802335665, g: .20588237, b: .101897165, a: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -79,15 +79,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: emissionColor.r
-      value: .166414365
+      value: .0802335665
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: emissionColor.g
-      value: .838235259
+      value: .20588237
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: emissionColor.b
-      value: .282245576
+      value: .101897165
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: treePrefabPath

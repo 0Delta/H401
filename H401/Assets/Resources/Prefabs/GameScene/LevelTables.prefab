@@ -96,16 +96,52 @@ MonoBehaviour:
   feverDecreaseRatio: .00100000005
   nodeColorList:
   - {r: 0, g: 0, b: 0, a: 0}
-  - {r: .41911763, g: .178741336, b: .178741336, a: 0}
-  - {r: .757352948, g: .317419976, b: .317419976, a: 0}
-  - {r: 1, g: .389705896, b: .389705896, a: 0}
+  - {r: .102941155, g: .0446582958, b: .0446582958, a: 0}
+  - {r: .323529422, g: .130839109, b: .130839109, a: 0}
+  - {r: .485294104, g: .214100346, b: .214100346, a: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: nodeColorList.Array.data[3].r
+      value: .485294104
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: nodeColorList.Array.data[3].g
+      value: .214100346
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: nodeColorList.Array.data[3].b
+      value: .214100346
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: nodeColorList.Array.data[2].r
+      value: .323529422
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: nodeColorList.Array.data[2].g
+      value: .130839109
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: nodeColorList.Array.data[2].b
+      value: .130839109
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: nodeColorList.Array.data[1].r
+      value: .102941155
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: nodeColorList.Array.data[1].g
+      value: .0446582958
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: nodeColorList.Array.data[1].b
+      value: .0446582958
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 188648}

@@ -84,6 +84,8 @@ public class LevelPanel : MonoBehaviour {
                 Destroy(this.transform.parent.gameObject);
                 if (levelController.NextLevel != -1)
                     nC.currentLevel = levelController.NextLevel;
+                else
+                    print("レベル変更なし");
                 levelController.LevelState = _eLevelState.STAND;
             });
     }

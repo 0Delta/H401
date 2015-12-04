@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class LevelController : MonoBehaviour {
 
@@ -69,12 +70,12 @@ public class LevelController : MonoBehaviour {
                     lyingAngle = -90;
                     FieldChangeStart();
                 }
-                if(Input.gyro.attitude.eulerAngles.y > 90 - lyingDeviceAngle && Input.gyro.attitude.eulerAngles.y < 90 + lyingDeviceAngle)
+                if(Input.gyro.attitude.eulerAngles.z > 90 - lyingDeviceAngle && Input.gyro.attitude.eulerAngles.z < 90 + lyingDeviceAngle)
                 {
                     lyingAngle = 90;
                     FieldChangeStart();
                 }
-                if(Input.gyro.attitude.eulerAngles.y > -90 - lyingDeviceAngle && Input.gyro.attitude.eulerAngles.y < -90 + lyingDeviceAngle)
+                if(Input.gyro.attitude.eulerAngles.z > -90 - lyingDeviceAngle && Input.gyro.attitude.eulerAngles.z < -90 + lyingDeviceAngle)
                 {
                     lyingAngle = -90;
                     FieldChangeStart();
