@@ -44,22 +44,27 @@ MonoBehaviour:
     Ratio_Cap: 2
     Ratio_Path2: 9
     Ratio_Path3: 1
+    lightColor: {r: 1, g: 1, b: 1, a: 0}
   - fieldName: america
     Ratio_Cap: 1
     Ratio_Path2: 6
     Ratio_Path3: 1
+    lightColor: {r: 1, g: .448529422, b: .448529422, a: 0}
   - fieldName: china
     Ratio_Cap: 1
     Ratio_Path2: 3
     Ratio_Path3: 1
+    lightColor: {r: 1, g: .544117689, b: .544117689, a: 0}
   - fieldName: italy
     Ratio_Cap: 1
     Ratio_Path2: 3
     Ratio_Path3: 2
+    lightColor: {r: .449391544, g: .345588207, b: 1, a: 0}
   - fieldName: egipt
     Ratio_Cap: 1
     Ratio_Path2: 2
     Ratio_Path3: 3
+    lightColor: {r: .99066937, g: 1, b: .323529422, a: 0}
   timeLevelInterval: 60
   timeLevelTable:
   - MaxRegainRatio: .800000012
@@ -141,6 +146,66 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: nodeColorList.Array.data[1].b
       value: .0446582958
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[0].lightColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[0].lightColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[0].lightColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[1].lightColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[1].lightColor.g
+      value: .448529422
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[1].lightColor.b
+      value: .448529422
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[2].lightColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[2].lightColor.g
+      value: .544117689
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[2].lightColor.b
+      value: .544117689
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[3].lightColor.r
+      value: .449391544
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[3].lightColor.g
+      value: .345588207
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[3].lightColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[4].lightColor.r
+      value: .99066937
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[4].lightColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[4].lightColor.b
+      value: .323529422
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

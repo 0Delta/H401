@@ -43,6 +43,7 @@ public class LevelTables : MonoBehaviour {
 	void Start () {
         fieldLevelCount = fieldLevelTable.Length;
         timeLevelCount = timeLevelTable.Length;
+
 	}
 	
 	// Update is called once per frame

@@ -7,7 +7,7 @@ public class LevelPanel : MonoBehaviour {
 
     [SerializeField]private float popTime = 0.0f;
     [SerializeField]private float popScale = 0.0f;
-    private GameObject buttonPrefab = null;    //ボタンのプレハブ
+ //   private GameObject buttonPrefab = null;    //ボタンのプレハブ
 //    private GameObject gameController = null;
 //    public void SetGameController(GameObject game) { gameController = game; }
     private LevelController levelController;
@@ -77,17 +77,10 @@ public class LevelPanel : MonoBehaviour {
         
     }
 
-    public void Delete(NodeController nC)
+    public void Delete()
     {
         transform.DOScale(popScale, popTime)
-            .OnComplete(() => {
-                Destroy(this.transform.parent.gameObject);
-                if (levelController.NextLevel != -1)
-                    nC.currentLevel = levelController.NextLevel;
-                else
-                    print("レベル変更なし");
-                levelController.LevelState = _eLevelState.STAND;
-            });
+            .OnComplete(levelController.EndComplete);
     }
 
     public void ChangeText(int stage)

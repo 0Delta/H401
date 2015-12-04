@@ -20,7 +20,7 @@ public class LevelController : MonoBehaviour {
 
 
 
-    private GameObject panelObject;
+//    private GameObject panelObject;
     private LevelPanel panelScript;
     private float lyingAngle;
     public float LyingAngle
@@ -122,13 +122,33 @@ public class LevelController : MonoBehaviour {
         lyingAngle = 0;
         //オブジェクト破棄
         //小さくなって消えるように
-        panelScript.Delete(gameController.GetComponentInChildren<NodeController>());
+        panelScript.Delete();
 
     }
+
+    public void EndComplete()
+    {
+        Destroy(levelCanvasObject);
+        if (NextLevel != -1)
+            gameController.nodeController.currentLevel = NextLevel;
+        else
+            print("レベル変更なし");
+        LevelState = _eLevelState.STAND;
+
+        //ノードのemissionとdirectionalLightに干渉
+        GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+        gameScene.directionalLight.color = levelTableScript.GetFieldLevel(nextLevel).lightColor;
+
+
+    }
+
+
 
     public string GetFieldName(int stage)
     {
         return levelTableScript.GetFieldLevel(stage).fieldName;
     }
+
+
     
 }
