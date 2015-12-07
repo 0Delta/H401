@@ -6,10 +6,10 @@ public class LimitTime : MonoBehaviour {
 
 
     [SerializeField] private float maxTime = 0.0f;  //時間の最大値(秒？)
-
+    [SerializeField] private string gameEndPanelPath = null;
     public Image timeImage;
     private float nowTime;  //現在時間
-
+    private float eventRatio;   //状態ごとの時間の減り
 
     private Animator ojityanAnimator = null;
 
@@ -51,22 +51,31 @@ public class LimitTime : MonoBehaviour {
         nowTimeLevel = 0;
 
         ojityanAnimator = gameScene.gameUI.ojityanAnimator;
+        eventRatio = 1.0f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        nowTime += Time.deltaTime * timeLevel.SlipRatio;
+        nowTime += Time.deltaTime * timeLevel.SlipRatio * eventRatio;
 
         SetImage();
 
         if(nowTime > maxTime)
         {
             //ここにゲームオーバー処理
+            nowTime = maxTime - 0.1f;
+            eventRatio = 0.0f;
 
             //スコアをもってくる
             //ゲームオーバー時のパネルを出して、タップでリザルト画面に行く
-            Resources.Load("GameOverPanel");
+            GameObject gameEndPanelObject = (GameObject)Instantiate(Resources.Load<GameObject>(gameEndPanelPath));
+            GameEndPanel gameEndpanel = gameEndPanelObject.GetComponent<GameEndPanel>();
+            gameEndpanel.transform.SetParent(transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().gameUI.gamePause.optionCanvas.transform);
+            gameEndpanel.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+            gameEndpanel.transform.localPosition = new Vector3(0.0f, 1334.0f, 0.0f);
+            //gameEndpanel.GetComponent<GUI>()
 
+            gameEndpanel.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             print("タイムオーバー");
         }
 

@@ -14,12 +14,16 @@ public class GameOption : MonoBehaviour {
 
     private _ePauseState _pauseState;
     public _ePauseState pauseState{ get{return _pauseState;}}
+    public Canvas optionCanvas = null;
+
 	// Use this for initialization
     void Start()
     {
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
 
-        GetComponentInChildren<Canvas>().worldCamera= gameScene.mainCamera;
+        optionCanvas = GetComponentInChildren<Canvas>();
+        optionCanvas.worldCamera= gameScene.mainCamera;
+
     }
 	
 	// Update is called once per frame
