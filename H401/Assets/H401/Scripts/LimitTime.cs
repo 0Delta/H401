@@ -67,7 +67,7 @@ public class LimitTime : MonoBehaviour {
             //ゲームオーバー時のパネルを出して、タップでリザルト画面に行く
             Resources.Load("GameOverPanel");
 
-            print("タイムオーバー");
+//            print("タイムオーバー");
         }
 
         //時間経過による難易度変更処理

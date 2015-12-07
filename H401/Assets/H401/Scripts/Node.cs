@@ -13,22 +13,27 @@ public class Node : MonoBehaviour {
     [SerializeField] private float actionTime = 0.0f;       // アクションにかかる時間
     [SerializeField] private float scaleSize  = 0.0f;       // タップ時の拡大サイズ
     [SerializeField] private float slideTime  = 0.0f;       // スライド時の移動にかかる時間
+    [SerializeField] private float slideStartTime  = 0.0f;       // スライド開始時の移動にかかる時間
+    [SerializeField] private float slideEndTime  = 0.0f;       // スライド終了時の移動にかかる時間
 
     static private NodeController nodeControllerScript = null;      // NodeController のスクリプト
 
-    private Vec2Int     nodeID      = Vec2Int.zero;     // パネルリストのID
+    private Vec2Int nodeID = Vec2Int.zero;     // パネルリストのID
     public Vec2Int NodeID
     {
         get { return nodeID; }
     }
-    private bool        isAction    = false;            // アクションフラグ
+    private bool isAction = false;            // アクションフラグ
     public bool IsAction
     {
         set { isAction = value; }
+        get { return isAction; }
     }
-    private bool        isSlide     = false;            // スライドフラグ
-    private bool        isOutScreen = false;            // 画面外フラグ
-    private bool        isOutPuzzle = false;            // パズル外フラグ
+    private bool isSlide     = false;            // スライドフラグ
+    private bool isOutScreen = false;            // 画面外フラグ
+    private bool isOutPuzzle = false;            // パズル外フラグ
+    private bool _isSlideStart = false;        // スライド開始演出(easing)フラグ
+    private bool _isSlideEnd = false;        // スライド終了演出(easing)フラグ
 
     public BitArray bitLink = new BitArray(6);  //道の繋がりのビット配列　trueが道
                                                 //  5 0
@@ -67,6 +72,14 @@ public class Node : MonoBehaviour {
     public bool IsOutScreen {
         set { isOutScreen = value; }
         get { return isOutScreen; }
+    }
+    public bool isSlideStart {
+        set { _isSlideStart = value; }
+        get { return _isSlideStart; }
+    }
+    public bool isSlideEnd {
+        set { _isSlideEnd = value; }
+        get { return _isSlideEnd; }
     }
 
     [SerializeField]private float colorDuration = 0.0f;
@@ -107,29 +120,30 @@ public class Node : MonoBehaviour {
         Node.nodeControllerScript = nodeControllerScript;
     }
     
+    // ノード回転処理
     public void RotationNode() {
         // 画面外ノードなら未処理
         if(isOutScreen)
             return;
 
-        // アクション中なら未処理
-        if(isAction)
-            return;
-
         // スライド中なら回転・拡縮は未処理
-        if(isSlide) {
-            isSlide = false;
+        if(isSlide)
             return;
-        }
         
         // アクション開始
         isAction = true;
         
         // ----- 回転処理
         // 回転準備
-        float angle = transform.localEulerAngles.z - ROT_HEX_ANGLE;
+        float angle = 0.0f;
+        if(Mathf.FloorToInt(transform.localEulerAngles.z) % ROT_HEX_ANGLE == 0) {
+            angle = transform.localEulerAngles.z - ROT_HEX_ANGLE;
+        } else {
+            angle = Mathf.FloorToInt(transform.localEulerAngles.z / ROT_HEX_ANGLE) * ROT_HEX_ANGLE;
+        }
 
         // 回転処理(※TODO:new をなんとかしたい)
+        transform.DOKill();
         transform.DORotate(new Vector3(0.0f, 0.0f, angle), actionTime)
             .OnComplete(() => {
                 // 回転成分を初期化
@@ -145,32 +159,41 @@ public class Node : MonoBehaviour {
                 isAction = false;
             });
 
-        // 拡縮処理
+        // 拡縮処理(※回転と同じように、補正処理が必要)
         transform.DOScale(scaleSize, actionTime * 0.5f).SetLoops(2, LoopType.Yoyo);
-
-        // @Test ... タップしたノードのID
-        //print(nodeID);
     }
 
+    // ノード移動処理
     public void SlideNode(_eSlideDir dir, Vector2 pos) {
         // スライド方向が指定されていなければ未処理
         if (dir == _eSlideDir.NONE)
             return;
         
-        if(!isSlide)
-            isSlide = true;
+        // アクション開始
+        isAction = true;
+        isSlide = true;
 
-        if(!nodeControllerScript.IsNodeAction)
-            nodeControllerScript.IsNodeAction = true;
+        float time = 0.0f;
+        if(_isSlideStart) {
+            time =  slideStartTime;
+        } else if(_isSlideEnd) {
+            time = slideEndTime;
+        } else {
+            time = slideTime;
+        }
         
         transform.DOKill();
-        transform.DOMoveX(pos.x, slideTime)
+        transform.DOMoveX(pos.x, time)
             .OnComplete(() => {
                 nodeControllerScript.CheckOutScreen(nodeID);
-                if(nodeControllerScript.IsNodeAction)
-                    nodeControllerScript.IsNodeAction = false;
+                isAction = false;
+                isSlide = false;
+                if(_isSlideStart)
+                    _isSlideStart = false;
+                if(_isSlideEnd)
+                    _isSlideEnd = false;
             });
-        transform.DOMoveY(pos.y, slideTime);
+        transform.DOMoveY(pos.y, time);
     }
 
     //道のビット配列を回転させる bitarrayに回転シフトがなかった
@@ -496,5 +519,13 @@ public class Node : MonoBehaviour {
     {
         meshRenderer.material.EnableKeyword("_EMISSION");
         meshRenderer.material.DOColor(nodeControllerScript.GetNodeColor(colorNum),"_EmissionColor",colorDuration);
+    }
+
+    public void StartSlide() {
+        _isSlideStart = true;
+    }
+
+    public void EndSlide() {
+        _isSlideEnd = true;
     }
 }

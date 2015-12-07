@@ -88,8 +88,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionTime: .100000001
-  scaleSize: .550000012
+  scaleSize: .5
   slideTime: 0
+  slideStartTime: .100000001
+  slideEndTime: .5
   colorDuration: .5
 --- !u!1001 &100100000
 Prefab:
@@ -125,6 +127,22 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_UseLightProbes
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: slideTriggerTime
+      value: .100000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: slideStartTime
+      value: .100000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: slideEndTime
+      value: .5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: scaleSize
+      value: .5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
