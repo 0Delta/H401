@@ -12,7 +12,9 @@ public class Node : MonoBehaviour {
 
     [SerializeField] private float actionTime = 0.0f;       // アクションにかかる時間
     [SerializeField] private float scaleSize  = 0.0f;       // タップ時の拡大サイズ
-    [SerializeField] private float slideTime  = 0.0f;       // スライド時の移動にかかる時間
+    [SerializeField] private float slideTime  = 0.0f;       // スライド時の移動にかかる時
+    [SerializeField]private float colorDuration = 0.0f;
+
 
     static private NodeController nodeControllerScript = null;      // NodeController のスクリプト
 
@@ -69,7 +71,7 @@ public class Node : MonoBehaviour {
         get { return isOutScreen; }
     }
 
-    [SerializeField]private float colorDuration = 0.0f;
+
                                                    
     void Awake()
     {
@@ -140,6 +142,9 @@ public class Node : MonoBehaviour {
                 // アクション終了
 
                 BitLinkRotate();
+
+                //捜査処理
+                nodeControllerScript.RemoveUnChainCube();
                 nodeControllerScript.CheckLink();
 
                 isAction = false;

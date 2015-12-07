@@ -36,10 +36,13 @@ public class NodeController : MonoBehaviour {
 //    [SerializeField] private string pauseObjectPath = null;
     [SerializeField] private float repRotateTime = 0;//ノード再配置時の時間
     [SerializeField] private string[] nodeMaterialsPath = null;
+    [SerializeField] private string unChainCubePath = null;
+
     
     private GameObject gameNodePrefab   = null;     // ノードのプレハブ
     private GameObject frameNodePrefab  = null;     // フレームノードのプレハブ
     private GameObject treeControllerPrefab   = null;     // 完成ノードのプレハブ
+    private GameObject unChainCubePrefab = null;    //枝未完成協調表示のためのオブジェクト
 
     private GameObject[][]  gameNodePrefabs;    // ノードのプレハブリスト
     private Node[][]        gameNodeScripts;        // ノードのnodeスクリプトリスト
@@ -48,6 +51,7 @@ public class NodeController : MonoBehaviour {
 
 	private Square  gameArea = Square.zero;     // ゲームの画面領域(パズル領域)
 	private Vector2 nodeSize = Vector2.zero;    // 描画するノードのサイズ
+    private ArrayList unChainCubeList;
 
 	private bool        isTap           = false;                // タップ成功フラグ
 	private bool        isSlide         = false;                // ノードスライドフラグ
@@ -211,11 +215,13 @@ public class NodeController : MonoBehaviour {
         gameNodePrefab =  Resources.Load<GameObject>(gameNodePrefabPath);
         frameNodePrefab =  Resources.Load<GameObject>(frameNodePrefabPath);
         treeControllerPrefab = Resources.Load<GameObject>(treeControllerPrefabPath);
-
+        unChainCubePrefab = Resources.Load<GameObject>(unChainCubePath);
         for (int i = 0; i < nodeMaterialsPath.Length; ++i)
         {
             nodeMaterials[i] = Resources.Load<Material>(nodeMaterialsPath[i]);
         }
+
+        unChainCubeList = new ArrayList();
 
         //levelControllerScript = appController.gameScene.gameUI.levelCotroller;
         //pauseScript = appController.gameScene.gameUI.gamePause;
@@ -408,6 +414,7 @@ public class NodeController : MonoBehaviour {
             .DistinctUntilChanged()
             .Where(x => x)
             .Subscribe(_ => {
+        RemoveUnChainCube();
         CheckLink();
             }).AddTo(gameObject);
 	}
@@ -1509,7 +1516,6 @@ public class NodeController : MonoBehaviour {
 	public void TouchEnd()
 	{
 		//状況に応じて別の処理をする
-
 		switch(feverScript.feverState)
 		{
 			case _eFeverState.NORMAL:
@@ -1518,6 +1524,32 @@ public class NodeController : MonoBehaviour {
 			case _eFeverState.FEVER:
 				break;
 		}
-
 	}
+
+    public void AddUnChainCube(Node node,_eLinkDir linkTo) 
+    {
+        GameObject newCube = Instantiate(unChainCubePrefab);
+
+        newCube.transform.position = new Vector3(0.0f, widthMargin / 2.0f, 0.0f);
+        newCube.transform.Rotate(new Vector3(0.0f, 0.0f, 60.0f),Space.World);
+        float rotAngle = 60.0f * (int)linkTo;
+        newCube.transform.Rotate(new Vector3(0.0f, 0.0f, rotAngle), Space.World);
+        newCube.transform.Translate(node.transform.position);
+
+        //tween等で出現時アニメーション
+
+        unChainCubeList.Add(newCube);
+    }
+    public void RemoveUnChainCube()
+    {
+        foreach(var cube in unChainCubeList)
+        {
+            
+            //キューブにtweenを設定して消去
+
+            unChainCubeList.Remove(cube);
+
+            Destroy((GameObject)cube);
+        }
+    }
 }

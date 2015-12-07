@@ -14,7 +14,7 @@ public class LevelPanel : MonoBehaviour {
     public void SetLevelController(LevelController lev) { levelController = lev; }
 
     //ボタン用配列
-    private GameObject[] buttonObjects;
+//    private GameObject[] buttonObjects;
     private LevelButton[] buttonScripts;
     public int NextLevel
     {
@@ -62,7 +62,7 @@ public class LevelPanel : MonoBehaviour {
 
         //tweenとかで出現エフェクト等
         transform.localScale = new Vector3(popScale,popScale,popScale);
-        transform.DOScale(1.0f, popTime);//.OnComplete(() => { /*gameController.SetActive(false);*/ });
+        transform.DOScale(1.0f, popTime).OnComplete(() => { levelController.LevelState = _eLevelState.LIE; });//.OnComplete(() => { /*gameController.SetActive(false);*/ });
         
     }
 	

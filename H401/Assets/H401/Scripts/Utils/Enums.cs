@@ -50,6 +50,7 @@ public enum _eLevelState
 {
     STAND,
     LIE,
+    CHANGE,
 }
 public enum _eDebugState
 {
