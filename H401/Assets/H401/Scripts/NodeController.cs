@@ -307,6 +307,8 @@ public class NodeController : MonoBehaviour {
             frameObject = (GameObject)Instantiate(frameNodePrefab, pos, transform.rotation);
             frameObject.transform.parent = frameController.transform;
         }
+        //開始演出が終わるまでは操作を受け付けない
+        SetActionAll(true);
         
         // 画面外ノードを登録
         AllCheckOutScreen();

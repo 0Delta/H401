@@ -23,28 +23,36 @@ public class GameStartPanel : MonoBehaviour {
 
         Vector3 vPos = new Vector3(-750 - textWMargin, -textHMargin, 0.0f);
         gameText.transform.localPosition = vPos;
-        gameText.transform.DOLocalMoveX(-textWMargin - textCenterWidth, tweenDuration /3.0f)
+        gameText.transform.DOLocalMoveX( - textWMargin - textCenterWidth, tweenDuration / 4.0f).SetEase(Ease.OutQuad)
             .OnComplete(() => {
-                gameText.transform.DOLocalMoveX(-textWMargin + textCenterWidth, tweenDuration / 3.0f)
+                gameText.transform.DOLocalMoveX(-textWMargin + textCenterWidth, tweenDuration / 2.0f).SetEase(Ease.Linear)
                     .OnComplete(() =>
                     {
-                        gameText.transform.DOLocalMoveX(750 - textWMargin, tweenDuration / 3.0f);
+                        gameText.transform.DOLocalMoveX(750 - textWMargin, tweenDuration / 4.0f).SetEase(Ease.OutQuad);
                     });
             });
 
         vPos = new Vector3(-750 + textWMargin, +textHMargin, 0.0f);
-        startText.transform.position.Set(vPos.x, vPos.y, vPos.z);
-        startText.transform.DOLocalMoveX(textWMargin - textCenterWidth, tweenDuration / 3.0f)
-            .OnComplete(() =>
-            {
-                startText.transform.DOLocalMoveX(textWMargin + textCenterWidth, tweenDuration / 3.0f)
-                    .OnComplete(() =>
-                    {
-                        startText.transform.DOLocalMoveX(750 + textWMargin, tweenDuration / 3.0f);
-                    }).OnComplete(() => {
-                        Destroy(this.gameObject);
-                    });
-            });
+        startText.transform.localPosition = vPos;
+        startText.transform.DOLocalMoveX(-750 + textWMargin,tweenDuration / 4.0f).OnComplete(() =>
+        {
+            startText.transform.DOLocalMoveX(+textWMargin - textCenterWidth, tweenDuration / 4.0f).SetEase(Ease.OutQuad)
+                .OnComplete(() =>
+                {
+                    startText.transform.DOLocalMoveX(textWMargin + textCenterWidth, tweenDuration / 2.0f).SetEase(Ease.Linear)
+                        .OnComplete(() =>
+                        {
+                            startText.transform.DOLocalMoveX(750 + textWMargin, tweenDuration / 4.0f).SetEase(Ease.OutQuad)
+                                .OnComplete(() =>
+                                {
+                                    GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+                                    gameScene.gameController.nodeController.SetActionAll(false); //ノードを操作可能状態に
+                                    gameScene.gameUI.gameInfoCanvas.limitTime.eventRatio = 1.0f;    //時間が減るように
+                                    Destroy(this.gameObject);
+                                });
+                        });
+                });
+        });
 	}
 	
 	// Update is called once per frame

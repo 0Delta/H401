@@ -9,7 +9,8 @@ public class LimitTime : MonoBehaviour {
     [SerializeField] private string gameEndPanelPath = null;
     public Image timeImage;
     private float nowTime;  //現在時間
-    private float eventRatio;   //状態ごとの時間の減り
+    private float _eventRatio;   //状態ごとの時間の減り
+    public float eventRatio { set { _eventRatio = value; } }
 
     private Animator ojityanAnimator = null;
 
@@ -51,12 +52,12 @@ public class LimitTime : MonoBehaviour {
         nowTimeLevel = 0;
 
         ojityanAnimator = gameScene.gameUI.ojityanAnimator;
-        eventRatio = 1.0f;
+        _eventRatio = 0.0f; //開始演出が終わるまでは時間が減らない
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        nowTime += Time.deltaTime * timeLevel.SlipRatio * eventRatio;
+        nowTime += Time.deltaTime * timeLevel.SlipRatio * _eventRatio;
 
         SetImage();
 
@@ -64,13 +65,16 @@ public class LimitTime : MonoBehaviour {
         {
             //ここにゲームオーバー処理
             nowTime = maxTime - 0.1f;
-            eventRatio = 0.0f;
+            _eventRatio = 0.0f;
+            GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+
+            gameScene.gameController.nodeController.SetActionAll(true); //ノードを操作不能にする
 
             //スコアをもってくる
             //ゲームオーバー時のパネルを出して、タップでリザルト画面に行く
             GameObject gameEndPanelObject = (GameObject)Instantiate(Resources.Load<GameObject>(gameEndPanelPath));
             GameEndPanel gameEndpanel = gameEndPanelObject.GetComponent<GameEndPanel>();
-            gameEndpanel.transform.SetParent(transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().gameUI.gamePause.optionCanvas.transform);
+            gameEndpanel.transform.SetParent(gameScene.gameUI.gamePause.optionCanvas.transform);
             gameEndpanel.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
             gameEndpanel.transform.localPosition = new Vector3(0.0f, 1334.0f, 0.0f);
             //gameEndpanel.GetComponent<GUI>()

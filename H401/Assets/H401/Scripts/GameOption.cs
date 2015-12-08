@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class GameOption : MonoBehaviour {
 
     [SerializeField]private string pausePanelPath = null;
+    [SerializeField]private string gameStartPanelPath = null;
     [SerializeField]private float popTime = 0.0f;
     [SerializeField]private float popScale = 0.0f;
 
@@ -23,6 +24,12 @@ public class GameOption : MonoBehaviour {
 
         optionCanvas = GetComponentInChildren<Canvas>();
         optionCanvas.worldCamera= gameScene.mainCamera;
+
+        GameObject sPanel = Instantiate(Resources.Load<GameObject>(gameStartPanelPath));
+        sPanel.transform.SetParent(optionCanvas.transform);
+
+//        sPanel.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
+        sPanel.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
     }
 	

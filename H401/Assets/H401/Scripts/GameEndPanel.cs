@@ -16,11 +16,11 @@ public class GameEndPanel : MonoBehaviour {
 
         //パネル自体が降ってくるようにtween 透過はわからんかった
         transform.localPosition.Set(0.0f, 1334.0f, 0.0f);
-        transform.DOLocalMoveY(0.0f,tweenDuration / 3.0f)
+        transform.DOLocalMoveY(0.0f,tweenDuration / 2.0f).SetEase(Ease.InCubic)
             .OnComplete(() =>{
-                transform.DOLocalMoveY(1334.0f / 3.0f, tweenDuration / 2.0f).OnComplete(() =>
+                transform.DOLocalMoveY(1334.0f / 3.0f, tweenDuration / 4.0f).SetEase(Ease.OutCubic).OnComplete(() =>
                 {
-                    transform.DOLocalMoveY(0.0f, tweenDuration / 4.0f).OnComplete(() =>
+                    transform.DOLocalMoveY(0.0f, tweenDuration / 4.0f).SetEase(Ease.InCubic).OnComplete(() =>
                     {
                         //ボタンをアクティブに
                         toResultButton.interactable = true;
