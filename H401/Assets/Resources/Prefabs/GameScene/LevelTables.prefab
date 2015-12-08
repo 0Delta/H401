@@ -73,7 +73,7 @@ MonoBehaviour:
   timeLevelInterval: 60
   timeLevelTable:
   - MaxRegainRatio: .800000012
-    SlipRatio: 10
+    SlipRatio: 1
     RegainPer3Nodes: .200000003
     RegainPerCap: 0
     RegainPer2Path: .0500000007
@@ -274,7 +274,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: timeLevelTable.Array.data[0].SlipRatio
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

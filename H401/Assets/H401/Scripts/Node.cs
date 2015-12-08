@@ -2,6 +2,7 @@
 using System.Collections;
 using UniRx;
 using UnityEngine;
+using DG.Tweening;
 
 //using Assets.Scripts.Utils;
 
@@ -314,6 +315,7 @@ public class Node : MonoBehaviour {
                     /// ノード繋がってない時の処理をココに追加。
                     /// nが方向です
                     ///</summary>
+                    nodeControllerScript.AddUnChainCube(this,(_eLinkDir)n);
                     str += LinkDirToString(n) + " ";
                 }
             }
