@@ -418,7 +418,7 @@ public class NodeController : MonoBehaviour {
             .DistinctUntilChanged()
             .Where(x => x)
             .Subscribe(_ => {
-        RemoveUnChainCube();
+//        RemoveUnChainCube();
         CheckLink();
             }).AddTo(gameObject);
 	}
@@ -1496,15 +1496,15 @@ public class NodeController : MonoBehaviour {
 		yield return new WaitForSeconds(repRotateTime / 2.0f);
 		//置き換え処理
 		repMethod();
-		//全ノードを-90°回転
+		//全ノードを-180°回転
 		for (int i = 0; i < col; i++)
 	    {
 			for (int j = 0; j < AdjustRow(i); j++)
 		    {
 				Vector3 angle = gameNodeScripts[i][j].transform.localEulerAngles;
-				angle.y -= 180.0f;
-				gameNodeScripts[i][j].transform.rotation = Quaternion.identity;
-				gameNodeScripts[i][j].transform.Rotate(angle);
+				angle.y += 180.0f;
+				//gameNodeScripts[i][j].transform.localRotation = Quaternion.identity;
+                gameNodeScripts[i][j].transform.localEulerAngles = angle;
                 gameNodeScripts[i][j].MeshRenderer.material.color = levelTableScript.GetFieldLevel(_currentLevel).NodeColor;
 			}
 		}
@@ -1537,7 +1537,7 @@ public class NodeController : MonoBehaviour {
         newCube.transform.position = new Vector3(0.0f, NodeSize.x / 2.0f, 0.0f);
         float rotAngle = 60.0f * (int)linkTo + 30.0f;
 //        newCube.transform.Rotate(new Vector3(0.0f, 0.0f, -rotAngle), Space.World);
-        newCube.transform.RotateAround(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(.0f, 0.0f, 1.0f), -rotAngle);
+        newCube.transform.RotateAround(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f), -rotAngle);
 
         newCube.transform.position += node.transform.position;
 
@@ -1552,7 +1552,7 @@ public class NodeController : MonoBehaviour {
             
             //キューブにtweenを設定して消去
 
-            Destroy(cube);
+            cube.GetComponent<UnChainObject>().Vanish();
         }
         unChainCubeList.Clear();
     }

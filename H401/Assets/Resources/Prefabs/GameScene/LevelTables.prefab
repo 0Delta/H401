@@ -108,7 +108,7 @@ MonoBehaviour:
   - {r: 0, g: 0, b: 0, a: 0}
   - {r: .102941155, g: .0446582958, b: .0446582958, a: 0}
   - {r: .323529422, g: .130839109, b: .130839109, a: 0}
-  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: .551470578, g: .551470578, b: .551470578, a: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -118,15 +118,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 0}
       propertyPath: nodeColorList.Array.data[3].r
-      value: 1
+      value: .551470578
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: nodeColorList.Array.data[3].g
-      value: 1
+      value: .551470578
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: nodeColorList.Array.data[3].b
-      value: 1
+      value: .551470578
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: nodeColorList.Array.data[2].r

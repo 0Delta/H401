@@ -9,17 +9,13 @@ using DG.Tweening;
 public class Node : MonoBehaviour {
     static private readonly float ROT_HEX_ANGLE = 60.0f;      // 六角形パネルの回転角度
 
-    [SerializeField]
-    private float actionTime = 0.0f;       // アクションにかかる時間
+    [SerializeField]private float actionTime = 0.0f;       // アクションにかかる時間
 
-    [SerializeField]
-    private float scaleSize  = 0.0f;       // タップ時の拡大サイズ
+    [SerializeField]private float scaleSize  = 0.0f;       // タップ時の拡大サイズ
 
-    [SerializeField]
-    private float slideTime  = 0.0f;       // スライド時の移動にかかる時
+    [SerializeField]private float slideTime  = 0.0f;       // スライド時の移動にかかる時
 
-    [SerializeField]
-    private float colorDuration = 0.0f;
+    [SerializeField]private float colorDuration = 0.0f;
 
     static private NodeController nodeControllerScript = null;      // NodeController のスクリプト
 
@@ -149,7 +145,7 @@ public class Node : MonoBehaviour {
                 BitLinkRotate();
 
                 //捜査処理
-                nodeControllerScript.RemoveUnChainCube();
+                //nodeControllerScript.RemoveUnChainCube();
                 nodeControllerScript.CheckLink();
 
                 isAction = false;
@@ -160,6 +156,8 @@ public class Node : MonoBehaviour {
 
         // @Test ... タップしたノードのID
         //print(nodeID);
+
+        nodeControllerScript.RemoveUnChainCube();
     }
 
     public void SlideNode(_eSlideDir dir, Vector2 pos) {
@@ -181,6 +179,8 @@ public class Node : MonoBehaviour {
                     nodeControllerScript.IsNodeAction = false;
             });
         transform.DOMoveY(pos.y, slideTime);
+
+        nodeControllerScript.RemoveUnChainCube();
     }
 
     //道のビット配列を回転させる bitarrayに回転シフトがなかった
