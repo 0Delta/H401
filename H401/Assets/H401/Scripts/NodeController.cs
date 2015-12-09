@@ -1201,7 +1201,7 @@ public class NodeController : MonoBehaviour {
 						Debug.Log("CheckedCallback_Subscribe [" + Checker.ID + "]" + Checker.SumNode.ToString() + "/" + (Checker.NotFin ? "" : "Fin") + "\n" + Checker.ToString());
 
 					// ノード数3以上、非完成フラグが立ってないなら
-					if (Checker.SumNode >= 3 && Checker.NotFin == false)
+					if (Checker.SumNode >= 1 && Checker.NotFin == false)
 		{
 						// その枝のノードに完成フラグを立てる
 						foreach (Node Nodes in Checker.NodeList)

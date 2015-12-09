@@ -382,7 +382,7 @@ public class Node : MonoBehaviour {
         //transform.eulerAngles.Set(rot.x,rot.y,0.0f);
         //transform.localEulerAngles.Set(rot.x, rot.y, 0.0f);
 
-        bitLink[0] = true;
+        bitLink[5] = true;
 
         //ビットタイプ・テクスチャを設定
         switch(type) {
@@ -390,26 +390,29 @@ public class Node : MonoBehaviour {
                 break;
 
             case _eNodeType.HUB2_A:
-                bitLink[3] = true;
+                bitLink[2] = true;
 
                 break;
 
             case _eNodeType.HUB2_B:
-                bitLink[2] = true;
+                //bitLink[2] = true;
+                bitLink[3] = true;
                 break;
 
             case _eNodeType.HUB2_C:
+                bitLink[5] = false;
+                bitLink[0] = true;
                 bitLink[1] = true;
                 break;
 
             case _eNodeType.HUB3_A:
-                bitLink[2] = true;
-                bitLink[4] = true;
+                bitLink[3] = true;
+                bitLink[1] = true;
                 break;
 
             case _eNodeType.HUB3_B:
                 bitLink[3] = true;
-                bitLink[5] = true;
+                bitLink[2] = true;
                 break;
 
             default:
