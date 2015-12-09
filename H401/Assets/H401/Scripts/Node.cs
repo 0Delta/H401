@@ -364,7 +364,7 @@ public class Node : MonoBehaviour {
     }
 
     //ノードにタイプ・テクスチャ・道ビット
-    public void SetNodeType(_eNodeType type) {
+    public void SetNodeType(_eNodeType type,int Rot = -1) {
         //ビットと回転角度をリセット
         bitLink.SetAll(false);
         //transform.rotation = Quaternion.identity;
@@ -414,7 +414,8 @@ public class Node : MonoBehaviour {
 
         //ランダムに回転
         float angle = 0.0f;
-        for(int i = 0; i < UnityEngine.Random.Range(0, 6); i++) {
+
+        for(int i = (Rot == -1 ? Random.Range(0, 6) : Rot); i >= 0; i--) {
             BitLinkRotate();
             angle -= ROT_HEX_ANGLE;
         }

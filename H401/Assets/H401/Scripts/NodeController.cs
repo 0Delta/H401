@@ -426,6 +426,7 @@ public class NodeController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         // @デバッグ用
+        if(Input.GetKeyDown(KeyCode.A)) { StartCoroutine(ReplaceRotate(ReplaceNodeFever)); }; 
         //for(int i = 0; i < col; ++i) {
         //    for(int j = 0; j < AdjustRow(i); ++j) {
         //        if(gameNodeScripts[i][j].IsOutScreen)
@@ -1415,8 +1416,17 @@ public class NodeController : MonoBehaviour {
 		}
 	}
 
-	//ノードにテーブルもたせたくなかったので
-	public Color GetNodeColor(int colorNum)
+    public void ReplaceNodeFever() {
+        ReplaceNodeAll();
+        for(int j = 0; j < AdjustRow(1); j++) {
+            gameNodeScripts[1][j].SetNodeType(0,0);
+        }
+
+    }
+
+
+    //ノードにテーブルもたせたくなかったので
+    public Color GetNodeColor(int colorNum)
 	{
 		return levelTableScript.GetNodeColor(colorNum);
 	}
