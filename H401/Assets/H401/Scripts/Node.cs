@@ -306,23 +306,15 @@ public class Node : MonoBehaviour {
         // この時点で、TempBitは先が壁の道を除いた自分の道を示している。
         Tc += "ExcludeFrom MyWay : " + ToString(TempBit);
 
-        if(TempBit.retAnd(Negibor.retNot()).isNotZero()) {  // 隣接ノードのうち、道が無い場所に自分の道が伸びてたらそこは途切れている。
+        for(int n = 0; n < (int)_eLinkDir.MAX; n++) {
+            var TempBit2 = new BitArray(6);
+            // 隣接ノードのうち、道が無い場所に自分の道が伸びてたらそこは途切れている。
+            TempBit2 = TempBit.retAnd(Negibor.retNot());
             // ノード繋がってない
-            string str = ToString() + "\n";
-            for(int n = 0; n < (int)_eLinkDir.MAX; n++) {
-                if(TempBit[n]) {
-                    ///<summary>
-                    /// ノード繋がってない時の処理をココに追加。
-                    /// nが方向です
-                    ///</summary>
-                    nodeControllerScript.AddUnChainCube(this,(_eLinkDir)n);
-                    str += LinkDirToString(n) + " ";
-                }
+            if(TempBit2[n]) {
+                nodeControllerScript.AddUnChainCube(this, (_eLinkDir)n);
+                Tc.NotFin = true;                               // 隣と繋がってないので、枝未完成として登録
             }
-            Debug.Log(str);
-
-            Tc += ("NotFin");
-            Tc.NotFin = true;                       // 隣と繋がってないので、枝未完成として登録
         }
 
         Tc += ("Negibor : " + ToString(Negibor));
