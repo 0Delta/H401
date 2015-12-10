@@ -17,6 +17,7 @@ public class AWS_Editor : Editor {
 
         tgt.UseProxy = EditorGUILayout.Toggle("UseProxy", tgt.UseProxy);
         if(tgt.UseProxy) {
+            EditorGUILayout.HelpBox("But this function is \"Lazy\"", MessageType.Info, true);
             tgt.ProxyHost = EditorGUILayout.TextField("ProxyHost", tgt.ProxyHost);
             tgt.ProxyPort = EditorGUILayout.IntField("Port", tgt.ProxyPort);
             tgt.UserName = EditorGUILayout.TextField("UserName", tgt.UserName);
@@ -31,7 +32,7 @@ public class Score3D_Editor : Editor {
     public override void OnInspectorGUI() {
         var tgt = target as Score3D;
 
-        EditorGUILayout.HelpBox("This is \"DEBUG ONLY\". \n Reset Value at the time of play", MessageType.Warning, true);
+        EditorGUILayout.HelpBox("This is \"DEBUG ONLY\". \n Reset Value at the time of play", MessageType.Info, true);
         GUILayoutOption[] options = { GUILayout.MaxWidth(25.0f), GUILayout.MinWidth(25.0f), GUILayout.ExpandWidth(false) };
         EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true));
         EditorGUILayout.LabelField("α1", options);
