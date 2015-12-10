@@ -40,12 +40,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startSceneID: 1
+  gameFrameRate: 60
   scenePrefabPaths:
   - Prefabs/Scene/Title
   - Prefabs/Scene/Game
   - Prefabs/Scene/Result
-  - Prefabs/Scene/OfflineRanking
-  - Prefabs/Scene/OnlineRanking
+  - Prefabs/Scene/Ranking
   - Prefabs/Scene/Option
 --- !u!1001 &100100000
 Prefab:

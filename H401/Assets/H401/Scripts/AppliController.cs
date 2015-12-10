@@ -14,9 +14,8 @@ public class AppliController : MonoBehaviour {
 		TITLE,              // タイトル
 		GAME,               // ゲーム本編
 		RESULT,             // リザルト
-		OFFLINE_RANKING,	// オフラインランキング
-		ONLINE_RANKING,		// オンラインランキング
-        OPTION,             // オプション
+		RANKING,	        // ランキング
+	    OPTION,             // オプション
 
 		MAX_NUM
 	}

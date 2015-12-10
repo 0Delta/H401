@@ -3,12 +3,13 @@ using System.Collections;
 using UniRx;
 using UnityEngine;
 using DG.Tweening;
+using System.Collections.Generic;
 
 //using Assets.Scripts.Utils;
 
 public class Node : MonoBehaviour {
     static private readonly float ROT_HEX_ANGLE = 60.0f;      // 六角形パネルの回転角度
-
+    
     [SerializeField]
     private float actionTime = 0.0f;       // アクションにかかる時間
 
@@ -61,13 +62,12 @@ public class Node : MonoBehaviour {
         set { bChecked = value; }
     }
 
-    private bool bCompleted;
-
-    public bool CompleteFlag                    //完成済フラグ 走査終了時（枝完成時）に使用
-    {
-        get { return bCompleted; }
-        set { bCompleted = value; }
-    }
+    //private bool bCompleted;
+    //public bool CompleteFlag                    //完成済フラグ 走査終了時（枝完成時）に使用
+    //{
+    //    get { return bCompleted; }
+    //    set { bCompleted = value; }
+    //}
 
     private bool bChain;                        //枝がつながっているか？
 

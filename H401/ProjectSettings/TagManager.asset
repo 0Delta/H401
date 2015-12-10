@@ -39,6 +39,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: ScoreBackGround
+    uniqueID: 260856791
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
