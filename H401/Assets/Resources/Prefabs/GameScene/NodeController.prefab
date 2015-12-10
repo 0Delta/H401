@@ -44,7 +44,7 @@ MonoBehaviour:
   gameNodePrefabPath: Prefabs/GameScene/GameNode
   frameNodePrefabPath: Prefabs/GameScene/FrameNode
   treeControllerPrefabPath: Prefabs/GameScene/TreeController
-  unChainCubePath: Prefabs/GameScene/UnChainCube
+  unChainControllerPath: Prefabs/GameScene/UnChainController
   widthMargin: 0
   heightMargin: .349999994
   headerHeight: 1.25
@@ -70,6 +70,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: unChainCubePath
       value: Prefabs/GameScene/UnChainCube
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: unChainControllerPath
+      value: Prefabs/GameScene/UnChainController
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

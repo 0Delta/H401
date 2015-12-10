@@ -28,7 +28,7 @@ public class NodeController : MonoBehaviour {
     [SerializeField] private string gameNodePrefabPath  = null;     // ノードのプレハブのパス
     [SerializeField] private string frameNodePrefabPath = null;     // フレームノードのプレハブのパス
     [SerializeField] private string treeControllerPrefabPath  = null;     // 完成ノードのプレハブのパス
-    [SerializeField] private string unChainCubePath = null;
+    [SerializeField] private string unChainControllerPath = null;
     [SerializeField] private float widthMargin  = 0.0f;  // ノード位置の左右間隔の調整値
     [SerializeField] private float heightMargin = 0.0f;  // ノード位置の上下間隔の調整値
     [SerializeField] private float headerHeight = 0.0f;  // ヘッダーの高さ
@@ -43,7 +43,8 @@ public class NodeController : MonoBehaviour {
     private GameObject gameNodePrefab   = null;     // ノードのプレハブ
     private GameObject frameNodePrefab  = null;     // フレームノードのプレハブ
     private GameObject treeControllerPrefab   = null;     // 完成ノードのプレハブ
-    private GameObject unChainCubePrefab = null;    //枝未完成協調表示のためのオブジェクト
+    private GameObject unChainControllerPrefab = null;
+
 
     private GameObject[][]  gameNodePrefabs;    // ノードのプレハブリスト
     private Node[][]        gameNodeScripts;        // ノードのnodeスクリプトリスト
@@ -52,7 +53,7 @@ public class NodeController : MonoBehaviour {
 
 	private Square  gameArea = Square.zero;     // ゲームの画面領域(パズル領域)
 	private Vector2 nodeSize = Vector2.zero;    // 描画するノードのサイズ
-    private List<GameObject> unChainCubeList;
+
 
 	private bool        isTap           = false;                // タップ成功フラグ
 	private bool        isSlide         = false;                // ノードスライドフラグ
@@ -113,7 +114,8 @@ public class NodeController : MonoBehaviour {
             return _pauseScript;
         }
     }
-
+    private UnChainController _unChainControllerScript;
+    public UnChainController unChainController { get { return _unChainControllerScript; } }
     //ノードの配置割合を記憶しておく
 
     public int Row {
@@ -216,14 +218,13 @@ public class NodeController : MonoBehaviour {
         gameNodePrefab =  Resources.Load<GameObject>(gameNodePrefabPath);
         frameNodePrefab =  Resources.Load<GameObject>(frameNodePrefabPath);
         treeControllerPrefab = Resources.Load<GameObject>(treeControllerPrefabPath);
-        unChainCubePrefab = Resources.Load<GameObject>(unChainCubePath);
+
         for (int i = 0; i < nodeMaterialsPath.Length; ++i)
         {
             nodeMaterials[i] = Resources.Load<Material>(nodeMaterialsPath[i]);
         }
 
         //unChainCubeList = new ArrayList;
-        unChainCubeList = new List<GameObject>();
 
         //levelControllerScript = appController.gameScene.gameUI.levelCotroller;
         //pauseScript = appController.gameScene.gameUI.gamePause;
@@ -246,8 +247,10 @@ public class NodeController : MonoBehaviour {
         nodeSize.x -= widthMargin;
         nodeSize.y -= heightMargin;
 
-
-
+        //途切れ表示用のアレを生成
+        unChainControllerPrefab = Instantiate(Resources.Load<GameObject>(unChainControllerPath));
+        unChainControllerPrefab.transform.SetParent(transform);
+        _unChainControllerScript = unChainControllerPrefab.GetComponent<UnChainController>();
 
         // フレームを生成
         frameController = new GameObject();
@@ -258,6 +261,8 @@ public class NodeController : MonoBehaviour {
 
         fieldLevel = levelTableScript.GetFieldLevel(0);
         RatioSum = fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3;  //全体割合を記憶
+
+        
 
         // ノードを生成
         for(int i = 0; i < col; ++i) {
@@ -420,6 +425,7 @@ public class NodeController : MonoBehaviour {
             .Subscribe(_ => {
 //        RemoveUnChainCube();
         CheckLink();
+        unChainController.Remove();
             }).AddTo(gameObject);
 	}
 	
@@ -1530,30 +1536,6 @@ public class NodeController : MonoBehaviour {
 		}
 	}
 
-    public void AddUnChainCube(Node node,_eLinkDir linkTo) 
-    {
-        GameObject newCube = Instantiate(unChainCubePrefab);
 
-        newCube.transform.position = new Vector3(0.0f, NodeSize.x / 2.0f, 0.0f);
-        float rotAngle = 60.0f * (int)linkTo + 30.0f;
-//        newCube.transform.Rotate(new Vector3(0.0f, 0.0f, -rotAngle), Space.World);
-        newCube.transform.RotateAround(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f), -rotAngle);
 
-        newCube.transform.position += node.transform.position;
-
-        //tween等で出現時アニメーション
-
-        unChainCubeList.Add(newCube);
-    }
-    public void RemoveUnChainCube()
-    {
-        foreach(var cube in unChainCubeList)
-        {
-            
-            //キューブにtweenを設定して消去
-
-            cube.GetComponent<UnChainObject>().Vanish();
-        }
-        unChainCubeList.Clear();
-    }
 }

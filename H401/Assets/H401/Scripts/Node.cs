@@ -147,7 +147,7 @@ public class Node : MonoBehaviour {
                 //捜査処理
                 //nodeControllerScript.RemoveUnChainCube();
                 nodeControllerScript.CheckLink();
-
+                nodeControllerScript.unChainController.Remove();
                 isAction = false;
             });
 
@@ -157,7 +157,7 @@ public class Node : MonoBehaviour {
         // @Test ... タップしたノードのID
         //print(nodeID);
 
-        nodeControllerScript.RemoveUnChainCube();
+        //nodeControllerScript.unchainController.RemoveUnChainCube();
     }
 
     public void SlideNode(_eSlideDir dir, Vector2 pos) {
@@ -180,7 +180,7 @@ public class Node : MonoBehaviour {
             });
         transform.DOMoveY(pos.y, slideTime);
 
-        nodeControllerScript.RemoveUnChainCube();
+        //nodeControllerScript.RemoveUnChainCube();
     }
 
     //道のビット配列を回転させる bitarrayに回転シフトがなかった
@@ -315,7 +315,7 @@ public class Node : MonoBehaviour {
                     /// ノード繋がってない時の処理をココに追加。
                     /// nが方向です
                     ///</summary>
-                    nodeControllerScript.AddUnChainCube(this,(_eLinkDir)n);
+                    nodeControllerScript.unChainController.AddObj(this,(_eLinkDir)n);
                     str += LinkDirToString(n) + " ";
                 }
             }
