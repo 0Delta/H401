@@ -192,7 +192,7 @@ public class NodeController : MonoBehaviour {
         get { return _currentLevel; }
         set { _currentLevel = value;
         fieldLevel = levelTableScript.GetFieldLevel(_currentLevel);
-        RatioSum = fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3;
+        RatioSum = fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3 + fieldLevel.Ratio_Path4;
         
         StartCoroutine(ReplaceRotate(ReplaceNodeAll));
         }
@@ -431,19 +431,20 @@ public class NodeController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		// @デバッグ用
-		//for(int i = 0; i < col; ++i) {
-		//    for(int j = 0; j < AdjustRow(i); ++j) {
-		//        if(gameNodeScripts[i][j].IsOutScreen)
-		//            gameNodeScripts[i][j].MeshRenderer.material.color = new Color(0.1f, 0.1f, 1.0f);
-		//        else
-		//            gameNodeScripts[i][j].MeshRenderer.material.color = new Color(1.0f, 1.0f, 1.0f);
-		//    }
-		//}
-	}
-	
-	// ノード移動処理
-	void SlantMove() {
+        // @デバッグ用
+        if(Input.GetKeyDown(KeyCode.A)) { StartCoroutine(ReplaceRotate(ReplaceNodeFever)); }; 
+        //for(int i = 0; i < col; ++i) {
+        //    for(int j = 0; j < AdjustRow(i); ++j) {
+        //        if(gameNodeScripts[i][j].IsOutScreen)
+        //            gameNodeScripts[i][j].MeshRenderer.material.color = new Color(0.1f, 0.1f, 1.0f);
+        //        else
+        //            gameNodeScripts[i][j].MeshRenderer.material.color = new Color(1.0f, 1.0f, 1.0f);
+        //    }
+        //}
+    }
+
+    // ノード移動処理
+    void SlantMove() {
 		// スライド対象となるノードの準備
 		Vector2     pos         = tapPos;                   // 移動位置
 		Vector2     standardPos = tapPos;                   // タップノードの移動後座標
@@ -1115,7 +1116,7 @@ public class NodeController : MonoBehaviour {
 		public int Branch = 0;          // 枝の数
 		public bool NotFin = false;     // 枝の"非"完成フラグ
 		public int SumNode = 0;         // 合計ノード数(下の数取得で良いような。)
-		public ArrayList NodeList = new ArrayList();    // 枝に含まれるノード。これを永続させて、クリック判定と組めば大幅な負荷軽減できるかも、
+		public List<Node> NodeList = new List<Node>();    // 枝に含まれるノード。これを永続させて、クリック判定と組めば大幅な負荷軽減できるかも、
 		private string Log = "";
 
 		// コンストラクタ
@@ -1161,80 +1162,71 @@ public class NodeController : MonoBehaviour {
 			}
 
 
-	// 接続をチェックする関数
-	public void CheckLink(bool NoCheckLeftCallback = false)
-	{
-		if (Debug.isDebugBuild && bNodeLinkDebugLog)
-			Debug.Log("CheckLink");
-		
-		// ノードチェッカが帰ってきてないかチェック。これは結構クリティカルなんでログOFFでも出る仕様。
-		if(NodeLinkTaskChecker.Collector.Count != 0 && Debug.isDebugBuild && !NoCheckLeftCallback)
-		{
-			string str = "Left Callback :" + NodeLinkTaskChecker.Collector.Count.ToString() + "\n";
-			foreach (var it in NodeLinkTaskChecker.Collector)
-			{
-				str += it.ToString();
-			}
-			Debug.LogWarning(str);
-		}
+    // 接続をチェックする関数
+    public void CheckLink(bool NoCheckLeftCallback = false) {
+        if(Debug.isDebugBuild && bNodeLinkDebugLog)
+            Debug.Log("CheckLink");
 
-		ResetCheckedFragAll();          // 接続フラグを一度クリア
+        // ノードチェッカが帰ってきてないかチェック。これは結構クリティカルなんでログOFFでも出る仕様。
+        if(NodeLinkTaskChecker.Collector.Count != 0 && Debug.isDebugBuild && !NoCheckLeftCallback) {
+            string str = "Left Callback :" + NodeLinkTaskChecker.Collector.Count.ToString() + "\n";
+            foreach(var it in NodeLinkTaskChecker.Collector) {
+                str += it.ToString();
+            }
+            Debug.LogWarning(str);
+        }
 
-		// 根っこ分繰り返し
-		for (int i = 1; i < row; i++)
-		{
-			// チェッカを初期化
-			var Checker = new NodeLinkTaskChecker();
+        ResetCheckedFragAll();          // 接続フラグを一度クリア
 
-			// 根っこを叩いて処理スタート
-			Observable
-				.Return(i)
-				.Subscribe(x =>
-				{
-					Checker += "firstNodeAct_Subscribe [" + Checker.ID + "]";
-					Checker.Branch++;                                               // 最初に枝カウンタを1にしておく(規定値が0なので+でいいはず)
-					gameNodeScripts[1][x].NodeCheckAction(Checker, _eLinkDir.NONE);     // 下から順にチェックスタート。来た方向はNONEにしておいて根っこを識別。
-				}).AddTo(this);
+        // 根っこ分繰り返し
+        for(int i = 1; i < row-1; i++) {
+            // チェッカを初期化
+            var Checker = new NodeLinkTaskChecker();
 
-			// キャッチャを起動
-			Observable
-				.NextFrame()
-				.Repeat()
-				.First(_ => Checker.Branch == 0)    // 処理中の枝が0なら終了
-				.Subscribe(_ =>
-		{
-					if (Debug.isDebugBuild && bNodeLinkDebugLog)
-						Debug.Log("CheckedCallback_Subscribe [" + Checker.ID + "]" + Checker.SumNode.ToString() + "/" + (Checker.NotFin ? "" : "Fin") + "\n" + Checker.ToString());
+            // 根っこを叩いて処理スタート
+            Observable
+                .Return(i)
+                .Subscribe(x => {
+                    Checker += "firstNodeAct_Subscribe [" + Checker.ID + "]";
+                    Checker.Branch++;                                               // 最初に枝カウンタを1にしておく(規定値が0なので+でいいはず)
+                    gameNodeScripts[1][x].NodeCheckAction(Checker, _eLinkDir.NONE);     // 下から順にチェックスタート。来た方向はNONEにしておいて根っこを識別。
+                }).AddTo(this);
 
-					// ノード数3以上、非完成フラグが立ってないなら
-					if (Checker.SumNode >= 1 && Checker.NotFin == false)
-		{
-						// その枝のノードに完成フラグを立てる
-						foreach (Node Nodes in Checker.NodeList)
-			{
-							Nodes.CompleteFlag = true;
-						};
-						ReplaceNodeTree();   // 消去処理
-						CheckLink(true);    // もう一度チェッカを起動
-						if (Debug.isDebugBuild && bNodeLinkDebugLog)
-							print("枝が完成しました！");
-			}
-					Checker.Dispose();      // チェッカは役目を終えたので消す
-				}).AddTo(this);
-		}
-	}
+            // キャッチャを起動
+            Observable
+                .NextFrame()
+                .Repeat()
+                .First(_ => Checker.Branch == 0)    // 処理中の枝が0なら終了
+                .Subscribe(_ => {
+                    if(Debug.isDebugBuild && bNodeLinkDebugLog)
+                        Debug.Log("CheckedCallback_Subscribe [" + Checker.ID + "]" + Checker.SumNode.ToString() + "/" + (Checker.NotFin ? "" : "Fin") + "\n" + Checker.ToString());
 
-	//閲覧済みフラグを戻す処理
-	public void ResetCheckedFragAll()
-	{
-		for(int i = 0; i < col; ++i) {
-			foreach (var nodes in gameNodeScripts[i]) {
+                    // ノード数3以上、非完成フラグが立ってないなら
+                    if(Checker.SumNode >= 1 && Checker.NotFin == false) {
+                        // その枝のノードに完成フラグを立てる
+                        foreach(Node Nodes in Checker.NodeList) {
+                            Nodes.CompleteFlag = true;
+                        };
+                        ReplaceNodeTree(Checker.NodeList);   // 消去処理
+                        CheckLink(true);    // もう一度チェッカを起動
+                        if(Debug.isDebugBuild && bNodeLinkDebugLog)
+                            print("枝が完成しました！");
+                    }
+                    Checker.Dispose();      // チェッカは役目を終えたので消す
+                }).AddTo(this);
+        }
+    }
+
+    //閲覧済みフラグを戻す処理
+    public void ResetCheckedFragAll() {
+        for(int i = 0; i < col; ++i) {
+            foreach(var nodes in gameNodeScripts[i]) {
                 nodes.ChangeEmissionColor(0);  //繋がりがない枝は色をここでもどす
                 nodes.CheckFlag = false;
 
-			}
-		}
-	}
+            }
+        }
+    }
 	#endregion
 
 	//位置と方向から、指定ノードに隣り合うノードのrowとcolを返す
@@ -1374,70 +1366,52 @@ public class NodeController : MonoBehaviour {
 
 		_eNodeType type =
 			(rand <= fieldLevel.Ratio_Cap) ? _eNodeType.CAP :
-			(rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 / 3.0f)                          ? _eNodeType.HUB2_A :
-			(rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 / 3.0f * 2.0f)                   ? _eNodeType.HUB2_B :
-			(rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 )                                ? _eNodeType.HUB2_C :
-			(rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3 / 2.0f) ? _eNodeType.HUB3_A :
-			(rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3)        ? _eNodeType.HUB3_B :
+			(rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 / 3.0f)                                  ? _eNodeType.HUB2_A :
+			(rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 / 3.0f * 2.0f)                           ? _eNodeType.HUB2_B :
+			(rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 )                                        ? _eNodeType.HUB2_C :
+			(rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3 / 3.0f)         ? _eNodeType.HUB3_A :
+			(rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3 / 3.0f * 2.0f)  ? _eNodeType.HUB3_B :
+            (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3)                ? _eNodeType.HUB3_C :
+            (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3 + fieldLevel.Ratio_Path4) ? _eNodeType.HUB4_A :
 			_eNodeType.CAP;
 
 		node.SetNodeType(type);
         node.MeshRenderer.material.color = levelTableScript.GetFieldLevel(_currentLevel).NodeColor;
 	}
 
-	//完成した枝に使用しているノードを再配置する
-	void ReplaceNodeTree()
-	{
-		int nNode = 0;
-		int nCap = 0;
-		int nPath2 = 0;
-		int nPath3 = 0;
+    //完成した枝に使用しているノードを再配置する
+    void ReplaceNodeTree(List<Node> List) {
+        int nCap = 0;
+        int nPath2 = 0;
+        int nPath3 = 0;
 
-		//完成時演出のためにマテリアルをコピーしてから、
-		List<GameObject> treeNodes = new List<GameObject>();
-		for (int i = 0; i < col; i++)
-		{
-			for (int j = 0; j < AdjustRow(i); j++)
-			{
-				if (gameNodeScripts[i][j].CompleteFlag)
-					treeNodes.Add(gameNodePrefabs[i][j]);
-			}
-
-		}
-		GameObject newTree = (GameObject)Instantiate(treeControllerPrefab, transform.position, transform.rotation);
-		newTree.GetComponent<treeController>().SetTree(treeNodes);
-
-
-		//ノードを再配置
-		for (int i = 0; i < col ; i++)
-		{
-			for (int j = 0; j < AdjustRow(i); j++ )
-
-				if (gameNodeScripts[i][j].CompleteFlag)
-				{
-					nNode++;
-					switch (gameNodeScripts[i][j].GetLinkNum())
-					{
-						case 1:
-							nCap++;
-							break;
-						case 2:
-							nPath2++;
-							break;
-						case 3:
-							nPath3++;
-							break;
-					}
-
-					ReplaceNode(gameNodeScripts[i][j]);
-				}
-		}
-		scoreScript.PlusScore(nNode, nCap, nPath2, nPath3);
-		timeScript.PlusTime(nNode, nCap, nPath2, nPath3);
-		feverScript.Gain(nNode,nCap,nPath2,nPath3);
-
-
-	}
+        //完成時演出のためにマテリアルをコピーして
+        List<GameObject> treeNodes = new List<GameObject>();
+        foreach(Node obj in List) {
+            treeNodes.Add(obj.gameObject);
+        }
+        GameObject newTree = (GameObject)Instantiate(treeControllerPrefab, transform.position, transform.rotation);
+        newTree.GetComponent<treeController>().SetTree(treeNodes);
+        
+        //ノードを再配置
+        foreach(Node obj in List) {
+            switch(obj.GetLinkNum()) {
+                case 1:
+                    nCap++;
+                    break;
+                case 2:
+                    nPath2++;
+                    break;
+                case 3:
+                    nPath3++;
+                    break;
+            }
+            ReplaceNode(obj);
+        }
+        scoreScript.PlusScore(List.Count, nCap, nPath2, nPath3);
+        timeScript.PlusTime(List.Count, nCap, nPath2, nPath3);
+        feverScript.Gain(List.Count, nCap, nPath2, nPath3);
+    }
 
 	public void ReplaceNodeAll()
 	{
@@ -1450,8 +1424,17 @@ public class NodeController : MonoBehaviour {
 		}
 	}
 
-	//ノードにテーブルもたせたくなかったので
-	public Color GetNodeColor(int colorNum)
+    public void ReplaceNodeFever() {
+        ReplaceNodeAll();
+        for(int j = 0; j < AdjustRow(1); j++) {
+            gameNodeScripts[1][j].SetNodeType(0,0);
+        }
+
+    }
+
+
+    //ノードにテーブルもたせたくなかったので
+    public Color GetNodeColor(int colorNum)
 	{
 		return levelTableScript.GetNodeColor(colorNum);
 	}

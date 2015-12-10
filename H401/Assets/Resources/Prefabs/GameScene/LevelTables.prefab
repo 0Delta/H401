@@ -44,30 +44,35 @@ MonoBehaviour:
     Ratio_Cap: 2
     Ratio_Path2: 9
     Ratio_Path3: 1
+    Ratio_Path4: 0
     lightColor: {r: 1, g: 1, b: 1, a: 0}
     NodeColor: {r: 1, g: .764705896, b: .764705896, a: 0}
   - fieldName: america
     Ratio_Cap: 1
     Ratio_Path2: 6
     Ratio_Path3: 1
+    Ratio_Path4: 0
     lightColor: {r: 1, g: .448529422, b: .448529422, a: 0}
     NodeColor: {r: .95740366, g: 1, b: .691176474, a: 0}
   - fieldName: china
     Ratio_Cap: 1
     Ratio_Path2: 3
     Ratio_Path3: 1
+    Ratio_Path4: 0
     lightColor: {r: 1, g: .735294104, b: .735294104, a: 0}
     NodeColor: {r: 1, g: 1, b: 1, a: 0}
   - fieldName: italy
     Ratio_Cap: 1
     Ratio_Path2: 3
     Ratio_Path3: 2
+    Ratio_Path4: 1
     lightColor: {r: .443204999, g: .338235319, b: 1, a: 0}
     NodeColor: {r: 1, g: 1, b: 1, a: 0}
   - fieldName: egipt
     Ratio_Cap: 1
     Ratio_Path2: 2
     Ratio_Path3: 3
+    Ratio_Path4: 2
     lightColor: {r: .988742411, g: 1, b: .183823526, a: 0}
     NodeColor: {r: 1, g: .492647052, b: .492647052, a: 0}
   timeLevelInterval: 60
@@ -275,6 +280,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: timeLevelTable.Array.data[0].SlipRatio
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[3].Ratio_Path4
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[4].Ratio_Path4
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

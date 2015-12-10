@@ -49,9 +49,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -75,7 +73,7 @@ MeshCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Convex: 0
-  m_Mesh: {fileID: 4300000, guid: 21c5467685a7b8543b200119128bdc75, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 614e6c4a8291f6143ac92e1a8a784fda, type: 3}
 --- !u!114 &11474654
 MonoBehaviour:
   m_ObjectHideFlags: 1

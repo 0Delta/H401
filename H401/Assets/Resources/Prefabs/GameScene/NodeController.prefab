@@ -56,6 +56,8 @@ MonoBehaviour:
   - Materials/hex3
   - Materials/hex4
   - Materials/hex5
+  - Materials/hex6
+  - Materials/hex7
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -63,6 +65,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: nodeMaterialsPath.Array.size
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: treeControllerPrefabPath
       value: Prefabs/GameScene/TreeController
@@ -74,6 +80,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: unChainControllerPath
       value: Prefabs/GameScene/UnChainController
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: nodeMaterialsPath.Array.data[6]
+      value: Materials/hex6
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: nodeMaterialsPath.Array.data[7]
+      value: Materials/hex7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
