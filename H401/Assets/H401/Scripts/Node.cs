@@ -400,9 +400,7 @@ public class Node : MonoBehaviour {
                 break;
 
             case _eNodeType.HUB2_C:
-                bitLink[5] = false;
-                bitLink[0] = true;
-                bitLink[1] = true;
+                bitLink[4] = true;
                 break;
 
             case _eNodeType.HUB3_A:
@@ -414,7 +412,11 @@ public class Node : MonoBehaviour {
                 bitLink[3] = true;
                 bitLink[2] = true;
                 break;
-
+            case  _eNodeType.HUB4_A:
+                bitLink[0] = true;
+                bitLink[3] = true;
+                bitLink[2] = true;
+                break;
             default:
                 break;
         }
