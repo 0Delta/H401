@@ -6,8 +6,7 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using Amazon.DynamoDBv2.DataModel;
 
-public class DynamoConnecter : MonoBehaviour
-{
+public class DynamoConnecter : MonoBehaviour {
     // 固有関数
     [SerializeField]
     public bool UseProxy;
@@ -29,8 +28,7 @@ public class DynamoConnecter : MonoBehaviour
 
     // テーブル定義(DBと同期させること)
     [DynamoDBTable(TABLE_NAME)]
-    private class ScoreTable
-    {
+    private class ScoreTable {
         // 変数群
         public string ID { get; set; }
         public string Name { get; set; }
@@ -38,8 +36,7 @@ public class DynamoConnecter : MonoBehaviour
         public long Date { get; set; }
 
         // DBへ通信するための辞書データを返す。
-        public Dictionary<string, AttributeValue> GetDictionary()
-        {
+        public Dictionary<string, AttributeValue> GetDictionary() {
             return new Dictionary<string, AttributeValue> {
                 { "ID",new AttributeValue {S = ID } },
                 {"Name",new AttributeValue {S = Name } },
@@ -49,8 +46,7 @@ public class DynamoConnecter : MonoBehaviour
         }
 
         // デフォルトコンストラクタ 全ての値を不正値に
-        public ScoreTable()
-        {
+        public ScoreTable() {
             ID = "null";
             Name = DefaultName;
             Score = -1;
@@ -58,8 +54,7 @@ public class DynamoConnecter : MonoBehaviour
         }
 
         // コンストラクタ。正しく引数を与えて初期化。
-        public ScoreTable(string iName, int iScore)
-        {
+        public ScoreTable(string iName, int iScore) {
             ID = SystemInfo.deviceUniqueIdentifier.ToString();
             Date = long.Parse(System.DateTime.Now.ToString("yyMMddHHmmss", System.Globalization.DateTimeFormatInfo.InvariantInfo));
             Name = iName;
@@ -67,8 +62,7 @@ public class DynamoConnecter : MonoBehaviour
         }
 
         // [Debug] 文字列変換
-        override public string ToString()
-        {
+        override public string ToString() {
             return
              "   ID [" + ID + "]\n" +
              " Name:" + Name + "\n" +
@@ -79,18 +73,15 @@ public class DynamoConnecter : MonoBehaviour
 
 
     // Use this for initialization
-    void Start()
-    {
+    void Start() {
         // AWSへの接続
         var awsCredentials = new BasicAWSCredentials(publicKey, secretKey);
-
         var Cconfig = new AmazonDynamoDBConfig();
         Cconfig.RegionEndpoint = RegionEndpoint.USEast1;
         // タイムアウト時間をコントロールしたい(みかん)
         Cconfig.Timeout = new System.TimeSpan(10000);
 
-        if (UseProxy)
-        {
+        if(UseProxy) {
             Cconfig.ProxyPort = ProxyPort;
             Cconfig.ProxyHost = ProxyHost;
             Cconfig.ProxyCredentials = new System.Net.NetworkCredential(UserName, Password);
@@ -101,32 +92,23 @@ public class DynamoConnecter : MonoBehaviour
         client = new AmazonDynamoDBClient(awsCredentials, Cconfig);
     }
 
-
     // Update is called once per frame
-    void Update()
-    {
-
-    }
+    void Update() { }
 
     // データ追加
-    public void Add(int Score, string Name = DefaultName)
-    {
+    public void Add(int Score, string Name = DefaultName) {
         // 変数宣言
-        if (Name == "") { Name = DefaultName; }
+        if(Name == "") { Name = DefaultName; }
         ScoreTable Dat = new ScoreTable(Name, Score);                               // スコアデータ初期化
         PutItemRequest pReq = new PutItemRequest(TABLE_NAME, Dat.GetDictionary());  // リクエスト作成
 
         // Putリクエスト
-        client.PutItemAsync(pReq, (PutCallBack) =>
-        {
+        client.PutItemAsync(pReq, (PutCallBack) => {
             //Pear.SetResponse();                 // 反応があったら親に通知
-            if (PutCallBack.Exception == null)
-            {
+            if(PutCallBack.Exception == null) {
                 // 正常完了
                 Debug.Log("正常に送信されました");
-            }
-            else
-            {
+            } else {
                 // エラー
                 Debug.LogError(PutCallBack.Exception.ToString());
             }
@@ -135,11 +117,9 @@ public class DynamoConnecter : MonoBehaviour
     }
 
     // データ読込
-    public void Read()
-    {
+    public void Read() {
         // 絞り込み用変数
-        Condition ScoreLine = new Condition
-        {
+        Condition ScoreLine = new Condition {
             AttributeValueList = {
                 new AttributeValue { N = "200" }
             },
@@ -147,8 +127,7 @@ public class DynamoConnecter : MonoBehaviour
         };
 
         // リクエスト作成
-        ScanRequest ScanRequest = new ScanRequest
-        {
+        ScanRequest ScanRequest = new ScanRequest {
             TableName = TABLE_NAME,
             ScanFilter =
             new Dictionary<string, Condition> { { "Score", ScoreLine } },
@@ -156,33 +135,26 @@ public class DynamoConnecter : MonoBehaviour
         };
 
         // Scanリクエスト
-        client.ScanAsync(ScanRequest, sr =>
-        {
+        client.ScanAsync(ScanRequest, sr => {
             //Pear.SetResponse();                 // 反応があったら親に通知
-            if (sr.Exception == null)
-            {
+            if(sr.Exception == null) {
                 // スキャン成功
                 List<ScoreTable> GetList = new List<ScoreTable>();
-                foreach (var attribs in sr.Response.Items)
-                {
+                foreach(var attribs in sr.Response.Items) {
                     // 取得したデータをパッキング
                     ScoreTable ScTemp = new ScoreTable();
-                    foreach (var attrib in attribs)
-                    {
-                        switch (attrib.Key)
-                        {
-                            case "ID": ScTemp.ID = attrib.Value.S; break;
-                            case "Score": ScTemp.Score = int.Parse(attrib.Value.N); break;
-                            case "Name": ScTemp.Name = attrib.Value.S; break;
-                            case "Date": ScTemp.Date = long.Parse(attrib.Value.N); break;
+                    foreach(var attrib in attribs) {
+                        switch(attrib.Key) {
+                            case "ID":   ScTemp.ID    = attrib.Value.S;             break;
+                            case "Score":ScTemp.Score = int.Parse(attrib.Value.N);  break;
+                            case "Name": ScTemp.Name  = attrib.Value.S;             break;
+                            case "Date": ScTemp.Date  = long.Parse(attrib.Value.N); break;
                         }
                         GetList.Add(ScTemp);
                     }
                     // 取得したリストを使ってなんやかんや。
                 }
-            }
-            else
-            {
+            } else {
                 // エラー
                 Debug.LogError(sr.Exception.ToString());
             }
