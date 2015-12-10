@@ -185,7 +185,6 @@ public class Node : MonoBehaviour {
         transform.DOKill();
         transform.DOMoveX(pos.x, time)
             .OnComplete(() => {
-                nodeControllerScript.CheckOutScreen(nodeID);
                 isAction = false;
                 isSlide = false;
                 if(_isSlideStart)
