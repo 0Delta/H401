@@ -112,20 +112,24 @@ MonoBehaviour:
     RegainPer2Path: 0
     RegainPer3Path: .0500000007
     RegainPer4Path: 0
-  feverGainRatio: .100000001
-  feverDecreaseRatio: .00100000005
   nodeColorList:
   - {r: 0, g: 0, b: 0, a: 0}
   - {r: .102941155, g: .0446582958, b: .0446582958, a: 0}
   - {r: .323529422, g: .130839109, b: .130839109, a: 0}
   - {r: .551470578, g: .551470578, b: .551470578, a: 0}
   scoreRatio:
-    BasePoint: 100
-    BonusAtNodes: 10
+    BasePoint: 10
     BonusPerCap: 1
-    BonusPer2Path: 1
-    BonusPer3Path: 1
-    BonusPer4Path: 1
+    BonusPer2Path: 1.10000002
+    BonusPer3Path: 1.29999995
+    BonusPer4Path: 1.5
+  feverRatio:
+    gainRatio: .00999999978
+    decreaseRatio: .00100000005
+    gainPerCap: 0
+    gainPerPath2: 0
+    gainPerPath3: 1.20000005
+    gainPerPath4: 1.5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -311,7 +315,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: scoreRatio.BasePoint
-      value: 100
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: scoreRatio.BonusAtNodes
@@ -323,15 +327,31 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: scoreRatio.BonusPer2Path
-      value: 1
+      value: 1.10000002
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: scoreRatio.BonusPer3Path
-      value: 1
+      value: 1.29999995
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: scoreRatio.BonusPer4Path
-      value: 1
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: feverRatio.gainRatio
+      value: .00999999978
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: feverRatio.decreaseRatio
+      value: .00100000005
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: feverRatio.gainPerPath3
+      value: 1.20000005
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: feverRatio.gainPerPath4
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

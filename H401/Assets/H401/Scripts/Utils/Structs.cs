@@ -150,20 +150,33 @@ public struct Square
     public float RegainPer3Path;    //パス３ノード１つごとの回復割合
     public float RegainPer4Path;    //パス４ノード１つごとの回復割合
 }
+
+//スコア情報
 [System.Serializable] public struct ScoreInfo
 {
     public int BasePoint;
-    public int BonusAtNodes;
-    public int BonusPerCap;
-    public int BonusPer2Path;
-    public int BonusPer3Path;
-    public int BonusPer4Path;
+    public float BonusPerCap;
+    public float BonusPer2Path;
+    public float BonusPer3Path;
+    public float BonusPer4Path;
 }
-public struct nodeCountInfo
+
+//枝のノード情報
+public struct NodeCountInfo
 {
     public int nodes;
     public int cap;
     public int path2;
     public int path3;
     public int path4;
+}
+//フィーバー制御情報
+[System.Serializable]public struct FeverInfo
+{
+    public float gainRatio;
+    public float decreaseRatio;
+    public float gainPerCap;
+    public float gainPerPath2;
+    public float gainPerPath3;
+    public float gainPerPath4;
 }
