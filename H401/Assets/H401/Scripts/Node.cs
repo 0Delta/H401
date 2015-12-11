@@ -404,6 +404,10 @@ public class Node : MonoBehaviour {
                 bitLink[3] = true;
                 bitLink[2] = true;
                 break;
+            case _eNodeType.HUB3_C:
+                bitLink[4] = true;
+                bitLink[3] = true;
+                break;
             case  _eNodeType.HUB4_A:
                 bitLink[0] = true;
                 bitLink[3] = true;

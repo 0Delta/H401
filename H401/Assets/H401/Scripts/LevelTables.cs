@@ -8,6 +8,7 @@ public class LevelTables : MonoBehaviour {
     [SerializeField,Range(0.0f, 1.0f)]private float feverGainRatio = 0.0f;
     [SerializeField, Range(0.0f, 1.0f)]private float feverDecreaseRatio = 0.0f;
     [SerializeField]private Color[] nodeColorList = null;
+    [SerializeField]private ScoreInfo scoreRatio;
 
     //難易度調整用クラス ここから各スクリプトに変数を渡す形に
     private int fieldLevelCount;        //フィールド難易度がいくつあるか？
@@ -26,7 +27,7 @@ public class LevelTables : MonoBehaviour {
         get { return timeLevelCount; }
     }
 
-
+    public ScoreInfo ScoreRatio { get { return scoreRatio; } }
 
     public float FeverGainRatio
     {

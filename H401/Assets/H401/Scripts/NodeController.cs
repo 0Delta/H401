@@ -1353,9 +1353,7 @@ public class NodeController : MonoBehaviour {
 
     //完成した枝に使用しているノードを再配置する
     void ReplaceNodeTree(List<Node> List) {
-        int nCap = 0;
-        int nPath2 = 0;
-        int nPath3 = 0;
+        nodeCountInfo nodeCount = new nodeCountInfo();
 
         //完成時演出のためにマテリアルをコピーして
         List<GameObject> treeNodes = new List<GameObject>();
@@ -1369,20 +1367,25 @@ public class NodeController : MonoBehaviour {
         foreach(Node obj in List) {
             switch(obj.GetLinkNum()) {
                 case 1:
-                    nCap++;
+                    nodeCount.cap++;
                     break;
                 case 2:
-                    nPath2++;
+                    nodeCount.path2++;
                     break;
                 case 3:
-                    nPath3++;
+                    nodeCount.path3++;
+                    break;
+                case 4:
+                    nodeCount.path4++;
                     break;
             }
             ReplaceNode(obj);
         }
-        scoreScript.PlusScore(List.Count, nCap, nPath2, nPath3);
-        timeScript.PlusTime(List.Count, nCap, nPath2, nPath3);
-        feverScript.Gain(List.Count, nCap, nPath2, nPath3);
+
+        nodeCount.nodes = List.Count;
+        scoreScript.PlusScore(nodeCount);
+        timeScript.PlusTime(nodeCount);
+        feverScript.Gain(nodeCount);
     }
 
     public void ReplaceNodeAll() {
@@ -1462,6 +1465,9 @@ public class NodeController : MonoBehaviour {
 		yield return new WaitForSeconds(repRotateTime / 2.0f);
 
 		SetActionAll(false);
+
+
+        CheckLink(); 
 		}
 
 	//操作終了時の処理をここで

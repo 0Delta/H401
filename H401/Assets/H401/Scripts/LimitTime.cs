@@ -97,17 +97,17 @@ public class LimitTime : MonoBehaviour {
 	}
 
     //枝の数と種類をもらって時間を割合で回復させる
-    public void PlusTime(int nodeNum, int cap, int path2, int path3)
+    public void PlusTime(nodeCountInfo nodeCount)
     {
         //計算
         float tempRatio = 0.0f;
         //最大値を超えていたらカット
 
         //ノード３つ毎に１割増える ３分岐１つ毎に５分増える
-        tempRatio = (float)(nodeNum / 3) * timeLevel.RegainPer3Nodes  //ノード３つごとに数％
-            + cap * timeLevel.RegainPerCap                            //１パスのノード１つ毎に数％
-            + path2 * timeLevel.RegainPer2Path                        //２パスのノード１つ毎に数％
-            + path3 * timeLevel.RegainPer3Path;                       //３パスのノード１つ毎に数％
+        tempRatio = (float)nodeCount .nodes * timeLevel.RegainPerNodes  //ノード３つごとに数％
+            + nodeCount.cap * timeLevel.RegainPerCap                            //１パスのノード１つ毎に数％
+            + nodeCount.path2 * timeLevel.RegainPer2Path                        //２パスのノード１つ毎に数％
+            + nodeCount.path3 * timeLevel.RegainPer3Path;                       //３パスのノード１つ毎に数％
 
         if (tempRatio > timeLevel.MaxRegainRatio)
             tempRatio = timeLevel.MaxRegainRatio;

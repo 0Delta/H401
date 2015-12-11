@@ -144,8 +144,26 @@ public struct Square
 {
     public float MaxRegainRatio;    //回復する最大値（割合）
     public float SlipRatio;         //現象割合（秒間）
-    public float RegainPer3Nodes;   //ノード3つごとの回復割合
+    public float RegainPerNodes;   //ノード3つごとの回復割合
     public float RegainPerCap;      //パス１ノード１つごとの回復割合
     public float RegainPer2Path;    //パス２ノード１つごとの回復割合
     public float RegainPer3Path;    //パス３ノード１つごとの回復割合
+    public float RegainPer4Path;    //パス４ノード１つごとの回復割合
+}
+[System.Serializable] public struct ScoreInfo
+{
+    public int BasePoint;
+    public int BonusAtNodes;
+    public int BonusPerCap;
+    public int BonusPer2Path;
+    public int BonusPer3Path;
+    public int BonusPer4Path;
+}
+public struct nodeCountInfo
+{
+    public int nodes;
+    public int cap;
+    public int path2;
+    public int path3;
+    public int path4;
 }

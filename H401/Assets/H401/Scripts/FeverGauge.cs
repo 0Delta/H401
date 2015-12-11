@@ -63,9 +63,9 @@ public class FeverGauge : MonoBehaviour {
 
         FGImage.fillAmount = feverValue;
 	}
-    public void Gain(int nodeNum, int cap, int path2, int path3)
+    public void Gain(nodeCountInfo nodeCount)
     {
-        if (nodeNum != 0)
+        if (nodeCount.nodes != 0)
             feverValue += gainRatio;
         //MAXになったらフィーバーモードへ
         //今はとりあえず0に戻す
