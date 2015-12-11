@@ -40,7 +40,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fieldLevelTable:
-  - fieldName: japan
+  - fieldName: anpan
     Ratio_Cap: 2
     Ratio_Path2: 9
     Ratio_Path3: 1
@@ -79,41 +79,53 @@ MonoBehaviour:
   timeLevelTable:
   - MaxRegainRatio: .800000012
     SlipRatio: 1
-    RegainPer3Nodes: .200000003
+    RegainPerNodes: 0
     RegainPerCap: 0
     RegainPer2Path: .0500000007
     RegainPer3Path: .100000001
+    RegainPer4Path: 0
   - MaxRegainRatio: .699999988
     SlipRatio: 1.20000005
-    RegainPer3Nodes: .150000006
+    RegainPerNodes: 0
     RegainPerCap: 0
     RegainPer2Path: .0250000004
     RegainPer3Path: .075000003
+    RegainPer4Path: 0
   - MaxRegainRatio: .600000024
     SlipRatio: 1.29999995
-    RegainPer3Nodes: .100000001
+    RegainPerNodes: 0
     RegainPerCap: 0
     RegainPer2Path: .00999999978
     RegainPer3Path: .0500000007
+    RegainPer4Path: 0
   - MaxRegainRatio: .5
     SlipRatio: 1.5
-    RegainPer3Nodes: .075000003
+    RegainPerNodes: 0
     RegainPerCap: 0
     RegainPer2Path: 0
     RegainPer3Path: .0500000007
+    RegainPer4Path: 0
   - MaxRegainRatio: .300000012
     SlipRatio: 2
-    RegainPer3Nodes: .0500000007
+    RegainPerNodes: 0
     RegainPerCap: 0
     RegainPer2Path: 0
     RegainPer3Path: .0500000007
-  feverGainRatio: .739000022
+    RegainPer4Path: 0
+  feverGainRatio: .100000001
   feverDecreaseRatio: .00100000005
   nodeColorList:
   - {r: 0, g: 0, b: 0, a: 0}
   - {r: .102941155, g: .0446582958, b: .0446582958, a: 0}
   - {r: .323529422, g: .130839109, b: .130839109, a: 0}
   - {r: .551470578, g: .551470578, b: .551470578, a: 0}
+  scoreRatio:
+    BasePoint: 100
+    BonusAtNodes: 10
+    BonusPerCap: 1
+    BonusPer2Path: 1
+    BonusPer3Path: 1
+    BonusPer4Path: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -288,6 +300,38 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: fieldLevelTable.Array.data[4].Ratio_Path4
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: feverGainRatio
+      value: .100000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[0].fieldName
+      value: anpan
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: scoreRatio.BasePoint
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: scoreRatio.BonusAtNodes
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: scoreRatio.BonusPerCap
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: scoreRatio.BonusPer2Path
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: scoreRatio.BonusPer3Path
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: scoreRatio.BonusPer4Path
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
