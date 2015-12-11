@@ -50,7 +50,7 @@ MonoBehaviour:
   OnlinePrefabName: OnlineRanking
   OfflinePrefabName: OfflineRanking
   BGPrefabName: RankingBG
-  AWSPrefabName: AWSPrefab
+  ScorePrefabName: ScoreSystem
   CameraPrefabName: RankingCamera
   Mode: 0
 --- !u!114 &11458068
@@ -122,6 +122,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: CameraPrefabName
       value: RankingCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: AWSPrefabName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: ScorePrefabName
+      value: ScoreSystem
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

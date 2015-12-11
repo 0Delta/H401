@@ -35,10 +35,10 @@ public class RankingMGR : MonoBehaviour {
     [SerializeField] public string OnlinePrefabName;
     [SerializeField] public string OfflinePrefabName;
     [SerializeField] public string BGPrefabName;
-    [SerializeField] public string AWSPrefabName;
+    [SerializeField] public string ScorePrefabName;
     [SerializeField] public string CameraPrefabName;
 
-    GameObject AWSObj;
+    GameObject ScoreObj;
     GameObject OnlineObj;
     GameObject OfflineObj;
     GameObject BGObj;
@@ -74,7 +74,7 @@ public class RankingMGR : MonoBehaviour {
     // Use this for initialization
     void Start() {
         // オブジェクト初期化
-        AWSObj = InstantiateChild(AWSPrefabName);
+        ScoreObj = InstantiateChild(ScorePrefabName);
         BGObj = InstantiateChild(BGPrefabName, false);
         CameraObj = InstantiateChild(CameraPrefabName);
         OfflineObj = InstantiateChild(OfflinePrefabName, false);

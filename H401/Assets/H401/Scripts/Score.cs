@@ -12,6 +12,7 @@ public class Score : MonoBehaviour {
     [SerializeField] private int bonusPerCap = 0;
     [SerializeField] private int bonusPer2Path = 0;
     [SerializeField] private int bonusPer3Path = 0;
+    [SerializeField] private string ScoreManagerPath = null;
 
     private int HiScore;
     public int HIScore
@@ -61,5 +62,11 @@ public class Score : MonoBehaviour {
 
         gameScore += tempScore;
         SetScore();
+    }
+
+    public void Decide() {
+        // スコア登録
+        ScoreManager scoreManager = Instantiate(Resources.Load<ScoreManager>(ScoreManagerPath));
+        scoreManager.AddScore(gameScore);
     }
 }
