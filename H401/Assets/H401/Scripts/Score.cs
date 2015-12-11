@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class Score : MonoBehaviour {
 
     //表示用の何か
-
+    [SerializeField] private string ScoreManagerPath;
     //計算用の何か
     //[SerializeField] private int basePoint = 0;
     //[SerializeField] private int bonusAtNodes = 0;
