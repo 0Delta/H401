@@ -563,13 +563,13 @@ public class NodeController : MonoBehaviour {
 	void LoopBackNode() {
 		if (gameNodeScripts[slidingLimitNodeID.y][slidingLimitNodeID.x].IsOutScreen) {
             gameNodeScripts[slidingLimitNodeID.y][slidingLimitNodeID.x].IsOutScreen = false;
+            
+            SortOutNode(slideDir, slidingLimitNodeID);
 
             Vec2Int copyInNodeID  = SearchLimitNodeRemoveFrame(tapNodeID, ConvertSlideDirToLinkDir(SlideDir));
             Vec2Int copyOutNodeID = SearchLimitNodeRemoveFrame(tapNodeID, ConvertSlideDirToLinkDir(ReverseDirection(slideDir)));
             copyOutNodeID = GetDirNode(copyOutNodeID, ReverseDirection(slideDir));
         	gameNodeScripts[copyOutNodeID.y][copyOutNodeID.x].CopyParameter(gameNodeScripts[copyInNodeID.y][copyInNodeID.x]);
-
-            SortOutNode(slideDir, slidingLimitNodeID);
 		}
 	}
 
