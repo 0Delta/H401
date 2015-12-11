@@ -132,6 +132,7 @@ public struct Square
     public float Ratio_Cap;
     public float Ratio_Path2;
     public float Ratio_Path3;
+    public float Ratio_Path4;
     public Color lightColor;
     public Color NodeColor;
 //    private string BG_Path;

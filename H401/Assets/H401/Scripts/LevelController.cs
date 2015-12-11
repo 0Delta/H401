@@ -91,6 +91,7 @@ public class LevelController : MonoBehaviour {
                     lyingAngle = 0;
                     FieldChangeEnd();
                 }
+                else 
                 if(!isDebug && currentAngle < lyingDeviceAngle  && currentAngle > -lyingDeviceAngle)
                 {
                     lyingAngle = 0;
