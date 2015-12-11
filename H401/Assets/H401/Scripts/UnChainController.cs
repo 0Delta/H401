@@ -6,6 +6,7 @@ public class UnChainController : MonoBehaviour {
 
     //枝途切れ字のオブジェクトはこっちで管理する
     [SerializeField]private string unChainCubePath = null;
+    [SerializeField]private float linkDistance;     //ノードとこのオブジェクトの距離
     private GameObject unChainCubePrefab = null;    //枝未完成協調表示のためのオブジェクト
 
     private List<UnChainObject> unChainCubeList;
@@ -40,7 +41,7 @@ public class UnChainController : MonoBehaviour {
         //なかった場合、リストに追加
         GameObject newCube = Instantiate(unChainCubePrefab);
 
-        newCube.transform.position = new Vector3(0.0f,transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().gameController.nodeController.NodeSize.x / 2, 0.0f);
+        newCube.transform.position = new Vector3(0.0f,linkDistance, 0.0f);
         float rotAngle = 60.0f * (int)linkTo + 30.0f;
         //        newCube.transform.Rotate(new Vector3(0.0f, 0.0f, -rotAngle), Space.World);
         newCube.transform.RotateAround(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f), -rotAngle);

@@ -118,7 +118,7 @@ MonoBehaviour:
   - {r: .323529422, g: .130839109, b: .130839109, a: 0}
   - {r: .551470578, g: .551470578, b: .551470578, a: 0}
   scoreRatio:
-    BasePoint: 100
+    BasePoint: 10
     BonusPerCap: 1
     BonusPer2Path: 1.10000002
     BonusPer3Path: 1.29999995
@@ -315,7 +315,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: scoreRatio.BasePoint
-      value: 100
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: scoreRatio.BonusAtNodes
