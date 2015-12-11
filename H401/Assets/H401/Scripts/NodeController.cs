@@ -58,6 +58,7 @@ public class NodeController : MonoBehaviour {
 	private Vector2     moveNodeInitPos = Vector2.zero;         // 移動中ノードの移動開始位置
 	private Vector2     moveNodeDist    = Vector2.zero;         // 移動中ノードの基本移動量(移動方向ベクトル)
 	private Vector2     moveNodeDistAbs = Vector2.zero;         // 移動中ノードの基本移動量の絶対値
+    private Vector2     tapPosMoveNodePosDist = Vector2.zero;   // タップしているノードの位置と、タップしている位置との距離
 
 	private Vector2 startTapPos = Vector2.zero;     // タップした瞬間の座標
 	private Vector2 tapPos      = Vector2.zero;     // タップ中の座標
@@ -318,7 +319,7 @@ public class NodeController : MonoBehaviour {
                     prevTapPos = tapPos;
                     tapPos = new Vector2(worldTapPos.x, worldTapPos.y);
 
-                    NodesMove();
+                    SlideNodes();
                     StopSlideStartEasing();
                     CheckSlideOutLimitNode();
                     LoopBackNode();
@@ -328,12 +329,13 @@ public class NodeController : MonoBehaviour {
                 
                 // スライド判定
                 if(tapNodeID.x > -1) {
-                    Vec2Int nextNodeID = GetDirNode(tapNodeID, CheckSlideDir(startTapPos, new Vector2(worldTapPos.x, worldTapPos.y)));
+                    _eSlideDir dir = CheckSlideDir(startTapPos, new Vector2(worldTapPos.x, worldTapPos.y));
+                    Vec2Int nextNodeID = GetDirNode(tapNodeID, dir);
                     if(nextNodeID.x > -1) {
                         if (Vector3.Distance(gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position, worldTapPos) >
                             Vector3.Distance(gameNodePrefabs[nextNodeID.y][nextNodeID.x].transform.position, worldTapPos)) {
                             isSlide = true;
-                            StartSlideNodes(nextNodeID, CheckSlideDir(startTapPos, new Vector2(worldTapPos.x, worldTapPos.y)));
+                            StartSlideNodes(nextNodeID, dir);
                         }
                     }
                 }
@@ -429,8 +431,8 @@ public class NodeController : MonoBehaviour {
         //}
 	}
 	
-	// ノード移動処理
-	void NodesMove() {
+	// ノードのスライド移動処理
+	void SlideNodes() {
 		// スライド対象となるノードの準備
 		Vector2     deltaSlideDist = tapPos - prevTapPos;   // 前回フレームからのスライド量
 		float       checkDir    = 0.0f;                     // スライド方向チェック用
@@ -553,7 +555,8 @@ public class NodeController : MonoBehaviour {
         slidingLimitNodeID = SearchLimitNode(tapNodeID, ConvertSlideDirToLinkDir(slideDir));
         slidingReverseLimitNodeID = SearchLimitNode(tapNodeID, ConvertSlideDirToLinkDir(ReverseDirection(slideDir)));
 
-		NodesMove();
+        // タップしているノードの位置と、タップしている位置との距離を算出
+		tapPosMoveNodePosDist = moveNodeDist.normalized * Vector2.Dot(moveNodeDist.normalized, startTapPos - moveNodeInitPos);
 	}
 
 	// ゲームの画面外にはみ出したノードを逆側に移動する
@@ -1552,17 +1555,17 @@ public class NodeController : MonoBehaviour {
         switch (slideDir) {
 			case _eSlideDir.LEFT:
 			case _eSlideDir.RIGHT:
-				// タップしているノードを移動
+				// タップしているノードの位置を調整
 				adjustPos = AdjustGameScreen(tapPos);
 				adjustPos.y = gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.y;
 				break;
 
 			case _eSlideDir.LEFTUP:
 			case _eSlideDir.RIGHTDOWN:
-				// タップしているノードを移動
+				// タップしているノードの位置を調整
 				Vec2Int lu = SearchLimitNode(tapNodeID, _eLinkDir.LU);
 				Vec2Int rd = SearchLimitNode(tapNodeID, _eLinkDir.RD);
-				adjustPos = moveNodeInitPos + moveDist;
+				adjustPos = moveNodeInitPos + moveDist + tapPosMoveNodePosDist;
 				if (adjustPos.x < nodePlacePosList[lu.y][lu.x].x)
 					adjustPos.x = nodePlacePosList[lu.y][lu.x].x;
 				if (adjustPos.x > nodePlacePosList[rd.y][rd.x].x)
@@ -1575,10 +1578,10 @@ public class NodeController : MonoBehaviour {
 				
 			case _eSlideDir.RIGHTUP:
 			case _eSlideDir.LEFTDOWN:
-				// タップしているノードを移動
+				// タップしているノードの位置を調整
 				Vec2Int ru = SearchLimitNode(tapNodeID, _eLinkDir.RU);
 				Vec2Int ld = SearchLimitNode(tapNodeID, _eLinkDir.LD);
-				adjustPos = moveNodeInitPos + moveDist;
+				adjustPos = moveNodeInitPos + moveDist + tapPosMoveNodePosDist;
 				if (adjustPos.x > nodePlacePosList[ru.y][ru.x].x)
 					adjustPos.x = nodePlacePosList[ru.y][ru.x].x;
 				if (adjustPos.x < nodePlacePosList[ld.y][ld.x].x)
