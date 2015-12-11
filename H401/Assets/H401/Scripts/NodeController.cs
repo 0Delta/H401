@@ -575,20 +575,22 @@ public class NodeController : MonoBehaviour {
 
 	// 移動を終了するノードの位置を調整する
 	void AdjustNodeStop() {
-		Vec2Int nearNodeID    = SearchNearNodeRemoveFrame(gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position);
+		Vec2Int nearNodeID    = SearchNearNode(gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position);
         Vec2Int nextNodeID    = SearchLimitNode(tapNodeID, ConvertSlideDirToLinkDir(slideDir));
         _eSlideDir reverseDir = ReverseDirection(slideDir);
-        Vector2 pos           = nodePlacePosList[nearNodeID.y][nearNodeID.x];
-        Vector2 standardPos   = nodePlacePosList[nearNodeID.y][nearNodeID.x];
+        Vector2 pos           = new Vector2(gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.x, gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.y);
+        Vector2 standardPos   = new Vector2(nodePlacePosList[nearNodeID.y][nearNodeID.x].x, nodePlacePosList[nearNodeID.y][nearNodeID.x].y);
 
         // スライド方向を更新
-        _eSlideDir checkDir = CheckSlideDir(gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position, standardPos);
-        if(slideDir != checkDir) {
-            slideDir = checkDir;
+        if(pos.x != standardPos.x || pos.y != standardPos.y) {
+            _eSlideDir checkDir = CheckSlideDir(pos, standardPos);
+            if(slideDir != checkDir) {
+                slideDir = checkDir;
 
-            Vec2Int tmp = slidingLimitNodeID;
-            slidingLimitNodeID = slidingReverseLimitNodeID;
-            slidingReverseLimitNodeID = tmp;
+                Vec2Int tmp = slidingLimitNodeID;
+                slidingLimitNodeID = slidingReverseLimitNodeID;
+                slidingReverseLimitNodeID = tmp;
+            }
         }
 
         // スライド方向のノードに、スライド終了を通知
@@ -596,11 +598,17 @@ public class NodeController : MonoBehaviour {
 			gameNodeScripts[nextNodeID.y][nextNodeID.x].EndSlide();
             nextNodeID = GetDirNode(nextNodeID, reverseDir);
         }
+        
+        // 回り込み処理
+        CheckSlideOutLimitNode();
+        LoopBackNode();
 
         // 移動処理
         switch (slideDir) {
 			case _eSlideDir.LEFT:
 			case _eSlideDir.RIGHT:
+                pos = standardPos;
+
 				// タップしているノードを移動
 				gameNodeScripts[tapNodeID.y][tapNodeID.x].SlideNode(slideDir, standardPos);
 
@@ -670,9 +678,6 @@ public class NodeController : MonoBehaviour {
 			default:
 				break;
 		}
-
-        CheckSlideOutLimitNode();
-        LoopBackNode();
 	}
 
 	// 任意のノード情報をコピーする
