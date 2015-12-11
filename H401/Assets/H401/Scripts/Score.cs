@@ -54,9 +54,10 @@ public class Score : MonoBehaviour {
     }
 
     //計算機構
-    public void PlusScore(nodeCountInfo nodeCount)
+    public void PlusScore(NodeCountInfo nodeCount)
     {
-        int tempScore = nodeCount.nodes * scoreInfo.BonusAtNodes;
+
+        /*int tempScore =　nodeCount.nodes * scoreInfo.BonusAtNodes;
         tempScore += nodeCount.path2 * scoreInfo.BonusPerCap;
         tempScore += nodeCount.path2 * scoreInfo.BonusPer2Path;
         tempScore += nodeCount.path3 * scoreInfo.BonusPer3Path;
@@ -64,7 +65,24 @@ public class Score : MonoBehaviour {
         tempScore += scoreInfo.BasePoint;
         tempScore *= nodeCount.nodes;
 
+        int tempScore = nodeCount.nodes + scoreInfo.BasePoint;  //基礎ポイント = ノード数×ベース
+        tempScore *= nodeCount.cap * scoreInfo.BonusPerCap;     //先端ノード数分の倍率
+        tempScore *= nodeCount.path2 * scoreInfo.BonusPer2Path;     //先端ノード数分の倍率
+        tempScore *= nodeCount.path3 * scoreInfo.BonusPer3Path;     //先端ノード数分の倍率
+        tempScore *= nodeCount.path4 * scoreInfo.BonusPer4Path;     //先端ノード数分の倍率
         gameScore += tempScore;
+        */
+        //ツムツム方式で得点計算をしてみる
+        float tempScore = 0;
+        for (int i = 1; i < nodeCount.nodes + 1; i++)           //ベースポイントを100とすると、
+            tempScore += scoreInfo.BasePoint * i;               //100 + 200 + 300 +  ...  + (100 * 連鎖数)
+
+        tempScore *= (1.0f + scoreInfo.BonusPerCap * nodeCount.cap);     //各ノードごとの
+        tempScore *= (1.0f + scoreInfo.BonusPer2Path * nodeCount.path2); //ボーナスポイントを
+        tempScore *= (1.0f + scoreInfo.BonusPer3Path * nodeCount.path3); //ツムツムでは加算していたが、
+        tempScore *= (1.0f + scoreInfo.BonusPer4Path  * nodeCount.path4); //分岐の重みを増やすために乗算に
+
+        gameScore += (int)tempScore;
         SetScore();
     }
 }

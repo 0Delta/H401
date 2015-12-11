@@ -1381,7 +1381,7 @@ public class NodeController : MonoBehaviour {
 
     //完成した枝に使用しているノードを再配置する
     void ReplaceNodeTree(List<Node> List) {
-        nodeCountInfo nodeCount = new nodeCountInfo();
+        NodeCountInfo nodeCount = new NodeCountInfo();
 
         //完成時演出のためにマテリアルをコピーして
         List<GameObject> treeNodes = new List<GameObject>();

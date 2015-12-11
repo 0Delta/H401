@@ -9,8 +9,7 @@ public class FeverGauge : MonoBehaviour {
     [SerializeField]private Color FGEmission;
 
     private float GAUGE_MAX = 1.0f;   //最大値
-    private float decreaseRatio = 0.0f;
-    private float gainRatio = 0.0f;
+    private FeverInfo feverInfo;
     
     private float feverValue;   //現在フィーバー値
 
@@ -39,8 +38,7 @@ public class FeverGauge : MonoBehaviour {
         _feverState = _eFeverState.NORMAL;
 
         LevelTables ltScript = gameScene.levelTables;
-        gainRatio = ltScript.FeverGainRatio;
-        decreaseRatio = ltScript.FeverDecreaseRatio;
+        feverInfo = ltScript.FeverRatio;
 
         FLightPrefab = Resources.Load<GameObject>(FLightPath);
         
@@ -52,7 +50,7 @@ public class FeverGauge : MonoBehaviour {
         if (_feverState == _eFeverState.FEVER)
         {
 
-            feverValue -= decreaseRatio;
+            feverValue -= feverInfo.decreaseRatio;
 
             if (feverValue < 0.0f)
             {
@@ -63,10 +61,19 @@ public class FeverGauge : MonoBehaviour {
 
         FGImage.fillAmount = feverValue;
 	}
-    public void Gain(nodeCountInfo nodeCount)
+    public void Gain(NodeCountInfo nodeCount)
     {
         if (nodeCount.nodes != 0)
-            feverValue += gainRatio;
+        {
+            float tempRegain;
+            tempRegain = nodeCount.nodes * feverInfo.gainRatio;
+            tempRegain *= 1.0f + nodeCount.nodes * feverInfo.gainPerCap;
+            tempRegain *= 1.0f + nodeCount.path2 * feverInfo.gainPerPath2;
+            tempRegain *= 1.0f + nodeCount.path3 * feverInfo.gainPerPath3;
+            tempRegain *= 1.0f + nodeCount.path4 * feverInfo.gainPerPath4;
+
+            feverValue += tempRegain;
+        }
         //MAXになったらフィーバーモードへ
         //今はとりあえず0に戻す
 
