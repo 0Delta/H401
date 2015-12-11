@@ -5,7 +5,6 @@ public class GameInfoCanvas : MonoBehaviour {
 
 
 //    private GameObject gameInfoPanelObject = null;
-
     private Score _score;
     public Score score { get { return _score; } }
     private LimitTime _limitTime;
@@ -22,7 +21,6 @@ public class GameInfoCanvas : MonoBehaviour {
         _score = GetComponentInChildren<Score>();
         _limitTime = GetComponentInChildren<LimitTime>();
         _feverGauge = GetComponentInChildren<FeverGauge>();
-
 	
 	}
 	

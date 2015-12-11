@@ -17,7 +17,8 @@ public enum _eNodeType{
     HUB2_C,     // 鈍角
     HUB3_A,     // Ｙ
     HUB3_B,     // 卜
-    //HUB3_C,     // ∋
+    HUB3_C,     // ∋
+    HUB4_A,     // Ⅹ
 
     MAX,
 };
@@ -50,6 +51,7 @@ public enum _eLevelState
 {
     STAND,
     LIE,
+    CHANGE,
 }
 public enum _eDebugState
 {

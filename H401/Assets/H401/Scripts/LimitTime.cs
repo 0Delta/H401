@@ -6,10 +6,11 @@ public class LimitTime : MonoBehaviour {
 
 
     [SerializeField] private float maxTime = 0.0f;  //時間の最大値(秒？)
-
+    [SerializeField] private string gameEndPanelPath = null;
     public Image timeImage;
     private float nowTime;  //現在時間
-
+    private float _eventRatio;   //状態ごとの時間の減り
+    public float eventRatio { set { _eventRatio = value; } }
 
     private Animator ojityanAnimator = null;
 
@@ -51,23 +52,35 @@ public class LimitTime : MonoBehaviour {
         nowTimeLevel = 0;
 
         ojityanAnimator = gameScene.gameUI.ojityanAnimator;
+        _eventRatio = 0.0f; //開始演出が終わるまでは時間が減らない
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        nowTime += Time.deltaTime * timeLevel.SlipRatio;
+        nowTime += Time.deltaTime * timeLevel.SlipRatio * _eventRatio;
 
         SetImage();
 
         if(nowTime > maxTime)
         {
             //ここにゲームオーバー処理
+            nowTime = maxTime - 0.1f;
+            _eventRatio = 0.0f;
+            GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+
+            gameScene.gameController.nodeController.SetActionAll(true); //ノードを操作不能にする
 
             //スコアをもってくる
             //ゲームオーバー時のパネルを出して、タップでリザルト画面に行く
-            Resources.Load("GameOverPanel");
+            GameObject gameEndPanelObject = (GameObject)Instantiate(Resources.Load<GameObject>(gameEndPanelPath));
+            GameEndPanel gameEndpanel = gameEndPanelObject.GetComponent<GameEndPanel>();
+            gameEndpanel.transform.SetParent(gameScene.gameUI.gamePause.optionCanvas.transform);
+            gameEndpanel.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+            gameEndpanel.transform.localPosition = new Vector3(0.0f, 1334.0f, 0.0f);
+            //gameEndpanel.GetComponent<GUI>()
 
-//            print("タイムオーバー");
+            gameEndpanel.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            print("タイムオーバー");
         }
 
         //時間経過による難易度変更処理
@@ -82,18 +95,20 @@ public class LimitTime : MonoBehaviour {
 	}
 
     //枝の数と種類をもらって時間を割合で回復させる
-    public void PlusTime(int nodeNum, int cap, int path2, int path3)
+    public void PlusTime(NodeCountInfo nodeCount)
     {
         //計算
         float tempRatio = 0.0f;
         //最大値を超えていたらカット
 
         //ノード３つ毎に１割増える ３分岐１つ毎に５分増える
-        tempRatio = (float)(nodeNum / 3) * timeLevel.RegainPer3Nodes  //ノード３つごとに数％
-            + cap * timeLevel.RegainPerCap                            //１パスのノード１つ毎に数％
-            + path2 * timeLevel.RegainPer2Path                        //２パスのノード１つ毎に数％
-            + path3 * timeLevel.RegainPer3Path;                       //３パスのノード１つ毎に数％
+        tempRatio = (float)nodeCount.nodes * timeLevel.RegainPerNodes  //ノード1つごとに数％
+            + (float)nodeCount.cap * timeLevel.RegainPerCap                            //１パスのノード１つ毎に数％
+            + (float)nodeCount.path2 * timeLevel.RegainPer2Path                        //２パスのノード１つ毎に数％
+            + (float)nodeCount.path3 * timeLevel.RegainPer3Path                        //３パスのノード１つ毎に数％
+            + (float)nodeCount.path3 * timeLevel.RegainPer4Path;
 
+        //最大値以上は回復しない
         if (tempRatio > timeLevel.MaxRegainRatio)
             tempRatio = timeLevel.MaxRegainRatio;
 

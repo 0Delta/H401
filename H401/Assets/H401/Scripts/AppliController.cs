@@ -28,7 +28,9 @@ public class AppliController : MonoBehaviour {
     public _eSceneID startSceneID;      // ゲーム開始時のシーンID
 
 // ----- private:
+    [SerializeField]int gameFrameRate = 0;
     [SerializeField] private string[] scenePrefabPaths;     // シーン Prefab の Path リスト
+
 
     private GameObject  currentScenePrefab;       // 現在のシーンの Prefab
 
@@ -48,6 +50,9 @@ public class AppliController : MonoBehaviour {
 	//---------------------------------------------------------------
 	void Start() {
 		// 次のシーンへ
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = gameFrameRate;  //シーンごとにFPSを設定するべきらしい
+
 		ChangeScene(startSceneID);
 	}
 	

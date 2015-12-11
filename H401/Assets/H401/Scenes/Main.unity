@@ -42,7 +42,7 @@ LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 5
   m_GIWorkflowMode: 1
-  m_LightmapsMode: 1
+  m_LightmapsMode: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -128,6 +128,14 @@ Prefab:
     - target: {fileID: 188584, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: gameFPS
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: gameFrameRate
+      value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 384487508efa3454190ee73f0a1c850a, type: 2}

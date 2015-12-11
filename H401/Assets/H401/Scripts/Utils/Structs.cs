@@ -132,7 +132,9 @@ public struct Square
     public float Ratio_Cap;
     public float Ratio_Path2;
     public float Ratio_Path3;
-
+    public float Ratio_Path4;
+    public Color lightColor;
+    public Color NodeColor;
 //    private string BG_Path;
 
     //背景の画像パス
@@ -142,8 +144,39 @@ public struct Square
 {
     public float MaxRegainRatio;    //回復する最大値（割合）
     public float SlipRatio;         //現象割合（秒間）
-    public float RegainPer3Nodes;   //ノード3つごとの回復割合
+    public float RegainPerNodes;   //ノード3つごとの回復割合
     public float RegainPerCap;      //パス１ノード１つごとの回復割合
     public float RegainPer2Path;    //パス２ノード１つごとの回復割合
     public float RegainPer3Path;    //パス３ノード１つごとの回復割合
+    public float RegainPer4Path;    //パス４ノード１つごとの回復割合
+}
+
+//スコア情報
+[System.Serializable] public struct ScoreInfo
+{
+    public int BasePoint;
+    public float BonusPerCap;
+    public float BonusPer2Path;
+    public float BonusPer3Path;
+    public float BonusPer4Path;
+}
+
+//枝のノード情報
+public struct NodeCountInfo
+{
+    public int nodes;
+    public int cap;
+    public int path2;
+    public int path3;
+    public int path4;
+}
+//フィーバー制御情報
+[System.Serializable]public struct FeverInfo
+{
+    public float gainRatio;
+    public float decreaseRatio;
+    public float gainPerCap;
+    public float gainPerPath2;
+    public float gainPerPath3;
+    public float gainPerPath4;
 }
