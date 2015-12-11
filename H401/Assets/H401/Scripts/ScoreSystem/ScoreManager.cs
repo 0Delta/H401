@@ -151,7 +151,6 @@ public class ScoreManager : MonoBehaviour {
 //        NameEntryField = GetComponentInChildren<UnityEngine.UI.InputField>();
 
         // ファイルからスコア読み出し
-        Debug.Log(SListInstance.ToString());
         Load();
     }
 
@@ -165,7 +164,10 @@ public class ScoreManager : MonoBehaviour {
     public void AddScore(int Score) {
         // スコアを追加
         Load();
-        SListInstance.Insert(Score);
+        int r = SListInstance.Insert(Score) + 1;
+        Debug.Log(
+            (r == -1) ? ("Out of Ranking.") : ("Rank : " + r)
+            + "\n" + SListInstance.ToString());
         Save();
 
     }
