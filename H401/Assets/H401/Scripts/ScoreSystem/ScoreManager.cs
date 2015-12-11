@@ -163,7 +163,8 @@ public class ScoreManager : MonoBehaviour {
 
 
     public void AddScore(int Score) {
-        // スコアを追加。
+        // スコアを追加
+        Load();
         SListInstance.Insert(Score);
         Save();
 

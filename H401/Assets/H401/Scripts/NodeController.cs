@@ -43,7 +43,7 @@ public class NodeController : MonoBehaviour {
     private GameObject gameNodePrefab   = null;     // ノードのプレハブ
     private GameObject frameNodePrefab  = null;     // フレームノードのプレハブ
     private GameObject treeControllerPrefab   = null;     // 完成ノードのプレハブ
-    private GameObject unChainControllerPrefab = null;
+    public GameObject unChainControllerPrefab = null;
 
 
     private GameObject[][]  gameNodePrefabs;    // ノードのプレハブリスト
@@ -1478,30 +1478,30 @@ public class NodeController : MonoBehaviour {
 		}
 	}
 
-    public void AddUnChainCube(Node node,_eLinkDir linkTo) 
-    {
-        GameObject newCube = Instantiate(unChainCubePrefab);
+//    public void AddUnChainCube(Node node,_eLinkDir linkTo) 
+//    {
+//        GameObject newCube = Instantiate(unChainCubePrefab);
 
-        newCube.transform.position = new Vector3(0.0f, NodeSize.x / 2.0f, 0.0f);
-        float rotAngle = 60.0f * (int)linkTo + 30.0f;
-//        newCube.transform.Rotate(new Vector3(0.0f, 0.0f, -rotAngle), Space.World);
-        newCube.transform.RotateAround(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(.0f, 0.0f, 1.0f), -rotAngle);
+//        newCube.transform.position = new Vector3(0.0f, NodeSize.x / 2.0f, 0.0f);
+//        float rotAngle = 60.0f * (int)linkTo + 30.0f;
+////        newCube.transform.Rotate(new Vector3(0.0f, 0.0f, -rotAngle), Space.World);
+//        newCube.transform.RotateAround(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(.0f, 0.0f, 1.0f), -rotAngle);
 
-        newCube.transform.position += node.transform.position;
+//        newCube.transform.position += node.transform.position;
 
-        //tween等で出現時アニメーション
+//        //tween等で出現時アニメーション
 
-        unChainCubeList.Add(newCube);
-    }
-    public void RemoveUnChainCube()
-    {
-        foreach(var cube in unChainCubeList)
-        {
+//        unChainCubeList.Add(newCube);
+//    }
+//    public void RemoveUnChainCube()
+//    {
+//        foreach(var cube in unChainCubeList)
+//        {
             
-            //キューブにtweenを設定して消去
+//            //キューブにtweenを設定して消去
 
-            Destroy(cube);
-        }
-        unChainCubeList.Clear();
-    }
+//            Destroy(cube);
+//        }
+//        unChainCubeList.Clear();
+//    }
 }

@@ -312,7 +312,7 @@ public class Node : MonoBehaviour {
             TempBit2 = TempBit.retAnd(Negibor.retNot());
             // ノード繋がってない
             if(TempBit2[n]) {
-                nodeControllerScript.AddUnChainCube(this, (_eLinkDir)n);
+                nodeControllerScript.unChainController.AddObj(this, (_eLinkDir)n);
                 Tc.NotFin = true;                               // 隣と繋がってないので、枝未完成として登録
             }
         }
