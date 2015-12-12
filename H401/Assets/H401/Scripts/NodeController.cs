@@ -418,9 +418,9 @@ public class NodeController : MonoBehaviour {
             .DistinctUntilChanged()
             .Where(x => x)
             .Subscribe(_ => {
-//                RemoveUnChainCube();
-        CheckLink();
-        unChainController.Remove();
+//              RemoveUnChainCube();
+                CheckLink();
+                unChainController.Remove();
             })
             .AddTo(gameObject);
 
@@ -1105,7 +1105,6 @@ public class NodeController : MonoBehaviour {
                         //    Nodes.CompleteFlag = true;
                         //};
                         ReplaceNodeTree(Checker.NodeList);   // 消去処理
-                        CheckLink(true);    // もう一度チェッカを起動
                         if(Debug.isDebugBuild && bNodeLinkDebugLog)
                             print("枝が完成しました！");
                     }
