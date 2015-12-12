@@ -59,6 +59,7 @@ public class NodeController : MonoBehaviour {
 	private bool        isTap           = false;                // タップ成功フラグ
 	private bool        isSlide         = false;                // ノードスライドフラグ
 	private bool        isNodeAction    = false;                // ノードがアクション中かフラグ
+	private bool        isSlideEnd      = false;                // ノードがスライド終了処理中かフラグ
 	private Vec2Int     tapNodeID       = Vec2Int.zero;         // タップしているノードのID
 	private _eSlideDir  slideDir        = _eSlideDir.NONE;      // スライド中の方向
 	private Vector2     moveNodeInitPos = Vector2.zero;         // 移動中ノードの移動開始位置
@@ -354,6 +355,7 @@ public class NodeController : MonoBehaviour {
                         if (Vector3.Distance(gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position, worldTapPos) >
                             Vector3.Distance(gameNodePrefabs[nextNodeID.y][nextNodeID.x].transform.position, worldTapPos)) {
                             isSlide = true;
+                            isNodeAction = true;
                             StartSlideNodes(nextNodeID, dir);
                         }
                     }
@@ -364,10 +366,10 @@ public class NodeController : MonoBehaviour {
             .EveryUpdate()
             .Where(_ => Input.GetMouseButtonDown(0))
             .Subscribe(_ => {
-                // ノードがスライド中なら未処理
+                // スライド中なら未処理
                 if(isSlide)
                     return;
-                
+
                 if (pauseScript.pauseState == _ePauseState.PAUSE)
                     return;
 
@@ -398,9 +400,7 @@ public class NodeController : MonoBehaviour {
                 if(isSlide) {
                     AdjustNodeStop();
 
-                    isSlide   = false;
-                    slideDir = _eSlideDir.NONE;
-
+                    isSlideEnd = true;
                     tapNodeID = Vec2Int.zero;
                 } else {
                     if(tapNodeID.x > -1) {
@@ -436,6 +436,25 @@ public class NodeController : MonoBehaviour {
                     }
                 }
                 isNodeAction = false;
+            })
+            .AddTo(gameObject);
+        
+        // ノードがスライド終了処理中かチェック
+        Observable
+            .EveryUpdate()
+            .Where(_ => isSlideEnd)
+            .Subscribe(_ => {
+		        for(int i = 0; i < col; ++i) {
+			        foreach (var nodes in gameNodeScripts[i]) {
+                        if(nodes.isSlideEnd)
+                            return;
+                    }
+                }
+                isSlideEnd = false;
+                if(isSlide) {
+                    isSlide   = false;
+                    slideDir = _eSlideDir.NONE;
+                }
             })
             .AddTo(gameObject);
 	}
