@@ -4,22 +4,18 @@ using UnityEngine;
 [CustomEditor(typeof(Node))]
 public class Node_Editor : Editor {
     Node tgt;
-    bool foldOut;
     public override void OnInspectorGUI() {
         tgt = target as Node;
         EditorGUILayout.LabelField(tgt.ToString());
 
-        foldOut = EditorGUILayout.Foldout(foldOut, "bitlink");
-        if(foldOut == true) {
-            string str =
-            (tgt.bitLink[5] ? "LU" : "  ") + "  " +
-            (tgt.bitLink[0] ? "RU" : "  ") + "  \n " +
-            (tgt.bitLink[4] ? "L" : "  ") + "        " +
-            (tgt.bitLink[1] ? "R" : " ") + "\n   " +
-            (tgt.bitLink[3] ? "LD" : "  ") + "  " +
-            (tgt.bitLink[2] ? "LU" : "  ") + "  \n";
-            EditorGUILayout.LabelField(str, GUILayout.Height(58f));
-        }
+        string str = "   "+
+        (tgt.bitLink[5] ? "LU" : "  ") + " " +
+        (tgt.bitLink[0] ? "RU" : "  ") + "  \n " +
+        (tgt.bitLink[4] ? "L" : "  ") + "   ■   " +
+        (tgt.bitLink[1] ? "R" : " ") + "\n   " +
+        (tgt.bitLink[3] ? "LD" : "  ") + " " +
+        (tgt.bitLink[2] ? "RD" : "  ") + "  \n";
+        EditorGUILayout.LabelField(str, GUILayout.Height(58f));
         base.OnInspectorGUI();
     }
 }
