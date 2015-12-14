@@ -142,6 +142,7 @@ public class Node : MonoBehaviour {
 
         // 回転処理(※TODO:new をなんとかしたい)
         transform.DOKill();
+        transform.DOMoveZ(IN_ACTION_POSZ, 0.0f);
         transform.DORotate(new Vector3(0.0f, 0.0f, angle), actionTime)
             .OnComplete(() => {
                 // 回転成分を初期化
@@ -161,7 +162,10 @@ public class Node : MonoBehaviour {
             });
 
         // 拡縮処理(※回転と同じように、補正処理が必要)
-        transform.DOScale(scaleSize, actionTime * 0.5f).SetLoops(2, LoopType.Yoyo);
+        transform.DOScale(scaleSize, actionTime * 0.5f).SetLoops(2, LoopType.Yoyo)
+            .OnComplete(() => {
+                transform.DOMoveZ(0.0f, 0.0f);
+            });
     }
 
     // ノード移動処理

@@ -40,14 +40,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   row: 7
-  col: 11
+  col: 10
   gameNodePrefabPath: Prefabs/GameScene/GameNode
   frameNodePrefabPath: Prefabs/GameScene/FrameNode
   treeControllerPrefabPath: Prefabs/GameScene/TreeController
   unChainControllerPath: Prefabs/GameScene/UnChainController
   widthMargin: 0
-  heightMargin: .349999994
-  headerHeight: 1.25
+  heightMargin: .275000006
+  headerHeight: 1.29999995
   repRotateTime: .5
   nodeMaterialsPath:
   - Materials/hex0
@@ -58,7 +58,8 @@ MonoBehaviour:
   - Materials/hex5
   - Materials/hex6
   - Materials/hex7
-  unChainControllerPrefab: {fileID: 0}
+  unChainControllerPrefab: {fileID: 113934, guid: 7a42ce331515e1f43b3c87734326506a,
+    type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -75,13 +76,25 @@ Prefab:
       value: Prefabs/GameScene/TreeController
       objectReference: {fileID: 0}
     - target: {fileID: 0}
-      propertyPath: unChainCubePath
-      value: Prefabs/GameScene/UnChainCube
+      propertyPath: col
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: headerHeight
+      value: 1.29999995
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: heightMargin
+      value: .25
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: unChainControllerPath
       value: Prefabs/GameScene/UnChainController
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: unChainControllerPrefab
+      value: 
+      objectReference: {fileID: 113934, guid: 7a42ce331515e1f43b3c87734326506a, type: 2}
     - target: {fileID: 0}
       propertyPath: nodeMaterialsPath.Array.data[6]
       value: Materials/hex6
@@ -89,10 +102,6 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: nodeMaterialsPath.Array.data[7]
       value: Materials/hex7
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: heightMargin
-      value: .300000012
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
