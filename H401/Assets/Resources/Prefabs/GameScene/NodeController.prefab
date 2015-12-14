@@ -58,6 +58,7 @@ MonoBehaviour:
   - Materials/hex5
   - Materials/hex6
   - Materials/hex7
+  unChainControllerPrefab: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -88,6 +89,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: nodeMaterialsPath.Array.data[7]
       value: Materials/hex7
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: heightMargin
+      value: .300000012
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

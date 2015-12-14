@@ -9,6 +9,7 @@ using System.Collections.Generic;
 
 public class Node : MonoBehaviour {
     static private readonly float ROT_HEX_ANGLE = 60.0f;      // 六角形パネルの回転角度
+    static private readonly float IN_ACTION_POSZ = -0.5f;     // アクション中のZ座標
     
     [SerializeField] private float actionTime = 0.0f;       // アクションにかかる時間
     [SerializeField] private float scaleSize  = 0.0f;       // タップ時の拡大サイズ
@@ -173,24 +174,28 @@ public class Node : MonoBehaviour {
         isAction = true;
         isSlide = true;
 
+        transform.DOKill();
+
         float time = 0.0f;
         if(_isSlideStart) {
             time =  slideStartTime;
+            transform.DOMoveZ(IN_ACTION_POSZ, 0.0f);
         } else if(_isSlideEnd) {
             time = slideEndTime;
         } else {
             time = slideTime;
         }
         
-        transform.DOKill();
         transform.DOMoveX(pos.x, time)
             .OnComplete(() => {
                 isAction = false;
                 isSlide = false;
                 if(_isSlideStart)
                     _isSlideStart = false;
-                if(_isSlideEnd)
+                if(_isSlideEnd) {
                     _isSlideEnd = false;
+                    transform.DOMoveZ(0.0f, 0.0f);
+                }
             });
         transform.DOMoveY(pos.y, time);
 

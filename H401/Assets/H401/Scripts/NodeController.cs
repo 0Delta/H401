@@ -405,7 +405,7 @@ public class NodeController : MonoBehaviour {
                     if(tapNodeID.x > -1) {
                         gameNodeScripts[tapNodeID.y][tapNodeID.x].RotationNode();
                         isNodeAction = true;
-                }
+                    }
                 }
             })
             .AddTo(gameObject);
@@ -432,7 +432,7 @@ public class NodeController : MonoBehaviour {
 			        foreach (var nodes in gameNodeScripts[i]) {
                         if(nodes.IsAction)
                             return;
-	}
+	                }
                 }
                 isNodeAction = false;
             })
