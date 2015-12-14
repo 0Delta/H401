@@ -1,8 +1,11 @@
 ﻿// BitArray型を拡張
+using System;
 using System.Collections;
+using UnityEngine;
 
 namespace BitArrayExtension
 {
+
     public static class Extension
     {
         // 既存の演算は全部上書きなんで、自身を書き換えない関数を作った。

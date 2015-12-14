@@ -516,6 +516,7 @@ MonoBehaviour:
   bonusPerCap: 0
   bonusPer2Path: 20
   bonusPer3Path: 50
+  ScoreManagerPath: Prefabs/ScoreSystem/ScoreSystem
   scoreText: {fileID: 11444270}
 --- !u!114 &11464470
 MonoBehaviour:

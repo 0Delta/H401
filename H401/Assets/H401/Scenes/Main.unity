@@ -125,17 +125,9 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 188584, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
-      propertyPath: m_IsActive
+    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: startSceneID
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
-      propertyPath: gameFPS
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
-      propertyPath: gameFrameRate
-      value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 384487508efa3454190ee73f0a1c850a, type: 2}

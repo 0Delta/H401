@@ -87,6 +87,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba52be0fc3237de4691eb3e391139c5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NodeTemp:
+  - A: 0
+    B: 0
+    C: 0
   actionTime: .100000001
   scaleSize: .550000012
   slideTime: 0
@@ -100,6 +104,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_LocalScale.x
       value: .550000012

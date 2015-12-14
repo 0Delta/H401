@@ -3,6 +3,7 @@ using System.Collections;
 using UniRx;
 using UnityEngine;
 using DG.Tweening;
+using System.Collections.Generic;
 
 //using Assets.Scripts.Utils;
 
@@ -56,13 +57,12 @@ public class Node : MonoBehaviour {
         set { bChecked = value; }
     }
 
-    private bool bCompleted;
-
-    public bool CompleteFlag                    //完成済フラグ 走査終了時（枝完成時）に使用
-    {
-        get { return bCompleted; }
-        set { bCompleted = value; }
-    }
+    //private bool bCompleted;
+    //public bool CompleteFlag                    //完成済フラグ 走査終了時（枝完成時）に使用
+    //{
+    //    get { return bCompleted; }
+    //    set { bCompleted = value; }
+    //}
 
     private bool bChain;                        //枝がつながっているか？
 
@@ -325,17 +325,10 @@ public class Node : MonoBehaviour {
             // 隣接ノードのうち、道が無い場所に自分の道が伸びてたらそこは途切れている。
             TempBit2 = TempBit.retAnd(Negibor.retNot());
             // ノード繋がってない
-            string str = ToString() + "\n";
             if(TempBit2[n]) {
+                nodeControllerScript.unChainController.AddObj(this, (_eLinkDir)n);
                 Tc.NotFin = true;                               // 隣と繋がってないので、枝未完成として登録
-                ///<summary>
-                /// ノード繋がってない時の処理をココに追加。
-                /// nが方向です
-                ///</summary>
-                nodeControllerScript.unChainController.AddObj(this,(_eLinkDir)n);
-                str += LinkDirToString(n) + " ";
             }
-
         }
 
         Tc += ("Negibor : " + ToString(Negibor));

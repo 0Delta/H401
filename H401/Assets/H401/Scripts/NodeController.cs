@@ -44,7 +44,7 @@ public class NodeController : MonoBehaviour {
     private GameObject gameNodePrefab   = null;     // ノードのプレハブ
     private GameObject frameNodePrefab  = null;     // フレームノードのプレハブ
     private GameObject treeControllerPrefab   = null;     // 完成ノードのプレハブ
-    private GameObject unChainControllerPrefab = null;
+    public GameObject unChainControllerPrefab = null;
 
 
     private GameObject[][]  gameNodePrefabs;    // ノードのプレハブリスト
@@ -77,7 +77,7 @@ public class NodeController : MonoBehaviour {
     private Vec2Int slidingLimitNodeID        = Vec2Int.zero;     // スライド方向の端ノードのID
     private Vec2Int slidingReverseLimitNodeID = Vec2Int.zero;     // スライド方向の逆端ノードのID
 
-    private FieldLevelInfo fieldLevel;
+	private FieldLevelInfo fieldLevel;
 
 	private float RatioSum = 0.0f;                           //合計割合
     
@@ -242,12 +242,12 @@ public class NodeController : MonoBehaviour {
         nodeSize.y = nodeMeshInfo.sharedMesh.bounds.size.y * gameNodePrefab.transform.localScale.y;
         nodeSize.x -= widthMargin;
         nodeSize.y -= heightMargin;
-        
+
         //途切れ表示用のアレを生成
         unChainControllerPrefab = Instantiate(Resources.Load<GameObject>(unChainControllerPath));
         unChainControllerPrefab.transform.SetParent(transform);
         _unChainControllerScript = unChainControllerPrefab.GetComponent<UnChainController>();
-        
+
         // フレームを生成
         frameController = new GameObject();
         frameController.transform.parent = transform.parent;
@@ -312,7 +312,7 @@ public class NodeController : MonoBehaviour {
         }
         //開始演出が終わるまでは操作を受け付けない
         SetActionAll(true);
-
+        
         // スライドベクトルの垂線を算出
         Vector3 leftUp = gameNodePrefabs[0][1].transform.position - gameNodePrefabs[0][0].transform.position;
         Vector3 leftDown = gameNodePrefabs[1][1].transform.position - gameNodePrefabs[0][0].transform.position;
@@ -352,7 +352,7 @@ public class NodeController : MonoBehaviour {
                     _eSlideDir dir = CheckSlideDir(startTapPos, new Vector2(worldTapPos.x, worldTapPos.y));
                     Vec2Int nextNodeID = GetDirNode(tapNodeID, dir);
                     if(nextNodeID.x > -1) {
-                        if (Vector3.Distance(gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position, worldTapPos) >
+                        if(Vector3.Distance(gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position, worldTapPos) >
                             Vector3.Distance(gameNodePrefabs[nextNodeID.y][nextNodeID.x].transform.position, worldTapPos)) {
                             isSlide = true;
                             isNodeAction = true;
@@ -369,11 +369,10 @@ public class NodeController : MonoBehaviour {
                 // スライド中なら未処理
                 if(isSlide)
                     return;
-
-                if (pauseScript.pauseState == _ePauseState.PAUSE)
+                if(pauseScript.pauseState == _ePauseState.PAUSE)
                     return;
 
-                if (levelControllerScript.LevelState == _eLevelState.LIE)
+                if(levelControllerScript.LevelState == _eLevelState.LIE)
                     return;
                 
                 // タップ成功
@@ -399,26 +398,26 @@ public class NodeController : MonoBehaviour {
 
                 if(isSlide) {
                     AdjustNodeStop();
-
+                    
                     isSlideEnd = true;
                     tapNodeID = Vec2Int.zero;
                 } else {
                     if(tapNodeID.x > -1) {
                         gameNodeScripts[tapNodeID.y][tapNodeID.x].RotationNode();
                         isNodeAction = true;
-                    }
+                }
                 }
             })
-            .AddTo(this.gameObject);
+            .AddTo(gameObject);
 
         // ノードのアニメーション終了と同時に接続チェック
         Observable
             .EveryUpdate()
-            .Select(_ => !isNodeAction)
+            .Select(_ => !(isNodeAction | isSlide))
             .DistinctUntilChanged()
             .Where(x => x)
             .Subscribe(_ => {
-//                RemoveUnChainCube();
+                //RemoveUnChainCube();
                 CheckLink();
                 unChainController.Remove();
             })
@@ -433,7 +432,7 @@ public class NodeController : MonoBehaviour {
 			        foreach (var nodes in gameNodeScripts[i]) {
                         if(nodes.IsAction)
                             return;
-                    }
+	}
                 }
                 isNodeAction = false;
             })
@@ -471,100 +470,100 @@ public class NodeController : MonoBehaviour {
         //            gameNodeScripts[i][j].MeshRenderer.material.color = new Color(1.0f, 1.0f, 1.0f);
         //    }
         //}
-	}
-	
-	// ノードのスライド移動処理
-	void SlideNodes() {
-		// スライド対象となるノードの準備
-		Vector2     deltaSlideDist = tapPos - prevTapPos;   // 前回フレームからのスライド量
-		float       checkDir    = 0.0f;                     // スライド方向チェック用
-		
-		switch (slideDir) {
-			case _eSlideDir.LEFT:
-			case _eSlideDir.RIGHT:
-				// スライド方向を再計算
-				if(tapPos.x - prevTapPos.x < 0.0f) {
+    }
+
+    // ノードのスライド移動処理
+    void SlideNodes() {
+        // スライド対象となるノードの準備
+        Vector2 deltaSlideDist = tapPos - prevTapPos;   // 前回フレームからのスライド量
+        float checkDir = 0.0f;                     // スライド方向チェック用
+
+        switch(slideDir) {
+            case _eSlideDir.LEFT:
+            case _eSlideDir.RIGHT:
+                // スライド方向を再計算
+                if(tapPos.x - prevTapPos.x < 0.0f) {
                     // スライド方向が前フレームと違ったら更新
                     if(slideDir != _eSlideDir.LEFT) {
                         Vec2Int tmp = slidingLimitNodeID;
                         slidingLimitNodeID = slidingReverseLimitNodeID;
                         slidingReverseLimitNodeID = tmp;
 
-    					slideDir = _eSlideDir.LEFT;
+                        slideDir = _eSlideDir.LEFT;
                     }
-				} else if(tapPos.x - prevTapPos.x > 0.0f) {
+                } else if(tapPos.x - prevTapPos.x > 0.0f) {
                     if(slideDir != _eSlideDir.RIGHT) {
                         Vec2Int tmp = slidingLimitNodeID;
                         slidingLimitNodeID = slidingReverseLimitNodeID;
                         slidingReverseLimitNodeID = tmp;
 
-    					slideDir = _eSlideDir.RIGHT;
+                        slideDir = _eSlideDir.RIGHT;
                     }
-				}
+                }
 
-				// ノードを移動
+                // ノードを移動
                 AdjustSlideNodePosition();
 
-				break;
+                break;
 
-			case _eSlideDir.LEFTUP:
-			case _eSlideDir.RIGHTDOWN:
-				// スライド方向を再計算
-				checkDir = AddVectorFunctions.Vec2Cross(deltaSlideDist, slideLeftUpPerNorm);
-				if(checkDir < 0.0f) {
-                    if (slideDir != _eSlideDir.LEFTUP) {
+            case _eSlideDir.LEFTUP:
+            case _eSlideDir.RIGHTDOWN:
+                // スライド方向を再計算
+                checkDir = AddVectorFunctions.Vec2Cross(deltaSlideDist, slideLeftUpPerNorm);
+                if(checkDir < 0.0f) {
+                    if(slideDir != _eSlideDir.LEFTUP) {
                         Vec2Int tmp = slidingLimitNodeID;
                         slidingLimitNodeID = slidingReverseLimitNodeID;
                         slidingReverseLimitNodeID = tmp;
-                        
-    					slideDir = _eSlideDir.LEFTUP;
+
+                        slideDir = _eSlideDir.LEFTUP;
                     }
-				} else if(checkDir > 0.0f) {
-                    if (slideDir != _eSlideDir.RIGHTDOWN) {
+                } else if(checkDir > 0.0f) {
+                    if(slideDir != _eSlideDir.RIGHTDOWN) {
                         Vec2Int tmp = slidingLimitNodeID;
                         slidingLimitNodeID = slidingReverseLimitNodeID;
                         slidingReverseLimitNodeID = tmp;
 
                         slideDir = _eSlideDir.RIGHTDOWN;
                     }
-				}
-                
-				// ノードを移動
+                }
+
+                // ノードを移動
                 AdjustSlideNodePosition();
 
-				break;
-				
-			case _eSlideDir.RIGHTUP:
-			case _eSlideDir.LEFTDOWN:
-				// スライド方向を再計算
-				checkDir = AddVectorFunctions.Vec2Cross(deltaSlideDist, slideLeftDownPerNorm);
-				if(checkDir < 0.0f) {
-                    if (slideDir != _eSlideDir.LEFTDOWN) {
+                break;
+
+            case _eSlideDir.RIGHTUP:
+            case _eSlideDir.LEFTDOWN:
+                // スライド方向を再計算
+                checkDir = AddVectorFunctions.Vec2Cross(deltaSlideDist, slideLeftDownPerNorm);
+                if(checkDir < 0.0f) {
+                    if(slideDir != _eSlideDir.LEFTDOWN) {
                         Vec2Int tmp = slidingLimitNodeID;
                         slidingLimitNodeID = slidingReverseLimitNodeID;
                         slidingReverseLimitNodeID = tmp;
 
                         slideDir = _eSlideDir.LEFTDOWN;
                     }
-				} else if(checkDir > 0.0f) {
-                    if (slideDir != _eSlideDir.RIGHTUP) {
+                } else if(checkDir > 0.0f) {
+                    if(slideDir != _eSlideDir.RIGHTUP) {
                         Vec2Int tmp = slidingLimitNodeID;
                         slidingLimitNodeID = slidingReverseLimitNodeID;
                         slidingReverseLimitNodeID = tmp;
-                        
+
                         slideDir = _eSlideDir.RIGHTUP;
                     }
-				}
+                }
 
-				// ノードを移動
+                // ノードを移動
                 AdjustSlideNodePosition();
 
-				break;
+                break;
 
-			default:
-				break;
-		}
-	}
+            default:
+                break;
+        }
+    }
 
 	//移動したいノードを確定
 	//ドラッグを算出し移動したい方向列を確定
@@ -584,14 +583,14 @@ public class NodeController : MonoBehaviour {
 		// 絶対値を算出
 		moveNodeDistAbs.x = Mathf.Abs(moveNodeDist.x);
 		moveNodeDistAbs.y = Mathf.Abs(moveNodeDist.y);
-
+		
         // スライド開始準備
         Vec2Int nextID = SearchLimitNode(tapNodeID, ConvertSlideDirToLinkDir(slideDir));
         _eSlideDir reverseDir = ReverseDirection(slideDir);
         while(nextID.x > -1) {
             gameNodeScripts[nextID.y][nextID.x].StartSlide();
             nextID = GetDirNode(nextID, reverseDir);
-        }
+	}
 
         // スライド方向の端のノードIDを算出
         slidingLimitNodeID = SearchLimitNode(tapNodeID, ConvertSlideDirToLinkDir(slideDir));
@@ -599,21 +598,21 @@ public class NodeController : MonoBehaviour {
 
         // タップしているノードの位置と、タップしている位置との距離を算出
 		tapPosMoveNodePosDist = moveNodeDist.normalized * Vector2.Dot(moveNodeDist.normalized, startTapPos - moveNodeInitPos);
-	}
+					}
 
 	// ゲームの画面外にはみ出したノードを逆側に移動する
 	void LoopBackNode() {
 		if (gameNodeScripts[slidingLimitNodeID.y][slidingLimitNodeID.x].IsOutScreen) {
             gameNodeScripts[slidingLimitNodeID.y][slidingLimitNodeID.x].IsOutScreen = false;
-            
-            SortOutNode(slideDir, slidingLimitNodeID);
 
+            SortOutNode(slideDir, slidingLimitNodeID);
+				
             Vec2Int copyInNodeID  = SearchLimitNodeRemoveFrame(tapNodeID, ConvertSlideDirToLinkDir(SlideDir));
             Vec2Int copyOutNodeID = SearchLimitNodeRemoveFrame(tapNodeID, ConvertSlideDirToLinkDir(ReverseDirection(slideDir)));
             copyOutNodeID = GetDirNode(copyOutNodeID, ReverseDirection(slideDir));
         	gameNodeScripts[copyOutNodeID.y][copyOutNodeID.x].CopyParameter(gameNodeScripts[copyInNodeID.y][copyInNodeID.x]);
-		}
-	}
+					}
+					}
 
 	// 移動を終了するノードの位置を調整する
 	void AdjustNodeStop() {
@@ -639,14 +638,14 @@ public class NodeController : MonoBehaviour {
         while(nextNodeID.x > -1) {
 			gameNodeScripts[nextNodeID.y][nextNodeID.x].EndSlide();
             nextNodeID = GetDirNode(nextNodeID, reverseDir);
-        }
-        
+		}
+
         // 回り込み処理
         CheckSlideOutLimitNode();
         LoopBackNode();
 
         // 移動処理
-        switch (slideDir) {
+		switch (slideDir) {
 			case _eSlideDir.LEFT:
 			case _eSlideDir.RIGHT:
                 pos = standardPos;
@@ -670,12 +669,12 @@ public class NodeController : MonoBehaviour {
 				}
 
 				break;
-
+				
 			case _eSlideDir.LEFTUP:
 			case _eSlideDir.RIGHTDOWN:
 				// タップしているノードを移動
 				gameNodeScripts[tapNodeID.y][tapNodeID.x].SlideNode(slideDir, standardPos);
-
+				
 				// タップしているノードより左上側のノードを移動
 				nextNodeID = GetDirNode(tapNodeID, _eLinkDir.LU);
 				for(int i = 1; nextNodeID.x > -1; ++i) {
@@ -752,9 +751,9 @@ public class NodeController : MonoBehaviour {
         switch(dir) {
             case _eSlideDir.LEFT:
                 pos = gameNodePrefabs[tapNodeID.y][AdjustRow(tapNodeID.y) - 2].transform.position;
-        		pos.x += moveNodeDistAbs.x;
+		pos.x += moveNodeDistAbs.x;
                 break;
-
+		
             case _eSlideDir.RIGHT:
                 pos = gameNodePrefabs[tapNodeID.y][1].transform.position;
         		pos.x -= moveNodeDistAbs.x;
@@ -771,13 +770,13 @@ public class NodeController : MonoBehaviour {
                 break;
 
             case _eSlideDir.RIGHTUP:
-		        pos.x -= moveNodeDistAbs.x;
+		pos.x -= moveNodeDistAbs.x;
 		        pos.y -= moveNodeDistAbs.y;
                 break;
 
             case _eSlideDir.RIGHTDOWN:
 		        pos.x -= moveNodeDistAbs.x;
-		        pos.y += moveNodeDistAbs.y;
+		pos.y += moveNodeDistAbs.y;
                 break;
         }
 		gameNodeScripts[limitNodeID.y][limitNodeID.x].StopTween();
@@ -785,7 +784,7 @@ public class NodeController : MonoBehaviour {
 		
 		// 選択中のノードIDを更新
 		tapNodeID = GetDirNode(tapNodeID, dir);
-    }
+	}
 
     // タップノードを中心に、スライド方向のノードの位置を設定する
     void AdjustSlideNodePosition() {
@@ -793,7 +792,7 @@ public class NodeController : MonoBehaviour {
 		Vector2 pos         = tapPos;      // 移動位置
         Vector2 standardPos = tapPos;
 		Vec2Int nextNodeID  = Vec2Int.zero;     // 検索用ノードIDテンポラリ
-		
+
 		switch (slideDir) {
 			case _eSlideDir.LEFT:
 			case _eSlideDir.RIGHT:
@@ -814,7 +813,7 @@ public class NodeController : MonoBehaviour {
 					pos.x = standardPos.x + moveNodeDistAbs.x * i;
 					gameNodeScripts[nextNodeID.y][nextNodeID.x].SlideNode(slideDir, pos);
 					nextNodeID = GetDirNode(nextNodeID, _eLinkDir.R);
-				}
+		}
 
 				break;
 
@@ -823,7 +822,7 @@ public class NodeController : MonoBehaviour {
 				// タップしているノードを移動
                 standardPos = AdjustNodeLinePosition(slideDir);
 				gameNodeScripts[tapNodeID.y][tapNodeID.x].SlideNode(slideDir, standardPos);
-
+		
 				// タップしているノードより左上側のノードを移動
 				nextNodeID = GetDirNode(tapNodeID, _eLinkDir.LU);
 				for(int i = 1; nextNodeID.x > -1; ++i) {
@@ -839,9 +838,9 @@ public class NodeController : MonoBehaviour {
 					pos.y = standardPos.y - moveNodeDistAbs.y * i;
 					gameNodeScripts[nextNodeID.y][nextNodeID.x].SlideNode(slideDir, pos);
 					nextNodeID = GetDirNode(nextNodeID, _eLinkDir.RD);
-				}
+	}
 				break;
-				
+
 			case _eSlideDir.RIGHTUP:
 			case _eSlideDir.LEFTDOWN:
 				// タップしているノードを移動
@@ -863,37 +862,37 @@ public class NodeController : MonoBehaviour {
 					pos.y = standardPos.y - moveNodeDistAbs.y * i;
 					gameNodeScripts[nextNodeID.y][nextNodeID.x].SlideNode(slideDir, pos);
 					nextNodeID = GetDirNode(nextNodeID, _eLinkDir.LD);
-				}
+		}
 				break;
-
+		
 			default:
 				break;
 		}
-    }
-    
-	// 任意の座標に最も近いノードのIDを、座標を基準に検索する
-	Vec2Int SearchNearNode(Vector3 pos) {
-		Vec2Int id = new Vec2Int(-1, -1);
+	}
+
+    // 任意の座標に最も近いノードのIDを、座標を基準に検索する
+    Vec2Int SearchNearNode(Vector3 pos) {
+        Vec2Int id = new Vec2Int(-1, -1);
         float minDist = 99999.0f;
 
         // 検索処理
-		for(int i = 0; i < col; ++i) {
-			for(int j = 0; j < AdjustRow(i); ++j) {
+        for(int i = 0; i < col; ++i) {
+            for(int j = 0; j < AdjustRow(i); ++j) {
                 float dist = Vector3.Distance(pos, nodePlacePosList[i][j]);
-				if(dist < minDist) {
+                if(dist < minDist) {
                     minDist = dist;
                     id.x = j;
                     id.y = i;
                 }
-			}
-		}
+            }
+        }
 
-		return id;
-	}
-    
-	// 任意の座標に最も近いノードのIDを、座標を基準に検索する(フレームノードを除く)
-	Vec2Int SearchNearNodeRemoveFrame(Vector3 pos) {
-		Vec2Int id = SearchNearNode(pos);
+        return id;
+    }
+
+    // 任意の座標に最も近いノードのIDを、座標を基準に検索する(フレームノードを除く)
+    Vec2Int SearchNearNodeRemoveFrame(Vector3 pos) {
+        Vec2Int id = SearchNearNode(pos);
 
         // フレームなら -1 にする
         if(id.x <= 0 || id.x >= AdjustRow(id.y) || id.y <= 0 || id.y >= col - 1) {
@@ -901,8 +900,8 @@ public class NodeController : MonoBehaviour {
             id.y = -1;
         }
 
-		return id;
-	}
+        return id;
+    }
 
     // スライドしている列が画面外にはみ出ているかチェックする(フレームノードより外側にいるかどうか)
     void CheckSlideOutLimitNode() {
@@ -910,41 +909,41 @@ public class NodeController : MonoBehaviour {
             case _eSlideDir.LEFT:
                 if (gameNodePrefabs[slidingLimitNodeID.y][slidingLimitNodeID.x].transform.position.x < nodePlacePosList[slidingLimitNodeID.y][slidingLimitNodeID.x].x) {
                     gameNodeScripts[slidingLimitNodeID.y][slidingLimitNodeID.x].IsOutScreen = true;
-                }
-                break;
+			    }
+					break;
             case _eSlideDir.RIGHT:
                 if (gameNodePrefabs[slidingLimitNodeID.y][slidingLimitNodeID.x].transform.position.x > nodePlacePosList[slidingLimitNodeID.y][slidingLimitNodeID.x].x) {
                     gameNodeScripts[slidingLimitNodeID.y][slidingLimitNodeID.x].IsOutScreen = true;
-                }
+		        }
                 break;
             case _eSlideDir.LEFTUP:
                 if (gameNodePrefabs[slidingLimitNodeID.y][slidingLimitNodeID.x].transform.position.x < nodePlacePosList[slidingLimitNodeID.y][slidingLimitNodeID.x].x &&
                     gameNodePrefabs[slidingLimitNodeID.y][slidingLimitNodeID.x].transform.position.y > nodePlacePosList[slidingLimitNodeID.y][slidingLimitNodeID.x].y) {
                     gameNodeScripts[slidingLimitNodeID.y][slidingLimitNodeID.x].IsOutScreen = true;
-                }
+	            }
                 break;
             case _eSlideDir.LEFTDOWN:
                 if (gameNodePrefabs[slidingLimitNodeID.y][slidingLimitNodeID.x].transform.position.x < nodePlacePosList[slidingLimitNodeID.y][slidingLimitNodeID.x].x &&
                     gameNodePrefabs[slidingLimitNodeID.y][slidingLimitNodeID.x].transform.position.y < nodePlacePosList[slidingLimitNodeID.y][slidingLimitNodeID.x].y) {
                     gameNodeScripts[slidingLimitNodeID.y][slidingLimitNodeID.x].IsOutScreen = true;
-                }
+	            }
                 break;
             case _eSlideDir.RIGHTUP:
                 if (gameNodePrefabs[slidingLimitNodeID.y][slidingLimitNodeID.x].transform.position.x > nodePlacePosList[slidingLimitNodeID.y][slidingLimitNodeID.x].x &&
                     gameNodePrefabs[slidingLimitNodeID.y][slidingLimitNodeID.x].transform.position.y > nodePlacePosList[slidingLimitNodeID.y][slidingLimitNodeID.x].y) {
                     gameNodeScripts[slidingLimitNodeID.y][slidingLimitNodeID.x].IsOutScreen = true;
-                }
+	            }
                 break;
             case _eSlideDir.RIGHTDOWN:
                 if (gameNodePrefabs[slidingLimitNodeID.y][slidingLimitNodeID.x].transform.position.x > nodePlacePosList[slidingLimitNodeID.y][slidingLimitNodeID.x].x &&
                     gameNodePrefabs[slidingLimitNodeID.y][slidingLimitNodeID.x].transform.position.y < nodePlacePosList[slidingLimitNodeID.y][slidingLimitNodeID.x].y) {
                     gameNodeScripts[slidingLimitNodeID.y][slidingLimitNodeID.x].IsOutScreen = true;
-                }
+			    }
                 break;
             default:
                 break;
-        }
-    }
+		}
+	}
 
 	// 検索したい col に合わせた row を返す
 	public int AdjustRow(int col) {
@@ -985,7 +984,7 @@ public class NodeController : MonoBehaviour {
 		return SearchLimitNodeRemoveFrame(new Vec2Int(x, y), dir);
 	}
 
-    // スライド方向を算出
+	// スライド方向を算出
 	_eSlideDir CheckSlideDir(Vector2 pos, Vector2 toPos) {
 		float angle = Mathf.Atan2(toPos.y - pos.y, toPos.x - pos.x);
 		angle *= 180.0f / Mathf.PI;
@@ -1030,8 +1029,7 @@ public class NodeController : MonoBehaviour {
 	static bool bNodeLinkDebugLog = false;
 
 	// ノードの接続を確認するチェッカー
-	public class NodeLinkTaskChecker : System.IDisposable
-	{
+    public class NodeLinkTaskChecker : System.IDisposable {
 		static int IDCnt = 0;           // 管理用IDの発行に使用
 		static public List<NodeLinkTaskChecker> Collector = new List<NodeLinkTaskChecker>();    // 動いているチェッカをしまっておくリスト
 
@@ -1043,8 +1041,7 @@ public class NodeController : MonoBehaviour {
 		private string Log = "";
 
 		// コンストラクタ
-		public NodeLinkTaskChecker()
-		{
+        public NodeLinkTaskChecker() {
 			// IDを発行し、コレクタに格納
 			ID = ++IDCnt;
 			Collector.Add(this);
@@ -1052,33 +1049,28 @@ public class NodeController : MonoBehaviour {
 		}
 
 		// Disposeできるように
-		public void Dispose()
-			{
-			// コレクタから削除
-			Collector.Remove(this);
+        public void Dispose() {
+            Collector.Remove(this);     // コレクタから削除
 		}
 
 		// デバック用ToString
-		public override string ToString()
-		{
+        public override string ToString() {
 			string str = "";
-			if (bNodeLinkDebugLog) {
+            if(bNodeLinkDebugLog) {
 				str += Log + "\n--------\n";
 			}
 			str += 
 				"ID : " + ID.ToString() + "  " + NotFin + "\n" + 
 				" Branch : " + Branch.ToString() + "\n" + 
 				"SumNode : " + SumNode.ToString() + "\n";
-			foreach (var it in NodeList)
-			{
+            foreach(var it in NodeList) {
 				str += it.ToString() + "\n";
 			}
 			return str;
 		}
 
 		// デバック用ログに書き出す
-		static public NodeLinkTaskChecker operator+(NodeLinkTaskChecker Ins,string str)
-		{
+        static public NodeLinkTaskChecker operator +(NodeLinkTaskChecker Ins, string str) {
 			Ins.Log += str + "\n";
 			return Ins;
 		}
@@ -1127,11 +1119,11 @@ public class NodeController : MonoBehaviour {
                     // ノード数3以上、非完成フラグが立ってないなら
                     if(Checker.SumNode >= 1 && Checker.NotFin == false) {
                         // その枝のノードに完成フラグを立てる
-                        foreach(Node Nodes in Checker.NodeList) {
-                            Nodes.CompleteFlag = true;
-                        };
+                        //foreach(Node Nodes in Checker.NodeList) {
+                        //    Nodes.CompleteFlag = true;
+                        //};
                         ReplaceNodeTree(Checker.NodeList);   // 消去処理
-                        CheckLink(true);    // もう一度チェッカを起動
+                        //CheckLink(false);
                         if(Debug.isDebugBuild && bNodeLinkDebugLog)
                             print("枝が完成しました！");
                     }
@@ -1219,7 +1211,7 @@ public class NodeController : MonoBehaviour {
 	{
         _eLinkDir toDir = ConvertSlideDirToLinkDir(toSlideDir);
 
-        return GetDirNode(x, y, toDir);
+		return GetDirNode(x, y, toDir);
 	}
 
 	//位置と方向から、指定ノードに隣り合うノードのrowとcolを返す
@@ -1228,7 +1220,7 @@ public class NodeController : MonoBehaviour {
 	{
 		return GetDirNode(nodeID.x, nodeID.y, toSlideDir);
 	}
-    
+	
 
 	//位置と方向から、指定ノードに隣り合うノードのrowとcolを返す
 	//なければ、(-1,-1)を返す
@@ -1277,31 +1269,10 @@ public class NodeController : MonoBehaviour {
 		return gameNodeScripts[nodeID.y][nodeID.x];
 	}
 
-/*    public void CheckLinkAround()
-	{
-
-	}
-
-	//木の繋がりが途絶えていた時、その木の一部であるノードすべてを未開通にする
-	public void ResetTreeBit(BitArray treeBit)
-	{
-		foreach(var node in gameNodeScripts)
-		{
-			for (int i = 0; i < (int)_eTreePath.MAX; i++)
-			{
-				if (treeBit[i])
-				{
-					node.bitTreePath[i] = false;
-
-				}
-			}
-		}
-	}
-	*/
 	//ノードの配置 割合は指定できるが完全ランダムなので再考の余地あり
 	void ReplaceNode(Node node)
 	{
-		node.CompleteFlag = false;
+		//node.CompleteFlag = false;
 		node.CheckFlag = false;
 		node.ChainFlag = false;
 
@@ -1360,21 +1331,18 @@ public class NodeController : MonoBehaviour {
         feverScript.Gain(nodeCount);
     }
 
-	public void ReplaceNodeAll()
-	{
-		for (int i = 0; i < col; i++)
-		{
-			for (int j = 0; j < AdjustRow(i); j++)
-			{
-				ReplaceNode(gameNodeScripts[i][j]);
+    public void ReplaceNodeAll() {
+        foreach(var xList in gameNodeScripts) {
+            foreach(var it in xList) {
+                ReplaceNode(it);
 			}
 		}
 	}
 
     public void ReplaceNodeFever() {
         ReplaceNodeAll();
-        for(int j = 0; j < AdjustRow(1); j++) {
-            gameNodeScripts[1][j].SetNodeType(0,0);
+        foreach(var it in gameNodeScripts[1]) {
+            it.SetNodeType(0, 0);
         }
 
     }
@@ -1387,73 +1355,59 @@ public class NodeController : MonoBehaviour {
 	}
 
 	//ノード全変更時の演出
-	public void RotateAllNode(float movedAngle,Ease easeType)
-	{
-		for (int i = 0; i < col ; i++)
-		{
-			for (int j = 0; j < AdjustRow(i); j++ )
-			{
-				Node currentNode = gameNodeScripts[i][j];
-				Vector3 angle = currentNode.transform.localEulerAngles;
+    public void RotateAllNode(float movedAngle, Ease easeType) {
+        foreach(var xList in gameNodeScripts) {
+            foreach(var it in xList) {
+                Vector3 angle = it.transform.localEulerAngles;
 				angle.y += 90.0f;
-				currentNode.transform.DORotate(angle, (repRotateTime / 2.0f))
+                it.transform.DORotate(angle, (repRotateTime / 2.0f))
 					.OnComplete(() => {
 						//終了時の角度がずれたので無理やり補正するように
-						Vector3 movedVec =  currentNode.transform.localEulerAngles;
+                        Vector3 movedVec = it.transform.localEulerAngles;
 						movedVec.x = 0.0f;
 						movedVec.y = movedAngle;
-						currentNode.transform.rotation = Quaternion.identity;
-						currentNode.transform.Rotate(movedVec);
-					
+                        it.transform.rotation = Quaternion.identity;
+                        it.transform.Rotate(movedVec);
 					})
 					.SetEase(easeType);
 			}
 		}
 	}
 
-	public void SetActionAll(bool action)
-	{
-		for (int i = 0; i < col; i++)
-		{
-			for (int j = 0; j < AdjustRow(i); j++)
-			{
-				gameNodeScripts[i][j].IsAction = action;
+    public void SetActionAll(bool action) {
+        foreach(var xList in gameNodeScripts) {
+            foreach(var it in xList) {
+                it.IsAction = action;
 			}
 		}
 	}
-	//全ノードがくるっと回転して状態遷移するやつ 再配置関数を引数に
-	public IEnumerator ReplaceRotate(Replace repMethod)
-	{
-		//全ノードを90°回転tween
-		SetActionAll(true);
+    //全ノードがくるっと回転して状態遷移するやつ 再配置関数を引数に
+    public IEnumerator ReplaceRotate(Replace repMethod) {
+        //全ノードを90°回転tween
+        SetActionAll(true);
 
-		RotateAllNode(90.0f,Ease.InSine);
+        RotateAllNode(90.0f, Ease.InSine);
 
-		yield return new WaitForSeconds(repRotateTime / 2.0f);
-		//置き換え処理
-		repMethod();
-		//全ノードを-180°回転
-		for (int i = 0; i < col; i++)
-	    {
-			for (int j = 0; j < AdjustRow(i); j++)
-		    {
-				Vector3 angle = gameNodeScripts[i][j].transform.localEulerAngles;
-				angle.y += 180.0f;
-				//gameNodeScripts[i][j].transform.localRotation = Quaternion.identity;
-                gameNodeScripts[i][j].transform.localEulerAngles = angle;
-                gameNodeScripts[i][j].MeshRenderer.material.color = levelTableScript.GetFieldLevel(_currentLevel).NodeColor;
-			}
-		}
+        yield return new WaitForSeconds(repRotateTime / 2.0f);
+        //置き換え処理
+        repMethod();
+        //全ノードを-180°回転
+        foreach(var xList in gameNodeScripts) {
+            foreach(var it in xList) {
+                Vector3 angle = it.transform.localEulerAngles;
+                angle.y -= 180.0f;
+                it.transform.rotation = Quaternion.identity;
+                it.transform.Rotate(angle);
+                it.MeshRenderer.material.color = levelTableScript.GetFieldLevel(_currentLevel).NodeColor;
+            }
+        }
 
-		//全ノードを90°回転
-		RotateAllNode(0.0f,Ease.OutSine);
-		yield return new WaitForSeconds(repRotateTime / 2.0f);
-
-		SetActionAll(false);
-
-
-        CheckLink(); 
-		}
+        //全ノードを90°回転
+        RotateAllNode(0.0f, Ease.OutSine);
+        yield return new WaitForSeconds(repRotateTime / 2.0f);
+        SetActionAll(false);
+        CheckLink();
+    }
 
 	//操作終了時の処理をここで
 	public void TouchEnd()
@@ -1632,7 +1586,7 @@ public class NodeController : MonoBehaviour {
 		}
 
         return adjustPos;
-    }
+	}
 
     // スライド開始時の easing をストップする
     void StopSlideStartEasing() {
@@ -1643,7 +1597,7 @@ public class NodeController : MonoBehaviour {
             if(Vector2.Distance(nodePos2D, AdjustNodeLinePosition(slideDir)) < NODE_EASE_STOP_THRESHOLD) {
                 Vec2Int nextID = SearchLimitNode(tapNodeID, ConvertSlideDirToLinkDir(slideDir));
                 _eSlideDir reverseDir = ReverseDirection(slideDir);
-                
+
                 while(nextID.x > -1) {
                     gameNodeScripts[nextID.y][nextID.x].isSlideStart = false;
                     nextID = GetDirNode(nextID, reverseDir);

@@ -71,6 +71,8 @@ public class LimitTime : MonoBehaviour {
             gameScene.gameController.nodeController.SetActionAll(true); //ノードを操作不能にする
 
             //スコアをもってくる
+            GameInfoCanvas gInfoCanvas = GetComponentInParent<GameInfoCanvas>();
+            gInfoCanvas.score.Decide();
             //ゲームオーバー時のパネルを出して、タップでリザルト画面に行く
             GameObject gameEndPanelObject = (GameObject)Instantiate(Resources.Load<GameObject>(gameEndPanelPath));
             GameEndPanel gameEndpanel = gameEndPanelObject.GetComponent<GameEndPanel>();

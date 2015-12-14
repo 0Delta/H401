@@ -14,9 +14,8 @@ public class AppliController : MonoBehaviour {
 		TITLE,              // タイトル
 		GAME,               // ゲーム本編
 		RESULT,             // リザルト
-		OFFLINE_RANKING,	// オフラインランキング
-		ONLINE_RANKING,		// オンラインランキング
-        OPTION,             // オプション
+		RANKING,	        // ランキング
+	    OPTION,             // オプション
 
 		MAX_NUM
 	}
@@ -64,7 +63,12 @@ public class AppliController : MonoBehaviour {
         Destroy(currentScenePrefab);
 
         // 新しいシーンを生成
-        currentScenePrefab = Instantiate(Resources.Load<GameObject>(scenePrefabPaths[(int)id]));
+        GameObject Obj = Resources.Load<GameObject>(scenePrefabPaths[(int)id]);
+        if(Obj == null) {
+            Debug.LogError("[" + scenePrefabPaths[(int)id] + "] is Missing !! \n Check [AppliController.Start Scene ID]");
+            throw (new MissingReferenceException());
+        }
+        currentScenePrefab = Instantiate(Obj);
         currentScenePrefab.transform.SetParent(transform);
 	}
 

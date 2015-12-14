@@ -31,3 +31,11 @@ Thumbs.db
 # -------------[ Build ]------------------------ #
 *.html
 *.unity3d
+*.meta
+/H401/Assets/Plugins/AWSSDK
+/H401/Assets/Plugins/DOTween/DOTween50.dll
+/H401/Assets/Plugins/DOTween/DOTween46.dll
+/H401/Assets/Plugins/DOTween/DOTween43.dll
+/H401/Assets/Plugins/DOTween/DOTween.dll
+/H401/Assets/Plugins/DOTween/Editor/DOTweenEditor.pdb
+/H401/Assets/Plugins/DOTween/Editor/DOTweenEditor.dll
