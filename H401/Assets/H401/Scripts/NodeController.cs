@@ -44,7 +44,7 @@ public class NodeController : MonoBehaviour {
     private GameObject gameNodePrefab   = null;     // ノードのプレハブ
     private GameObject frameNodePrefab  = null;     // フレームノードのプレハブ
     private GameObject treeControllerPrefab   = null;     // 完成ノードのプレハブ
-    public GameObject unChainControllerPrefab = null;
+    private GameObject unChainControllerPrefab = null;
 
 
     private GameObject[][]  gameNodePrefabs;    // ノードのプレハブリスト
