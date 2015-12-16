@@ -10,18 +10,18 @@ public enum _eSlideDir {
     NONE            // 無
 };
 
-public enum _eNodeType{
-    CAP = 0,    // 先端１つ
-    HUB2_A,     // │
-    HUB2_B,     // 鋭角
-    HUB2_C,     // 鈍角
-    HUB3_A,     // Ｙ
-    HUB3_B,     // 卜
-    HUB3_C,     // ∋
-    HUB4_A,     // Ⅹ
+//public enum _eNodeType{
+//    CAP = 0,    // 先端１つ
+//    HUB2_A,     // │
+//    HUB2_B,     // 鋭角
+//    HUB2_C,     // 鈍角
+//    HUB3_A,     // Ｙ
+//    HUB3_B,     // 卜
+//    HUB3_C,     // ∋
+//    HUB4_A,     // Ⅹ
 
-    MAX,
-};
+//    MAX,
+//};
 
 
 public enum _eLinkDir : int{

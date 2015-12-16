@@ -37,9 +37,7 @@ public class NodeController : MonoBehaviour {
 //    [SerializeField] private string levelControllerObjectPath = null;
 //    [SerializeField] private string pauseObjectPath = null;
     [SerializeField] private float repRotateTime = 0;//ノード再配置時の時間
-    [SerializeField] private string[] nodeMaterialsPath = null;
-
-
+    [SerializeField] private NodeTemplate[] NodeTemp = null;
     
     private GameObject gameNodePrefab   = null;     // ノードのプレハブ
     private GameObject frameNodePrefab  = null;     // フレームノードのプレハブ
@@ -180,7 +178,7 @@ public class NodeController : MonoBehaviour {
     public delegate void Replace();             //回転再配置用のデリゲート
 
     private Material[] nodeMaterials = null;
-    public Material GetMaterial(int nodeType){return nodeMaterials[nodeType];}
+    public Material GetMaterial(NodeTemplate nodeType){return nodeMaterials[nodeType.ID];}
 
     private int _currentLevel;
     public int currentLevel
@@ -205,20 +203,31 @@ public class NodeController : MonoBehaviour {
             nodePlacePosList[i] = new Vector3[adjustRow];
         }
 
-        nodeMaterials = new Material[nodeMaterialsPath.Length];
-	}
-	
-	// Use this for initialization
-	void Start () {
+        nodeMaterials = new Material[NodeTemp.Length];
+
+    }
+
+    // Use this for initialization
+    void Start () {
 		// ----- プレハブデータを Resources から取得
         gameNodePrefab =  Resources.Load<GameObject>(gameNodePrefabPath);
         frameNodePrefab =  Resources.Load<GameObject>(frameNodePrefabPath);
         treeControllerPrefab = Resources.Load<GameObject>(treeControllerPrefabPath);
 
-        for (int i = 0; i < nodeMaterialsPath.Length; ++i)
+        // ノードのテンプレからマテリアルを取得
+        NodeTemplate.AllCalc(NodeTemp);
+        int n = 0;
+        for (int i = 0; i < NodeTemp.Length; ++i)
         {
-            nodeMaterials[i] = Resources.Load<Material>(nodeMaterialsPath[i]);
+            if(NodeTemp[i].Ready) {
+                nodeMaterials[n] = Resources.Load<Material>(NodeTemp[i].MaterialName);
+                NodeTemp[i].ID = n;
+                n++;
+            } else {
+                Debug.LogWarning("Failed Load Material No." + i.ToString());
+            }
         }
+        
 
         //unChainCubeList = new ArrayList;
 
@@ -256,7 +265,7 @@ public class NodeController : MonoBehaviour {
         Node.SetNodeController(this); //ノードにコントローラーを設定
 
         fieldLevel = levelTableScript.GetFieldLevel(0);
-        RatioSum = fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3;  //全体割合を記憶
+        RatioSum = fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3 + fieldLevel.Ratio_Path4;  //全体割合を記憶
 
         
 
@@ -1277,20 +1286,16 @@ public class NodeController : MonoBehaviour {
 		node.ChainFlag = false;
 
 		float rand;
-		rand = UnityEngine.Random.Range(0.0f, RatioSum);
+		rand = Random.Range(0.0f, RatioSum);
 
-		_eNodeType type =
-			(rand <= fieldLevel.Ratio_Cap) ? _eNodeType.CAP :
-			(rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 / 3.0f)                                  ? _eNodeType.HUB2_A :
-			(rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 / 3.0f * 2.0f)                           ? _eNodeType.HUB2_B :
-			(rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 )                                        ? _eNodeType.HUB2_C :
-			(rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3 / 3.0f)         ? _eNodeType.HUB3_A :
-			(rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3 / 3.0f * 2.0f)  ? _eNodeType.HUB3_B :
-            (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3)                ? _eNodeType.HUB3_C :
-            (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3 + fieldLevel.Ratio_Path4) ? _eNodeType.HUB4_A :
-			_eNodeType.CAP;
+        int branchNum =
+            (rand <= fieldLevel.Ratio_Cap) ? 1 :
+            (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2) ? 2 :
+            (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3) ? 3 :
+            (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3 + fieldLevel.Ratio_Path4) ? 4 :
+            1;
 
-		node.SetNodeType(type);
+        node.SetNodeType(NodeTemplate.GetTempFromBranchRandom(NodeTemp, branchNum));
         node.MeshRenderer.material.color = levelTableScript.GetFieldLevel(_currentLevel).NodeColor;
 	}
 
@@ -1342,7 +1347,7 @@ public class NodeController : MonoBehaviour {
     public void ReplaceNodeFever() {
         ReplaceNodeAll();
         foreach(var it in gameNodeScripts[1]) {
-            it.SetNodeType(0, 0);
+            it.SetNodeType(NodeTemp[0], 0);
         }
 
     }

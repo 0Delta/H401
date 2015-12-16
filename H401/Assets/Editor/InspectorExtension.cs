@@ -39,8 +39,6 @@ public class AWS_Editor : Editor {
 [CustomEditor(typeof(Score3D))]
 public class Score3D_Editor : Editor {
     public override void OnInspectorGUI() {
-        var tgt = target as Score3D;
-
         EditorGUILayout.HelpBox("This is \"DEBUG ONLY\". \n Reset Value at the time of play", MessageType.Info, true);
         GUILayoutOption[] options = { GUILayout.MaxWidth(25.0f), GUILayout.MinWidth(25.0f), GUILayout.ExpandWidth(false) };
         EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true));
@@ -51,4 +49,108 @@ public class Score3D_Editor : Editor {
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.MinMaxSlider(ref Score3D.AlphaOneZ, ref Score3D.AlphaZeroZ, 0, 150);
     }
+}
+
+[CustomPropertyDrawer(typeof(NodeTemplate))]
+public class NodeController_Editor : PropertyDrawer {
+    string MatBak = "";
+    Material Mat = null;
+    Texture2D texture = new Texture2D(1, 1);
+
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
+        //return Screen.width < 333 ? (16f + 18f) : 16f;
+        return 80f;
+
+    }
+
+    // Draw the property inside the given rect
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
+
+        // 初期設定
+        EditorGUI.BeginProperty(position, label, property);
+        //Rect contentPosition = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), GUIContent.none);
+        EditorGUI.indentLevel = 0;
+
+        // ワーク用の場所を設定
+        Rect contentPosition = position;
+        var Link = property.FindPropertyRelative("LinkDir");
+        float ImagePosXRevision = position.width / -4f;
+        
+
+        // 外枠描画
+        contentPosition.height -= 3f;
+        EditorGUI.DrawRect(contentPosition, Color.gray);
+
+        // マテリアル名の入力フィールド
+        EditorGUIUtility.labelWidth = position.width * 0.25f;
+        contentPosition.height = 16f;
+        contentPosition.width = position.width - 5f;
+        EditorGUI.PropertyField(contentPosition, property.FindPropertyRelative("MaterialName"), new GUIContent("Mat"));
+
+        // 画像
+        var path = property.FindPropertyRelative("MaterialName").stringValue;
+        if(path.Length != 0) {
+            bool TrueTex = false;
+            if(path != MatBak) {
+                Mat = Resources.Load<Material>(path);
+                if(Mat != null) {
+                    texture = Mat.GetTexture("_MainTex") as Texture2D;
+                    texture.filterMode = FilterMode.Point;
+                    MatBak = path;
+                    TrueTex = true;
+                }
+            } else {
+                TrueTex = true;
+            }
+            if(texture != null && TrueTex) {
+                contentPosition.x = position.width / 2f - 20f + ImagePosXRevision;
+                contentPosition.y = position.y + 25f;
+                contentPosition.width = 40f;
+                contentPosition.height = 40f;
+                EditorGUI.DrawPreviewTexture(contentPosition, texture);
+            }
+
+            contentPosition.width = 16f;
+            // 各チェックボックス
+            contentPosition.x = position.width / 2f + 12f + ImagePosXRevision;
+            contentPosition.y = position.y + 17f;
+            Link.GetArrayElementAtIndex(5).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(5).boolValue);
+
+            contentPosition.x = position.width / 2f + 22f + ImagePosXRevision;
+            contentPosition.y = position.y + 17f + 20f;
+            Link.GetArrayElementAtIndex(4).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(4).boolValue);
+
+            contentPosition.x = position.width / 2f + 12f + ImagePosXRevision;
+            contentPosition.y = position.y + 17f + 40f;
+            Link.GetArrayElementAtIndex(3).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(3).boolValue);
+
+            contentPosition.x = position.width / 2f - 25f + ImagePosXRevision;
+            contentPosition.y = position.y + 17f + 40f;
+            Link.GetArrayElementAtIndex(2).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(2).boolValue);
+
+            contentPosition.x = position.width / 2f - 35f + ImagePosXRevision;
+            contentPosition.y = position.y + 17f + 20f;
+            Link.GetArrayElementAtIndex(1).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(1).boolValue);
+
+            contentPosition.x = position.width / 2f - 25f + ImagePosXRevision;
+            contentPosition.y = position.y + 17f;
+            Link.GetArrayElementAtIndex(0).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(0).boolValue);
+
+            // ステータス
+            contentPosition.x = position.width / 3f * 2;
+            contentPosition.y = position.y + position.height / 2f;
+            int Cnt = 0;
+            for(int n = 0; n < 6; n++) {
+                if(Link.GetArrayElementAtIndex(n).boolValue) {
+                    Cnt++;
+                }
+            }
+            EditorGUI.LabelField(contentPosition, Cnt.ToString());
+        }
+
+        // 終了
+        EditorGUI.EndProperty();
+    }
+
+
 }
