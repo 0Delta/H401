@@ -511,11 +511,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 139d31108c8f6544580857e8bcb3bb93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basePoint: 100
-  bonusAtNodes: 10
-  bonusPerCap: 0
-  bonusPer2Path: 20
-  bonusPer3Path: 50
   ScoreManagerPath: Prefabs/ScoreSystem/ScoreSystem
   scoreText: {fileID: 11444270}
 --- !u!114 &11464470
