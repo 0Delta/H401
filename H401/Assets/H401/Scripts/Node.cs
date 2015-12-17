@@ -4,6 +4,7 @@ using UniRx;
 using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
+using RandExtension;
 
 //using Assets.Scripts.Utils;
 
@@ -395,7 +396,7 @@ public class Node : MonoBehaviour {
         //ランダムに回転
         float angle = 0.0f;
 
-        for(int i = (Rot == -1 ? Random.Range(0, 6) : Rot); i >= 0; i--) {
+        for(int i = (Rot == -1 ? RandomEx.RangeforInt(0, 6) : Rot); i >= 0; i--) {
             BitLinkRotate();
             angle -= ROT_HEX_ANGLE;
         }
