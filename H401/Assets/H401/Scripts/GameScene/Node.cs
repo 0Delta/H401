@@ -45,7 +45,8 @@ public class Node : MonoBehaviour {
     //public BitArray bitTreePath = new BitArray(4);//走査時にどの木の一部かを記憶しておく
     public Vec2Int[] ChainNodes = new Vec2Int[5];
 
-    private MeshRenderer meshRenderer;
+    private MeshRenderer meshRenderer = null;
+    public NodeTemplate Temp = null;               // 使用したテンプレート
 
     public MeshRenderer MeshRenderer {
         get { return meshRenderer; }
@@ -85,6 +86,10 @@ public class Node : MonoBehaviour {
         set { _isSlideEnd = value; }
         get { return _isSlideEnd; }
     }
+    public bool IsOutPuzzle
+    {
+        get { return isOutPuzzle; }
+    }
 
     private void Awake() {
         meshRenderer = GetComponent<MeshRenderer>();
@@ -120,7 +125,8 @@ public class Node : MonoBehaviour {
     }
 
     // ノード回転処理
-    public void RotationNode() {
+    static private Vector3 RotationNodeTempVec = new Vector3();
+    public void RotationNode(bool NoWait = false, bool Reverse = false) {
         // 画面外ノードなら未処理
         if(isOutScreen)
             return;
@@ -140,11 +146,33 @@ public class Node : MonoBehaviour {
         } else {
             angle = Mathf.FloorToInt(transform.localEulerAngles.z / ROT_HEX_ANGLE) * ROT_HEX_ANGLE;
         }
+        RotationNodeTempVec.Set(0, 0, angle);
 
-        // 回転処理(※TODO:new をなんとかしたい)
+        // ノーウエイト版。フィーバー時の配置に使用
+        if(NoWait) {
+            // アクションキャンセル
+            isAction = false;
+            // ビット配列まわして
+            BitLinkRotate();
+            if(Reverse) {
+                for(int n = 0; n < 4; n++) {
+                    // 逆回転なら4回追加
+                    BitLinkRotate();
+                }
+            }
+            // 回転成分書き換え
+            transform.Rotate(Reverse ? -RotationNodeTempVec : RotationNodeTempVec);
+            if(angle <= -360.0f) {
+                transform.rotation = Quaternion.identity;
+            }
+            // 強制離脱
+            return;
+        }
+
+        // 回転処理
         transform.DOKill();
         transform.DOMoveZ(IN_ACTION_POSZ, 0.0f);
-        transform.DORotate(new Vector3(0.0f, 0.0f, angle), actionTime)
+        transform.DORotate(RotationNodeTempVec, actionTime)
             .OnComplete(() => {
                 // 回転成分を初期化
                 if(angle <= -360.0f) {
@@ -404,7 +432,10 @@ public class Node : MonoBehaviour {
 
         //ランダムに回転
         float angle = 0.0f;
-        
+
+        // 使用したテンプレを記憶
+        Temp = type;
+
         for(int i = (Rot == -1 ? RandomEx.RangeforInt(0, 6) : Rot); i >= 0; i--) {
             BitLinkRotate();
             angle -= ROT_HEX_ANGLE;

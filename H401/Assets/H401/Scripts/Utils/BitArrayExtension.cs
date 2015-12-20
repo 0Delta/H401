@@ -46,5 +46,13 @@ namespace BitArrayExtension
         {
             return Bit.Xor(BitA).isZero();  // XORして0なら合致
         }
+
+        public static string ToStringEx(this BitArray array) {
+            string[] str = new string[1];
+            for(int i = 0; i < array.Count; i++)
+                str[0] += array[i] ? "1" : "0";
+
+            return str[0];
+        }
     }
 }

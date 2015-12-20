@@ -4,17 +4,19 @@ using UniRx;
 
 using DG.Tweening;
 using System.Collections.Generic;
+using RandExtension;
+using BitArrayExtension;
 /*  リストIDに関して
-  col のIDが奇数の行は +1 とする
+col のIDが奇数の行は +1 とする
 
-	 ◇◇・・・   (col, row)
-	・・・・◇◇  (col - 1, row + 1)
-	 ・・・・・
-	・・・・・・
-	 ◇◇◇・・
-	◇◇◇・・・
-	 ◇◇・・・
-	(0,0)
+◇◇・・・   (col, row)
+・・・・◇◇  (col - 1, row + 1)
+・・・・・
+・・・・・・
+◇◇◇・・
+◇◇◇・・・
+◇◇・・・
+(0,0)
 */
 
 public class NodeController : MonoBehaviour {
@@ -38,7 +40,7 @@ public class NodeController : MonoBehaviour {
 //    [SerializeField] private string pauseObjectPath = null;
     [SerializeField] private float repRotateTime = 0;//ノード再配置時の時間
     [SerializeField] private Color frameNodeColor;   // フレームノードの色
-    [SerializeField] private string[] nodeMaterialsPath = null;
+//    [SerializeField] private string[] nodeMaterialsPath = null;
     [SerializeField] private NodeTemplate[] NodeTemp = null;
     
     private GameObject gameNodePrefab   = null;     // ノードのプレハブ
@@ -1347,12 +1349,81 @@ public class NodeController : MonoBehaviour {
 		}
 	}
 
-    public void ReplaceNodeFever() {
-        ReplaceNodeAll();
-        foreach(var it in gameNodeScripts[1]) {
-            it.SetNodeType(NodeTemp[0], 0);
-        }
 
+    public void ReplaceNodeFever() {
+        foreach(var xList in gameNodeScripts) {
+            foreach(var it in xList) {
+                it.SetNodeType(NodeTemplate.GetTempFromBranchRandom(NodeTemp, 1), 0);
+            }
+        }
+        string str = "ReplaceNodeFeverLog\n";
+
+
+        int targetNum = RandomEx.RangeforInt(3, 9);
+        str += "Target : " + targetNum;
+
+        int Counter = 0;
+        int x = RandomEx.RangeforInt(2, 5);
+        int y = 1;
+        _eLinkDir Dir = _eLinkDir.LD;
+        int RotationNum;
+        while(Counter < targetNum) {
+            str += "\nCheck" + gameNodeScripts[y][x].ToString() + "\n";
+
+            gameNodeScripts[y][x].SetNodeType(NodeTemplate.GetTempFromBranchRandom(NodeTemp, 2), 0);
+            str += "SetNode : " + gameNodeScripts[y][x].bitLink.ToStringEx() + " / " + gameNodeScripts[y][x].Temp.ToString() + "\n";
+
+            int CheckLinkNum = 0;
+            bool Decide = false;
+            ///<summary>
+            ///     不正な回転 or 回転できなかった処理が存在  
+            /// </summary>
+            RotationNum = 0;
+            while(!Decide && gameNodeScripts[y][x].bitLink.Count > CheckLinkNum) {
+                while(!gameNodeScripts[y][x].bitLink[(int)Dir]) {
+                    gameNodeScripts[y][x].RotationNode(true);
+                    RotationNum++;
+                }
+                str += "Rot : " + RotationNum + " / 　" + gameNodeScripts[y][x].bitLink.ToStringEx() + "\n";
+
+                Vec2Int nextNode = new Vec2Int(-1, -1);
+                _eLinkDir NextDir = Dir;
+                for(int n = 0; n < 6; n++) {
+                    if(n == (int)Dir) { continue; }
+                    if(gameNodeScripts[y][x].bitLink[n]) {
+                        nextNode = GetDirNode(x, y, (_eLinkDir)n);
+                        if(nextNode.x == -1 || gameNodeScripts[nextNode.y][nextNode.x].IsOutPuzzle) {
+                            nextNode.x = x;
+                            nextNode.y = y;
+                            CheckLinkNum++;
+                            str += "Failed";
+                            break;
+                        }
+                        str += "Find" + ((_eLinkDir)n).ToString();
+                        Decide = true;
+                        NextDir = ReverseDirection((_eLinkDir)n);
+                    }
+                }
+                gameNodeScripts[y][x].SetNodeType(gameNodeScripts[y][x].Temp, RotationNum);
+                x = nextNode.x;
+                y = nextNode.y;
+                Dir = NextDir;
+                Counter++;
+            }
+        }
+        // 枝に蓋をする
+        gameNodeScripts[y][x].SetNodeType(NodeTemplate.GetTempFromBranchRandom(NodeTemp, 1), 0);
+        RotationNum = 0;
+        while(!gameNodeScripts[y][x].bitLink[(int)Dir]) {
+            gameNodeScripts[y][x].RotationNode(true);
+            RotationNum++;
+        }
+        gameNodeScripts[y][x].RotationNode(true, true);
+        gameNodeScripts[y][x].SetNodeType(gameNodeScripts[y][x].Temp, RotationNum == 0 ? 5 : RotationNum - 1);
+        Debug.Log(str);
+
+        CheckLink();
+        unChainController.Remove();
     }
 
 
