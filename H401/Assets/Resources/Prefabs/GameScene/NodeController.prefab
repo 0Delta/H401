@@ -132,10 +132,6 @@ Prefab:
       value: Prefabs/GameScene/UnChainController
       objectReference: {fileID: 0}
     - target: {fileID: 0}
-      propertyPath: unChainControllerPrefab
-      value: 
-      objectReference: {fileID: 113934, guid: 7a42ce331515e1f43b3c87734326506a, type: 2}
-    - target: {fileID: 0}
       propertyPath: nodeMaterialsPath.Array.data[6]
       value: Materials/hex6
       objectReference: {fileID: 0}

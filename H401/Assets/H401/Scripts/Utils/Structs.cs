@@ -180,3 +180,10 @@ public struct NodeCountInfo
     public float gainPerPath3;
     public float gainPerPath4;
 }
+
+// フェードイン・アウトの時間
+[System.Serializable]
+public struct FadeTime {
+    public float inTime;
+    public float outTime;
+};

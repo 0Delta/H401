@@ -26,7 +26,7 @@ using UnityEngine.UI;
 
 [RequireComponent(typeof(RawImage))]
 [RequireComponent(typeof(Mask))]
-public class FadeUI : MonoBehaviour,IFade {
+public class FadeUI : MonoBehaviour, IFade {
 
 	public float Range{get; private set;}
 
@@ -34,8 +34,7 @@ public class FadeUI : MonoBehaviour,IFade {
 	[SerializeField] RenderTexture rt = null;
 
 	[SerializeField] Texture texture = null;
-    [SerializeField]
-    private Texture maskTexture = null;
+
 	public void UpdateMaskCutout (float range)
 	{
 		mat.SetFloat ("_Range", range);
@@ -45,18 +44,5 @@ public class FadeUI : MonoBehaviour,IFade {
 		var mask = GetComponent<Mask> ();
 		mask.enabled = false;
 		mask.enabled = true;
-        UpdateMaskCutout(Range);
-        UpdateMaskTexture(maskTexture);
 	}
-    public void UpdateMaskTexture(Texture tex)
-    {
-        texture = tex;
-        //material.SetColor("_Color", color);
-    }
-
-    //protected override void OnValidate()
-    //{
-    //    base.OnValidate();
-
-    //}
 }

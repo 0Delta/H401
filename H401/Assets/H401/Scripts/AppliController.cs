@@ -16,6 +16,8 @@ public class AppliController : MonoBehaviour {
 		RESULT,             // リザルト
 		RANKING,	        // ランキング
 	    OPTION,             // オプション
+        HOWTOPLAY,          // 遊び方
+        CREDIT,             // クレジット
 
 		MAX_NUM
 	}
@@ -27,11 +29,13 @@ public class AppliController : MonoBehaviour {
     public _eSceneID startSceneID;      // ゲーム開始時のシーンID
 
 // ----- private:
-    [SerializeField]int gameFrameRate = 0;
-    [SerializeField] private string[] scenePrefabPaths;     // シーン Prefab の Path リスト
+    [SerializeField] int gameFrameRate = 0;
+    [SerializeField] private string[] scenePrefabPaths;         // シーン Prefab の Path リスト
+    [SerializeField] private string fadeCanvasName = null;      // シーン切り替え時の演出用 Canvas の名前
+    [SerializeField] private FadeTime gameStartFadeTime;        // ゲーム開始時のフェード演出にかかる時間
 
-
-    private GameObject  currentScenePrefab;       // 現在のシーンの Prefab
+    private GameObject  currentScenePrefab;     // 現在のシーンの Prefab
+    private Fade        fade;                   // シーン切り替え時の演出用 Script
 
 //===============================================================
 // メンバ関数
@@ -41,35 +45,43 @@ public class AppliController : MonoBehaviour {
 	// ゼロクリア
 	//---------------------------------------------------------------
 	void Awake() {
-        currentScenePrefab = new GameObject();
+        currentScenePrefab = null;
+        fade = null;
 	}
     
 	//---------------------------------------------------------------
 	// 初期化
 	//---------------------------------------------------------------
 	void Start() {
-		// 次のシーンへ
+        fade = transform.FindChild(fadeCanvasName).gameObject.GetComponentInChildren<Fade>();
+
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = gameFrameRate;  //シーンごとにFPSを設定するべきらしい
 
-		ChangeScene(startSceneID);
+		// 次のシーンへ
+		ChangeScene(startSceneID, gameStartFadeTime.inTime, gameStartFadeTime.outTime);
 	}
 	
 	//---------------------------------------------------------------
 	// シーン切り替え
 	//---------------------------------------------------------------
-	public void ChangeScene(_eSceneID id) {
-        // 現在のシーンを削除
-        Destroy(currentScenePrefab);
+	public void ChangeScene(_eSceneID id, float fadeInTime = 0.0f, float fadeOutTime = 0.0f) {
+        // フェードアウト
+        fade.FadeIn(fadeOutTime, () => {
+            // 現在のシーンを削除
+            Destroy(currentScenePrefab);
+            
+            // 新しいシーンを生成
+            GameObject Obj = Resources.Load<GameObject>(scenePrefabPaths[(int)id]);
+            if(Obj == null) {
+                Debug.LogError("[" + scenePrefabPaths[(int)id] + "] is Missing !! \n Check [AppliController.Start Scene ID]");
+                throw (new MissingReferenceException());
+            }
+            currentScenePrefab = Instantiate(Obj);
+            currentScenePrefab.transform.SetParent(transform);
 
-        // 新しいシーンを生成
-        GameObject Obj = Resources.Load<GameObject>(scenePrefabPaths[(int)id]);
-        if(Obj == null) {
-            Debug.LogError("[" + scenePrefabPaths[(int)id] + "] is Missing !! \n Check [AppliController.Start Scene ID]");
-            throw (new MissingReferenceException());
-        }
-        currentScenePrefab = Instantiate(Obj);
-        currentScenePrefab.transform.SetParent(transform);
+            fade.FadeOut(fadeInTime);
+        });
 	}
 
 	//---------------------------------------------------------------
