@@ -43,7 +43,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 159744}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6067776db48a6a4598a70a34a569cf2, type: 3}
+  m_Script: {fileID: 11500000, guid: cdffc391f3f189f4386d0dcbd4f6f63c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   RankingPrefabFolderName: Prefabs/ScoreSystem
@@ -91,6 +91,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!224 &22469524
 RectTransform:
   m_ObjectHideFlags: 1
@@ -130,6 +131,18 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: ScorePrefabName
       value: ScoreSystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: OnlinePrefabName
+      value: OnlineRanking
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: OfflinePrefabName
+      value: OfflineRanking
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: BGPrefabName
+      value: RankingBG
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

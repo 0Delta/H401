@@ -75,7 +75,11 @@ public class AppliController : MonoBehaviour {
             GameObject Obj = Resources.Load<GameObject>(scenePrefabPaths[(int)id]);
             if(Obj == null) {
                 Debug.LogError("[" + scenePrefabPaths[(int)id] + "] is Missing !! \n Check [AppliController.Start Scene ID]");
-                throw (new MissingReferenceException());
+                if(id == (_eSceneID)0) {
+                    throw (new MissingReferenceException());
+                } else {
+                    Obj = Resources.Load<GameObject>(scenePrefabPaths[0]);
+                }
             }
             currentScenePrefab = Instantiate(Obj);
             currentScenePrefab.transform.SetParent(transform);

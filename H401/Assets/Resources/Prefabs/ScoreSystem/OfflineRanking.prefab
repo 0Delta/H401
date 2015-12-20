@@ -182,7 +182,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 32468a371b99bac4aa09be17efa08bc0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4c2aaf609db2b1f4d8dc1d2b13f7608e, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -415,6 +415,11 @@ Prefab:
       propertyPath: ScorePrefabName
       value: Score2D
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4c2aaf609db2b1f4d8dc1d2b13f7608e,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 153866}

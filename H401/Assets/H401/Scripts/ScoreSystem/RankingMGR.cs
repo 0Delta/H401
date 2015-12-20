@@ -76,7 +76,7 @@ public class RankingMGR : MonoBehaviour {
         // オブジェクト初期化
         ScoreObj = InstantiateChild(ScorePrefabName);
         BGObj = InstantiateChild(BGPrefabName, false);
-        CameraObj = InstantiateChild(CameraPrefabName);
+        CameraObj = InstantiateChild(CameraPrefabName, false);
         OfflineObj = InstantiateChild(OfflinePrefabName, false);
         OnlineObj = null;   // オンラインオブジェは初期化しない
 
@@ -110,7 +110,7 @@ public class RankingMGR : MonoBehaviour {
         this.UpdateAsObservable()
             .First(_ => Mode == RANKING_MODE.ONLINE)
             .Subscribe(_ => {
-                OnlineObj = InstantiateChild(OnlinePrefabName);
+                OnlineObj = InstantiateChild(OnlinePrefabName, false);
             });
     }
 
