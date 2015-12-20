@@ -8,24 +8,20 @@ public class NodeTemplate {
     public string MaterialName;
     public bool[] LinkDir = new bool[6];
 
+
     // 算出部分
     public bool Ready;
     public BitArray Link = new BitArray(6);
     public int LinkNum;
     public int ID = -1;
 
-    public override string ToString() {
-        return MaterialName;
-    }
-
-    public NodeTemplate(string MatName) {
-        MaterialName = MatName;
-    }
-
     // メンバの算出部分を計算する
     public void Calc() {
         int Cnt = 0;
         for(int n = 0; n < 6; n++) {
+            if(LinkDir.Length < 6) {
+                return;
+            }
             if(LinkDir[n])
                 Cnt++;
             Link.Set(n, LinkDir[n]);

@@ -69,15 +69,3 @@ public enum _ePauseState
     GAME,
     PAUSE,
 }
-
-// Tostring定義
-static class EnumExt {
-    public static string ToString(this _eLinkDir LinkDir) {
-        string[] str = { "RU", "R", "RD", "LD", "L", "LU", "MAX", "NONE" };
-        return str[(int)LinkDir];
-    }
-    public static string ToString(this _eSlideDir SlideDir) {
-        string[] str = { "LEFT", "RIGHT", "LEFTUP", "LEFTDOWN", "RIGHTUP", "RIGHTDOWN", "NONE" };
-        return str[(int)SlideDir];
-    }
-}
