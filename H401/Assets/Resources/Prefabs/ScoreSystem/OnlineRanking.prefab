@@ -24,7 +24,7 @@ Transform:
   m_GameObject: {fileID: 166132}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.18483412, y: 1.18483412, z: 1.18483412}
+  m_LocalScale: {x: 1.1848341, y: 1.1848341, z: 1.1848341}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -36,11 +36,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 166132}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7007305a18a566a4ea5da86f1506030d, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f379fad7ce03fa40aed9eedc568f6a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ScorePrefabName: Score3D
-  TweenSpeed: .200000003
+  TweenSpeed: 0.15
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

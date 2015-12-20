@@ -8,7 +8,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400168}
-  - 114: {fileID: 11467090}
+  - 114: {fileID: 11438286}
   m_Layer: 0
   m_Name: ScoreSystem
   m_TagString: Untagged
@@ -28,7 +28,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &11467090
+--- !u!114 &11438286
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -36,12 +36,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 190670}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce2300f75c5937c41afe2131eeec8b81, type: 3}
+  m_Script: {fileID: 11500000, guid: a299d3177539f57449c2e797706ba4c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ScorePlatePrefabName: 
   AWSPrefabName: AWSPrefab
-  Name: defaultuser
+  Name: User
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -55,11 +55,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: Name
-      value: defaultuser
+      value: User
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: ScorePlatePrefabName
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: ScorePrefabName
+      value: ScoreSystem
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

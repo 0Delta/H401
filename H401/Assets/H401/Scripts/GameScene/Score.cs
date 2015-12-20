@@ -88,7 +88,16 @@ public class Score : MonoBehaviour {
 
     public void Decide() {
         // スコア登録
-        ScoreManager scoreManager = Instantiate(Resources.Load<ScoreManager>(ScoreManagerPath));
+        GameObject obj = Resources.Load(ScoreManagerPath) as GameObject;
+        if(obj == null) {
+            Debug.LogError("Failed Instantiate : RankingSystem");
+            return;
+        }
+        ScoreManager scoreManager = Instantiate(obj).GetComponent<ScoreManager>();
+        if(scoreManager == null) {
+            Debug.LogError("Failed GetComponent : RankingSystem");
+            return;
+        }
         scoreManager.AddScore(gameScore);
     }
 }
