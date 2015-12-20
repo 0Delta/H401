@@ -60,43 +60,43 @@ MonoBehaviour:
   - Materials/hex6
   - Materials/hex7
   NodeTemp:
-  - MaterialName: 
-    LinkDir: 
+  - MaterialName: Materials/hex0
+    LinkDir: 000000000001
     Ready: 0
     LinkNum: 0
     ID: 0
-  - MaterialName: 
-    LinkDir: 
+  - MaterialName: Materials/hex1
+    LinkDir: 000001000001
     Ready: 0
     LinkNum: 0
     ID: 0
-  - MaterialName: 
-    LinkDir: 
+  - MaterialName: Materials/hex2
+    LinkDir: 000000010001
     Ready: 0
     LinkNum: 0
     ID: 0
-  - MaterialName: 
-    LinkDir: 
+  - MaterialName: Materials/hex3
+    LinkDir: 000000000101
     Ready: 0
     LinkNum: 0
     ID: 0
-  - MaterialName: 
-    LinkDir: 
+  - MaterialName: Materials/hex4
+    LinkDir: 000100010001
     Ready: 0
     LinkNum: 0
     ID: 0
-  - MaterialName: 
-    LinkDir: 
+  - MaterialName: Materials/hex5
+    LinkDir: 000001010001
     Ready: 0
     LinkNum: 0
     ID: 0
-  - MaterialName: 
-    LinkDir: 
+  - MaterialName: Materials/hex6
+    LinkDir: 000000010101
     Ready: 0
     LinkNum: 0
     ID: 0
-  - MaterialName: 
-    LinkDir: 
+  - MaterialName: Materials/hex7
+    LinkDir: 010001010001
     Ready: 0
     LinkNum: 0
     ID: 0
@@ -142,6 +142,130 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: nodeMaterialsPath.Array.data[7]
       value: Materials/hex7
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[0].MaterialName
+      value: Materials/hex0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[1].MaterialName
+      value: Materials/hex1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[2].MaterialName
+      value: Materials/hex2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[3].MaterialName
+      value: Materials/hex3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[4].MaterialName
+      value: Materials/hex4
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[5].MaterialName
+      value: Materials/hex5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[6].MaterialName
+      value: Materials/hex6
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[7].MaterialName
+      value: Materials/hex7
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[0].LinkDir.Array.data[5]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[1].LinkDir.Array.data[5]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[1].LinkDir.Array.data[2]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[2].LinkDir.Array.data[5]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[2].LinkDir.Array.data[4]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[2].LinkDir.Array.data[3]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[3].LinkDir.Array.data[5]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[3].LinkDir.Array.data[4]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[4].LinkDir.Array.data[5]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[4].LinkDir.Array.data[3]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[4].LinkDir.Array.data[1]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[5].LinkDir.Array.data[3]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[5].LinkDir.Array.data[5]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[5].LinkDir.Array.data[2]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[6].LinkDir.Array.data[5]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[6].LinkDir.Array.data[4]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[6].LinkDir.Array.data[3]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[7].LinkDir.Array.data[5]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[7].LinkDir.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[7].LinkDir.Array.data[4]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[7].LinkDir.Array.data[3]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[7].LinkDir.Array.data[1]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[7].LinkDir.Array.data[2]
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
