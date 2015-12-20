@@ -113,7 +113,7 @@ public class NodeController_Editor : PropertyDrawer {
 
             contentPosition.width = 16f;
             // 各チェックボックス
-            if(Link.arraySize > 5) {
+            if(Link != null && Link.arraySize > 5) {
                 contentPosition.x = position.width / 2f + 12f + ImagePosXRevision;
                 contentPosition.y = position.y + 17f;
                 Link.GetArrayElementAtIndex(5).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(5).boolValue);
@@ -152,7 +152,11 @@ public class NodeController_Editor : PropertyDrawer {
                 contentPosition.x = position.width / 3f;
                 contentPosition.y = position.y + position.height / 2f;
                 contentPosition.width = position.width / 4f * 3f;
-                EditorGUI.LabelField(contentPosition, "Error : Array Size - " + Link.arraySize.ToString());
+                if(Link == null) {
+                    EditorGUI.LabelField(contentPosition, "Error : Array is NULL");
+                } else {
+                    EditorGUI.LabelField(contentPosition, "Error : Array Size - " + Link.arraySize.ToString());
+                }
             }
         }
         EditorGUI.EndChangeCheck();

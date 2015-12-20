@@ -6,7 +6,7 @@ public class NodeTemplate {
 
     // 設定部分
     public string MaterialName;
-    public bool[] LinkDir = new bool[6];
+    public bool[] LinkDir = new  bool[6];
 
 
     // 算出部分
@@ -14,6 +14,18 @@ public class NodeTemplate {
     public BitArray Link = new BitArray(6);
     public int LinkNum;
     public int ID = -1;
+
+    public NodeTemplate() {
+        MaterialName = "";
+        LinkDir = new bool[6];
+
+
+        // 算出部分
+        Ready = false;
+        Link = new BitArray(6);
+        LinkNum = 0;
+        ID = -1;
+    }
 
     // メンバの算出部分を計算する
     public void Calc() {
