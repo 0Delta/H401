@@ -1,47 +1,63 @@
 ﻿using UnityEngine;
 using System.Collections;
 using DG.Tweening;
+using System.Linq;
 
 public class TitleButtons : MonoBehaviour {
     
-    [SerializeField] private float  actionTime          = 0.0f;       // アクションにかかる時間
-    [SerializeField] private float  scaleMag            = 0.0f;       // 拡大演出の倍率
-    [SerializeField] private string gameButtonName      = null;       // ゲーム本編へ遷移するボタン名
-    [SerializeField] private string howtoplayButtonName = null;       // 遊び方へ遷移するボタン名
-    [SerializeField] private string rankingButtonName   = null;       // ランキングへ遷移するボタン名
-    [SerializeField] private string optionButtonName    = null;       // オプションへ遷移するボタン名
-    [SerializeField] private string creditButtonName    = null;       // クレジットへ遷移するボタン名
-    [SerializeField] private FadeTime[] fadeTimes;                    // シーン切り替え用演出にかかる時間リスト
+    [SerializeField] private float  scaleTime   = 0.0f;       // 拡縮演出にかかる時間
+    [SerializeField] private float  scaleMag    = 0.0f;       // 拡縮演出の倍率
+    [SerializeField] private float  moveTime    = 0.0f;       // 移動演出にかかる時間
+    [SerializeField] private float  moveEndPosX = 0.0f;       // 移動演出の移動終了座標(移動距離)
+    [SerializeField] private AppliController._eSceneID[] sceneButtonOrder;       // シーン遷移するボタンの配置順番
+    [SerializeField] private FadeTime[] fadeTimes;            // シーン切り替え用演出にかかる時間リスト
+
+    private Transform[] buttonTransList;        // ボタンの Transform リスト
+
+    void Start() {
+        buttonTransList = transform.GetComponentsInChildren<Transform>().Where(x => gameObject != x.gameObject).ToArray();
+    }
 
     void ActionDirection(Transform trans) {
-        // 回転処理(※TODO:new をなんとかしたい)
-        trans.DORotate(new Vector3(0.0f, 0.0f, 60.0f), actionTime)
-            .OnComplete(() => {
-                AppliController._eSceneID sceneID = AppliController._eSceneID.TITLE;
-                int fadeID = 0;
+        // シーン遷移先を設定
+        AppliController._eSceneID sceneID = AppliController._eSceneID.TITLE;
+        int fadeID = 0;
+        for(int i = 0; i < sceneButtonOrder.Length; ++i) {
+            if(trans.name == buttonTransList[i].name) {
+                sceneID = sceneButtonOrder[i];
+                fadeID = i;
+            }
+        }
 
-                if(trans.name == gameButtonName) {
-                    sceneID = AppliController._eSceneID.GAME;
-                    fadeID = 0;
-                } else if(trans.name == howtoplayButtonName) {
-                    sceneID = AppliController._eSceneID.HOWTOPLAY;
-                    fadeID = 1;
-                } else if(trans.name == rankingButtonName) {
-                    sceneID = AppliController._eSceneID.RANKING;
-                    fadeID = 2;
-                } else if(trans.name == optionButtonName) {
-                    sceneID = AppliController._eSceneID.OPTION;
-                    fadeID = 3;
-                } else if(trans.name == creditButtonName) {
-                    sceneID = AppliController._eSceneID.CREDIT;
-                    fadeID = 4;
+        // 遷移演出開始
+        int cnt = 0;
+        for(int i = 0; i < sceneButtonOrder.Length; ++i) {
+            // 選択されたボタンなら未処理
+            if (i == fadeID)
+                continue;
+
+            Transform handleTrans = buttonTransList[i];
+
+            // 拡縮処理
+            handleTrans.DOScale(handleTrans.localScale * scaleMag, scaleTime).OnComplete(() => {
+                // 処理したボタン数をカウントアップ
+                ++cnt;
+
+                // 移動方向を確認
+                int revSign = 1;
+                if (cnt % 2 != 0) {
+                    revSign = -revSign;
                 }
 
-                transform.root.gameObject.GetComponent<AppliController>().ChangeScene(sceneID, fadeTimes[fadeID].inTime, fadeTimes[fadeID].outTime);
-            });
-        
-        // 拡縮処理
-        trans.DOScale(trans.localScale * scaleMag, actionTime * 0.5f).SetLoops(2, LoopType.Yoyo);
+                // 移動処理
+                handleTrans.DOMoveX(moveEndPosX * revSign, moveTime).OnComplete(() => {
+                    // 次のシーンへ
+                    transform.root.gameObject.GetComponent<AppliController>().ChangeScene(sceneID, fadeTimes[fadeID].inTime, fadeTimes[fadeID].outTime);
+                })
+                .SetEase(Ease.OutCubic);
+            })
+            .SetEase(Ease.OutCubic);
+        }        
     }
 
     public void OnClick(Transform trans) {
