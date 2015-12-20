@@ -81,6 +81,7 @@ public class NodeController_Editor : PropertyDrawer {
         contentPosition.height -= 3f;
         EditorGUI.DrawRect(contentPosition, Color.gray);
 
+        EditorGUI.BeginChangeCheck();
         // マテリアル名の入力フィールド
         EditorGUIUtility.labelWidth = position.width * 0.25f;
         contentPosition.height = 16f;
@@ -112,41 +113,53 @@ public class NodeController_Editor : PropertyDrawer {
 
             contentPosition.width = 16f;
             // 各チェックボックス
-            contentPosition.x = position.width / 2f + 12f + ImagePosXRevision;
-            contentPosition.y = position.y + 17f;
-            Link.GetArrayElementAtIndex(5).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(5).boolValue);
+            if(Link != null && Link.arraySize > 5) {
+                contentPosition.x = position.width / 2f + 12f + ImagePosXRevision;
+                contentPosition.y = position.y + 17f;
+                Link.GetArrayElementAtIndex(5).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(5).boolValue);
 
-            contentPosition.x = position.width / 2f + 22f + ImagePosXRevision;
-            contentPosition.y = position.y + 17f + 20f;
-            Link.GetArrayElementAtIndex(4).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(4).boolValue);
+                contentPosition.x = position.width / 2f + 22f + ImagePosXRevision;
+                contentPosition.y = position.y + 17f + 20f;
+                Link.GetArrayElementAtIndex(4).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(4).boolValue);
 
-            contentPosition.x = position.width / 2f + 12f + ImagePosXRevision;
-            contentPosition.y = position.y + 17f + 40f;
-            Link.GetArrayElementAtIndex(3).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(3).boolValue);
+                contentPosition.x = position.width / 2f + 12f + ImagePosXRevision;
+                contentPosition.y = position.y + 17f + 40f;
+                Link.GetArrayElementAtIndex(3).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(3).boolValue);
 
-            contentPosition.x = position.width / 2f - 25f + ImagePosXRevision;
-            contentPosition.y = position.y + 17f + 40f;
-            Link.GetArrayElementAtIndex(2).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(2).boolValue);
+                contentPosition.x = position.width / 2f - 25f + ImagePosXRevision;
+                contentPosition.y = position.y + 17f + 40f;
+                Link.GetArrayElementAtIndex(2).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(2).boolValue);
 
-            contentPosition.x = position.width / 2f - 35f + ImagePosXRevision;
-            contentPosition.y = position.y + 17f + 20f;
-            Link.GetArrayElementAtIndex(1).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(1).boolValue);
+                contentPosition.x = position.width / 2f - 35f + ImagePosXRevision;
+                contentPosition.y = position.y + 17f + 20f;
+                Link.GetArrayElementAtIndex(1).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(1).boolValue);
 
-            contentPosition.x = position.width / 2f - 25f + ImagePosXRevision;
-            contentPosition.y = position.y + 17f;
-            Link.GetArrayElementAtIndex(0).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(0).boolValue);
+                contentPosition.x = position.width / 2f - 25f + ImagePosXRevision;
+                contentPosition.y = position.y + 17f;
+                Link.GetArrayElementAtIndex(0).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(0).boolValue);
 
-            // ステータス
-            contentPosition.x = position.width / 3f * 2;
-            contentPosition.y = position.y + position.height / 2f;
-            int Cnt = 0;
-            for(int n = 0; n < 6; n++) {
-                if(Link.GetArrayElementAtIndex(n).boolValue) {
-                    Cnt++;
+                // ステータス
+                contentPosition.x = position.width / 3f * 2;
+                contentPosition.y = position.y + position.height / 2f;
+                int Cnt = 0;
+                for(int n = 0; n < 6; n++) {
+                    if(Link.GetArrayElementAtIndex(n).boolValue) {
+                        Cnt++;
+                    }
+                }
+                EditorGUI.LabelField(contentPosition, Cnt.ToString());
+            } else {
+                contentPosition.x = position.width / 3f;
+                contentPosition.y = position.y + position.height / 2f;
+                contentPosition.width = position.width / 4f * 3f;
+                if(Link == null) {
+                    EditorGUI.LabelField(contentPosition, "Error : Array is NULL");
+                } else {
+                    EditorGUI.LabelField(contentPosition, "Error : Array Size - " + Link.arraySize.ToString());
                 }
             }
-            EditorGUI.LabelField(contentPosition, Cnt.ToString());
         }
+        EditorGUI.EndChangeCheck();
 
         // 終了
         EditorGUI.EndProperty();
