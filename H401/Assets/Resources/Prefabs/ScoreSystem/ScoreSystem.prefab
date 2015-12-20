@@ -36,12 +36,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 190670}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f8121e1ceee65145ad6565f4bc13565, type: 3}
+  m_Script: {fileID: 11500000, guid: ce2300f75c5937c41afe2131eeec8b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ScorePlatePrefabName: 
   AWSPrefabName: AWSPrefab
-  Name: H401_User
+  Name: defaultuser
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -55,7 +55,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: Name
-      value: H401_User
+      value: defaultuser
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: ScorePlatePrefabName

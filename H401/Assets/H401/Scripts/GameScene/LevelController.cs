@@ -5,12 +5,12 @@ using UnityEngine.UI;
 public class LevelController : MonoBehaviour {
 
     [SerializeField,Range(0.0f,45.0f)]private float lyingDeviceAngle = 0.0f;     //デバイスを横と判定する角度範囲
-    [SerializeField]private string levelCanvasPath= null;
+    [SerializeField]private string levelChangePath= null;
    
     private LevelTables levelTableScript = null;
     private GameController gameController = null;
-    private GameObject levelCanvasObject = null;
-    private GameObject levelCanvasPrefab = null;
+    private GameObject levelChangeObject = null;
+    private GameObject levelChangePrefab = null;
 
     private _eLevelState levelState;
     public _eLevelState LevelState { get { return levelState; } set { levelState = value; } }
@@ -18,17 +18,18 @@ public class LevelController : MonoBehaviour {
     private float currentAngle = 0.0f;
 
 //    private GameObject panelObject;
-    private LevelPanel panelScript;
+    //private LevelPanel panelScript;
     private float lyingAngle;
     public float LyingAngle
     {
         get { return lyingAngle; }
     }
 
+    private LevelChange fChangeScript;
+    public LevelChange levelChange { get { return fChangeScript; } }
+
     private int nextLevel;  //次のレベル
     public int NextLevel { set { nextLevel = value; } get { return nextLevel; } }
-
-
 
     private bool isDebug;
 
@@ -45,7 +46,7 @@ public class LevelController : MonoBehaviour {
 
         levelTableScript = gameScene.levelTables;
 
-        levelCanvasPrefab = Resources.Load<GameObject>(levelCanvasPath);
+        levelChangePrefab = Resources.Load<GameObject>(levelChangePath);
 	}
 	
 	// Update is called once per frame
@@ -115,10 +116,16 @@ public class LevelController : MonoBehaviour {
         
         //難易度選択をinstantiateする
 
-        levelCanvasObject = Instantiate(levelCanvasPrefab);//(GameObject)Instantiate(canvasPrefab, transform.position, transform.rotation);
-        levelCanvasObject.transform.SetParent(this.transform);
+        levelChangeObject = Instantiate(levelChangePrefab);//(GameObject)Instantiate(canvasPrefab, transform.position, transform.rotation);
+        levelChangeObject.transform.SetParent(this.transform);
+        fChangeScript = levelChangeObject.GetComponent<LevelChange>();
+        fChangeScript.levelController = this;
+        //panelScript = levelCanvasObject.GetComponentInChildren<LevelPanel>();
+        //メインカメラをノンアクにする
+        GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+        gameScene.mainCamera.enabled = false;
         
-        panelScript = levelCanvasObject.GetComponentInChildren<LevelPanel>();
+        
         levelState = _eLevelState.CHANGE;
     }
 
@@ -129,13 +136,13 @@ public class LevelController : MonoBehaviour {
         lyingAngle = 0;
         //オブジェクト破棄
         //小さくなって消えるように
-        panelScript.Delete();
+        fChangeScript.Delete();
 
     }
 
     public void EndComplete()
     {
-        Destroy(levelCanvasObject);
+        Destroy(levelChangeObject);
         if (NextLevel != -1)
         {
             gameController.nodeController.currentLevel = NextLevel;

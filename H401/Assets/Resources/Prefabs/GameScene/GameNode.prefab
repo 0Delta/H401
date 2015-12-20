@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 166286}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: .550000012, y: .550000012, z: 1}
+  m_LocalScale: {x: 0.55, y: 0.55, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -39,7 +39,7 @@ MeshRenderer:
   m_GameObject: {fileID: 166286}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_Materials:
   - {fileID: 2100000, guid: c74c9a261016931459dc42b22d0f40a6, type: 2}
   m_SubsetIndices: 
@@ -52,7 +52,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: .5
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
@@ -87,12 +87,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba52be0fc3237de4691eb3e391139c5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   actionTime: .100000001
   scaleSize: .600000024
+=======
+  actionTime: 0.1
+  scaleSize: 0.55
+>>>>>>> goto/master
   slideTime: 0
-  slideStartTime: .100000001
-  slideEndTime: .200000003
-  colorDuration: .5
+  slideStartTime: 0.1
+  slideEndTime: 0.2
+  colorDuration: 0.5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -141,8 +146,13 @@ Prefab:
       value: .200000003
       objectReference: {fileID: 0}
     - target: {fileID: 0}
+<<<<<<< HEAD
       propertyPath: scaleSize
       value: .600000024
+=======
+      propertyPath: m_ReceiveShadows
+      value: 0
+>>>>>>> goto/master
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

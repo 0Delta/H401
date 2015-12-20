@@ -40,7 +40,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lyingDeviceAngle: 30
-  levelCanvasPath: Prefabs/GameScene/LevelCanvas
+  levelChangePath: Prefabs/GameScene/LevelChange
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -56,6 +56,10 @@ Prefab:
       propertyPath: LevelTableObject
       value: 
       objectReference: {fileID: 183728, guid: 7682f1e4420a2574a8c6efc49799dfd2, type: 2}
+    - target: {fileID: 0}
+      propertyPath: levelChangePath
+      value: Prefabs/GameScene/LevelChange
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 103068}
