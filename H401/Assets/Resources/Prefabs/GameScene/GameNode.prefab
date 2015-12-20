@@ -75,7 +75,7 @@ MeshCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Convex: 0
-  m_Mesh: {fileID: 4300000, guid: 614e6c4a8291f6143ac92e1a8a784fda, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 9ea6f047a8ff7ed4e9285551fa4cda1e, type: 3}
 --- !u!114 &11474654
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -87,13 +87,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba52be0fc3237de4691eb3e391139c5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
-  actionTime: .100000001
-  scaleSize: .600000024
-=======
   actionTime: 0.1
   scaleSize: 0.55
->>>>>>> goto/master
   slideTime: 0
   slideStartTime: 0.1
   slideEndTime: 0.2
@@ -146,13 +141,8 @@ Prefab:
       value: .200000003
       objectReference: {fileID: 0}
     - target: {fileID: 0}
-<<<<<<< HEAD
-      propertyPath: scaleSize
-      value: .600000024
-=======
       propertyPath: m_ReceiveShadows
       value: 0
->>>>>>> goto/master
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

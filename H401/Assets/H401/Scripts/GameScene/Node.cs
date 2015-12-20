@@ -4,6 +4,7 @@ using UniRx;
 using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
+using RandExtension;
 
 //using Assets.Scripts.Utils;
 
@@ -387,7 +388,7 @@ public class Node : MonoBehaviour {
     }
 
     //ノードにタイプ・テクスチャ・道ビット
-    public void SetNodeType(_eNodeType type,int Rot = -1) {
+    public void SetNodeType(NodeTemplate type,int Rot = -1) {
         //ビットと回転角度をリセット
         bitLink.SetAll(false);
         //transform.rotation = Quaternion.identity;
@@ -396,55 +397,15 @@ public class Node : MonoBehaviour {
         rot.z = 0.0f;
         //transform.eulerAngles.Set(rot.x,rot.y,0.0f);
         //transform.localEulerAngles.Set(rot.x, rot.y, 0.0f);
-
-        bitLink[5] = true;
-
+        
         //ビットタイプ・テクスチャを設定
-        switch(type) {
-            case _eNodeType.CAP:
-                break;
-
-            case _eNodeType.HUB2_A:
-                bitLink[2] = true;
-
-                break;
-
-            case _eNodeType.HUB2_B:
-                //bitLink[2] = true;
-                bitLink[3] = true;
-                break;
-
-            case _eNodeType.HUB2_C:
-                bitLink[4] = true;
-                break;
-
-            case _eNodeType.HUB3_A:
-                bitLink[3] = true;
-                bitLink[1] = true;
-                break;
-
-            case _eNodeType.HUB3_B:
-                bitLink[3] = true;
-                bitLink[2] = true;
-                break;
-            case _eNodeType.HUB3_C:
-                bitLink[4] = true;
-                bitLink[3] = true;
-                break;
-            case  _eNodeType.HUB4_A:
-                bitLink[0] = true;
-                bitLink[3] = true;
-                bitLink[2] = true;
-                break;
-            default:
-                break;
-        }
-        meshRenderer.material = nodeControllerScript.GetMaterial((int)type);//(Sprite)Object.Instantiate(nodeControllerScript.GetSprite(type));
+        bitLink = new BitArray(type.LinkDir);
+        meshRenderer.material = nodeControllerScript.GetMaterial(type);
 
         //ランダムに回転
         float angle = 0.0f;
-
-        for(int i = (Rot == -1 ? Random.Range(0, 6) : Rot); i > 0; i--) {
+        
+        for(int i = (Rot == -1 ? RandomEx.RangeforInt(0, 6) : Rot); i >= 0; i--) {
             BitLinkRotate();
             angle -= ROT_HEX_ANGLE;
         }

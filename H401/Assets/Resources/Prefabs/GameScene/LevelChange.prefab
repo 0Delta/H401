@@ -8,7 +8,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 432158}
-  - 114: {fileID: 11418438}
+  - 114: {fileID: 11406480}
   m_Layer: 0
   m_Name: LevelChange
   m_TagString: Untagged
@@ -28,7 +28,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &11418438
+--- !u!114 &11406480
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -36,12 +36,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 147616}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c667d9a47be50e429c58afcd52a2eca, type: 3}
+  m_Script: {fileID: 11500000, guid: 63c383944c9ec2b458b2ab7bbbff6647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   fieldMapPath: Prefabs/GameScene/map3
   subCameraPath: Prefabs/GameScene/SubCamera
-  levelPanelPath: Prefabs/GameScene/levelCanvas
+  levelPanelPath: Prefabs/GameScene/LevelCanvas
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -55,11 +55,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: levelPanelPath
-      value: Prefabs/GameScene/levelCanvas
+      value: Prefabs/GameScene/LevelCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_LocalPosition.z
       value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: subCameraPath
+      value: Prefabs/GameScene/SubCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldMapPath
+      value: Prefabs/GameScene/map3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

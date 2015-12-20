@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Material: {fileID: 2100000, guid: d9d88d72d65d92d409606deefe2646d6, type: 2}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
-  maskTexture: {fileID: 2800000, guid: c9344ad99a79c61459609a1ae1ef91d8, type: 3}
+  maskTexture: {fileID: 2800000, guid: df0f4d3817a54d246829035cab249894, type: 3}
 --- !u!114 &11439050
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -114,8 +114,8 @@ MonoBehaviour:
   - Prefabs/Scene/Credit
   fadeCanvasName: FadeCanvas
   gameStartFadeTime:
-    inTime: 1
-    outTime: 1
+    inTime: 2
+    outTime: 0
 --- !u!114 &11447784
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -130,7 +130,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 640, y: 480}
+  m_ReferenceResolution: {x: 500, y: 500}
   m_ScreenMatchMode: 2
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -176,7 +176,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 640, y: 480}
+  m_SizeDelta: {x: 500, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22491066
 RectTransform:
