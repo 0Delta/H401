@@ -16,7 +16,7 @@ public class GameInfoCanvas : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        GetComponentInChildren<Canvas>().worldCamera = Camera.main;//transform.root.gameObject.GetComponent<AppliController>().gameScene.mainCamera;
+        GetComponent<Canvas>().worldCamera = Camera.main;//transform.root.gameObject.GetComponent<AppliController>().gameScene.mainCamera;
 
         _score = GetComponentInChildren<Score>();
         _limitTime = GetComponentInChildren<LimitTime>();

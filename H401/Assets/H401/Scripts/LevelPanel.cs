@@ -15,12 +15,12 @@ public class LevelPanel : MonoBehaviour {
 
     //ボタン用配列
 //    private GameObject[] buttonObjects;
-    private LevelButton[] buttonScripts;
+    /*private LevelButton[] buttonScripts;*/
     public int NextLevel
     {
         set { levelController.NextLevel = value; }
     }
-
+    private MapField[] fieldScripts;
 
     private Text fieldText = null;
 
@@ -36,34 +36,36 @@ public class LevelPanel : MonoBehaviour {
     {
         //levelController.NextLevel = -1;
 
-        levelController = GetComponentInParent<LevelController>();
+        //このあたりをコントローラ側からセットするように
+        //levelController = GetComponentInParent<LevelController>();
         levelController.NextLevel = -1;
         float rot = levelController.LyingAngle;
 
 
         //テキストオブジェクトと関連つけ
-        fieldText = transform.FindChild("FieldNameImage").FindChild("fieldNameText").GetComponent<Text>();
+        fieldText = gameObject.transform.FindChild("FieldNameImage").FindChild("fieldNameText").GetComponent<Text>();
 
 
         //ボタンを並べてリンクを付ける
+        //ボタンからメッシュデータに変更されました
+        fieldScripts = levelController.levelChange.mapField;
 
-        buttonScripts = GetComponentsInChildren<LevelButton>();
+        /*buttonScripts = GetComponentsInChildren<LevelButton>();*/
         int i = 0;
-        foreach(var button in buttonScripts)
+        foreach(var map in fieldScripts)
         {
 
-            button.RegistLevelNumber(i);
+            map.mapNum = i;
             i++;
         }
-
-        LevelButton.SetPanel(this);
+    
+        MapField.SetPanel(this);
 
         transform.Rotate(new Vector3(0.0f, 0.0f, rot));
 
         //tweenとかで出現エフェクト等
         transform.localScale = new Vector3(popScale,popScale,popScale);
-        transform.DOScale(1.0f, popTime).OnComplete(() => { levelController.LevelState = _eLevelState.LIE; });//.OnComplete(() => { /*gameController.SetActive(false);*/ });
-        
+        transform.DOScale(1.0f, popTime).OnComplete(() => { levelController.LevelState = _eLevelState.LIE; });
     }
 	
 	// Update is called once per frame

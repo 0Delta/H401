@@ -46,9 +46,9 @@ MonoBehaviour:
   treeControllerPrefabPath: Prefabs/GameScene/TreeController
   unChainControllerPath: Prefabs/GameScene/UnChainController
   widthMargin: 0
-  heightMargin: .275000006
-  headerHeight: 1.29999995
-  repRotateTime: .5
+  heightMargin: 0.275
+  headerHeight: 1.3
+  repRotateTime: 0.5
   nodeMaterialsPath:
   - Materials/hex0
   - Materials/hex1
@@ -58,7 +58,6 @@ MonoBehaviour:
   - Materials/hex5
   - Materials/hex6
   - Materials/hex7
-  unChainControllerPrefab: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
