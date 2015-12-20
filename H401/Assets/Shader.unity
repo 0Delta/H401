@@ -41,33 +41,32 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 6
-  m_GIWorkflowMode: 1
-  m_LightmapsMode: 0
+  m_GIWorkflowMode: 0
+  m_LightmapsMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
     m_IndirectOutputScale: 1
     m_AlbedoBoost: 1
     m_TemporalCoherenceThreshold: 1
-    m_EnvironmentLightingMode: 1
+    m_EnvironmentLightingMode: 0
     m_EnableBakedLightmaps: 1
-    m_EnableRealtimeLightmaps: 0
+    m_EnableRealtimeLightmaps: 1
   m_LightmapEditorSettings:
     serializedVersion: 3
     m_Resolution: 2
-    m_BakeResolution: 10
+    m_BakeResolution: 40
     m_TextureWidth: 1024
     m_TextureHeight: 1024
     m_AOMaxDistance: 1
     m_Padding: 2
     m_CompAOExponent: 0
     m_LightmapParameters: {fileID: 0}
-    m_TextureCompression: 0
+    m_TextureCompression: 1
     m_FinalGather: 0
     m_FinalGatherRayCount: 1024
     m_ReflectionCompression: 2
-  m_LightingDataAsset: {fileID: 112000001, guid: 1e2e6cef6b030b7469fc28c4dd18bf35,
-    type: 2}
+  m_LightingDataAsset: {fileID: 0}
   m_RuntimeCPUUsage: 25
 --- !u!196 &4
 NavMeshSettings:
@@ -86,61 +85,57 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &961355819
+--- !u!1001 &197091901
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 475860, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+    - target: {fileID: 442222, guid: aad4d31eae024dd45b2d56d0bb0084ee, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 475860, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+    - target: {fileID: 442222, guid: aad4d31eae024dd45b2d56d0bb0084ee, type: 2}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 475860, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+    - target: {fileID: 442222, guid: aad4d31eae024dd45b2d56d0bb0084ee, type: 2}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 475860, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+    - target: {fileID: 442222, guid: aad4d31eae024dd45b2d56d0bb0084ee, type: 2}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 475860, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+    - target: {fileID: 442222, guid: aad4d31eae024dd45b2d56d0bb0084ee, type: 2}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 475860, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+    - target: {fileID: 442222, guid: aad4d31eae024dd45b2d56d0bb0084ee, type: 2}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 475860, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+    - target: {fileID: 442222, guid: aad4d31eae024dd45b2d56d0bb0084ee, type: 2}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 475860, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+    - target: {fileID: 442222, guid: aad4d31eae024dd45b2d56d0bb0084ee, type: 2}
       propertyPath: m_RootOrder
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 188584, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
-      propertyPath: m_IsActive
-      value: 1
+    - target: {fileID: 476980, guid: aad4d31eae024dd45b2d56d0bb0084ee, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -20
       objectReference: {fileID: 0}
-    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
-      propertyPath: startSceneID
-      value: 0
+    - target: {fileID: 467084, guid: aad4d31eae024dd45b2d56d0bb0084ee, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -20
       objectReference: {fileID: 0}
-    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
-      propertyPath: gameStartFadeTime.inTime
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
-      propertyPath: gameStartFadeTime.outTime
-      value: 1
+    - target: {fileID: 433066, guid: aad4d31eae024dd45b2d56d0bb0084ee, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+  m_ParentPrefab: {fileID: 100100000, guid: aad4d31eae024dd45b2d56d0bb0084ee, type: 2}
   m_IsPrefabParent: 0

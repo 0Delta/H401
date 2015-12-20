@@ -24,25 +24,35 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(RawImage))]
-[RequireComponent(typeof(Mask))]
-public class FadeUI : MonoBehaviour, IFade {
+public class FadeImage : UnityEngine.UI.Graphic , IFade
+{
+	[SerializeField]
+	private Texture maskTexture = null;
 
 	public float Range{get; private set;}
 
-	[SerializeField] Material mat = null;
-	[SerializeField] RenderTexture rt = null;
-
-	[SerializeField] Texture texture = null;
-
-	public void UpdateMaskCutout (float range)
+	public void UpdateMaskCutout(float range)
 	{
-		mat.SetFloat ("_Range", range);
-		
-		UnityEngine.Graphics.Blit (texture, rt, mat);
-		
+		enabled = true;
+		material.SetFloat ("_Range", 1 - range);
 		var mask = GetComponent<Mask> ();
-		mask.enabled = false;
-		mask.enabled = true;
+
+		if (range == 0) {
+			this.enabled = false;
+		}
 	}
+
+	public void UpdateMaskTexture(Texture texture)
+	{
+		material.SetTexture ("_MaskTex", texture);
+		material.SetColor ("_Color", color);
+	}
+#if UNITY_EDITOR
+	protected override void OnValidate()
+	{
+		base.OnValidate ();
+		UpdateMaskCutout (Range);
+		UpdateMaskTexture (maskTexture);
+	}
+#endif
 }
