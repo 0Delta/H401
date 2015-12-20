@@ -53,6 +53,8 @@ public class Score3D_Editor : Editor {
 
 [CustomPropertyDrawer(typeof(NodeTemplate))]
 public class NodeController_Editor : PropertyDrawer {
+    const bool FORCE_CHECK = true;
+
     string MatBak = "";
     Material Mat = null;
     Texture2D texture = new Texture2D(1, 1);
@@ -89,7 +91,7 @@ public class NodeController_Editor : PropertyDrawer {
 
         // 画像
         var path = property.FindPropertyRelative("MaterialName").stringValue;
-        if(path.Length != 0) {
+        if(path.Length != 0 || FORCE_CHECK) {
             bool TrueTex = false;
             if(path != MatBak) {
                 Mat = Resources.Load<Material>(path);

@@ -44,6 +44,7 @@ public class Node : MonoBehaviour {
     //public BitArray bitTreePath = new BitArray(4);//走査時にどの木の一部かを記憶しておく
     public Vec2Int[] ChainNodes = new Vec2Int[5];
 
+    public NodeTemplate Temp;               // 使用したテンプレート
     private MeshRenderer meshRenderer;
 
     public MeshRenderer MeshRenderer {
@@ -84,6 +85,9 @@ public class Node : MonoBehaviour {
         set { _isSlideEnd = value; }
         get { return _isSlideEnd; }
     }
+    public bool IsOutPuzzle{
+        get { return isOutPuzzle; }
+    }
 
     private void Awake() {
         meshRenderer = GetComponent<MeshRenderer>();
@@ -119,7 +123,8 @@ public class Node : MonoBehaviour {
     }
 
     // ノード回転処理
-    public void RotationNode() {
+    static private Vector3 RotationNodeTempVec = new Vector3();
+    public void RotationNode(bool NoWait = false,bool Reverse = false) {
         // 画面外ノードなら未処理
         if(isOutScreen)
             return;
@@ -139,10 +144,32 @@ public class Node : MonoBehaviour {
         } else {
             angle = Mathf.FloorToInt(transform.localEulerAngles.z / ROT_HEX_ANGLE) * ROT_HEX_ANGLE;
         }
+        RotationNodeTempVec.Set(0, 0, angle);
 
-        // 回転処理(※TODO:new をなんとかしたい)
+        // ノーウエイト版。フィーバー時の配置に使用
+        if(NoWait) {
+            // アクションキャンセル
+            isAction = false;
+            // ビット配列まわして
+            BitLinkRotate();
+            if(Reverse) {
+                for(int n = 0; n < 4; n++) {
+                    // 逆回転なら4回追加
+                    BitLinkRotate();
+                }
+            }
+            // 回転成分書き換え
+            transform.Rotate(Reverse ? -RotationNodeTempVec : RotationNodeTempVec);
+            if(angle <= -360.0f) {
+                transform.rotation = Quaternion.identity;
+            }
+                // 強制離脱
+                return;
+        }
+
+        // 回転処理
         transform.DOKill();
-        transform.DORotate(new Vector3(0.0f, 0.0f, angle), actionTime)
+        transform.DORotate(RotationNodeTempVec, actionTime)
             .OnComplete(() => {
                 // 回転成分を初期化
                 if(angle <= -360.0f) {
@@ -207,9 +234,6 @@ public class Node : MonoBehaviour {
             bitLink[i + 1] = bitLink[i];
         }
         bitLink[0] = b5;
-
-        //とりあえず表示してみる
-        //print(OrigLog.ToString(bitLink));
     }
 
     // お隣さんから自分への道を保持する。
@@ -243,16 +267,6 @@ public class Node : MonoBehaviour {
 
     public bool LinkedNegibor(int n) {
         return Negibor[n] && bitLink[n];
-    }
-
-    // _eLinkDirのToStringもどき。デバック出力用。
-    public string LinkDirToString(int n) {
-        return LinkDirToString((_eLinkDir)n);
-    }
-
-    public string LinkDirToString(_eLinkDir n) {
-        string[] DbgLinkStr = { "RU", "R ", "RD", "LD", "L ", "LU" };
-        return DbgLinkStr[(int)n];
     }
 
     // BitArrayのToStringもどき。デバック出力用。
@@ -342,7 +356,7 @@ public class Node : MonoBehaviour {
             bChain = true;
 
             // デバック表示
-            Tc += ("Linked [" + LinkDirToString(n) + "]");
+            Tc += ("Linked [" + ((_eLinkDir)n).ToString() + "]");
 
             // 接続先がおかしいならノーカンで
             Vec2Int Target = nodeControllerScript.GetDirNode(nodeID, (_eLinkDir)n);
@@ -405,6 +419,9 @@ public class Node : MonoBehaviour {
 
         transform.rotation = Quaternion.identity;
         transform.Rotate(rot);
+
+        // 使用したテンプレを記憶
+        Temp = type;
     }
 
     public bool GetLinkDir(_eLinkDir parentDir) {
