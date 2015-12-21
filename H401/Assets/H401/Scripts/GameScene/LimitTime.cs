@@ -81,6 +81,14 @@ public class LimitTime : MonoBehaviour {
             gameEndpanel.transform.localPosition = new Vector3(0.0f, 1334.0f, 0.0f);
             //gameEndpanel.GetComponent<GUI>()
 
+            // リザルトへ戻るボタンを設定
+            Button ToResultBtn = gameEndPanelObject.GetComponentInChildren<Button>();
+            UnityEngine.Events.UnityAction onClickAction = () => {
+                AppliController AppliCtr = GetComponentInParent<AppliController>();
+                AppliCtr.ChangeScene(AppliController._eSceneID.RANKING, 0.5f, 0.5f);
+            };
+            ToResultBtn.onClick.AddListener(onClickAction);
+
             gameEndpanel.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             print("タイムオーバー");
         }

@@ -3,6 +3,7 @@ using DG.Tweening;
 using UniRx;
 using UniRx.Triggers;
 using System;
+using UnityEngine.UI;
 
 namespace RankingExtension {
     public static class InstantiateEx {
@@ -37,12 +38,14 @@ public class RankingMGR : MonoBehaviour {
     [SerializeField] public string BGPrefabName;
     [SerializeField] public string ScorePrefabName;
     [SerializeField] public string CameraPrefabName;
+    [SerializeField] public string ReturnButtonName;
 
     GameObject ScoreObj;
     GameObject OnlineObj;
     GameObject OfflineObj;
     GameObject BGObj;
     GameObject CameraObj;
+    GameObject ReturnBtnObj;
     private bool FlipRanking = false;
     public enum RANKING_MODE : byte{
         OFFLINE = 0,
@@ -77,8 +80,10 @@ public class RankingMGR : MonoBehaviour {
         ScoreObj = InstantiateChild(ScorePrefabName);
         BGObj = InstantiateChild(BGPrefabName, false);
         CameraObj = InstantiateChild(CameraPrefabName, false);
+        ReturnBtnObj = InstantiateChild(ReturnButtonName,false);
         OfflineObj = InstantiateChild(OfflinePrefabName, false);
         OnlineObj = null;   // オンラインオブジェは初期化しない
+        
 
         // ランキングのフリップ処理
         this.UpdateAsObservable()
@@ -105,7 +110,7 @@ public class RankingMGR : MonoBehaviour {
                 }
                 FlipRanking = false;
             }).AddTo(this);
-        
+
         // オンラインランキングの初期化
         this.UpdateAsObservable()
             .First(_ => Mode == RANKING_MODE.ONLINE)

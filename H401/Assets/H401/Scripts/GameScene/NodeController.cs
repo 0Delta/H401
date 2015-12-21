@@ -204,9 +204,7 @@ public class NodeController : MonoBehaviour {
             gameNodeScripts[i]  = new Node[adjustRow];
             nodePlacePosList[i] = new Vector3[adjustRow];
         }
-
         nodeMaterials = new Material[NodeTemp.Length];
-
     }
 
     // Use this for initialization
@@ -1304,8 +1302,14 @@ public class NodeController : MonoBehaviour {
         node.MeshRenderer.material.color = levelTableScript.GetFieldLevel(_currentLevel).NodeColor;
 	}
 
+    private List<List<Node>> FinishNodeList = new List<List<Node>>();
+
     //完成した枝に使用しているノードを再配置する
     void ReplaceNodeTree(List<Node> List) {
+        if(List.Count > 2) {
+            FinishNodeList.Add(List);
+        }
+
         NodeCountInfo nodeCount = new NodeCountInfo();
 
         //完成時演出のためにマテリアルをコピーして
@@ -1356,18 +1360,20 @@ public class NodeController : MonoBehaviour {
                 it.SetNodeType(NodeTemplate.GetTempFromBranchRandom(NodeTemp, 1), 0);
             }
         }
+
+        #region // 自己生成版
+        /*
         string str = "ReplaceNodeFeverLog\n";
-
-
         int targetNum = RandomEx.RangeforInt(3, 9);
         str += "Target : " + targetNum;
 
-        int Counter = 0;
+//        int Counter = 0;
+        List<Node> lstTree = new List<Node>();
         int x = RandomEx.RangeforInt(2, 5);
         int y = 1;
         _eLinkDir Dir = _eLinkDir.LD;
         int RotationNum;
-        while(Counter < targetNum) {
+        while(lstTree.Count < targetNum) {
             str += "\nCheck" + gameNodeScripts[y][x].ToString() + "\n";
 
             gameNodeScripts[y][x].SetNodeType(NodeTemplate.GetTempFromBranchRandom(NodeTemp, 2), 0);
@@ -1396,8 +1402,10 @@ public class NodeController : MonoBehaviour {
                             nextNode.x = x;
                             nextNode.y = y;
                             CheckLinkNum++;
-                            str += "Failed";
-                            break;
+                            if(n == 5) {
+                                str += "Failed";
+                                break;
+                            }
                         }
                         str += "Find" + ((_eLinkDir)n).ToString();
                         Decide = true;
@@ -1408,7 +1416,7 @@ public class NodeController : MonoBehaviour {
                 x = nextNode.x;
                 y = nextNode.y;
                 Dir = NextDir;
-                Counter++;
+                lstTree.Add(gameNodeScripts[y][x]);
             }
         }
         // 枝に蓋をする
@@ -1420,7 +1428,21 @@ public class NodeController : MonoBehaviour {
         }
         gameNodeScripts[y][x].RotationNode(true, true);
         gameNodeScripts[y][x].SetNodeType(gameNodeScripts[y][x].Temp, RotationNum == 0 ? 5 : RotationNum - 1);
+        lstTree.Add(gameNodeScripts[y][x]);
         Debug.Log(str);
+        */
+        #endregion
+
+        var UseTree = FinishNodeList[RandomEx.RangeforInt(0, FinishNodeList.Count)];
+        foreach(var it in UseTree) {
+            gameNodeScripts[it.NodeID.y][it.NodeID.x].SetNodeType(it.Temp, it.RotCounter);
+            
+        };
+        int mut = RandomEx.RangeforInt(0, UseTree.Count);
+        gameNodeScripts[UseTree[mut].NodeID.y][UseTree[mut].NodeID.x].RotationNode(true, true);
+        if(FinishNodeList.Count > 15) {
+            FinishNodeList.RemoveRange(0, 10);
+        }
 
         CheckLink();
         unChainController.Remove();

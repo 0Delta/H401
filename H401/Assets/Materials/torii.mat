@@ -90,11 +90,11 @@ Material:
       data:
         first:
           name: _Cutoff
-        second: .5
+        second: 0.5
       data:
         first:
           name: _Parallax
-        second: .0199999996
+        second: 0.02
       data:
         first:
           name: _ZWrite
@@ -131,7 +131,7 @@ Material:
       data:
         first:
           name: _EmissionColor
-        second: {r: .300000012, g: .300000012, b: .300000012, a: 1}
+        second: {r: 0.3, g: 0.3, b: 0.3, a: 1}
       data:
         first:
           name: _Color
