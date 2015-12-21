@@ -18,13 +18,12 @@ ExportedObj/
 *.booproj
 *.svd
 
+
 # Unity3D generated meta files
 *.pidb.meta
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
-
-/H401/Library/metadata
 
 /H401/Assets/Plugins/AWSSDK
 /H401/Assets/Plugins/DOTween/DOTween50.dll
