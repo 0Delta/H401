@@ -26,7 +26,13 @@ public class LevelCanvas : MonoBehaviour {
         
         //rootから位置を相対的に決める
         GameObject uiCamera = gameObject.transform.FindChild("levelUICamera").gameObject;
-        uiCamera.transform.Rotate(new Vector3(0.0f, 0.0f, rot));
-        uiCamera.transform.position = transform.root.position + uiCameraPos;
+
+        uiCamera.transform.Rotate(new Vector3(0.0f, 0.0f, rot),Space.Self);
+        Vector3 cPos = uiCameraPos;
+        if (rot < 0)
+            cPos.x *= -1;
+        uiCamera.transform.localPosition = cPos;
+
+
     }
 }
