@@ -386,7 +386,7 @@ public class NodeController : MonoBehaviour {
                 if(pauseScript.pauseState == _ePauseState.PAUSE)
                     return;
 
-                if(levelControllerScript.LevelState == _eLevelState.LIE)
+                if(levelControllerScript.LevelState != _eLevelState.STAND)
                     return;
                 
                 // タップ成功
@@ -1454,11 +1454,13 @@ public class NodeController : MonoBehaviour {
 	}
 
     public void SetActionAll(bool action) {
-        foreach(var xList in gameNodeScripts) {
+        /*foreach(var xList in gameNodeScripts) {
             foreach(var it in xList) {
                 it.IsAction = action;
 			}
-		}
+		}*/
+
+        isSlide = action;
 	}
     //全ノードがくるっと回転して状態遷移するやつ 再配置関数を引数に
     public IEnumerator ReplaceRotate(Replace repMethod) {
