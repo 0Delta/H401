@@ -47,6 +47,11 @@ public class Node : MonoBehaviour {
 
     private MeshRenderer meshRenderer = null;
     public NodeTemplate Temp = null;               // 使用したテンプレート
+    private int _RotCounter = 0;
+    public int RotCounter {
+        get { return (_RotCounter < 1 ? 0 : _RotCounter %= 6); }
+        set { _RotCounter = value; }
+    }
 
     public MeshRenderer MeshRenderer {
         get { return meshRenderer; }
@@ -158,12 +163,14 @@ public class Node : MonoBehaviour {
                 for(int n = 0; n < 4; n++) {
                     // 逆回転なら4回追加
                     BitLinkRotate();
+                    RotCounter = RotCounter + 1;
                 }
             }
             // 回転成分書き換え
             transform.Rotate(Reverse ? -RotationNodeTempVec : RotationNodeTempVec);
             if(angle <= -360.0f) {
                 transform.rotation = Quaternion.identity;
+                RotCounter = RotCounter + 1 ;
             }
             // 強制離脱
             return;
@@ -188,6 +195,7 @@ public class Node : MonoBehaviour {
                 nodeControllerScript.CheckLink();
                 nodeControllerScript.unChainController.Remove();
                 isAction = false;
+                RotCounter = RotCounter + 1 ;
             });
 
         // 拡縮処理(※回転と同じように、補正処理が必要)
@@ -432,16 +440,16 @@ public class Node : MonoBehaviour {
 
         //ランダムに回転
         float angle = 0.0f;
-
-        // 使用したテンプレを記憶
-        Temp = type;
-
         for(int i = (Rot == -1 ? RandomEx.RangeforInt(0, 6) : Rot); i >= 0; i--) {
             BitLinkRotate();
+            RotCounter = RotCounter + 1;
             angle -= ROT_HEX_ANGLE;
         }
         //rot = transform.eulerAngles;
         rot.z += angle;
+
+        // 使用したテンプレを記憶
+        Temp = type;
 
         transform.rotation = Quaternion.identity;
         transform.Rotate(rot);
