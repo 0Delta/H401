@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c07b70fba382c64aa6d558bf0cb3def, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiCameraPos: {x: 0, y: 0, z: 0}
+  uiCameraPos: {x: 866, y: 0, z: 923}
 --- !u!114 &11430060
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -424,7 +424,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 2
   m_RenderMode: 1
-  m_Camera: {fileID: 2072590, guid: 3b1d3c7bce9565a4c886b5aae09fdee4, type: 2}
+  m_Camera: {fileID: 0}
   m_PlaneDistance: 7
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -447,8 +447,8 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000038146973, y: 0}
-  m_SizeDelta: {x: 553.5, y: 93}
+  m_AnchoredPosition: {x: 1, y: 2}
+  m_SizeDelta: {x: 128, y: 495}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22430524
 RectTransform:
@@ -465,8 +465,8 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -578, y: -50.7}
-  m_SizeDelta: {x: 197, y: 653.88}
+  m_AnchoredPosition: {x: -381, y: -3}
+  m_SizeDelta: {x: 121, y: 495}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22462476
 RectTransform:
@@ -485,8 +485,8 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2, y: 4}
-  m_SizeDelta: {x: 580, y: -580}
+  m_AnchoredPosition: {x: 0.0011978149, y: 0.02821064}
+  m_SizeDelta: {x: 391, y: -391.11}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22464910
 RectTransform:
@@ -502,8 +502,8 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 562, y: -50}
-  m_SizeDelta: {x: 207, y: 652.48}
+  m_AnchoredPosition: {x: 385, y: 1}
+  m_SizeDelta: {x: 123, y: 496}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22483758
 RectTransform:
@@ -519,8 +519,8 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 326.24}
-  m_SizeDelta: {x: 801, y: 100}
+  m_AnchoredPosition: {x: -3, y: 208}
+  m_SizeDelta: {x: 635, y: 86}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22491932
 RectTransform:
@@ -599,6 +599,18 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_ReferenceResolution.y
       value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: uiCameraPos.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: uiCameraPos.z
+      value: 923
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: uiCameraPos.x
+      value: 866
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

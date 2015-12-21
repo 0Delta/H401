@@ -30,6 +30,7 @@ public class NodeController : MonoBehaviour {
     [SerializeField] private int col = 0;       // 縦配置数
     [SerializeField] private string gameNodePrefabPath  = null;     // ノードのプレハブのパス
     [SerializeField] private string frameNodePrefabPath = null;     // フレームノードのプレハブのパス
+    [SerializeField] private string floorNodePrefabPath = null;     // 下端ノードのプレハブのパス
     [SerializeField] private string treeControllerPrefabPath  = null;     // 完成ノードのプレハブのパス
     [SerializeField] private string unChainControllerPath = null;
     [SerializeField] private float widthMargin  = 0.0f;  // ノード位置の左右間隔の調整値
@@ -39,12 +40,14 @@ public class NodeController : MonoBehaviour {
 //    [SerializeField] private string levelControllerObjectPath = null;
 //    [SerializeField] private string pauseObjectPath = null;
     [SerializeField] private float repRotateTime = 0;//ノード再配置時の時間
-    [SerializeField] private Color frameNodeColor;   // フレームノードの色
+    [SerializeField] private string floorLeftNodeMaterialPath = null;    // 左下端ノードのマテリアルのパス
+    [SerializeField] private string floorRightNodeMaterialPath = null;   // 右下端ノードのマテリアルのパス
 //    [SerializeField] private string[] nodeMaterialsPath = null;
     [SerializeField] private NodeTemplate[] NodeTemp = null;
     
     private GameObject gameNodePrefab   = null;     // ノードのプレハブ
     private GameObject frameNodePrefab  = null;     // フレームノードのプレハブ
+    private GameObject floorNodePrefab  = null;     // 下端ノードのプレハブ
     private GameObject treeControllerPrefab   = null;     // 完成ノードのプレハブ
     private GameObject unChainControllerPrefab = null;
 
@@ -214,6 +217,7 @@ public class NodeController : MonoBehaviour {
 		// ----- プレハブデータを Resources から取得
         gameNodePrefab =  Resources.Load<GameObject>(gameNodePrefabPath);
         frameNodePrefab =  Resources.Load<GameObject>(frameNodePrefabPath);
+        floorNodePrefab =  Resources.Load<GameObject>(floorNodePrefabPath);
         treeControllerPrefab = Resources.Load<GameObject>(treeControllerPrefabPath);
 
         // ノードのテンプレからマテリアルを取得
@@ -306,9 +310,17 @@ public class NodeController : MonoBehaviour {
                 if(i <= 0) {
                     Vector3 framePos = pos;
                     framePos.z = transform.position.z + FRAME_POSZ_MARGIN;
-                    frameObject = (GameObject)Instantiate(frameNodePrefab, framePos, transform.rotation);
+                    frameObject = (GameObject)Instantiate(floorNodePrefab, framePos, transform.rotation);
                     frameObject.transform.parent = frameController.transform;
-                    frameObject.GetComponent<MeshRenderer>().material.color = frameNodeColor;
+
+                    // 左端
+                    if(j <= 1) {
+                        frameObject.GetComponent<MeshRenderer>().material = Resources.Load<Material>(floorLeftNodeMaterialPath);
+                    }
+                    // 右端
+                    if(j >= AdjustRow(i) - 2) {
+                        frameObject.GetComponent<MeshRenderer>().material = Resources.Load<Material>(floorRightNodeMaterialPath);
+                    }
                 }
             }
            
@@ -386,7 +398,7 @@ public class NodeController : MonoBehaviour {
                 if(pauseScript.pauseState == _ePauseState.PAUSE)
                     return;
 
-                if(levelControllerScript.LevelState == _eLevelState.LIE)
+                if(levelControllerScript.LevelState != _eLevelState.STAND)
                     return;
                 
                 // タップ成功
@@ -1454,12 +1466,9 @@ public class NodeController : MonoBehaviour {
 	}
 
     public void SetActionAll(bool action) {
-        foreach(var xList in gameNodeScripts) {
-            foreach(var it in xList) {
-                it.IsAction = action;
-			}
-		}
+        isSlide = action;
 	}
+
     //全ノードがくるっと回転して状態遷移するやつ 再配置関数を引数に
     public IEnumerator ReplaceRotate(Replace repMethod) {
         //全ノードを90°回転tween
