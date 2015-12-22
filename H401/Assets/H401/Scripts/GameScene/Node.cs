@@ -10,7 +10,7 @@ using RandExtension;
 public class Node : MonoBehaviour {
     static private readonly float ROT_HEX_ANGLE = 60.0f;      // 六角形パネルの回転角度
     static private readonly float IN_ACTION_POSZ = -0.5f;     // アクション中のZ座標
-    
+
     [SerializeField] private float actionTime = 0.0f;       // アクションにかかる時間
     [SerializeField] private float scaleSize  = 0.0f;       // タップ時の拡大サイズ
     [SerializeField] private float slideTime  = 0.0f;       // スライド時の移動にかかる時間
@@ -49,7 +49,7 @@ public class Node : MonoBehaviour {
     private int _RotCounter = 0;
     public int RotCounter {
         get { return _RotCounter; }
-        set { _RotCounter = value%6; }
+        set { _RotCounter = value % 6; }
     }
 
     public MeshRenderer MeshRenderer {
@@ -118,18 +118,35 @@ public class Node : MonoBehaviour {
         // 回転処理
         Observable
             .EveryUpdate()
-            .Select(x => _RotCounter)
+            .Select(_ => _RotCounter)
             .DistinctUntilChanged()
-            .Subscribe(x => {
-                isAction = true;                                            // アクション開始
-                Vector3 Rot = new Vector3(0, 0, ROT_HEX_ANGLE * (6 - x));   // 回転角確定
-                transform.DOLocalRotate(Rot, actionTime)                    // DoTweenで回転
+            .Subscribe(_ => {
+                isAction = true;                                                    // アクション開始
+                Vector3 Rot = new Vector3(0, 0, ROT_HEX_ANGLE * (6 - RotCounter));  // 回転角確定
+                transform.DOLocalRotate(Rot, actionTime)                            // DoTweenで回転
                 .OnComplete(() => {
-                    BitLinkRotate(_RotCounter);                             // 終了と同時にビット変更、アクション終了。
+                    BitLinkRotate(_RotCounter);                                     // 終了と同時にビット変更、アクション終了。
                     isAction = false;
-                    nodeControllerScript.unChainController.Remove();        // unChain更新
+                    nodeControllerScript.unChainController.Remove();                // unChain更新
                 });
             }).AddTo(this);
+
+        // ノードの色
+        Observable
+            .EveryUpdate()
+            .Select(x => bChain)
+            .DistinctUntilChanged()
+            .Subscribe(x => {
+                if(x == true) {
+                    ChangeEmissionColor(3);
+                } else {
+                    ChangeEmissionColor(0);
+                }
+            });
+    }
+
+    private void UpdateRotation() {
+
     }
 
     // Update is called once per frame
@@ -261,7 +278,12 @@ public class Node : MonoBehaviour {
                     Negibor[n] = true;
                 } else {
                     // ノードがあれば、自分と接している場所を見て、取得する。
-                    Negibor[n] = nodeControllerScript.GetNodeScript(Target).bitLink[(n + 3 >= 6) ? (n + 3 - 6) : (n + 3)];
+                    if(!nodeControllerScript.GetNodeScript(Target).IsAction) {
+                        TgtNode.BitLinkRotate(TgtNode.RotCounter); // 隣の情報を更新
+                        Negibor[n] = nodeControllerScript.GetNodeScript(Target).bitLink[(n + 3 >= 6) ? (n + 3 - 6) : (n + 3)];
+                    } else {
+                        Negibor[n] = false; // アクション中は繋がってない判定
+                    }
                 }
             } else {
                 // 壁だったら繋がっている判定
@@ -307,6 +329,7 @@ public class Node : MonoBehaviour {
         bool bBranch = false;
         bChecked = true;
         Tc.SumNode++;
+        bChain = false;
 
         // お隣さんを更新
         UpdateNegibor();
@@ -331,7 +354,7 @@ public class Node : MonoBehaviour {
         }
 
         // この時点で枝が繋がっている事が確定
-        ChangeEmissionColor(3);  //とりあえず赤フィルターを掛けてみる
+        bChain = true;
         Tc.NodeList.Add(this);  // チェッカに自身を登録しておく
 
         // 終端ノードであれば、周囲チェック飛ばす
@@ -345,9 +368,9 @@ public class Node : MonoBehaviour {
             TempBit.Set((int)Link, true);
         }
         TempBit.And(bitLink).Xor(bitLink);    // 自身の道とAND後、自身の道とXOR。
-        if(TempBit.isZero())                           // 比較して一致なら除外方向以外に道がない = XOR後に全0なら終端
+        if(TempBit.isZero())                  // 比較して一致なら除外方向以外に道がない = XOR後に全0なら終端
             {
-            Tc.Branch--;                                // 終端ノードであればそこで終了
+            Tc.Branch--;                      // 終端ノードであればそこで終了
             return;
         }
 
@@ -416,15 +439,8 @@ public class Node : MonoBehaviour {
     public void SetNodeType(NodeTemplate type,int Rot = -1) {
         // 使用したテンプレを記憶
         Temp = type;
-
-        //ビットと回転角度をリセット
-        bitLink.SetAll(false);
-        //フィールド変更時とかの回転で困ったので、ｚ回転だけ初期化するように
-        Vector3 rot = transform.eulerAngles;
-        rot.z = 0.0f;
         
-        //ビットタイプ・テクスチャを設定
-        bitLink = new BitArray(type.LinkDir);
+        //テクスチャを設定
         meshRenderer.material = nodeControllerScript.GetMaterial(type);
 
         //ランダムに回転

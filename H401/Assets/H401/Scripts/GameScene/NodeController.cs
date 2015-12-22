@@ -1102,7 +1102,6 @@ public class NodeController : MonoBehaviour {
             }
             Debug.LogWarning(str);
         }
-
         ResetCheckedFragAll();          // 接続フラグを一度クリア
 
         // 根っこ分繰り返し
@@ -1115,7 +1114,7 @@ public class NodeController : MonoBehaviour {
                 .Return(i)
                 .Subscribe(x => {
                     Checker += "firstNodeAct_Subscribe [" + Checker.ID + "]";
-                    Checker.Branch++;                                               // 最初に枝カウンタを1にしておく(規定値が0なので+でいいはず)
+                    Checker.Branch++;                                                   // 最初に枝カウンタを1にしておく(規定値が0なので+でいいはず)
                     gameNodeScripts[1][x].NodeCheckAction(Checker, _eLinkDir.NONE);     // 下から順にチェックスタート。来た方向はNONEにしておいて根っこを識別。
                 }).AddTo(this);
 
@@ -1128,14 +1127,9 @@ public class NodeController : MonoBehaviour {
                     if(Debug.isDebugBuild && bNodeLinkDebugLog)
                         Debug.Log("CheckedCallback_Subscribe [" + Checker.ID + "]" + Checker.SumNode.ToString() + "/" + (Checker.NotFin ? "" : "Fin") + "\n" + Checker.ToString());
 
-                    // ノード数3以上、非完成フラグが立ってないなら
+                    // ノード数1以上、非完成フラグが立ってないなら
                     if(Checker.SumNode >= 1 && Checker.NotFin == false) {
-                        // その枝のノードに完成フラグを立てる
-                        //foreach(Node Nodes in Checker.NodeList) {
-                        //    Nodes.CompleteFlag = true;
-                        //};
                         ReplaceNodeTree(Checker.NodeList);   // 消去処理
-                        //CheckLink(false);
                         if(Debug.isDebugBuild && bNodeLinkDebugLog)
                             print("枝が完成しました！");
                     }
@@ -1148,9 +1142,8 @@ public class NodeController : MonoBehaviour {
     public void ResetCheckedFragAll() {
         for(int i = 0; i < col; ++i) {
             foreach(var nodes in gameNodeScripts[i]) {
-                nodes.ChangeEmissionColor(0);  //繋がりがない枝は色をここでもどす
+                nodes.ChainFlag = false;
                 nodes.CheckFlag = false;
-
             }
         }
     }
@@ -1317,7 +1310,7 @@ public class NodeController : MonoBehaviour {
         foreach(Node obj in List) {
             treeNodes.Add(obj.gameObject);
         }
-        GameObject newTree = (GameObject)Instantiate(treeControllerPrefab, transform.position, transform.rotation);
+        GameObject newTree = (GameObject)Instantiate(treeControllerPrefab, transform.position, Quaternion.identity);
         newTree.GetComponent<treeController>().SetTree(treeNodes);
         
         //ノードを再配置
@@ -1339,17 +1332,22 @@ public class NodeController : MonoBehaviour {
             ReplaceNode(obj);
         }
 
+        foreach(Node obj in List) {
+            obj.UpdateNegibor();
+        }
+
         nodeCount.nodes = List.Count;
         scoreScript.PlusScore(nodeCount);
         timeScript.PlusTime(nodeCount);
         feverScript.Gain(nodeCount);
+        CheckLink(true);
     }
 
     public void ReplaceNodeAll() {
         foreach(var xList in gameNodeScripts) {
             foreach(var it in xList) {
                 ReplaceNode(it);
-			}
+            }
 		}
 	}
 
