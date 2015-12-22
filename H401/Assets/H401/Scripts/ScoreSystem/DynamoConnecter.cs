@@ -5,6 +5,8 @@ using Amazon.Runtime;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using Amazon.DynamoDBv2.DataModel;
+using AES;
+using System.IO;
 
 public class DynamoConnecter : MonoBehaviour {
     // 固有関数
@@ -22,9 +24,10 @@ public class DynamoConnecter : MonoBehaviour {
     public const string DefaultName = "NoName";
 
     public const string TABLE_NAME = "H401_6";                                          // テーブルの名前
-    private const string publicKey = "AKIAJLMLMLC4KEYK77LQ";                            // 接続用ID
-    private const string secretKey = "QmbJyIdcQ+db4jho2qaea6ZdWaaU/60La8lxbCdP";        // 接続用PASSWORD
+    private string publicKey = "AKIAJLMLMLC4KEYK77LQ";                            // 接続用ID
+    private string secretKey = "QmbJyIdcQ+db4jho2qaea6ZdWaaU/60La8lxbCdP";        // 接続用PASSWORD
     private AmazonDynamoDBClient client;                                                // コネクタ
+    private AesCryptography AesInstance = new AesCryptography(@"H401_AESEnctyptSystemFirstVector");
 
     // テーブル定義(DBと同期させること)
     [DynamoDBTable(TABLE_NAME)]
@@ -74,6 +77,30 @@ public class DynamoConnecter : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+        // キーをロード
+        //// データを読みだして暗号化
+        //byte[] Dat = System.Text.Encoding.UTF8.GetBytes("pksk");
+        //byte[] Sav = AesInstance.Encrypt(Dat);
+
+        //// 書き込み
+        //var sw = File.Create(Application.persistentDataPath + "/AWS");
+        //sw.Dispose();
+        //File.WriteAllBytes(Application.persistentDataPath + "/AWS", Sav);
+
+
+        try {
+            // データを読みだして復号化
+            byte[] Sav = File.ReadAllBytes(Application.persistentDataPath + "/AWS");
+            byte[] Dat = AesInstance.Decrypt(Sav);
+            
+            // データセット
+            string str = System.Text.Encoding.UTF8.GetString(Dat);
+            publicKey = str.Substring(0, 20);
+            secretKey = str.Substring(20);
+     }
+        catch(FileNotFoundException) { return; }        // ファイルが見当たらない場合
+        catch(System.FormatException) { return; }       // ファイルデータ不正
+
         // AWSへの接続
         var awsCredentials = new BasicAWSCredentials(publicKey, secretKey);
         var Cconfig = new AmazonDynamoDBConfig();

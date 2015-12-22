@@ -21,8 +21,8 @@ col のIDが奇数の行は +1 とする
 
 public class NodeController : MonoBehaviour {
 
-//    private const float ADJUST_PIXELS_PER_UNIT = 0.01f;     // Pixels Per Unit の調整値
-//    private readonly Square GAME_AREA = new Square(0.0f, 0.0f, 5.0f * 2.0f * 750.0f / 1334.0f, 5.0f * 2.0f);    // ゲームの画面領域(パズル領域)
+    //    private const float ADJUST_PIXELS_PER_UNIT = 0.01f;     // Pixels Per Unit の調整値
+    //    private readonly Square GAME_AREA = new Square(0.0f, 0.0f, 5.0f * 2.0f * 750.0f / 1334.0f, 5.0f * 2.0f);    // ゲームの画面領域(パズル領域)
     private const float FRAME_POSZ_MARGIN = -1.0f;          // フレームとノードとの距離(Z座標)
     private const float NODE_EASE_STOP_THRESHOLD = 0.01f;    // ノードの easing を終了するための、タップ位置とノード位置との閾値
 
@@ -36,15 +36,15 @@ public class NodeController : MonoBehaviour {
     [SerializeField] private float widthMargin  = 0.0f;  // ノード位置の左右間隔の調整値
     [SerializeField] private float heightMargin = 0.0f;  // ノード位置の上下間隔の調整値
     [SerializeField] private float headerHeight = 0.0f;  // ヘッダーの高さ
-//    [SerializeField] private string levelTableObjectPath = null;
-//    [SerializeField] private string levelControllerObjectPath = null;
-//    [SerializeField] private string pauseObjectPath = null;
+                                                         //    [SerializeField] private string levelTableObjectPath = null;
+                                                         //    [SerializeField] private string levelControllerObjectPath = null;
+                                                         //    [SerializeField] private string pauseObjectPath = null;
     [SerializeField] private float repRotateTime = 0;//ノード再配置時の時間
     [SerializeField] private string floorLeftNodeMaterialPath = null;    // 左下端ノードのマテリアルのパス
     [SerializeField] private string floorRightNodeMaterialPath = null;   // 右下端ノードのマテリアルのパス
 //    [SerializeField] private string[] nodeMaterialsPath = null;
     [SerializeField] private NodeTemplate[] NodeTemp = null;
-    
+
     private GameObject gameNodePrefab   = null;     // ノードのプレハブ
     private GameObject frameNodePrefab  = null;     // フレームノードのプレハブ
     private GameObject floorNodePrefab  = null;     // 下端ノードのプレハブ
@@ -52,45 +52,44 @@ public class NodeController : MonoBehaviour {
     private GameObject unChainControllerPrefab = null;
 
     private GameObject[][]  gameNodePrefabs;    // ノードのプレハブリスト
-    private Node[][]        gameNodeScripts;        // ノードのnodeスクリプトリスト
+    private Node[][]        gameNodeScripts;    // ノードのnodeスクリプトリスト
     private Vector3[][]     nodePlacePosList;   // ノードの配置位置リスト
     private GameObject      frameController;    // フレームコントローラープレハブ
 
-	private Square  gameArea = Square.zero;     // ゲームの画面領域(パズル領域)
-	private Vector2 nodeSize = Vector2.zero;    // 描画するノードのサイズ
+    private Square  gameArea = Square.zero;     // ゲームの画面領域(パズル領域)
+    private Vector2 nodeSize = Vector2.zero;    // 描画するノードのサイズ
 
-	private bool        isTap           = false;                // タップ成功フラグ
-	private bool        isSlide         = false;                // ノードスライドフラグ
-	private bool        isNodeAction    = false;                // ノードがアクション中かフラグ
-	private bool        isSlideEnd      = false;                // ノードがスライド終了処理中かフラグ
-	private Vec2Int     tapNodeID       = Vec2Int.zero;         // タップしているノードのID
-	private _eSlideDir  slideDir        = _eSlideDir.NONE;      // スライド中の方向
-	private Vector2     moveNodeInitPos = Vector2.zero;         // 移動中ノードの移動開始位置
-	private Vector2     moveNodeDist    = Vector2.zero;         // 移動中ノードの基本移動量(移動方向ベクトル)
-	private Vector2     moveNodeDistAbs = Vector2.zero;         // 移動中ノードの基本移動量の絶対値
+    private bool        isTap           = false;                // タップ成功フラグ
+    private bool        isSlide         = false;                // ノードスライドフラグ
+    private bool        isNodeAction    = false;                // ノードがアクション中かフラグ
+    private bool        isSlideEnd      = false;                // ノードがスライド終了処理中かフラグ
+    private Vec2Int     tapNodeID       = Vec2Int.zero;         // タップしているノードのID
+    private _eSlideDir  slideDir        = _eSlideDir.NONE;      // スライド中の方向
+    private Vector2     moveNodeInitPos = Vector2.zero;         // 移動中ノードの移動開始位置
+    private Vector2     moveNodeDist    = Vector2.zero;         // 移動中ノードの基本移動量(移動方向ベクトル)
+    private Vector2     moveNodeDistAbs = Vector2.zero;         // 移動中ノードの基本移動量の絶対値
     private Vector2     tapPosMoveNodePosDist = Vector2.zero;   // タップしているノードの位置と、タップしている位置との距離
 
-	private Vector2 startTapPos = Vector2.zero;     // タップした瞬間の座標
-	private Vector2 tapPos      = Vector2.zero;     // タップ中の座標
-	private Vector2 prevTapPos  = Vector2.zero;     // 前フレームのタップ座標
+    private Vector2 startTapPos = Vector2.zero;     // タップした瞬間の座標
+    private Vector2 tapPos      = Vector2.zero;     // タップ中の座標
+    private Vector2 prevTapPos  = Vector2.zero;     // 前フレームのタップ座標
 
-	private Vector2 slideLeftUpPerNorm   = Vector2.zero;     // 左上ベクトルの垂線の単位ベクトル(Z軸を90度回転済み)
-	private Vector2 slideLeftDownPerNorm = Vector2.zero;     // 左下ベクトルの垂線の単位ベクトル(Z軸を90度回転済み)
-	
+    private Vector2 slideLeftUpPerNorm   = Vector2.zero;     // 左上ベクトルの垂線の単位ベクトル(Z軸を90度回転済み)
+    private Vector2 slideLeftDownPerNorm = Vector2.zero;     // 左下ベクトルの垂線の単位ベクトル(Z軸を90度回転済み)
+
     private Vec2Int slidingLimitNodeID        = Vec2Int.zero;     // スライド方向の端ノードのID
     private Vec2Int slidingReverseLimitNodeID = Vec2Int.zero;     // スライド方向の逆端ノードのID
 
-	private FieldLevelInfo fieldLevel;
+    private FieldLevelInfo fieldLevel;
 
-	private float RatioSum = 0.0f;                           //合計割合
-    
-	private LevelTables _levelTableScript = null;
+    private float RatioSum = 0.0f;                           //合計割合
+
+    private LevelTables _levelTableScript = null;
     public LevelTables levelTableScript
     {
         get
         {
-            if (!_levelTableScript)
-            {
+            if(!_levelTableScript) {
                 GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
                 _levelTableScript = gameScene.levelTables;
             }
@@ -102,8 +101,7 @@ public class NodeController : MonoBehaviour {
     {
         get
         {
-            if (!_levelControllerScript)
-            {
+            if(!_levelControllerScript) {
                 GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
                 _levelControllerScript = gameScene.gameUI.levelCotroller;
             }
@@ -115,8 +113,7 @@ public class NodeController : MonoBehaviour {
     {
         get
         {
-            if (!_pauseScript)
-            {
+            if(!_pauseScript) {
                 GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
                 _pauseScript = gameScene.gameUI.gamePause;
             }
@@ -130,7 +127,7 @@ public class NodeController : MonoBehaviour {
     public int Row {
         get { return this.row; }
     }
-    
+
     public int Col {
         get { return this.col; }
     }
@@ -142,62 +139,61 @@ public class NodeController : MonoBehaviour {
     public Vector2 NodeSize {
         get { return nodeSize; }
     }
-    
+
     private Score _scoreScript = null;          //スコアのスクリプト
-    public Score scoreScript { 
+    public Score scoreScript {
         get {
-            if(!_scoreScript)
-            {
+            if(!_scoreScript) {
                 GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
                 _scoreScript = gameScene.gameUI.gameInfoCanvas.score;
             }
             return _scoreScript;
-        } 
+        }
     }
     private LimitTime _timeScript = null;             //制限時間のスクリプト
     public LimitTime timeScript
     {
         get {
-            if (!_timeScript)
-            {
+            if(!_timeScript) {
                 GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
                 _timeScript = gameScene.gameUI.gameInfoCanvas.limitTime;
             }
             return _timeScript;
         }
     }
-    private FeverGauge _feverScript = null; 
+    private FeverGauge _feverScript = null;
     public FeverGauge feverScript
     {
         get
         {
-            if (!_feverScript)
-            {
+            if(!_feverScript) {
                 GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
                 _feverScript = gameScene.gameUI.gameInfoCanvas.feverGauge;
             }
             return _feverScript;
         }
     }
-    
+
     public delegate void Replace();             //回転再配置用のデリゲート
 
     private Material[] nodeMaterials = null;
-    public Material GetMaterial(NodeTemplate nodeType){return nodeMaterials[nodeType.ID];}
+    public Material GetMaterial(NodeTemplate nodeType) { return nodeMaterials[nodeType.ID]; }
 
     private int _currentLevel;
     public int currentLevel
     {
         get { return _currentLevel; }
         set { _currentLevel = value;
-        fieldLevel = levelTableScript.GetFieldLevel(_currentLevel);
-        RatioSum = fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3 + fieldLevel.Ratio_Path4;
-        
-        StartCoroutine(ReplaceRotate(ReplaceNodeAll));
+            fieldLevel = levelTableScript.GetFieldLevel(_currentLevel);
+            RatioSum = fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3 + fieldLevel.Ratio_Path4;
+
+            StartCoroutine(ReplaceRotate(ReplaceNodeAll));
         }
     }
 
-	void Awake() {
+    public Vector3[][] NodePlacePosList { get { return nodePlacePosList; } }
+
+    void Awake() {
         gameNodePrefabs  = new GameObject[col][];
         gameNodeScripts  = new Node[col][];
         nodePlacePosList = new Vector3[col][];
@@ -440,8 +436,8 @@ public class NodeController : MonoBehaviour {
             .Select(_ => !(isNodeAction | isSlide))
             .DistinctUntilChanged()
             .Where(x => x)
+            .ThrottleFrame(10)
             .Subscribe(_ => {
-                //RemoveUnChainCube();
                 CheckLink();
                 unChainController.Remove();
             })
@@ -1114,7 +1110,6 @@ public class NodeController : MonoBehaviour {
             }
             Debug.LogWarning(str);
         }
-
         ResetCheckedFragAll();          // 接続フラグを一度クリア
 
         // 根っこ分繰り返し
@@ -1127,7 +1122,7 @@ public class NodeController : MonoBehaviour {
                 .Return(i)
                 .Subscribe(x => {
                     Checker += "firstNodeAct_Subscribe [" + Checker.ID + "]";
-                    Checker.Branch++;                                               // 最初に枝カウンタを1にしておく(規定値が0なので+でいいはず)
+                    Checker.Branch++;                                                   // 最初に枝カウンタを1にしておく(規定値が0なので+でいいはず)
                     gameNodeScripts[1][x].NodeCheckAction(Checker, _eLinkDir.NONE);     // 下から順にチェックスタート。来た方向はNONEにしておいて根っこを識別。
                 }).AddTo(this);
 
@@ -1140,14 +1135,9 @@ public class NodeController : MonoBehaviour {
                     if(Debug.isDebugBuild && bNodeLinkDebugLog)
                         Debug.Log("CheckedCallback_Subscribe [" + Checker.ID + "]" + Checker.SumNode.ToString() + "/" + (Checker.NotFin ? "" : "Fin") + "\n" + Checker.ToString());
 
-                    // ノード数3以上、非完成フラグが立ってないなら
+                    // ノード数1以上、非完成フラグが立ってないなら
                     if(Checker.SumNode >= 1 && Checker.NotFin == false) {
-                        // その枝のノードに完成フラグを立てる
-                        //foreach(Node Nodes in Checker.NodeList) {
-                        //    Nodes.CompleteFlag = true;
-                        //};
                         ReplaceNodeTree(Checker.NodeList);   // 消去処理
-                        //CheckLink(false);
                         if(Debug.isDebugBuild && bNodeLinkDebugLog)
                             print("枝が完成しました！");
                     }
@@ -1160,9 +1150,8 @@ public class NodeController : MonoBehaviour {
     public void ResetCheckedFragAll() {
         for(int i = 0; i < col; ++i) {
             foreach(var nodes in gameNodeScripts[i]) {
-                nodes.ChangeEmissionColor(0);  //繋がりがない枝は色をここでもどす
+                nodes.ChainFlag = false;
                 nodes.CheckFlag = false;
-
             }
         }
     }
@@ -1329,7 +1318,7 @@ public class NodeController : MonoBehaviour {
         foreach(Node obj in List) {
             treeNodes.Add(obj.gameObject);
         }
-        GameObject newTree = (GameObject)Instantiate(treeControllerPrefab, transform.position, transform.rotation);
+        GameObject newTree = (GameObject)Instantiate(treeControllerPrefab, transform.position, Quaternion.identity);
         newTree.GetComponent<treeController>().SetTree(treeNodes);
         
         //ノードを再配置
@@ -1351,17 +1340,22 @@ public class NodeController : MonoBehaviour {
             ReplaceNode(obj);
         }
 
+        foreach(Node obj in List) {
+            obj.UpdateNegibor();
+        }
+
         nodeCount.nodes = List.Count;
         scoreScript.PlusScore(nodeCount);
         timeScript.PlusTime(nodeCount);
         feverScript.Gain(nodeCount);
+        CheckLink(true);
     }
 
     public void ReplaceNodeAll() {
         foreach(var xList in gameNodeScripts) {
             foreach(var it in xList) {
                 ReplaceNode(it);
-			}
+            }
 		}
 	}
 
