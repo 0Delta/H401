@@ -8,6 +8,10 @@ using RandExtension;
 //using Assets.Scripts.Utils;
 
 public class Node : MonoBehaviour {
+//    static private readonly bool ENABLE_DEBUG_STRING = true;  // ノード個々に対するデバックログを有効にするかどうか
+    private string NodeDebugLog = "";
+    public string DebugLog { get { return NodeDebugLog; } }
+
     static private readonly float ROT_HEX_ANGLE = 60.0f;      // 六角形パネルの回転角度
     static private readonly float IN_ACTION_POSZ = -0.5f;     // アクション中のZ座標
 
@@ -30,11 +34,11 @@ public class Node : MonoBehaviour {
         set { isAction = value; }
         get { return isAction; }
     }
-    private bool isSlide     = false;            // スライドフラグ
-    private bool isOutScreen = false;            // 画面外フラグ
-    private bool isOutPuzzle = false;            // パズル外フラグ
-    private bool _isSlideStart = false;        // スライド開始演出(easing)フラグ
-    private bool _isSlideEnd = false;        // スライド終了演出(easing)フラグ
+    private bool isSlide     = false;           // スライドフラグ
+    private bool isOutScreen = false;           // 画面外フラグ
+    private bool isOutPuzzle = false;           // パズル外フラグ
+    private bool _isSlideStart = false;         // スライド開始演出(easing)フラグ
+    private bool _isSlideEnd = false;           // スライド終了演出(easing)フラグ
 
     public BitArray bitLink = new BitArray(6);  //道の繋がりのビット配列　trueが道
                                                 //  5 0
@@ -101,8 +105,7 @@ public class Node : MonoBehaviour {
 
     // Use this for initialization
     private void Start() {
-        //とりあえずテスト
-        //bitLink.
+        NodeDebugLog += "Start\n";
 
         // IDが変化したときにパズル外フラグを更新
         Observable
@@ -110,6 +113,7 @@ public class Node : MonoBehaviour {
             .Select(_ => nodeID)
             .DistinctUntilChanged()
             .Subscribe(_ => {
+                NodeDebugLog += "ChengeNodeID [" + nodeID.y + "][" + nodeID.x + "]\n";
                 CheckOutPuzzle();
             }).AddTo(this);
         CheckOutPuzzle();       // 初回だけ手動
@@ -121,6 +125,7 @@ public class Node : MonoBehaviour {
             .Select(_ => _RotCounter)
             .DistinctUntilChanged()
             .Subscribe(_ => {
+                NodeDebugLog += "Rotation : " + _RotCounter + "\n";
                 isAction = true;                                                    // アクション開始
                 Vector3 Rot = new Vector3(0, 0, ROT_HEX_ANGLE * (6 - RotCounter));  // 回転角確定
                 transform.DOLocalRotate(Rot, actionTime)                            // DoTweenで回転
@@ -137,6 +142,7 @@ public class Node : MonoBehaviour {
             .Select(x => bChain)
             .DistinctUntilChanged()
             .Subscribe(x => {
+                NodeDebugLog += "ChangeEmission : " + bChain + "\n";
                 if(x == true) {
                     ChangeEmissionColor(3);
                 } else {
@@ -268,6 +274,7 @@ public class Node : MonoBehaviour {
 
     // 情報の更新
     public void UpdateNegibor() {
+        NodeDebugLog += "NegiborUpdate \n";
         for(int n = 0; n < (int)_eLinkDir.MAX; n++) {
             // 周辺ノードを一周ぐるっと
             Vec2Int Target = nodeControllerScript.GetDirNode(nodeID, (_eLinkDir)n);
@@ -322,6 +329,7 @@ public class Node : MonoBehaviour {
 
     // 隣接判定、ノードごとの処理
     public void NodeCheckAction(NodeController.NodeLinkTaskChecker Tc, _eLinkDir Link) {
+        NodeDebugLog += "NodeCheckAction. CheckerID : "+ Tc.ID +"\n";
         // チェック済みでスキップ
         if(bChecked) { Tc.Branch--; return; }
 
@@ -437,6 +445,7 @@ public class Node : MonoBehaviour {
 
     //ノードにタイプ・テクスチャ・道ビット
     public void SetNodeType(NodeTemplate type,int Rot = -1) {
+        NodeDebugLog += "SetNodeType. TempID : "+ type.ID +"\n";
         // 使用したテンプレを記憶
         Temp = type;
         

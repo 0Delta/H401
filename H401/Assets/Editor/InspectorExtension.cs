@@ -3,7 +3,10 @@ using UnityEngine;
 
 [CustomEditor(typeof(Node))]
 public class Node_Editor : Editor {
-    Node tgt;
+    private Node tgt = null;
+    private bool DebugStringfoldout = false;
+    private Vector2 scrollPosition;
+    GUIStyle guiStyle = new GUIStyle();
     public override void OnInspectorGUI() {
         tgt = target as Node;
         EditorGUILayout.LabelField(tgt.ToString());
@@ -16,6 +19,15 @@ public class Node_Editor : Editor {
         (tgt.bitLink[3] ? "LD" : "  ") + " " +
         (tgt.bitLink[2] ? "RD" : "  ") + "  \n";
         EditorGUILayout.LabelField(str, GUILayout.Height(58f));
+
+        DebugStringfoldout = EditorGUILayout.Foldout(DebugStringfoldout,"DebugStr");
+        if(DebugStringfoldout) {
+            float Height = guiStyle.CalcSize(new GUIContent(tgt.DebugLog)).y;
+            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition,GUILayout.Height(150f));
+            EditorGUILayout.SelectableLabel(tgt.DebugLog, GUILayout.MinHeight(Height));
+            EditorGUILayout.EndScrollView();
+        }
+
         base.OnInspectorGUI();
     }
 }
