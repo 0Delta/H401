@@ -118,6 +118,16 @@ public class Node : MonoBehaviour {
             }).AddTo(this);
         CheckOutPuzzle();       // 初回だけ手動
 
+        Observable
+            .EveryUpdate()
+            .Select(_ => !(isAction || isSlide))
+            .DistinctUntilChanged()
+            .Select(x => x)
+            .ThrottleFrame(5)
+            .Subscribe(_ => {
+                NodeDebugLog += "ForceTween : ID [" + nodeID.y + "][" + nodeID.x + "]\n";
+                transform.DOMove(nodeControllerScript.NodePlacePosList[nodeID.y][nodeID.x], 0.1f);
+            }).AddTo(this);
 
         // 回転処理
         Observable
