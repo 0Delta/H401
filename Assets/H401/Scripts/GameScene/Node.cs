@@ -8,19 +8,24 @@ using RandExtension;
 //using Assets.Scripts.Utils;
 
 public class Node : MonoBehaviour {
-//    static private readonly bool ENABLE_DEBUG_STRING = true;  // ノード個々に対するデバックログを有効にするかどうか
     private string NodeDebugLog = "";
     public string DebugLog { get { return NodeDebugLog; } }
 
     static private readonly float ROT_HEX_ANGLE = 60.0f;      // 六角形パネルの回転角度
     static private readonly float IN_ACTION_POSZ = -0.5f;     // アクション中のZ座標
 
-    [SerializeField] private float actionTime = 0.0f;       // アクションにかかる時間
-    [SerializeField] private float scaleSize  = 0.0f;       // タップ時の拡大サイズ
-    [SerializeField] private float slideTime  = 0.0f;       // スライド時の移動にかかる時間
-    [SerializeField] private float slideStartTime  = 0.0f;       // スライド開始時の移動にかかる時間
-    [SerializeField] private float slideEndTime  = 0.0f;       // スライド終了時の移動にかかる時間
-    [SerializeField]private float colorDuration = 0.0f;
+    [SerializeField]
+    private float actionTime = 0.0f;       // アクションにかかる時間
+    [SerializeField]
+    private float scaleSize  = 0.0f;       // タップ時の拡大サイズ
+    [SerializeField]
+    private float slideTime  = 0.0f;       // スライド時の移動にかかる時間
+    [SerializeField]
+    private float slideStartTime  = 0.0f;       // スライド開始時の移動にかかる時間
+    [SerializeField]
+    private float slideEndTime  = 0.0f;       // スライド終了時の移動にかかる時間
+    [SerializeField]
+    private float colorDuration = 0.0f;
 
     static private NodeController nodeControllerScript = null;      // NodeController のスクリプト
 
@@ -30,7 +35,8 @@ public class Node : MonoBehaviour {
         get { return nodeID; }
     }
     private bool isAction = false;            // アクションフラグ
-    public bool IsAction {
+    public bool IsAction
+    {
         set { isAction = value; }
         get { return isAction; }
     }
@@ -44,19 +50,21 @@ public class Node : MonoBehaviour {
                                                 //  5 0
                                                 // 4   1
                                                 //  3 2  とする
-                                                
+
     public Vec2Int[] ChainNodes = new Vec2Int[5];
 
     private MeshRenderer meshRenderer = null;
     public NodeTemplate Temp = null;               // 使用したテンプレート
     private int _RotCounter = 0;
-    public int RotCounter {
+    public int RotCounter
+    {
         get { return _RotCounter; }
         set { _RotCounter = value % 6; }
     }
     private bool ForceRotation = false;
 
-    public MeshRenderer MeshRenderer {
+    public MeshRenderer MeshRenderer
+    {
         get { return meshRenderer; }
     }
 
@@ -70,20 +78,24 @@ public class Node : MonoBehaviour {
 
     private bool bChain;                        //枝がつながっているか？
 
-    public bool ChainFlag {
+    public bool ChainFlag
+    {
         get { return bChain; }
         set { bChain = value; }
     }
 
-    public bool IsOutScreen {
+    public bool IsOutScreen
+    {
         set { isOutScreen = value; }
         get { return isOutScreen; }
     }
-    public bool isSlideStart {
+    public bool isSlideStart
+    {
         set { _isSlideStart = value; }
         get { return _isSlideStart; }
     }
-    public bool isSlideEnd {
+    public bool isSlideEnd
+    {
         set { _isSlideEnd = value; }
         get { return _isSlideEnd; }
     }
@@ -187,7 +199,7 @@ public class Node : MonoBehaviour {
         // スライド中なら回転・拡縮は未処理
         if(isSlide)
             return;
-        
+
         // ----- 回転処理
 
         // ノーウエイト版。フィーバー時の配置に使用
@@ -207,8 +219,8 @@ public class Node : MonoBehaviour {
         // 回転処理
         transform.DOKill();
         transform.DOMoveZ(IN_ACTION_POSZ, 0.0f);
-        
-        RotCounter = RotCounter + 1 ;
+
+        RotCounter = RotCounter + 1;
 
         // 拡縮処理(※回転と同じように、補正処理が必要)
         transform.DOScale(scaleSize, actionTime * 0.5f).SetLoops(2, LoopType.Yoyo)
@@ -219,14 +231,14 @@ public class Node : MonoBehaviour {
 
     //道のビット配列を回転させる bitarrayに回転シフトがなかった
     private void BitLinkRotate(int RotCnt = -1) {
-        if(0<=RotCnt && RotCnt < 6) {
+        if(0 <= RotCnt && RotCnt < 6) {
             // テンプレから回転数を指定してシフト
             bool[] basebit = Temp.LinkDir.Clone() as bool[];
 
-            for(int n = 0; n < 6-RotCnt; n++) {
+            for(int n = 0; n < 6 - RotCnt; n++) {
                 bitLink[RotCnt + n] = basebit[n];
             }
-            for(int n = 0;n < RotCnt; n++) {
+            for(int n = 0; n < RotCnt; n++) {
                 bitLink[n] = basebit[(6 - RotCnt) + n];
             }
         } else {
@@ -247,7 +259,7 @@ public class Node : MonoBehaviour {
         // スライド方向が指定されていなければ未処理
         if(dir == _eSlideDir.NONE)
             return;
-        
+
         // アクション開始
         isAction = true;
         isSlide = true;
@@ -256,14 +268,14 @@ public class Node : MonoBehaviour {
 
         float time = 0.0f;
         if(_isSlideStart) {
-            time =  slideStartTime;
+            time = slideStartTime;
             transform.DOMoveZ(IN_ACTION_POSZ, 0.0f);
         } else if(_isSlideEnd) {
             time = slideEndTime;
         } else {
             time = slideTime;
         }
-        
+
         transform.DOMoveX(pos.x, time)
             .OnComplete(() => {
                 isAction = false;
@@ -343,7 +355,7 @@ public class Node : MonoBehaviour {
 
     // 隣接判定、ノードごとの処理
     public void NodeCheckAction(NodeController.NodeLinkTaskChecker Tc, _eLinkDir Link) {
-        NodeDebugLog += "NodeCheckAction. CheckerID : "+ Tc.ID +"\n";
+        NodeDebugLog += "NodeCheckAction. CheckerID : " + Tc.ID + "\n";
         // チェック済みでスキップ
         if(bChecked) { Tc.Branch--; return; }
 
@@ -357,7 +369,7 @@ public class Node : MonoBehaviour {
         UpdateNegibor();
 
         // 状態表示
-        Tc += (ToString() + "Action \n     Link : " + Negibor.ToStringEx() + "\nNegibor : " + Negibor.ToStringEx());
+        Tc += (ToString() + "Action \n     Link : " + bitLink.ToStringEx() + "\nNegibor : " + Negibor.ToStringEx());
         Tc += Tc.NotFin + " : " + Tc.Branch.ToString();
 
         // チェックスタート
@@ -455,11 +467,11 @@ public class Node : MonoBehaviour {
     #endregion
 
     //ノードにタイプ・テクスチャ・道ビット
-    public void SetNodeType(NodeTemplate type,int Rot = -1) {
-        NodeDebugLog += "SetNodeType. TempID : "+ type.ID +"\n";
+    public void SetNodeType(NodeTemplate type, int Rot = -1) {
+        NodeDebugLog += "SetNodeType. TempID : " + type.ID + "\n";
         // 使用したテンプレを記憶
         Temp = type;
-        
+
         //テクスチャを設定
         meshRenderer.material = nodeControllerScript.GetMaterial(type);
 
@@ -521,8 +533,8 @@ public class Node : MonoBehaviour {
     public void CopyParameter(Node copy) {
         //meshRenderer.material = copy.meshRenderer.material;
         //bitLink = copy.bitLink;
-        //transform.rotation = copy.transform.rotation;
         NodeDebugLog += "Copy from " + copy.ToString() + "\n";
+        transform.rotation = copy.transform.rotation;
         RotCounter = copy.RotCounter;
         ChangeEmissionColor(0);
         ForceRotation = true;

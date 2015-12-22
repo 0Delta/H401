@@ -179,3 +179,36 @@ public class NodeController_Editor : PropertyDrawer {
 
 
 }
+
+public class EditorExWindow : EditorWindow {
+
+    int SelectLogIdx;
+
+    [MenuItem("Window/CDebugLogConsole")]
+    static void Open() {
+        GetWindow<EditorExWindow>("CustomLogger");
+    }
+
+    void OnGUI() {
+        if(CustomDebugLog.CDebugLog.InstanceList.Count == 0) {
+            EditorGUILayout.LabelField("Not Run CDebugLog");
+        } else {
+            string[] LogList = new string[CustomDebugLog.CDebugLog.InstanceList.Count];
+            CustomDebugLog.CDebugLog.InstanceList.Keys.CopyTo(LogList, 0);
+
+            SelectLogIdx = EditorGUILayout.Popup(SelectLogIdx, LogList, GUILayout.ExpandWidth(true));
+            CustomDebugLog.CDebugLog Log;
+            CustomDebugLog.CDebugLog.InstanceList.TryGetValue(LogList[SelectLogIdx], out Log);
+            if(Log != null) {
+                Rect rc = new Rect(0, 0, position.width, position.height);
+                EditorGUI.LabelField(rc,Log.ToStringReverse());
+            } else {
+                EditorGUILayout.LabelField("faled get Instance");
+            }
+        }
+    }
+
+    void Update() {
+        Repaint();
+    }
+}
