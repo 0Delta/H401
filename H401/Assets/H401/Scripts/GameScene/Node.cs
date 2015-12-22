@@ -159,6 +159,7 @@ public class Node : MonoBehaviour {
                     ChangeEmissionColor(0);
                 }
             });
+        ChangeEmissionColor(0);
     }
 
     private void UpdateRotation() {
@@ -178,6 +179,7 @@ public class Node : MonoBehaviour {
         Node.nodeControllerScript = nodeControllerScript;
     }
 
+    #region // ノードの回転
     // ノード回転処理
     static private Vector3 RotationNodeTempVec = new Vector3();
     public void RotationNode(bool NoWait = false, bool Reverse = false) {
@@ -218,6 +220,30 @@ public class Node : MonoBehaviour {
             });
     }
 
+    //道のビット配列を回転させる bitarrayに回転シフトがなかった
+    private void BitLinkRotate(int RotCnt = -1) {
+        if(0<=RotCnt && RotCnt < 6) {
+            // テンプレから回転数を指定してシフト
+            bool[] basebit = Temp.LinkDir.Clone() as bool[];
+
+            for(int n = 0; n < 6-RotCnt; n++) {
+                bitLink[RotCnt + n] = basebit[n];
+            }
+            for(int n = 0;n < RotCnt; n++) {
+                bitLink[n] = basebit[(6 - RotCnt) + n];
+            }
+        } else {
+            //右回転（左シフト）
+            bool b5 = bitLink[5];
+            // char[] deb = new char[6];
+            for(int i = 4; i >= 0; i--) {
+                bitLink[i + 1] = bitLink[i];
+            }
+            bitLink[0] = b5;
+        }
+    }
+    #endregion
+
     // ノード移動処理
     public void SlideNode(_eSlideDir dir, Vector2 pos) {
         // スライド方向が指定されていなければ未処理
@@ -256,28 +282,6 @@ public class Node : MonoBehaviour {
         //nodeControllerScript.RemoveUnChainCube();
     }
 
-    //道のビット配列を回転させる bitarrayに回転シフトがなかった
-    private void BitLinkRotate(int RotCnt = -1) {
-        if(0<=RotCnt && RotCnt < 6) {
-            // テンプレから回転数を指定してシフト
-            bool[] basebit = Temp.LinkDir.Clone() as bool[];
-
-            for(int n = 0; n < 6-RotCnt; n++) {
-                bitLink[RotCnt + n] = basebit[n];
-            }
-            for(int n = 0;n < RotCnt; n++) {
-                bitLink[n] = basebit[(6 - RotCnt) + n];
-            }
-        } else {
-            //右回転（左シフト）
-            bool b5 = bitLink[5];
-            // char[] deb = new char[6];
-            for(int i = 4; i >= 0; i--) {
-                bitLink[i + 1] = bitLink[i];
-            }
-            bitLink[0] = b5;
-        }
-    }
 
     // お隣さんから自分への道を保持する。
     private BitArray Negibor = new BitArray(6);
@@ -328,15 +332,6 @@ public class Node : MonoBehaviour {
         return DbgLinkStr[(int)n];
     }
 
-    // BitArrayのToStringもどき。デバック出力用。
-    public string ToString(BitArray array) {
-        string str = "";
-        for(int n = 0; n < array.Length; n++) {
-            str += (array[n] ? "1" : "0");
-        }
-        return str;
-    }
-
     // 隣接判定、ノードごとの処理
     public void NodeCheckAction(NodeController.NodeLinkTaskChecker Tc, _eLinkDir Link) {
         NodeDebugLog += "NodeCheckAction. CheckerID : "+ Tc.ID +"\n";
@@ -353,7 +348,7 @@ public class Node : MonoBehaviour {
         UpdateNegibor();
 
         // 状態表示
-        Tc += (ToString() + "Action \n     Link : " + ToString(bitLink) + "\nNegibor : " + ToString(Negibor));
+        Tc += (ToString() + "Action \n     Link : " + Negibor.ToStringEx() + "\nNegibor : " + Negibor.ToStringEx());
         Tc += Tc.NotFin + " : " + Tc.Branch.ToString();
 
         // チェックスタート
@@ -394,7 +389,7 @@ public class Node : MonoBehaviour {
 
         // 周囲のチェック
         // この時点で、TempBitは先が壁の道を除いた自分の道を示している。
-        Tc += "ExcludeFrom MyWay : " + ToString(TempBit);
+        Tc += "ExcludeFrom MyWay : " + TempBit.ToStringEx();
 
         for(int n = 0; n < (int)_eLinkDir.MAX; n++) {
             var TempBit2 = new BitArray(6);
@@ -407,9 +402,9 @@ public class Node : MonoBehaviour {
             }
         }
 
-        Tc += ("Negibor : " + ToString(Negibor));
+        Tc += ("Negibor : " + Negibor.ToStringEx());
         TempBit.And(Negibor);                       // 隣接ノードと繋がっている場所を特定
-        Tc += "Linked : " + ToString(TempBit);
+        Tc += "Linked : " + TempBit.ToStringEx();
         for(int n = 0; n < (int)_eLinkDir.MAX; n++) {
             if(!TempBit[n]) { continue; }          // ビット立ってないならスキップ
 
