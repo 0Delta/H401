@@ -1488,6 +1488,12 @@ public class NodeController : MonoBehaviour {
 	}
 
     public void SetActionAll(bool action) {
+        /*foreach(var xList in gameNodeScripts) {
+            foreach(var it in xList) {
+                it.IsAction = action;
+			}
+		}*/
+        
         isSlide = action;
 	}
 
