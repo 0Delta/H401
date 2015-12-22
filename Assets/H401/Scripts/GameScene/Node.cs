@@ -44,8 +44,7 @@ public class Node : MonoBehaviour {
                                                 //  5 0
                                                 // 4   1
                                                 //  3 2  とする
-
-    //public BitArray bitTreePath = new BitArray(4);//走査時にどの木の一部かを記憶しておく
+                                                
     public Vec2Int[] ChainNodes = new Vec2Int[5];
 
     private MeshRenderer meshRenderer = null;
@@ -55,6 +54,7 @@ public class Node : MonoBehaviour {
         get { return _RotCounter; }
         set { _RotCounter = value % 6; }
     }
+    private bool ForceRotation = false;
 
     public MeshRenderer MeshRenderer {
         get { return meshRenderer; }
@@ -67,13 +67,6 @@ public class Node : MonoBehaviour {
         get { return bChecked; }
         set { bChecked = value; }
     }
-
-    //private bool bCompleted;
-    //public bool CompleteFlag                    //完成済フラグ 走査終了時（枝完成時）に使用
-    //{
-    //    get { return bCompleted; }
-    //    set { bCompleted = value; }
-    //}
 
     private bool bChain;                        //枝がつながっているか？
 
@@ -118,6 +111,7 @@ public class Node : MonoBehaviour {
             }).AddTo(this);
         CheckOutPuzzle();       // 初回だけ手動
 
+        // Transformを矯正
         Observable
             .EveryUpdate()
             .Select(_ => !(isAction || isSlide))
@@ -127,15 +121,17 @@ public class Node : MonoBehaviour {
             .Subscribe(_ => {
                 NodeDebugLog += "ForceTween : ID [" + nodeID.y + "][" + nodeID.x + "]\n";
                 transform.DOMove(nodeControllerScript.NodePlacePosList[nodeID.y][nodeID.x], 0.1f);
+                ForceRotation = true;
             }).AddTo(this);
 
         // 回転処理
         Observable
             .EveryUpdate()
-            .Select(_ => _RotCounter)
+            .Select(_ => _RotCounter + (ForceRotation ? 0 : 100))
             .DistinctUntilChanged()
             .Subscribe(_ => {
                 NodeDebugLog += "Rotation : " + _RotCounter + "\n";
+                ForceRotation = false;                                              // 強制回転フラグ折る
                 isAction = true;                                                    // アクション開始
                 Vector3 Rot = new Vector3(0, 0, ROT_HEX_ANGLE * (6 - RotCounter));  // 回転角確定
                 transform.DOLocalRotate(Rot, actionTime)                            // DoTweenで回転
@@ -159,14 +155,16 @@ public class Node : MonoBehaviour {
                     ChangeEmissionColor(0);
                 }
             });
-    }
-
-    private void UpdateRotation() {
-
+        ChangeEmissionColor(0);
     }
 
     // Update is called once per frame
     private void Update() {
+
+    }
+
+    public override string ToString() {
+        return "Node[" + NodeID.y.ToString() + "][" + NodeID.x.ToString() + "]";
     }
 
     public void RegistNodeID(int row, int col) {
@@ -178,6 +176,7 @@ public class Node : MonoBehaviour {
         Node.nodeControllerScript = nodeControllerScript;
     }
 
+    #region // ノードの回転
     // ノード回転処理
     static private Vector3 RotationNodeTempVec = new Vector3();
     public void RotationNode(bool NoWait = false, bool Reverse = false) {
@@ -218,6 +217,31 @@ public class Node : MonoBehaviour {
             });
     }
 
+    //道のビット配列を回転させる bitarrayに回転シフトがなかった
+    private void BitLinkRotate(int RotCnt = -1) {
+        if(0<=RotCnt && RotCnt < 6) {
+            // テンプレから回転数を指定してシフト
+            bool[] basebit = Temp.LinkDir.Clone() as bool[];
+
+            for(int n = 0; n < 6-RotCnt; n++) {
+                bitLink[RotCnt + n] = basebit[n];
+            }
+            for(int n = 0;n < RotCnt; n++) {
+                bitLink[n] = basebit[(6 - RotCnt) + n];
+            }
+        } else {
+            //右回転（左シフト）
+            bool b5 = bitLink[5];
+            // char[] deb = new char[6];
+            for(int i = 4; i >= 0; i--) {
+                bitLink[i + 1] = bitLink[i];
+            }
+            bitLink[0] = b5;
+        }
+    }
+    #endregion
+
+    #region // ノードのスライド
     // ノード移動処理
     public void SlideNode(_eSlideDir dir, Vector2 pos) {
         // スライド方向が指定されていなければ未処理
@@ -255,30 +279,19 @@ public class Node : MonoBehaviour {
 
         //nodeControllerScript.RemoveUnChainCube();
     }
-
-    //道のビット配列を回転させる bitarrayに回転シフトがなかった
-    private void BitLinkRotate(int RotCnt = -1) {
-        if(0<=RotCnt && RotCnt < 6) {
-            // テンプレから回転数を指定してシフト
-            bool[] basebit = Temp.LinkDir.Clone() as bool[];
-
-            for(int n = 0; n < 6-RotCnt; n++) {
-                bitLink[RotCnt + n] = basebit[n];
-            }
-            for(int n = 0;n < RotCnt; n++) {
-                bitLink[n] = basebit[(6 - RotCnt) + n];
-            }
-        } else {
-            //右回転（左シフト）
-            bool b5 = bitLink[5];
-            // char[] deb = new char[6];
-            for(int i = 4; i >= 0; i--) {
-                bitLink[i + 1] = bitLink[i];
-            }
-            bitLink[0] = b5;
-        }
+    public void StopTween() {
+        transform.DOKill();
+    }
+    public void StartSlide() {
+        _isSlideStart = true;
     }
 
+    public void EndSlide() {
+        _isSlideEnd = true;
+    }
+    #endregion
+
+    #region // 枝判定
     // お隣さんから自分への道を保持する。
     private BitArray Negibor = new BitArray(6);
 
@@ -328,15 +341,6 @@ public class Node : MonoBehaviour {
         return DbgLinkStr[(int)n];
     }
 
-    // BitArrayのToStringもどき。デバック出力用。
-    public string ToString(BitArray array) {
-        string str = "";
-        for(int n = 0; n < array.Length; n++) {
-            str += (array[n] ? "1" : "0");
-        }
-        return str;
-    }
-
     // 隣接判定、ノードごとの処理
     public void NodeCheckAction(NodeController.NodeLinkTaskChecker Tc, _eLinkDir Link) {
         NodeDebugLog += "NodeCheckAction. CheckerID : "+ Tc.ID +"\n";
@@ -353,7 +357,7 @@ public class Node : MonoBehaviour {
         UpdateNegibor();
 
         // 状態表示
-        Tc += (ToString() + "Action \n     Link : " + ToString(bitLink) + "\nNegibor : " + ToString(Negibor));
+        Tc += (ToString() + "Action \n     Link : " + Negibor.ToStringEx() + "\nNegibor : " + Negibor.ToStringEx());
         Tc += Tc.NotFin + " : " + Tc.Branch.ToString();
 
         // チェックスタート
@@ -394,7 +398,7 @@ public class Node : MonoBehaviour {
 
         // 周囲のチェック
         // この時点で、TempBitは先が壁の道を除いた自分の道を示している。
-        Tc += "ExcludeFrom MyWay : " + ToString(TempBit);
+        Tc += "ExcludeFrom MyWay : " + TempBit.ToStringEx();
 
         for(int n = 0; n < (int)_eLinkDir.MAX; n++) {
             var TempBit2 = new BitArray(6);
@@ -407,9 +411,9 @@ public class Node : MonoBehaviour {
             }
         }
 
-        Tc += ("Negibor : " + ToString(Negibor));
+        Tc += ("Negibor : " + Negibor.ToStringEx());
         TempBit.And(Negibor);                       // 隣接ノードと繋がっている場所を特定
-        Tc += "Linked : " + ToString(TempBit);
+        Tc += "Linked : " + TempBit.ToStringEx();
         for(int n = 0; n < (int)_eLinkDir.MAX; n++) {
             if(!TempBit[n]) { continue; }          // ビット立ってないならスキップ
 
@@ -448,10 +452,7 @@ public class Node : MonoBehaviour {
             Tc.Branch--;
         }
     }
-
-    public override string ToString() {
-        return "Node[" + NodeID.y.ToString() + "][" + NodeID.x.ToString() + "]";
-    }
+    #endregion
 
     //ノードにタイプ・テクスチャ・道ビット
     public void SetNodeType(NodeTemplate type,int Rot = -1) {
@@ -467,6 +468,8 @@ public class Node : MonoBehaviour {
         RotCounter = (Rot == -1 ? RotI : Rot);
     }
 
+
+    #region // ゲッター
     public bool GetLinkDir(_eLinkDir parentDir) {
         return bitLink[(int)parentDir];
     }
@@ -478,11 +481,6 @@ public class Node : MonoBehaviour {
             n += bitLink[i] ? 1 : 0;
         }
         return n;
-    }
-
-    private bool CheckOutPuzzle() {
-        isOutPuzzle = (nodeID.y < 1 || nodeControllerScript.Col - 2 < nodeID.y || nodeID.x < 1 || nodeControllerScript.AdjustRow(nodeID.y) - 2 < nodeID.x);
-        return isOutPuzzle;
     }
 
     public float GetLeftPos() {
@@ -512,26 +510,28 @@ public class Node : MonoBehaviour {
 
         return bottom;
     }
+    #endregion
 
-    public void StopTween() {
-        transform.DOKill();
+    private bool CheckOutPuzzle() {
+        isOutPuzzle = (nodeID.y < 1 || nodeControllerScript.Col - 2 < nodeID.y || nodeID.x < 1 || nodeControllerScript.AdjustRow(nodeID.y) - 2 < nodeID.x);
+        return isOutPuzzle;
     }
 
+
     public void CopyParameter(Node copy) {
-        meshRenderer.material = copy.meshRenderer.material;
-        transform.rotation = copy.transform.rotation;
-        bitLink = copy.bitLink;
+        //meshRenderer.material = copy.meshRenderer.material;
+        //bitLink = copy.bitLink;
+        //transform.rotation = copy.transform.rotation;
+        NodeDebugLog += "Copy from " + copy.ToString() + "\n";
+        RotCounter = copy.RotCounter;
+        ChangeEmissionColor(0);
+        ForceRotation = true;
+        CheckOutPuzzle();       // 初回だけ手動
     }
 
     public void ChangeEmissionColor(int colorNum) {
         meshRenderer.material.EnableKeyword("_EMISSION");
         meshRenderer.material.DOColor(nodeControllerScript.GetNodeColor(colorNum), "_EmissionColor", colorDuration);
     }
-    public void StartSlide() {
-        _isSlideStart = true;
-    }
 
-    public void EndSlide() {
-        _isSlideEnd = true;
-    }
 }

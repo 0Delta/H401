@@ -620,19 +620,19 @@ public class NodeController : MonoBehaviour {
 		tapPosMoveNodePosDist = moveNodeDist.normalized * Vector2.Dot(moveNodeDist.normalized, startTapPos - moveNodeInitPos);
 					}
 
-	// ゲームの画面外にはみ出したノードを逆側に移動する
-	void LoopBackNode() {
-		if (gameNodeScripts[slidingLimitNodeID.y][slidingLimitNodeID.x].IsOutScreen) {
+    // ゲームの画面外にはみ出したノードを逆側に移動する
+    void LoopBackNode() {
+        if(gameNodeScripts[slidingLimitNodeID.y][slidingLimitNodeID.x].IsOutScreen) {
             gameNodeScripts[slidingLimitNodeID.y][slidingLimitNodeID.x].IsOutScreen = false;
 
             SortOutNode(slideDir, slidingLimitNodeID);
-				
-            Vec2Int copyInNodeID  = SearchLimitNodeRemoveFrame(tapNodeID, ConvertSlideDirToLinkDir(SlideDir));
+
+            Vec2Int copyInNodeID = SearchLimitNodeRemoveFrame(tapNodeID, ConvertSlideDirToLinkDir(SlideDir));
             Vec2Int copyOutNodeID = SearchLimitNodeRemoveFrame(tapNodeID, ConvertSlideDirToLinkDir(ReverseDirection(slideDir)));
             copyOutNodeID = GetDirNode(copyOutNodeID, ReverseDirection(slideDir));
-        	gameNodeScripts[copyOutNodeID.y][copyOutNodeID.x].CopyParameter(gameNodeScripts[copyInNodeID.y][copyInNodeID.x]);
-					}
-					}
+            gameNodeScripts[copyOutNodeID.y][copyOutNodeID.x].CopyParameter(gameNodeScripts[copyInNodeID.y][copyInNodeID.x]);
+        }
+    }
 
 	// 移動を終了するノードの位置を調整する
 	void AdjustNodeStop() {
