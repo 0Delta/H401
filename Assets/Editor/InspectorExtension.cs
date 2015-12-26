@@ -183,6 +183,7 @@ public class NodeController_Editor : PropertyDrawer {
 public class EditorExWindow : EditorWindow {
 
     int SelectLogIdx;
+    private static Vector2 ScrollPos = new Vector2();
 
     [MenuItem("Window/CDebugLogConsole")]
     static void Open() {
@@ -200,8 +201,9 @@ public class EditorExWindow : EditorWindow {
             CustomDebugLog.CDebugLog Log;
             CustomDebugLog.CDebugLog.InstanceList.TryGetValue(LogList[SelectLogIdx], out Log);
             if(Log != null) {
-                Rect rc = new Rect(0, 0, position.width, position.height);
-                EditorGUI.LabelField(rc,Log.ToStringReverse());
+                ScrollPos = EditorGUILayout.BeginScrollView(ScrollPos);
+                EditorGUILayout.SelectableLabel(Log.ToStringReverse(), GUILayout.Height(Log.Count < 100 ? Log.Count : 100 * EditorGUIUtility.singleLineHeight));
+                EditorGUILayout.EndScrollView();
             } else {
                 EditorGUILayout.LabelField("faled get Instance");
             }

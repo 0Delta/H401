@@ -83,7 +83,9 @@ public class RankingMGR : MonoBehaviour {
         ReturnBtnObj = InstantiateChild(ReturnButtonName,false);
         OfflineObj = InstantiateChild(OfflinePrefabName, false);
         OnlineObj = null;   // オンラインオブジェは初期化しない
-        
+
+        ScoreWordMGR Sword = new ScoreWordMGR();
+        Sword.Load();
 
         // ランキングのフリップ処理
         this.UpdateAsObservable()

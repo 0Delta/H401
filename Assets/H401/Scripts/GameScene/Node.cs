@@ -14,18 +14,12 @@ public class Node : MonoBehaviour {
     static private readonly float ROT_HEX_ANGLE = 60.0f;      // 六角形パネルの回転角度
     static private readonly float IN_ACTION_POSZ = -0.5f;     // アクション中のZ座標
 
-    [SerializeField]
-    private float actionTime = 0.0f;       // アクションにかかる時間
-    [SerializeField]
-    private float scaleSize  = 0.0f;       // タップ時の拡大サイズ
-    [SerializeField]
-    private float slideTime  = 0.0f;       // スライド時の移動にかかる時間
-    [SerializeField]
-    private float slideStartTime  = 0.0f;       // スライド開始時の移動にかかる時間
-    [SerializeField]
-    private float slideEndTime  = 0.0f;       // スライド終了時の移動にかかる時間
-    [SerializeField]
-    private float colorDuration = 0.0f;
+    [SerializeField]    private float actionTime = 0.0f;       // アクションにかかる時間
+    [SerializeField]    private float scaleSize  = 0.0f;       // タップ時の拡大サイズ
+    [SerializeField]    private float slideTime  = 0.0f;       // スライド時の移動にかかる時間
+    [SerializeField]    private float slideStartTime  = 0.0f;  // スライド開始時の移動にかかる時間
+    [SerializeField]    private float slideEndTime  = 0.0f;    // スライド終了時の移動にかかる時間
+    [SerializeField]    private float colorDuration = 0.0f;
 
     static private NodeController nodeControllerScript = null;      // NodeController のスクリプト
 
@@ -288,8 +282,6 @@ public class Node : MonoBehaviour {
                 }
             });
         transform.DOMoveY(pos.y, time);
-
-        //nodeControllerScript.RemoveUnChainCube();
     }
     public void StopTween() {
         transform.DOKill();
@@ -320,12 +312,8 @@ public class Node : MonoBehaviour {
                     Negibor[n] = true;
                 } else {
                     // ノードがあれば、自分と接している場所を見て、取得する。
-                    if(!nodeControllerScript.GetNodeScript(Target).IsAction) {
-                        TgtNode.BitLinkRotate(TgtNode.RotCounter); // 隣の情報を更新
-                        Negibor[n] = nodeControllerScript.GetNodeScript(Target).bitLink[(n + 3 >= 6) ? (n + 3 - 6) : (n + 3)];
-                    } else {
-                        Negibor[n] = false; // アクション中は繋がってない判定
-                    }
+                    TgtNode.BitLinkRotate(TgtNode.RotCounter); // 隣の情報を更新
+                    Negibor[n] = nodeControllerScript.GetNodeScript(Target).bitLink[(n + 3 >= 6) ? (n + 3 - 6) : (n + 3)];
                 }
             } else {
                 // 壁だったら繋がっている判定
@@ -538,7 +526,7 @@ public class Node : MonoBehaviour {
         RotCounter = copy.RotCounter;
         ChangeEmissionColor(0);
         ForceRotation = true;
-        CheckOutPuzzle();       // 初回だけ手動
+        CheckOutPuzzle();
     }
 
     public void ChangeEmissionColor(int colorNum) {

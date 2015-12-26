@@ -147,7 +147,7 @@ namespace CustomDebugLog {
         }
         #endregion
 
-        #region 各種ログ吐き出し用関数
+        #region // 各種ログ吐き出し用関数
         /// <summary>
         /// [T]Message の形式で全てのログを吐き出します
         /// </summary>
@@ -187,8 +187,11 @@ namespace CustomDebugLog {
         public string ToStringReverse() {
             string ret = "";
             LogDat.Reverse();
+            int Limit = 0;
             foreach(var it in LogDat) {
                 ret += it.ToStringCVS();
+                if(++Limit > 100) { break; };
+            
             }
             LogDat.Reverse();
             return ret;
@@ -219,6 +222,11 @@ namespace CustomDebugLog {
             return ret;
         }
         #endregion
+
+        /// <summary>
+        /// 格納されているログの総数を返します
+        /// </summary>
+        public int Count { get { return LogDat.Count; } }
     }
 
     /// <summary>
