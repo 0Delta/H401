@@ -38,4 +38,8 @@ public class MapField : MonoBehaviour {
         levelPanel.ChangeText(_mapNum);
         //色変えとかここに
     }
+    void OnTriggerEnter(Collider col)
+    {
+        SetLevel();
+    }
 }
