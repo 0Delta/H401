@@ -66,7 +66,7 @@ namespace CustomDebugLog {
             /// CVSを作成するのに使用します
             /// </summary>
             public string ToStringCVS() {
-                return type.ToString() + " , " + message + "\n";
+                return type.ToString() + "\t" + message + "\n";
             }
         }
         #endregion
@@ -184,13 +184,13 @@ namespace CustomDebugLog {
         /// <summary>
         /// [T]Message の形式で全てのログを逆順で吐き出します
         /// </summary>
-        public string ToStringReverse() {
+        public string ToStringReverse(int Lim = int.MaxValue) {
             string ret = "";
             LogDat.Reverse();
             int Limit = 0;
             foreach(var it in LogDat) {
                 ret += it.ToStringCVS();
-                if(++Limit > 100) { break; };
+                if(++Limit > Lim) { break; };
             
             }
             LogDat.Reverse();

@@ -184,6 +184,7 @@ public class EditorExWindow : EditorWindow {
 
     int SelectLogIdx;
     private static Vector2 ScrollPos = new Vector2();
+    int Exported = 0;
 
     [MenuItem("Window/CDebugLogConsole")]
     static void Open() {
@@ -200,12 +201,21 @@ public class EditorExWindow : EditorWindow {
             SelectLogIdx = EditorGUILayout.Popup(SelectLogIdx, LogList, GUILayout.ExpandWidth(true));
             CustomDebugLog.CDebugLog Log;
             CustomDebugLog.CDebugLog.InstanceList.TryGetValue(LogList[SelectLogIdx], out Log);
+            var ExportBtn = GUILayout.Button("Export", GUILayout.ExpandWidth(true));
             if(Log != null) {
                 ScrollPos = EditorGUILayout.BeginScrollView(ScrollPos);
-                EditorGUILayout.SelectableLabel(Log.ToStringReverse(), GUILayout.Height(Log.Count < 100 ? Log.Count : 100 * EditorGUIUtility.singleLineHeight));
+                EditorGUILayout.SelectableLabel(Log.ToStringReverse(100), GUILayout.Height(Log.Count < 100 ? Log.Count : 100 * EditorGUIUtility.singleLineHeight));
                 EditorGUILayout.EndScrollView();
             } else {
                 EditorGUILayout.LabelField("faled get Instance");
+            }
+
+            // ExportBtn
+            if(ExportBtn && Exported <= 0) {
+                Exported = 20;
+                System.IO.File.WriteAllText(Application.persistentDataPath + "/" + LogList[SelectLogIdx] + ".log", Log.ToStringReverse());
+            } else if(Exported > 0) {
+                Exported--;
             }
         }
     }
