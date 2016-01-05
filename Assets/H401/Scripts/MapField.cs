@@ -62,4 +62,9 @@ public class MapField : MonoBehaviour {
     {
         SetLevel();
     }
+
+    void SetColor()
+    {
+
+    }
 }
