@@ -4,17 +4,21 @@
 	{
 		_MainTex ("Texture", 2D) = "white" {}
 		_HighLightCol("HighLightCol",Color) = (1,1,1,1)
-		_HightLightPos("HighLightPos",vector) = (0.0,0.0,0.0)
-
+		_HighLightPos("HighLightPos",vector) = (0.0,0.0,0.0,0.0)
 		_RateCnt("RateCount",Range(0,1)) = 0.0
 	}
 	SubShader
 	{
-		Tags { "RenderType"="Opaque" }
-		LOD 100
+		Tags {
+			"RenderType"="Transparent" 
+			"Queue" = "Transparent"
+		}
+		Blend SrcAlpha OneMinusSrcAlpha // Alpha blending
+		//LOD 100
 
 		Pass
 		{
+			ColorMask RGB 
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
@@ -40,7 +44,7 @@
 			float4 _MainTex_ST;
 
 			float4 _HighLightCol;
-			float3 _HightLightPos;
+			float2 _HighLightPos;
 			float _Rate;
 			float _RateCnt;
 
@@ -56,9 +60,12 @@
 			fixed4 frag (v2f i) : SV_Target
 			{
 				// sample the texture
-				_Rate = 90.0f;
+				_Rate = 0.2f;
+				float2 pxRatePos;
+				pxRatePos.x = i.vertex.x / (float)_ScreenParams.x;
+				pxRatePos.y = i.vertex.y / (float)_ScreenParams.y;
 
-				float distRate = distance(i.vertex ,mul(UNITY_MATRIX_MVP,_HightLightPos)) % _Rate;
+				float distRate = distance(float2(_HighLightPos.x,_HighLightPos.y),pxRatePos) % _Rate;
 				distRate /= _Rate;
 
 
@@ -67,10 +74,9 @@
 				UNITY_APPLY_FOG(i.fogCoord, col);
 
 				distRate += _RateCnt;
-				distRate > 1.0f ? distRate - 1.0f : distRate;
-				
+				distRate %= 1.0f;
 					
-				col = col * (1.0f -distRate)+ _HighLightCol * distRate; 
+				col = col * (1.0f -distRate) + _HighLightCol * distRate; 
 
 				return col;
 			}

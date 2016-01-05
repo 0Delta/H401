@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: 512px_texture
+  m_Name: map2mat 1
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _ALPHABLEND_ON
   m_LightmapFlags: 5
@@ -131,7 +131,7 @@ Material:
       data:
         first:
           name: _RateCnt
-        second: 0
+        second: 0.10999819
     m_Colors:
       data:
         first:
@@ -148,4 +148,12 @@ Material:
       data:
         first:
           name: _HightLightPos
+        second: {r: -61.605007, g: 266.06607, b: 0, a: 0}
+      data:
+        first:
+          name: _HightLidghtPos
         second: {r: 0, g: 0, b: 0, a: 1}
+      data:
+        first:
+          name: _HighLightPos
+        second: {r: 0.6031227, g: 0.5849863, b: 0, a: 0}
