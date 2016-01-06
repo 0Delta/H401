@@ -812,7 +812,7 @@ public class NodeController : MonoBehaviour {
 		Vector2 pos         = tapPos;      // 移動位置
         Vector2 standardPos = tapPos;
 		Vec2Int nextNodeID  = Vec2Int.zero;     // 検索用ノードIDテンポラリ
-
+        unChainController.RemoveWithNode(tapNodeID);
 		switch (slideDir) {
 			case _eSlideDir.LEFT:
 			case _eSlideDir.RIGHT:
@@ -825,6 +825,7 @@ public class NodeController : MonoBehaviour {
 				for(int i = 1; nextNodeID.x > -1; ++i) {
 					pos.x = standardPos.x - moveNodeDistAbs.x * i;
 					gameNodeScripts[nextNodeID.y][nextNodeID.x].SlideNode(slideDir, pos);
+                    unChainController.RemoveWithNode(nextNodeID);
 					nextNodeID = GetDirNode(nextNodeID, _eLinkDir.L);
 				}
 				// タップしているノードより右側のノードを移動
@@ -832,6 +833,7 @@ public class NodeController : MonoBehaviour {
 				for(int i = 1; nextNodeID.x > -1; ++i) {
 					pos.x = standardPos.x + moveNodeDistAbs.x * i;
 					gameNodeScripts[nextNodeID.y][nextNodeID.x].SlideNode(slideDir, pos);
+                    unChainController.RemoveWithNode(nextNodeID);
 					nextNodeID = GetDirNode(nextNodeID, _eLinkDir.R);
 		}
 
@@ -849,6 +851,7 @@ public class NodeController : MonoBehaviour {
 					pos.x = standardPos.x - moveNodeDistAbs.x * i;
 					pos.y = standardPos.y + moveNodeDistAbs.y * i;
 					gameNodeScripts[nextNodeID.y][nextNodeID.x].SlideNode(slideDir, pos);
+                    unChainController.RemoveWithNode(nextNodeID);
 					nextNodeID = GetDirNode(nextNodeID, _eLinkDir.LU);
 				}
 				// タップしているノードより右下側のノードを移動
@@ -857,6 +860,7 @@ public class NodeController : MonoBehaviour {
 					pos.x = standardPos.x + moveNodeDistAbs.x * i;
 					pos.y = standardPos.y - moveNodeDistAbs.y * i;
 					gameNodeScripts[nextNodeID.y][nextNodeID.x].SlideNode(slideDir, pos);
+                    unChainController.RemoveWithNode(nextNodeID);
 					nextNodeID = GetDirNode(nextNodeID, _eLinkDir.RD);
 	}
 				break;
@@ -873,6 +877,7 @@ public class NodeController : MonoBehaviour {
 					pos.x = standardPos.x + moveNodeDistAbs.x * i;
 					pos.y = standardPos.y + moveNodeDistAbs.y * i;
 					gameNodeScripts[nextNodeID.y][nextNodeID.x].SlideNode(slideDir, pos);
+                    unChainController.RemoveWithNode(nextNodeID);
 					nextNodeID = GetDirNode(nextNodeID, _eLinkDir.RU);
 				}
 				// タップしているノードより左下側のノードを移動
@@ -881,6 +886,7 @@ public class NodeController : MonoBehaviour {
 					pos.x = standardPos.x - moveNodeDistAbs.x * i;
 					pos.y = standardPos.y - moveNodeDistAbs.y * i;
 					gameNodeScripts[nextNodeID.y][nextNodeID.x].SlideNode(slideDir, pos);
+                    unChainController.RemoveWithNode(nextNodeID);
 					nextNodeID = GetDirNode(nextNodeID, _eLinkDir.LD);
 		}
 				break;
