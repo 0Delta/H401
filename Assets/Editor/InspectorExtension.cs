@@ -108,7 +108,14 @@ public class NodeController_Editor : PropertyDrawer {
                 Mat = Resources.Load<Material>(path);
                 if(Mat != null) {
                     texture = Mat.GetTexture("_MainTex") as Texture2D;
-                    texture.filterMode = FilterMode.Point;
+                    try {
+                        texture.filterMode = FilterMode.Point;
+                    }
+                    catch(System.NullReferenceException) {
+                        TrueTex = false;
+                        Debug.LogWarning("Failed Load Texture from Material. \n Please Set Texture");
+                        return;
+                    }
                     MatBak = path;
                     TrueTex = true;
                 }
