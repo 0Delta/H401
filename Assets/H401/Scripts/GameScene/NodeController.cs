@@ -325,6 +325,7 @@ public class NodeController : MonoBehaviour {
                 
                 // タップ成功
                 isTap = true;
+                Log.Debug("MouseButtonDown");
 
                 Vector3 worldTapPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 startTapPos = new Vector2(worldTapPos.x, worldTapPos.y);
@@ -343,6 +344,7 @@ public class NodeController : MonoBehaviour {
                 
                 // タップ終了
                 isTap = false;
+                Log.Debug("MouseButtonUp");
 
                 if(isSlide) {
                     AdjustNodeStop();
@@ -366,7 +368,7 @@ public class NodeController : MonoBehaviour {
             .Select(x => !(isNodeAction | isSlide))
             .DistinctUntilChanged()
             .Where(x => x)
-            .ThrottleFrame(10)
+            .ThrottleFrame(2)
             .Subscribe(x => {
                 CheckLink();
             })
