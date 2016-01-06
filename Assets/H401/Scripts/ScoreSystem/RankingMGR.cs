@@ -40,12 +40,13 @@ public class RankingMGR : MonoBehaviour {
     [SerializeField] public string CameraPrefabName;
     [SerializeField] public string ReturnButtonName;
 
-    GameObject ScoreObj;
-    GameObject OnlineObj;
-    GameObject OfflineObj;
-    GameObject BGObj;
-    GameObject CameraObj;
-    GameObject ReturnBtnObj;
+    GameObject ScoreObj = null;
+    GameObject OnlineObj = null;
+    GameObject OfflineObj = null;
+    GameObject BGObj = null;
+    GameObject CameraObj = null;
+    GameObject ReturnBtnObj = null;
+    ScoreWordMGR Sword = new ScoreWordMGR();
     private bool FlipRanking = false;
     public enum RANKING_MODE : byte{
         OFFLINE = 0,
@@ -83,8 +84,6 @@ public class RankingMGR : MonoBehaviour {
         ReturnBtnObj = InstantiateChild(ReturnButtonName,false);
         OfflineObj = InstantiateChild(OfflinePrefabName, false);
         OnlineObj = null;   // オンラインオブジェは初期化しない
-
-        ScoreWordMGR Sword = new ScoreWordMGR();
         Sword.Load();
 
         // ランキングのフリップ処理

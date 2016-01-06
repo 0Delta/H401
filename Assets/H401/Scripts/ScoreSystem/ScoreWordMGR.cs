@@ -1,12 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
+/// <summary>
+/// スコアに使用する文字スプライトの制御
+/// </summary>
 public class ScoreWordMGR {
-    
-    Sprite[] NumSprite = null;
-    Sprite[] AlpSprite = null;
 
-    public int Load () {
+    static Sprite[] NumSprite = null;
+    static Sprite[] AlpSprite = null;
+
+    /// <summary>
+    /// スプライトを読み込みます
+    /// </summary>
+    /// <returns>成功で0、失敗で-1以下が帰ります</returns>
+    public int Load() {
         int ret = 0;
         NumSprite = Resources.LoadAll<Sprite>("Sprites/Ranking_Number");
         AlpSprite = Resources.LoadAll<Sprite>("Sprites/Ranking_Alphabet");
@@ -29,5 +37,75 @@ public class ScoreWordMGR {
         }
         return ret;
     }
-	
+
+    /// <summary>
+    /// 数字のスプライトを取得します
+    /// </summary>
+    /// <param name="Index">0-9:対応した数値のスプライト　10:透明なスプライト</param>
+    /// <returns>指定したスプライト、エラーでNULLが帰ります</returns>
+    Sprite Number(int Index) {
+        if(Index > NumSprite.Length || 0 > Index) {
+            return null;
+        }
+        return NumSprite[Index];
+    }
+
+    /// <summary>
+    /// 英語(st,nd,rd,th)のスプライトを取得します
+    /// </summary>
+    /// <param name="Index">1:st 2:nd 3:rd 4:th</param>
+    /// <returns>指定したスプライト、エラーでNULLが帰ります</returns>
+    Sprite Alphabet(int Index) {
+        if(Index <= 0) {
+            return null;
+        } else {
+            Index--;
+        }
+        if(Index > AlpSprite.Length) {
+            return null;
+        }
+        return AlpSprite[Index];
+    }
+
+    public static void Draw(string Word,Transform pear,float Height) {
+
+        // Cancas作る
+        var pobj = new GameObject();
+        var canv = pobj.AddComponent<Canvas>();
+        canv.name = "NumberCanvas";
+        canv.transform.SetParent(pear);
+
+        // Canvasのサイズ調整
+        Vector3 pSize = NumSprite[0].rect.size;
+        pSize.x *= Word.Length;
+        var ptrans = pobj.GetComponentInChildren<RectTransform>();
+        ptrans.sizeDelta = pSize;
+
+        for(int digit = 0; digit < Word.Length; digit++) {
+            // 数字のスプライト作る
+            if(Word[digit] < '0' || '9' < Word[digit]) {
+                continue;
+            }
+            int Num = Word[digit] - '0';
+            var obj = new GameObject();
+            obj.name = "Num" + digit.ToString();
+            obj.transform.SetParent(canv.transform);
+
+            var trans = obj.AddComponent<RectTransform>();
+            // サイズを設定
+            trans.sizeDelta = NumSprite[Num].rect.size;
+            // 位置を設定
+            trans.anchorMax = new Vector2(0, 0.5f);
+            trans.anchorMin = new Vector2(0, 0.5f);
+            Vector2 anchoedPos = Vector2.zero;
+            anchoedPos.x = (NumSprite[Num].rect.size.x / 2f) + (NumSprite[Num].rect.size.x * digit);
+            trans.anchoredPosition = anchoedPos;
+
+            var img = obj.AddComponent<Image>();
+            img.sprite = NumSprite[Num];
+        }
+
+        // 最後にCanvasごとサイズ調整
+        ptrans.localScale = new Vector3(Height / ptrans.sizeDelta.y, Height / ptrans.sizeDelta.y, 1);
+    }
 }

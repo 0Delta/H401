@@ -45,7 +45,7 @@ public class Node : MonoBehaviour {
                                                 // 4   1
                                                 //  3 2  とする
 
-    public Vec2Int[] ChainNodes = new Vec2Int[5];
+    //public Vec2Int[] ChainNodes = new Vec2Int[5];
 
     private MeshRenderer meshRenderer = null;
     public NodeTemplate Temp = null;               // 使用したテンプレート
@@ -166,7 +166,6 @@ public class Node : MonoBehaviour {
 
     // Update is called once per frame
     private void Update() {
-
     }
 
     public override string ToString() {
@@ -184,7 +183,6 @@ public class Node : MonoBehaviour {
 
     #region // ノードの回転
     // ノード回転処理
-    static private Vector3 RotationNodeTempVec = new Vector3();
     public void RotationNode(bool NoWait = false, bool Reverse = false) {
         // 画面外ノードなら未処理
         if(isOutScreen)
@@ -206,6 +204,7 @@ public class Node : MonoBehaviour {
                 RotCounter = RotCounter + 4;
             }
             RotCounter = RotCounter + 1;
+            BitLinkRotate(_RotCounter);
             // 強制離脱
             return;
         }
@@ -289,7 +288,6 @@ public class Node : MonoBehaviour {
     public void StartSlide() {
         _isSlideStart = true;
     }
-
     public void EndSlide() {
         _isSlideEnd = true;
     }
@@ -466,6 +464,9 @@ public class Node : MonoBehaviour {
         //ランダムに回転
         int RotI = RandomEx.RangeforInt(0, 6);
         RotCounter = (Rot == -1 ? RotI : Rot);
+
+        // 色をリセット
+        ChangeEmissionColor(0);
     }
 
 
@@ -519,8 +520,6 @@ public class Node : MonoBehaviour {
 
 
     public void CopyParameter(Node copy) {
-        //meshRenderer.material = copy.meshRenderer.material;
-        //bitLink = copy.bitLink;
         NodeDebugLog += "Copy from " + copy.ToString() + "\n";
         transform.rotation = copy.transform.rotation;
         RotCounter = copy.RotCounter;
