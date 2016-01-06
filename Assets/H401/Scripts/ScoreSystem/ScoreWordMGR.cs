@@ -67,9 +67,9 @@ public class ScoreWordMGR {
         return AlpSprite[Index];
     }
 
-    public static void Draw(string Word,Transform pear,float Height) {
+    public static Canvas Draw(string Word,Transform pear,float Height) {
 
-        // Cancas作る
+        // Canvas作る
         var pobj = new GameObject();
         var canv = pobj.AddComponent<Canvas>();
         canv.name = "NumberCanvas";
@@ -107,5 +107,65 @@ public class ScoreWordMGR {
 
         // 最後にCanvasごとサイズ調整
         ptrans.localScale = new Vector3(Height / ptrans.sizeDelta.y, Height / ptrans.sizeDelta.y, 1);
+        return canv;
+    }
+
+
+    public static Canvas DrawRank(int Rank, Transform pear, float Height) {
+
+        // Canvas作る
+        var pobj = new GameObject();
+        var canv = pobj.AddComponent<Canvas>();
+        canv.name = "RankCanvas";
+        canv.transform.SetParent(pear);
+
+        // Canvasのサイズ調整
+        Vector3 pSize = AlpSprite[0].rect.size;
+        pSize.x += NumSprite[0].rect.size.x;
+        var ptrans = pobj.GetComponentInChildren<RectTransform>();
+        ptrans.sizeDelta = pSize;
+
+        // 数字のスプライト作る
+        int Num = Rank.ToString()[0] - '0';
+        var obj = new GameObject();
+        obj.name = "Num";
+        obj.transform.SetParent(canv.transform);
+
+        var trans = obj.AddComponent<RectTransform>();
+        // サイズを設定
+        trans.sizeDelta = NumSprite[Num].rect.size;
+        // 位置を設定
+        trans.anchorMax = new Vector2(0, 0.5f);
+        trans.anchorMin = new Vector2(0, 0.5f);
+        Vector2 anchoedPos = Vector2.zero;
+        anchoedPos.x = (NumSprite[Num].rect.size.x / 2f);
+        trans.anchoredPosition = anchoedPos;
+
+        var img = obj.AddComponent<Image>();
+        img.sprite = NumSprite[Num];
+
+        // 英語のスプライト作る
+        Num = Num > 4 ? 4 : Num;
+        Num -= 1;
+        obj = new GameObject();
+        obj.name = "Alp";
+        obj.transform.SetParent(canv.transform);
+
+        trans = obj.AddComponent<RectTransform>();
+        // サイズを設定
+        trans.sizeDelta = AlpSprite[Num].rect.size;
+        // 位置を設定
+        trans.anchorMax = new Vector2(1, 0.5f);
+        trans.anchorMin = new Vector2(1, 0.5f);
+        anchoedPos = Vector2.zero;
+        anchoedPos.x = -(AlpSprite[Num].rect.size.x / 2f);
+        trans.anchoredPosition = anchoedPos;
+
+        img = obj.AddComponent<Image>();
+        img.sprite = AlpSprite[Num];
+
+        // 最後にCanvasごとサイズ調整
+        ptrans.localScale = new Vector3(Height / ptrans.sizeDelta.y, Height / ptrans.sizeDelta.y, 1);
+        return canv;
     }
 }
