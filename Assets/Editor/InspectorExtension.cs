@@ -108,7 +108,7 @@ public class NodeController_Editor : PropertyDrawer {
                 Mat = Resources.Load<Material>(path);
                 if(Mat != null) {
                     texture = Mat.GetTexture("_MainTex") as Texture2D;
-                    texture.filterMode = FilterMode.Point;
+                    //texture.filterMode = FilterMode.Point;
                     MatBak = path;
                     TrueTex = true;
                 }

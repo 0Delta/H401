@@ -436,7 +436,7 @@ public class NodeController : MonoBehaviour {
             .Select(_ => !(isNodeAction | isSlide))
             .DistinctUntilChanged()
             .Where(x => x)
-            .ThrottleFrame(10)
+            .ThrottleFrame(2)
             .Subscribe(_ => {
                 CheckLink();
                 unChainController.Remove();

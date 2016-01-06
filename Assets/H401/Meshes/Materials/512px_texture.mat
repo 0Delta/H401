@@ -7,12 +7,12 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: 512px_texture
-  m_Shader: {fileID: 4800000, guid: bb2d6ca008192eb4d9956f7d6c981f60, type: 3}
-  m_ShaderKeywords: _ALPHABLEND_ON
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: _ALPHATEST_ON
   m_LightmapFlags: 5
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: 2450
   stringTagMap:
-    RenderType: Transparent
+    RenderType: TransparentCutout
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
@@ -20,7 +20,7 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: 3d467594f8a664544a461a6a4ad12d9c, type: 3}
+          m_Texture: {fileID: 2800000, guid: 4e3ba76a3dcce8c4baeea571931dd77e, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -83,11 +83,11 @@ Material:
       data:
         first:
           name: _SrcBlend
-        second: 5
+        second: 1
       data:
         first:
           name: _DstBlend
-        second: 10
+        second: 0
       data:
         first:
           name: _Cutoff
@@ -98,12 +98,20 @@ Material:
         second: 0.02
       data:
         first:
-          name: _ZWrite
+          name: _RateCnt
         second: 0
       data:
         first:
           name: _Glossiness
         second: 0.5
+      data:
+        first:
+          name: _Metallic
+        second: 0
+      data:
+        first:
+          name: _ZWrite
+        second: 1
       data:
         first:
           name: _BumpScale
@@ -123,15 +131,7 @@ Material:
       data:
         first:
           name: _Mode
-        second: 2
-      data:
-        first:
-          name: _Metallic
-        second: 0
-      data:
-        first:
-          name: _RateCnt
-        second: 0
+        second: 1
     m_Colors:
       data:
         first:
@@ -147,9 +147,9 @@ Material:
         second: {r: 1, g: 1, b: 1, a: 1}
       data:
         first:
-          name: _HightLightPos
-        second: {r: 0, g: 0, b: 0, a: 1}
-      data:
-        first:
           name: _HighLightPos
         second: {r: 0, g: 0, b: 0, a: 0}
+      data:
+        first:
+          name: _HightLightPos
+        second: {r: 0, g: 0, b: 0, a: 1}
