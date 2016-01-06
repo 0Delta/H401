@@ -420,6 +420,14 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 4c2aaf609db2b1f4d8dc1d2b13f7608e,
         type: 3}
+    - target: {fileID: 0}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_PreserveAspect
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 153866}
