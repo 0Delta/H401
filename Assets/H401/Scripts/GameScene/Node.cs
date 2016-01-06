@@ -28,17 +28,48 @@ public class Node : MonoBehaviour {
     {
         get { return nodeID; }
     }
-    private bool isAction = false;            // アクションフラグ
+
+    #region // ノードが動いているかのフラグセット
+    [System.Flags]
+    enum ActionFlag {
+        WAIT = 0,
+        SLIDE_START = 1 << 0,
+        SLIDING = 1 << 1,
+        SLIDE_END = 1 << 2,
+        TURNING = 1 << 3,
+        ALL = (1 << 4) - 1,
+    }
+    ActionFlag ActStatus;
+
     public bool IsAction
     {
-        set { isAction = value; }
-        get { return isAction; }
+        get { return ActStatus != 0; }
     }
-    private bool isSlide     = false;           // スライドフラグ
+    public bool IsSlideStart
+    {
+        set { if(value) { ActStatus &= ActionFlag.SLIDE_START; } else { ActStatus &= (ActionFlag.ALL ^ ActionFlag.SLIDE_START); } }
+        get { return (ActStatus & ActionFlag.SLIDE_START) != 0; }
+    }
+    public bool IsSlide
+    {
+        set { if(value) { ActStatus &= ActionFlag.SLIDING; } else { ActStatus &= (ActionFlag.ALL ^ ActionFlag.SLIDING); } }
+        get { return (ActStatus & ActionFlag.SLIDING) != 0; }
+    }
+    public bool IsSlideEnd
+    {
+        set { if(value) { ActStatus &= ActionFlag.SLIDE_END; } else { ActStatus &= (ActionFlag.ALL ^ ActionFlag.SLIDE_END); } }
+        get { return (ActStatus & ActionFlag.SLIDE_END) != 0; }
+    }
+
+    public bool IsTurning
+    {
+        set { if(value) { ActStatus &= ActionFlag.TURNING; } else { ActStatus &= (ActionFlag.ALL ^ ActionFlag.TURNING); } }
+        get { return (ActStatus & ActionFlag.TURNING) != 0; }
+    }
+    #endregion
+
     private bool isOutScreen = false;           // 画面外フラグ
     private bool isOutPuzzle = false;           // パズル外フラグ
-    private bool _isSlideStart = false;         // スライド開始演出(easing)フラグ
-    private bool _isSlideEnd = false;           // スライド終了演出(easing)フラグ
 
     public BitArray bitLink = new BitArray(6);  //道の繋がりのビット配列　trueが道
                                                 //  5 0
@@ -83,16 +114,6 @@ public class Node : MonoBehaviour {
         set { isOutScreen = value; }
         get { return isOutScreen; }
     }
-    public bool isSlideStart
-    {
-        set { _isSlideStart = value; }
-        get { return _isSlideStart; }
-    }
-    public bool isSlideEnd
-    {
-        set { _isSlideEnd = value; }
-        get { return _isSlideEnd; }
-    }
     public bool IsOutPuzzle
     {
         get { return isOutPuzzle; }
@@ -120,7 +141,7 @@ public class Node : MonoBehaviour {
         // Transformを矯正
         Observable
             .EveryUpdate()
-            .Select(_ => !(isAction || isSlide))
+            .Select(_ => !(IsAction || IsSlide))
             .DistinctUntilChanged()
             .Select(x => x)
             .ThrottleFrame(5)
@@ -138,12 +159,12 @@ public class Node : MonoBehaviour {
             .Subscribe(_ => {
                 NodeDebugLog += "Rotation : " + _RotCounter + "\n";
                 ForceRotation = false;                                              // 強制回転フラグ折る
-                isAction = true;                                                    // アクション開始
+                IsTurning = true;                                                    // アクション開始
                 Vector3 Rot = new Vector3(0, 0, ROT_HEX_ANGLE * (6 - RotCounter));  // 回転角確定
                 transform.DOLocalRotate(Rot, actionTime)                            // DoTweenで回転
                 .OnComplete(() => {
                     BitLinkRotate(_RotCounter);                                     // 終了と同時にビット変更、アクション終了。
-                    isAction = false;
+                    IsTurning = false;
                     nodeControllerScript.unChainController.Remove();                // unChain更新
                 });
             }).AddTo(this);
@@ -189,7 +210,7 @@ public class Node : MonoBehaviour {
             return;
 
         // スライド中なら回転・拡縮は未処理
-        if(isSlide)
+        if(IsSlide)
             return;
 
         // ----- 回転処理
@@ -197,7 +218,7 @@ public class Node : MonoBehaviour {
         // ノーウエイト版。フィーバー時の配置に使用
         if(NoWait) {
             // アクションキャンセル
-            isAction = false;
+            IsTurning = false;
             // ビット配列まわして
             if(Reverse) {
                 // 逆回転なら4回追加
@@ -254,16 +275,15 @@ public class Node : MonoBehaviour {
             return;
 
         // アクション開始
-        isAction = true;
-        isSlide = true;
+        IsSlide = true;
 
         transform.DOKill();
 
         float time = 0.0f;
-        if(_isSlideStart) {
+        if(IsSlideStart) {
             time = slideStartTime;
             transform.DOMoveZ(IN_ACTION_POSZ, 0.0f);
-        } else if(_isSlideEnd) {
+        } else if(IsSlideEnd) {
             time = slideEndTime;
         } else {
             time = slideTime;
@@ -271,12 +291,11 @@ public class Node : MonoBehaviour {
 
         transform.DOMoveX(pos.x, time)
             .OnComplete(() => {
-                isAction = false;
-                isSlide = false;
-                if(_isSlideStart)
-                    _isSlideStart = false;
-                if(_isSlideEnd) {
-                    _isSlideEnd = false;
+                IsSlide = false;
+                if(IsSlideStart)
+                    IsSlideStart = false;
+                if(IsSlideEnd) {
+                    IsSlideEnd = false;
                     transform.DOMoveZ(0.0f, 0.0f);
                 }
             });
@@ -286,10 +305,10 @@ public class Node : MonoBehaviour {
         transform.DOKill();
     }
     public void StartSlide() {
-        _isSlideStart = true;
+        IsSlideStart = true;
     }
     public void EndSlide() {
-        _isSlideEnd = true;
+        IsSlideEnd = true;
     }
     #endregion
 
