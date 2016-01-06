@@ -3,16 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class UnChainController : MonoBehaviour {
+    private static readonly CustomDebugLog.CDebugLog Log = new CustomDebugLog.CDebugLog("UnChainController");
 
     //枝途切れ字のオブジェクトはこっちで管理する
     [SerializeField]private string unChainCubePath = null;
-    [SerializeField]private float linkDistance;     //ノードとこのオブジェクトの距離
+    [SerializeField]private float linkDistance = 0; //ノードとこのオブジェクトの距離
     private GameObject unChainCubePrefab = null;    //枝未完成協調表示のためのオブジェクト
 
     private List<UnChainObject> unChainCubeList;
 
 	// Use this for initialization
 	void Start () {
+        Log.Info("Start");
         unChainCubePrefab = Resources.Load<GameObject>(unChainCubePath);
 
         unChainCubeList = new List<UnChainObject>();
@@ -22,6 +24,7 @@ public class UnChainController : MonoBehaviour {
 
     public void AddObj(Node node, _eLinkDir linkTo)
     {
+        Log.Debug("AddObj : " + node + "/" + linkTo);
 
         //リストに同じものがあれば新規作成はしないように
         UnChainObject uc = unChainCubeList.Find(x =>
@@ -59,17 +62,19 @@ public class UnChainController : MonoBehaviour {
         List<UnChainObject> delList = new List<UnChainObject>();
         foreach (var cube in unChainCubeList)
         {
-
             //キューブにtweenを設定して消去
             if (cube.bChecked == false)
             {
                 delList.Add(cube);
                 cube.Vanish();
-            }
-            
+            }            
             cube.bChecked = false;
         }
         
+        if(delList.Count != 0) {
+            Log.Debug("Remove");
+        }
+
         //foreach中にリストをいじるとエラーになるようなので
         //別リストに渡して消去するように
         foreach(var delcube in delList)
@@ -79,6 +84,6 @@ public class UnChainController : MonoBehaviour {
     }
 	// Update is called once per frame
 	void Update () {
-	
-	}
+        Log.Info("Update");
+    }
 }

@@ -49,7 +49,6 @@ public class NodeController : MonoBehaviour {
     [SerializeField]    private NodeTemplate[] NodeTemp = null;
 
     private GameObject gameNodePrefab   = null;                 // ノードのプレハブ
-//    [SerializeField]    private RPrefab gameNodePrefab  = null;     
     private GameObject frameNodePrefab  = null;                 // フレームノードのプレハブ
     private GameObject floorNodePrefab  = null;                 // 下端ノードのプレハブ
     private GameObject treeControllerPrefab   = null;           // 完成ノードのプレハブ
