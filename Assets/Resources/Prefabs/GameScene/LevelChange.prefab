@@ -39,7 +39,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63c383944c9ec2b458b2ab7bbbff6647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldMapPath: Prefabs/GameScene/map_mesh3
+  fieldMapPath: Prefabs/GameScene/fieldMap
   subCameraPath: Prefabs/GameScene/SubCamera
   levelPanelPath: Prefabs/GameScene/LevelCanvas
 --- !u!1001 &100100000
@@ -67,7 +67,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: fieldMapPath
-      value: Prefabs/GameScene/map_mesh3
+      value: Prefabs/GameScene/fieldMap
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

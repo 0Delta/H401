@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class MapField : MonoBehaviour {
+
+    [SerializeField]private Color fieldColor;
  
     static private LevelPanel levelPanel;
     static public void SetPanel(LevelPanel panel) { levelPanel = panel; }
@@ -12,12 +14,11 @@ public class MapField : MonoBehaviour {
     public float rateCnt { get { return _rateCnt; } set { _rateCnt = value; } }
     private MeshRenderer mRenderer;//Material mat;
 
-
 	// Use this for initialization
 	void Start () {
         //mat = GetComponent<Material>();
         mRenderer = GetComponent<MeshRenderer>();
-        /*
+
         Camera sCamera = transform.parent.parent.GetComponent<LevelChange>().subCamera;
         Vector2 scPos = sCamera.WorldToScreenPoint(mRenderer.bounds.center);
         //左上が0,0になるように直す
@@ -26,16 +27,16 @@ public class MapField : MonoBehaviour {
         scPos.x /= (float)sCamera.pixelWidth;
         mRenderer.sharedMaterial.SetVector("_HighLightPos", new Vector4(scPos.x,scPos.y,0.0f,0.0f));
         rateCnt = 0.0f;
-         * */
+        
 	}
 	
 	// Update is called once per frame
 	void Update (){
-/*        rateCnt += 0.01f;
+        rateCnt += 0.01f;
         rateCnt %= 1.0f;
         mRenderer.sharedMaterial.SetFloat("_RateCnt", rateCnt);
 
-*/
+
 	}
     void RedirectedOnTriggerEnter(Collider collider)
     {
@@ -63,8 +64,8 @@ public class MapField : MonoBehaviour {
         SetLevel();
     }
 
-    void SetColor()
+    public void SetColor()
     {
-
+        //mRenderer.material.
     }
 }

@@ -10,16 +10,26 @@
 	SubShader
 	{
 		Tags {
-			"RenderType"="Transparent" 
+			"RenderType" = "Transparent" 
 			"Queue" = "Transparent"
 		}
-		Blend SrcAlpha OneMinusSrcAlpha // Alpha blending
-		//LOD 100
+		LOD 200
 
+		//Zバッファに書き込む
 		Pass
 		{
-			ColorMask RGB 
+		    ZWrite On
+            ColorMask 0
+			Lighting OFF
+		}
+
+		Pass{
+			ZWrite Off
+			ZTest LEqual
+
+			Blend SrcAlpha OneMinusSrcAlpha
 			CGPROGRAM
+
 			#pragma vertex vert
 			#pragma fragment frag
 			// make fog work
@@ -76,8 +86,7 @@
 				distRate += _RateCnt;
 				distRate %= 1.0f;
 					
-				col = col * (1.0f -distRate) + _HighLightCol * distRate; 
-
+				col.rgb = col.rgb * (1.0f -distRate) + _HighLightCol.rgb * distRate; 
 				return col;
 			}
 			ENDCG
