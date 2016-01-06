@@ -44,7 +44,7 @@ public class UnChainController : MonoBehaviour {
         //なかった場合、リストに追加
         GameObject newCube = Instantiate(unChainCubePrefab);
 
-        newCube.transform.position = new Vector3(0.0f,linkDistance, 0.0f);
+        newCube.transform.position = new Vector3(0.0f, linkDistance, 0.0f);
         float rotAngle = 60.0f * (int)linkTo + 30.0f;
         //        newCube.transform.Rotate(new Vector3(0.0f, 0.0f, -rotAngle), Space.World);
         newCube.transform.RotateAround(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f), -rotAngle);
@@ -67,23 +67,45 @@ public class UnChainController : MonoBehaviour {
             {
                 delList.Add(cube);
                 cube.Vanish();
-            }            
+            }
             cube.bChecked = false;
         }
-        
+            
         if(delList.Count != 0) {
             Log.Debug("Remove");
         }
-
+        
         //foreach中にリストをいじるとエラーになるようなので
         //別リストに渡して消去するように
-        foreach(var delcube in delList)
+        foreach (var delcube in delList)
         {
             unChainCubeList.Remove(delcube);
         }
     }
 	// Update is called once per frame
-	void Update () {
+    void Update()
+    {
         Log.Info("Update");
     }
+
+    //スライド操作時にスライドノードを指定して消去
+    public void RemoveWithNode(Vec2Int nodeID)
+    {
+        //IDが一致するものを消去
+
+        List<UnChainObject> delList;
+        delList = unChainCubeList.FindAll(x =>
+        {
+            if (x.nodeVec.x == nodeID.x && x.nodeVec.y == nodeID.y)
+                return true;
+            else
+                return false;
+        });
+
+        foreach (var ucObj in delList)
+        {
+            ucObj.Vanish();
+            unChainCubeList.Remove(ucObj);
+        }
+	}
 }

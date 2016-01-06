@@ -14,12 +14,15 @@ public class LevelChange : MonoBehaviour {
     public MapField[] mapField { get { return _mapFields; } }
     private LevelPanel _levelPanel;
     public LevelPanel levelPanel { get { return _levelPanel; } }
+    private Camera _subCamera;
+    public Camera subCamera { get { return _subCamera; } }
 
 	// Use this for initialization
     void Start()
     {
         Instantiate(Resources.Load<GameObject>(fieldMapPath)).transform.SetParent(transform);
-        GameObject subCamera = Instantiate(Resources.Load<GameObject>(subCameraPath));//.transform.SetParent(transform);
+        GameObject sCamera = Instantiate(Resources.Load<GameObject>(subCameraPath));//.transform.SetParent(transform);
+        _subCamera = sCamera.GetComponent<Camera>(); 
         GameObject lPanel = Instantiate(Resources.Load<GameObject>(levelPanelPath));
 
         lPanel.transform.SetParent(transform);
@@ -32,6 +35,13 @@ public class LevelChange : MonoBehaviour {
 
         LevelCanvas lCanvas = lPanel.GetComponent<LevelCanvas>();
         lCanvas.SetCamera(subCamera.GetComponent<Camera>(),_levelController.LyingAngle);
+
+        //mapfieldから各メッシュをエミッションでちかちかさせる
+        foreach(var mf in _mapFields)
+        {
+//            if()
+ //               mf.SetColor(true);
+        }
     }
 	// Update is called once per frame
 	void Update () {

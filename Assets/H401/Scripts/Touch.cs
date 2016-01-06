@@ -22,7 +22,7 @@ public class Touch : MonoBehaviour {
             if (Physics.Raycast(ray, out hit, distance))
             {
                 // rayが当たったオブジェクトの名前を取得
-                MapField mf = hit.collider.gameObject.transform.parent.gameObject.GetComponent<MapField>();
+                MapField mf = hit.collider.gameObject.GetComponent<MapField>();
                 if(mf)
                     mf.SetLevel();
             }
