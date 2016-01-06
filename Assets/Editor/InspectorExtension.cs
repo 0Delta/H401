@@ -199,8 +199,13 @@ public class EditorExWindow : EditorWindow {
             CustomDebugLog.CDebugLog.InstanceList.Keys.CopyTo(LogList, 0);
 
             SelectLogIdx = EditorGUILayout.Popup(SelectLogIdx, LogList, GUILayout.ExpandWidth(true));
-            CustomDebugLog.CDebugLog Log;
-            CustomDebugLog.CDebugLog.InstanceList.TryGetValue(LogList[SelectLogIdx], out Log);
+            CustomDebugLog.CDebugLog Log = null;
+            try {
+                CustomDebugLog.CDebugLog.InstanceList.TryGetValue(LogList[SelectLogIdx], out Log);
+            }
+            catch(System.IndexOutOfRangeException) {
+                SelectLogIdx = 0;
+            }
             var ExportBtn = GUILayout.Button("Export", GUILayout.ExpandWidth(true));
             if(Log != null) {
                 ScrollPos = EditorGUILayout.BeginScrollView(ScrollPos);
