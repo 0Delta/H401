@@ -57,6 +57,8 @@ public class MapField : MonoBehaviour {
         print("レベル選択：" + _mapNum.ToString());
         levelPanel.ChangeText(_mapNum);
         //色変えとかここに
+        transform.parent.parent.gameObject.GetComponent<LevelChange>().ChangeMapColor(mapNum);
+        SetColor();
 
     }
     void OnTriggerEnter(Collider col)
@@ -64,8 +66,19 @@ public class MapField : MonoBehaviour {
         SetLevel();
     }
 
+    public void SetColor(Color color)
+    {
+        if (!mRenderer)
+            mRenderer = GetComponent<MeshRenderer>();
+
+        mRenderer.sharedMaterial.SetColor("_HighLightCol", color);
+    }
     public void SetColor()
     {
-        //mRenderer.material.
+        if (!mRenderer)
+            mRenderer = GetComponent<MeshRenderer>();
+
+        mRenderer.sharedMaterial.SetColor("_HighLightCol", fieldColor);
     }
+
 }

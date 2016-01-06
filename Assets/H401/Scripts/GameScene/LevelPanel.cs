@@ -58,7 +58,9 @@ public class LevelPanel : MonoBehaviour {
             map.mapNum = i;
             i++;
         }
-    
+
+        fieldText.text = levelController.GetFieldName(transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().gameController.nodeController.currentLevel);
+
         MapField.SetPanel(this);
 
         transform.Rotate(new Vector3(0.0f, 0.0f, rot));

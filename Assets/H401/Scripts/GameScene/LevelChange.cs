@@ -8,6 +8,8 @@ public class LevelChange : MonoBehaviour {
     [SerializeField]private string subCameraPath = null;
     [SerializeField]private string levelPanelPath = null;
 
+    [SerializeField]private Color normalColor;
+
     private LevelController _levelController;
     public LevelController levelController { get { return _levelController; } set { _levelController = value; } }
     private MapField[] _mapFields;
@@ -37,10 +39,15 @@ public class LevelChange : MonoBehaviour {
         lCanvas.SetCamera(subCamera.GetComponent<Camera>(),_levelController.LyingAngle);
 
         //mapfieldから各メッシュをエミッションでちかちかさせる
+        int i = 0;
         foreach(var mf in _mapFields)
         {
-//            if()
- //               mf.SetColor(true);
+            if (i == transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().gameController.nodeController.currentLevel)
+                mf.SetColor();
+            else
+                mf.SetColor(normalColor);
+            mf.mapNum = i;
+            i++;
         }
     }
 	// Update is called once per frame
@@ -53,5 +60,20 @@ public class LevelChange : MonoBehaviour {
         gameScene.mainCamera.enabled = true;
         _levelController.EndComplete();
         
+    }
+
+    public void ChangeMapColor(int highLightNum)
+    {
+        int n = 0;
+        foreach(var mf in _mapFields)
+        {
+            if (n == highLightNum)
+            {
+                n++;
+                continue;
+            }
+            mf.SetColor(normalColor);
+            n++;
+        }
     }
 }

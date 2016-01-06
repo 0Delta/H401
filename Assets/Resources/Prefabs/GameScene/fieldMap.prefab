@@ -490,7 +490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef1e23db3da347c4f895b268cc7c865c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldColor: {r: 0, g: 0, b: 0, a: 0}
+  fieldColor: {r: 0.8014259, g: 0.65203285, b: 0.9852941, a: 0}
 --- !u!114 &11419682
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -502,7 +502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef1e23db3da347c4f895b268cc7c865c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldColor: {r: 0, g: 0, b: 0, a: 0}
+  fieldColor: {r: 0.66051185, g: 0.9705882, b: 0.6494377, a: 0}
 --- !u!114 &11432800
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -514,7 +514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef1e23db3da347c4f895b268cc7c865c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldColor: {r: 0, g: 0, b: 0, a: 0}
+  fieldColor: {r: 0.97492844, g: 0.99264705, b: 0.6714965, a: 0}
 --- !u!114 &11434042
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -526,7 +526,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef1e23db3da347c4f895b268cc7c865c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldColor: {r: 0, g: 0, b: 0, a: 0}
+  fieldColor: {r: 0.89705884, g: 0.639814, b: 0.639814, a: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

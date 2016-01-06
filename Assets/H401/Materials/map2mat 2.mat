@@ -98,20 +98,12 @@ Material:
         second: 0.02
       data:
         first:
-          name: _RateCnt
-        second: 0.6299997
+          name: _ZWrite
+        second: 0
       data:
         first:
           name: _Glossiness
         second: 0.5
-      data:
-        first:
-          name: _Metallic
-        second: 0
-      data:
-        first:
-          name: _ZWrite
-        second: 0
       data:
         first:
           name: _BumpScale
@@ -132,6 +124,14 @@ Material:
         first:
           name: _Mode
         second: 2
+      data:
+        first:
+          name: _Metallic
+        second: 0
+      data:
+        first:
+          name: _RateCnt
+        second: 0.55999976
     m_Colors:
       data:
         first:
@@ -144,11 +144,11 @@ Material:
       data:
         first:
           name: _HighLightCol
-        second: {r: 1, g: 1, b: 1, a: 1}
+        second: {r: 1, g: 1, b: 1, a: 0}
       data:
         first:
           name: _HighLightPos
-        second: {r: 0.4826375, g: 0.39504442, b: 0, a: 0}
+        second: {r: 0.48264223, g: 0.3950444, b: 0, a: 0}
       data:
         first:
           name: _HightLidghtPos
