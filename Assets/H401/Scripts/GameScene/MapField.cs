@@ -34,7 +34,7 @@ public class MapField : MonoBehaviour {
 	void Update (){
         rateCnt += 0.01f;
         rateCnt %= 1.0f;
-        mRenderer.sharedMaterial.SetFloat("_RateCnt", rateCnt);
+        mRenderer.sharedMaterial.SetFloat("_RateCnt", 1.0f - rateCnt);
 
 
 	}

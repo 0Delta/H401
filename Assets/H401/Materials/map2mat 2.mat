@@ -131,7 +131,7 @@ Material:
       data:
         first:
           name: _RateCnt
-        second: 0.55999976
+        second: 0.11000055
     m_Colors:
       data:
         first:
@@ -148,7 +148,7 @@ Material:
       data:
         first:
           name: _HighLightPos
-        second: {r: 0.48264223, g: 0.3950444, b: 0, a: 0}
+        second: {r: 0.4826797, g: 0.39504436, b: 0, a: 0}
       data:
         first:
           name: _HightLidghtPos

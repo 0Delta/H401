@@ -86,7 +86,7 @@
 				distRate += _RateCnt;
 				distRate %= 1.0f;
 					
-				col.rgb = col.rgb * (1.0f -distRate) + _HighLightCol.rgb * distRate; 
+				col.rgb = col.rgb * (1.0f - distRate / 2.0f) + _HighLightCol.rgb * distRate / 2.0f; 
 				return col;
 			}
 			ENDCG

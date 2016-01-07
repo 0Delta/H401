@@ -124,7 +124,7 @@ public class LevelController : MonoBehaviour {
         //メインカメラをノンアクにする
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
         gameScene.mainCamera.enabled = false;
-        
+        gameScene.directionalLight.color = new Color(1.0f,1.0f,1.0f);
         
         levelState = _eLevelState.CHANGE;
     }
@@ -143,23 +143,22 @@ public class LevelController : MonoBehaviour {
     public void EndComplete()
     {
         Destroy(levelChangeObject);
+        GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+
         if (NextLevel != -1)
         {
             gameController.nodeController.currentLevel = NextLevel;
-            GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
             gameScene.directionalLight.color = levelTableScript.GetFieldLevel(nextLevel).lightColor;
         }
         else
+        {
+            gameScene.directionalLight.color = levelTableScript.GetFieldLevel(gameController.nodeController.currentLevel).lightColor;
             print("レベル変更なし");
+        }
         LevelState = _eLevelState.STAND;
 
         //ノードのemissionとdirectionalLightに干渉
-
-
-
     }
-
-
 
     public string GetFieldName(int stage)
     {
