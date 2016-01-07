@@ -51,12 +51,15 @@ public class LevelController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //右クリックしている間マウスの移動を姿勢回転に反映させる
-        if (Input.GetMouseButton(1))
-        {
-            currentAngle += Input.GetAxis("Mouse X");
-            print(currentAngle.ToString());
-        }
+                //右クリックしている間マウスの移動を姿勢回転に反映させる
+                /*
+                if (Input.GetMouseButton(1))
+                {
+                    currentAngle += Input.GetAxis("Mouse X");
+                    print(currentAngle.ToString());
+                }*/
+
+                currentAngle = Input.gyro.attitude.z;
         //姿勢が45度以上135度以下
         switch(levelState)
         {

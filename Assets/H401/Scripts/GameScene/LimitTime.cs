@@ -91,7 +91,11 @@ public class LimitTime : MonoBehaviour {
             ToResultBtn.onClick.AddListener(onClickAction);
 
             gameEndpanel.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-            print("タイムオーバー");
+
+            //オプションボタンをノンアクに
+            gameScene.gameUI.gamePause.optionCanvas.gameObject.GetComponentInChildren<Button>().interactable = false;
+
+                        print("タイムオーバー");
         }
 
         //時間経過による難易度変更処理

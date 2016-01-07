@@ -7,7 +7,6 @@ public class LevelChange : MonoBehaviour {
     [SerializeField]private string fieldMapPath = null;
     [SerializeField]private string subCameraPath = null;
     [SerializeField]private string levelPanelPath = null;
-
     [SerializeField]private Color normalColor;
 
     private LevelController _levelController;
