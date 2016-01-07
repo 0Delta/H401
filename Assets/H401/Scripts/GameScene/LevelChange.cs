@@ -36,7 +36,7 @@ public class LevelChange : MonoBehaviour {
         _levelPanel.SetLevelController(_levelController);
 
         LevelCanvas lCanvas = lPanel.GetComponent<LevelCanvas>();
-        lCanvas.SetCamera(subCamera.GetComponent<Camera>(),_levelController.LyingAngle);
+        //lCanvas.SetCamera(subCamera.GetComponent<Camera>(),_levelController.LyingAngle);
 
         //mapfieldから各メッシュをエミッションでちかちかさせる
         int i = 0;

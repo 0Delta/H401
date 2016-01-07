@@ -371,6 +371,7 @@ public class NodeController : MonoBehaviour {
             .ThrottleFrame(2)
             .Subscribe(x => {
                 CheckLink();
+                //    unChainController.Remove();
             })
             .AddTo(gameObject);
 

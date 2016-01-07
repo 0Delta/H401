@@ -9,6 +9,7 @@ public class LimitTime : MonoBehaviour {
     [SerializeField] private string gameEndPanelPath = null;
     public Image timeImage;
     private float nowTime;  //現在時間
+    public float lastRate { get { return 1.0f - nowTime / maxTime; } }
     private float _eventRatio;   //状態ごとの時間の減り
     public float eventRatio { set { _eventRatio = value; } }
 
@@ -134,7 +135,7 @@ public class LimitTime : MonoBehaviour {
 
     private void SetImage()
     {
-        float lastRate = 1.0f - nowTime / maxTime;
+        //float lastRate = 1.0f - nowTime / maxTime;
 
         timeImage.fillAmount = lastRate;
 

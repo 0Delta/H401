@@ -25,7 +25,7 @@ public class LevelCanvas : MonoBehaviour {
         GetComponent<Canvas>().worldCamera = c;
         
         //rootから位置を相対的に決める
-        GameObject uiCamera = gameObject.transform.FindChild("levelUICamera").gameObject;
+        /*GameObject uiCamera = gameObject.transform.FindChild("levelUICamera").gameObject;
 
         uiCamera.transform.Rotate(new Vector3(0.0f, 0.0f, rot),Space.Self);
         Vector3 cPos = uiCameraPos;
@@ -33,6 +33,6 @@ public class LevelCanvas : MonoBehaviour {
             cPos.x *= -1;
         uiCamera.transform.localPosition = cPos;
 
-
+*/
     }
 }
