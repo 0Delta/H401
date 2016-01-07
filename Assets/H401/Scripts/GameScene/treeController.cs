@@ -8,13 +8,15 @@ public class treeController : MonoBehaviour {
     // 完成した木とかの演出をここでするように
     private GameObject[] treeObjects;
 
-    [SerializeField]private float popTime = 0.0f;      //出現してから待機時間
-    [SerializeField]private float moveTime = 0.0f;     //待機後上へ消えていく時間
-    [SerializeField]private float popPostionY = 0.0f;
-    [SerializeField]private float popSize = 0.0f;
-    [SerializeField]private float movePositionY = 0.0f;
-    [SerializeField]private string treePrefabPath = null;
-    [SerializeField]private Color emissionColor;
+    [SerializeField] private float popTime = 0.0f;      //出現してから待機時間
+    [SerializeField] private float moveTime = 0.0f;     //待機後上へ消えていく時間
+    [SerializeField] private float popPostionY = 0.0f;
+    [SerializeField] private float popSize = 0.0f;
+    [SerializeField] private float movePositionY = 0.0f;
+    [SerializeField] private string treePrefabPath = null;
+    [SerializeField] private Color emissionColor;
+
+    [SerializeField] private GameObject ps;
 
     static private GameObject treeNodePrefab = null;
 
@@ -52,23 +54,29 @@ public class treeController : MonoBehaviour {
             mat.EnableKeyword("_EMISSION");
             mat.DOColor(emissionColor, "_EmissionColor", popTime);
             treeObjects[i].transform.parent = this.transform;
+
+            // エフェクト出現
+            Vector3 pos = node.transform.position;
+            pos.z -= 1;
+            Instantiate(ps, pos, node.transform.rotation);
+
             i++;
         }
 
         //tweenでその場に待機、その後上へ消えていくように
 
         //GetComponent<MeshRenderer>().material.DOColor(emissionColor, "_EmissionColor", popTime);
-        this.transform.DOScale(popSize, popTime);
-        this.transform.DOMoveY(this.transform.position.y + popPostionY, popTime)
-            .OnComplete(() =>
-            {
-                this.transform.DOMoveY(this.transform.position.y + movePositionY, moveTime)
-                    .OnComplete(() =>
-                    {
-                        Destroy(this.gameObject);
-                    });
-            });
-        
+        //this.transform.DOScale(popSize, popTime);
+        //this.transform.DOMoveY(this.transform.position.y + popPostionY, popTime)
+        //    .OnComplete(() =>
+        //    {
+        //        this.transform.DOMoveY(this.transform.position.y + movePositionY, moveTime)
+        //            .OnComplete(() =>
+        //            {
+        //                Destroy(this.gameObject);
+        //            });
+        //    });
+        Destroy(this.gameObject);
     }
 
 }
