@@ -41,6 +41,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lyingDeviceAngle: 30
   levelChangePath: Prefabs/GameScene/LevelChange
+  animationPath: Prefabs/GameScene/fieldChangeAnimation
+  changePopTime: 0.8
+  changeEndTime: 1.5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -59,6 +62,18 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: levelChangePath
       value: Prefabs/GameScene/LevelChange
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: animationPath
+      value: Prefabs/GameScene/fieldChangeAnimation
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: changePopTime
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: changeEndTime
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
