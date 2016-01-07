@@ -19,7 +19,7 @@ public class MapField : MonoBehaviour {
         //mat = GetComponent<Material>();
         mRenderer = GetComponent<MeshRenderer>();
 
-        Camera sCamera = transform.parent.parent.GetComponent<LevelChange>().subCamera;
+        Camera sCamera = Camera.main;//transform.parent.parent.GetComponent<LevelChange>().subCamera;
         Vector2 scPos = sCamera.WorldToScreenPoint(mRenderer.bounds.center);
         //左上が0,0になるように直す
         //右下が1,1になるように割合で渡すように
