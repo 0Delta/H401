@@ -54,7 +54,7 @@ public class Score : MonoBehaviour {
     }
 
     //計算機構
-    public void PlusScore(NodeCountInfo nodeCount)
+    public int PlusScore(NodeCountInfo nodeCount)
     {
 
         /*int tempScore =　nodeCount.nodes * scoreInfo.BonusAtNodes;
@@ -84,6 +84,8 @@ public class Score : MonoBehaviour {
 
         gameScore += (int)tempScore;
         SetScore();
+
+        return (int)tempScore;
     }
 
     public void Decide() {

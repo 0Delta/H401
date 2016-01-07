@@ -16,14 +16,21 @@ public class treeController : MonoBehaviour {
     [SerializeField] private string treePrefabPath = null;
     [SerializeField] private Color emissionColor;
 
-    [SerializeField] private GameObject ps;
+    [SerializeField] private float effectPopPosZ = 0.0f;
+    [SerializeField] private int[] effectOverScore;
+    [SerializeField] private string[] particlePaths;
 
     static private GameObject treeNodePrefab = null;
+    static private GameObject[] particlePrefabs;
 
     void Awake()
     {
         if (!treeNodePrefab)
             treeNodePrefab = Resources.Load<GameObject>(treePrefabPath);
+
+        particlePrefabs = new GameObject[particlePaths.Length];
+        for(int i = 0; i < particlePaths.Length; ++i)
+            particlePrefabs[i] = Resources.Load<GameObject>(particlePaths[i]);
     }
 
 	// Use this for initialization
@@ -37,7 +44,7 @@ public class treeController : MonoBehaviour {
 	}
 
     //ノード配列をもらって、（スクリプトのない）オブジェクトだけをコピーして登録
-    public void SetTree(List<GameObject> trees)
+    public void SetTree(List<GameObject> trees, int score)
     {
         //登録
         treeObjects = new GameObject[trees.Count];
@@ -57,8 +64,20 @@ public class treeController : MonoBehaviour {
 
             // エフェクト出現
             Vector3 pos = node.transform.position;
-            pos.z -= 1;
-            Instantiate(ps, pos, node.transform.rotation);
+            pos.z -= effectPopPosZ;
+            Instantiate(particlePrefabs[0], pos, node.transform.rotation);
+
+            // 枝部分
+            if(node.GetComponent<Node>().Temp.LinkNum == 1) {
+                int j = 0;
+                for ( ; j < effectOverScore.Length; ++j) {
+                    if(score < effectOverScore[j]) {
+                        break;
+                    }
+                }
+                --j;
+                Instantiate(particlePrefabs[j], pos, node.transform.rotation);
+            }
 
             i++;
         }

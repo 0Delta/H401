@@ -1410,16 +1410,7 @@ public class NodeController : MonoBehaviour {
         }
 
         NodeCountInfo nodeCount = new NodeCountInfo();
-
-        //完成時演出のためにマテリアルをコピーして
-        List<GameObject> treeNodes = new List<GameObject>();
-        foreach(Node obj in List) {
-            treeNodes.Add(obj.gameObject);
-        }
-        GameObject newTree = (GameObject)Instantiate(treeControllerPrefab, transform.position, Quaternion.identity);
-        newTree.GetComponent<treeController>().SetTree(treeNodes);
         
-        //ノードを再配置
         foreach(Node obj in List) {
             switch(obj.GetLinkNum()) {
                 case 1:
@@ -1435,17 +1426,30 @@ public class NodeController : MonoBehaviour {
                     nodeCount.path4++;
                     break;
             }
-            ReplaceNode(obj);
         }
 
+        int curScore = 0;
+        nodeCount.nodes = List.Count;
+        curScore = scoreScript.PlusScore(nodeCount);
+        timeScript.PlusTime(nodeCount);
+        feverScript.Gain(nodeCount);
+        
+        //完成時演出のためにマテリアルをコピーして
+        List<GameObject> treeNodes = new List<GameObject>();
+        foreach(Node obj in List) {
+            treeNodes.Add(obj.gameObject);
+        }
+        GameObject newTree = (GameObject)Instantiate(treeControllerPrefab, transform.position, Quaternion.identity);
+        newTree.GetComponent<treeController>().SetTree(treeNodes, curScore);
+        
+        //ノードを再配置
+        foreach(Node obj in List) {
+            ReplaceNode(obj);
+        }
         foreach(Node obj in List) {
             obj.UpdateNegibor();
         }
 
-        nodeCount.nodes = List.Count;
-        scoreScript.PlusScore(nodeCount);
-        timeScript.PlusTime(nodeCount);
-        feverScript.Gain(nodeCount);
         CheckLink(true);
     }
 
