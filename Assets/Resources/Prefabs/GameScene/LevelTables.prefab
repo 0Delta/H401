@@ -47,6 +47,7 @@ MonoBehaviour:
     Ratio_Path4: 0
     lightColor: {r: 1, g: 1, b: 1, a: 0}
     NodeColor: {r: 1, g: 0.7647059, b: 0.7647059, a: 0}
+    BG_Path: Sprites/easy
   - fieldName: america
     Ratio_Cap: 1
     Ratio_Path2: 6
@@ -54,6 +55,7 @@ MonoBehaviour:
     Ratio_Path4: 0
     lightColor: {r: 1, g: 0.44852942, b: 0.44852942, a: 0}
     NodeColor: {r: 0.95740366, g: 1, b: 0.6911765, a: 0}
+    BG_Path: Sprites/normal
   - fieldName: china
     Ratio_Cap: 1
     Ratio_Path2: 3
@@ -61,6 +63,7 @@ MonoBehaviour:
     Ratio_Path4: 0
     lightColor: {r: 1, g: 0.7352941, b: 0.7352941, a: 0}
     NodeColor: {r: 1, g: 1, b: 1, a: 0}
+    BG_Path: Sprites/normal
   - fieldName: italy
     Ratio_Cap: 1
     Ratio_Path2: 3
@@ -68,6 +71,7 @@ MonoBehaviour:
     Ratio_Path4: 1
     lightColor: {r: 0.443205, g: 0.33823532, b: 1, a: 0}
     NodeColor: {r: 1, g: 1, b: 1, a: 0}
+    BG_Path: Sprites/hard
   - fieldName: egipt
     Ratio_Cap: 1
     Ratio_Path2: 2
@@ -75,6 +79,7 @@ MonoBehaviour:
     Ratio_Path4: 2
     lightColor: {r: 0.9887424, g: 1, b: 0.18382353, a: 0}
     NodeColor: {r: 1, g: 0.49264705, b: 0.49264705, a: 0}
+    BG_Path: Sprites/hard
   timeLevelInterval: 60
   timeLevelTable:
   - MaxRegainRatio: 0.8
@@ -352,6 +357,26 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: feverRatio.gainPerPath4
       value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[0].BG_Path
+      value: Sprites/easy
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[1].BG_Path
+      value: Sprites/normal
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[2].BG_Path
+      value: Sprites/normal
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[3].BG_Path
+      value: Sprites/hard
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[4].BG_Path
+      value: Sprites/hard
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

@@ -13,6 +13,8 @@ public class LevelPanel : MonoBehaviour {
     private LevelController levelController;
     public void SetLevelController(LevelController lev) { levelController = lev; }
 
+    //private tex
+
     //ボタン用配列
 //    private GameObject[] buttonObjects;
     /*private LevelButton[] buttonScripts;*/
@@ -22,7 +24,8 @@ public class LevelPanel : MonoBehaviour {
     }
     private MapField[] fieldScripts;
 
-    private Text fieldText = null;
+    //private Text fieldText = null;
+    private Image fieldImage;
 
     void Awake()
     {
@@ -41,9 +44,10 @@ public class LevelPanel : MonoBehaviour {
         levelController.NextLevel = -1;
         float rot = levelController.LyingAngle;
 
+        fieldImage = gameObject.transform.FindChild("FieldNameImage").GetComponent<Image>();
 
         //テキストオブジェクトと関連つけ
-        fieldText = gameObject.transform.FindChild("FieldNameImage").FindChild("fieldNameText").GetComponent<Text>();
+        //fieldText = gameObject.transform.FindChild("FieldNameImage").FindChild("fieldNameText").GetComponent<Text>();
 
 
         //ボタンを並べてリンクを付ける
@@ -59,8 +63,8 @@ public class LevelPanel : MonoBehaviour {
             i++;
         }
 
-        fieldText.text = levelController.GetFieldName(transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().gameController.nodeController.currentLevel);
-
+        //fieldText.text = levelController.GetFieldName(transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().gameController.nodeController.currentLevel);
+        fieldImage.sprite = Resources.Load<Sprite>(levelController.GetFieldName(transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().gameController.nodeController.currentLevel));
         MapField.SetPanel(this);
 
         transform.Rotate(new Vector3(0.0f, 0.0f, rot));
@@ -89,7 +93,8 @@ public class LevelPanel : MonoBehaviour {
 
     public void ChangeText(int stage)
     {
-        fieldText.text = levelController.GetFieldName(stage);
+        //fieldText.text = levelController.GetFieldName(stage);
+        fieldImage.sprite = Resources.Load<Sprite>( levelController.GetFieldName(stage));
     }
 
 }
