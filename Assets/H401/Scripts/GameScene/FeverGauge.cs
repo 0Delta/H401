@@ -98,6 +98,10 @@ public class FeverGauge : MonoBehaviour {
                     Destroy(FLightObject);
                 FGImage.material.EnableKeyword("_EMISSION");
                 FGImage.material.SetColor("_EmissionColor", Color.black);
+                
+                // ゲーム本編のBGMを再生
+                transform.root.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().PlayBGM();
+
                 break;
             case _eFeverState.FEVER:
                 //中心地点を設定しなければならないらしい
@@ -107,6 +111,10 @@ public class FeverGauge : MonoBehaviour {
                 FGImage.material.EnableKeyword("_EMISSION");
                 FGImage.material.SetColor("_EmissionColor",FGEmission);
                 feverValue = GAUGE_MAX;
+
+                // ゲーム本編のBGMを停止
+                transform.root.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().StopBGM();
+
                 break;
         }
     }

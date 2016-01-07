@@ -18,6 +18,7 @@ public class GameScene : MonoBehaviour {
     private GameObject mainCameraObject;
     private GameObject lightObject;
     private GameObject probeObject;
+    private AudioSource audioSource;
 
     private GameController      _gameController;
     private GameUI              _gameUI;
@@ -61,6 +62,14 @@ public class GameScene : MonoBehaviour {
         _gameController = gameControllerObject.GetComponent<GameController>();
         gameControllerObject.transform.SetParent(transform);
 
-
+        audioSource = GetComponent<AudioSource>();
 	}
+
+    public void PlayBGM() {
+        audioSource.Play();
+    }
+    
+    public void StopBGM() {
+        audioSource.Stop();
+    }
 }
