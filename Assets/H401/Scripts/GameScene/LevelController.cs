@@ -41,13 +41,12 @@ public class LevelController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
-        Input.gyro.enabled = true;
+        //Input.gyro.enabled = true;
         //levelCanvasObject = Resources.Load<GameObject>(levelCanvasString);
         gameController = gameScene.gameController;
         nextLevel = -1;
 
         levelState = _eLevelState.STAND;
-        Input.gyro.enabled = true;
 
         levelTableScript = gameScene.levelTables;
 
@@ -65,7 +64,7 @@ public class LevelController : MonoBehaviour {
             print(currentAngle.ToString());
         }*/
 
-        currentAngle = Input.gyro.attitude.z;
+        currentAngle = Input.acceleration.x * 90.0f;
         //姿勢が45度以上135度以下
         switch(levelState)
         {
@@ -209,7 +208,7 @@ public class LevelController : MonoBehaviour {
 
     public string GetFieldName(int stage)
     {
-        return levelTableScript.GetFieldLevel(stage).fieldName;
+        return levelTableScript.GetFieldLevel(stage).BG_Path;
     }
 
 

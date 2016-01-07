@@ -135,7 +135,7 @@ public struct Square
     public float Ratio_Path4;
     public Color lightColor;
     public Color NodeColor;
-//    private string BG_Path;
+    public string BG_Path;
 
     //背景の画像パス
 }
