@@ -329,6 +329,22 @@ public class Node : MonoBehaviour {
         return Negibor[n] && bitLink[n];
     }
 
+    // 隣が壁か判定(壁だったらtrueを返す)
+    public bool CheckLinkedWall() {
+        for(int n = 0; n < (int)_eLinkDir.MAX; n++) {
+            // 周辺ノードを一周ぐるっと
+            Vec2Int Target = nodeControllerScript.GetDirNode(nodeID, (_eLinkDir)n);
+            if(Target.x != -1) {
+                Node TgtNode = nodeControllerScript.GetNodeScript(Target);
+                if(TgtNode.isOutPuzzle) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     // _eLinkDirのToStringもどき。デバック出力用。
     public string LinkDirToString(int n) {
         return LinkDirToString((_eLinkDir)n);

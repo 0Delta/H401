@@ -67,8 +67,9 @@ public class treeController : MonoBehaviour {
             pos.z -= effectPopPosZ;
             Instantiate(particlePrefabs[0], pos, node.transform.rotation);
 
-            // 枝部分
-            if(node.GetComponent<Node>().Temp.LinkNum == 1) {
+            Node nodeScript = node.GetComponent<Node>();
+            // 枝先か壁ならエフェクトを出現
+            if(nodeScript.Temp.LinkNum == 1 || nodeScript.Temp.LinkNum >= 3 || nodeScript.CheckLinkedWall()) {
                 int j = 0;
                 for ( ; j < effectOverScore.Length; ++j) {
                     if(score < effectOverScore[j]) {
