@@ -1,9 +1,7 @@
 ﻿
 using System.Collections.Generic;
-
 // デバック用ログシステム
 namespace CustomDebugLog {
-
     public class CDebugLog {
 
         #region // 型宣言
@@ -110,6 +108,7 @@ namespace CustomDebugLog {
         /// </summary>
         /// <param name="message">デバック用コメント</param>
         /// <returns>何も返しません</returns>
+    [System.Diagnostics.Conditional("DEBUG")]
         public void Debug(string message) {
             LogDat.Add(new Log(LOGTYPE.DEBUG, message));
         }
