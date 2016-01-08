@@ -64,7 +64,7 @@ public class LevelController : MonoBehaviour {
             print(currentAngle.ToString());
         }*/
 
-        currentAngle = Input.acceleration.x * 90.0f;
+        currentAngle = 0.0f;//Input.acceleration.x * 90.0f;
         //姿勢が45度以上135度以下
         switch(levelState)
         {
