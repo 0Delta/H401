@@ -64,7 +64,11 @@ MonoBehaviour:
     XPostiion: 50
   RankPos:
     WordHeight: 25
-    XPostiion: 45
+    XPostiion: 50
+  ZoomOption:
+    first: 1.4
+    secound: 1.2
+    Third: 1.1
 --- !u!114 &11448014
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -177,11 +181,23 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: RankPos.XPostiion
-      value: 45
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Color.a
       value: 0.284
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: ZoomOption.first
+      value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: ZoomOption.secound
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: ZoomOption.Third
+      value: 1.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

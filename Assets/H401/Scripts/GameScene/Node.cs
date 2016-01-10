@@ -47,23 +47,23 @@ public class Node : MonoBehaviour {
     }
     public bool IsSlideStart
     {
-        set { if(value) { ActStatus &= ActionFlag.SLIDE_START; } else { ActStatus &= (ActionFlag.ALL ^ ActionFlag.SLIDE_START); } }
+        set { if(value) { ActStatus |= ActionFlag.SLIDE_START; } else { ActStatus &= (ActionFlag.ALL ^ ActionFlag.SLIDE_START); } }
         get { return (ActStatus & ActionFlag.SLIDE_START) != 0; }
     }
     public bool IsSlide
     {
-        set { if(value) { ActStatus &= ActionFlag.SLIDING; } else { ActStatus &= (ActionFlag.ALL ^ ActionFlag.SLIDING); } }
+        set { if(value) { ActStatus |= ActionFlag.SLIDING; } else { ActStatus &= (ActionFlag.ALL ^ ActionFlag.SLIDING); } }
         get { return (ActStatus & ActionFlag.SLIDING) != 0; }
     }
     public bool IsSlideEnd
     {
-        set { if(value) { ActStatus &= ActionFlag.SLIDE_END; } else { ActStatus &= (ActionFlag.ALL ^ ActionFlag.SLIDE_END); } }
+        set { if(value) { ActStatus |= ActionFlag.SLIDE_END; } else { ActStatus &= (ActionFlag.ALL ^ ActionFlag.SLIDE_END); } }
         get { return (ActStatus & ActionFlag.SLIDE_END) != 0; }
     }
 
     public bool IsTurning
     {
-        set { if(value) { ActStatus &= ActionFlag.TURNING; } else { ActStatus &= (ActionFlag.ALL ^ ActionFlag.TURNING); } }
+        set { if(value) { ActStatus |= ActionFlag.TURNING; } else { ActStatus &= (ActionFlag.ALL ^ ActionFlag.TURNING); } }
         get { return (ActStatus & ActionFlag.TURNING) != 0; }
     }
     #endregion
@@ -86,7 +86,6 @@ public class Node : MonoBehaviour {
         get { return _RotCounter; }
         set { _RotCounter = value % 6; }
     }
-    private bool ForceRotation = false;
 
     public MeshRenderer MeshRenderer
     {
@@ -141,28 +140,27 @@ public class Node : MonoBehaviour {
         // Transformを矯正
         Observable
             .EveryUpdate()
-            .Select(_ => !(IsAction || IsSlide))
+            .Select(_ => !IsAction)
             .DistinctUntilChanged()
             .Select(x => x)
             .ThrottleFrame(5)
             .Subscribe(_ => {
                 NodeDebugLog += "ForceTween : ID [" + nodeID.y + "][" + nodeID.x + "]\n";
                 transform.DOMove(nodeControllerScript.NodePlacePosList[nodeID.y][nodeID.x], 0.1f);
-                ForceRotation = true;
             }).AddTo(this);
 
         // 回転処理
         Observable
             .EveryUpdate()
-            .Select(_ => _RotCounter + (ForceRotation ? 0 : 100))
+            .Select(_ => _RotCounter)
             .DistinctUntilChanged()
             .Subscribe(_ => {
                 NodeDebugLog += "Rotation : " + _RotCounter + "\n";
-                ForceRotation = false;                                              // 強制回転フラグ折る
                 IsTurning = true;                                                    // アクション開始
                 Vector3 Rot = new Vector3(0, 0, ROT_HEX_ANGLE * (6 - RotCounter));  // 回転角確定
                 transform.DOLocalRotate(Rot, actionTime)                            // DoTweenで回転
                 .OnComplete(() => {
+                    NodeDebugLog += "RotationComplete : " + _RotCounter + "\n";
                     BitLinkRotate(_RotCounter);                                     // 終了と同時にビット変更、アクション終了。
                     IsTurning = false;
                     nodeControllerScript.unChainController.Remove();                // unChain更新
@@ -485,7 +483,7 @@ public class Node : MonoBehaviour {
         RotCounter = (Rot == -1 ? RotI : Rot);
 
         // 色をリセット
-        ChangeEmissionColor(0);
+        //ChangeEmissionColor(0);
     }
 
 
@@ -542,8 +540,7 @@ public class Node : MonoBehaviour {
         NodeDebugLog += "Copy from " + copy.ToString() + "\n";
         transform.rotation = copy.transform.rotation;
         RotCounter = copy.RotCounter;
-        ChangeEmissionColor(0);
-        ForceRotation = true;
+        //ChangeEmissionColor(0);
         CheckOutPuzzle();
     }
 
