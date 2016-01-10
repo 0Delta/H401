@@ -397,7 +397,7 @@ public class NodeController : MonoBehaviour {
             .Subscribe(_ => {
 		        for(int i = 0; i < col; ++i) {
                     foreach(var nodes in gameNodeScripts[i]) {
-                        if(nodes.isSlideEnd) {
+                        if(nodes.IsSlideEnd) {
                             return;
                     }
                 }
@@ -1745,7 +1745,7 @@ public class NodeController : MonoBehaviour {
     // スライド開始時の easing をストップする
     void StopSlideStartEasing() {
         Log.Debug("StopSlideStartEasing");
-        if(gameNodeScripts[tapNodeID.y][tapNodeID.x].isSlideStart) {
+        if(gameNodeScripts[tapNodeID.y][tapNodeID.x].IsSlideStart) {
             Vector2 nodePos2D = new Vector2(gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.x, gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.y);
 
             // タップ位置とノードとの距離が閾値を下回っていたらストップする
@@ -1754,7 +1754,7 @@ public class NodeController : MonoBehaviour {
                 _eSlideDir reverseDir = ReverseDirection(slideDir);
 
                 while(nextID.x > -1) {
-                    gameNodeScripts[nextID.y][nextID.x].isSlideStart = false;
+                    gameNodeScripts[nextID.y][nextID.x].IsSlideStart = false;
                     nextID = GetDirNode(nextID, reverseDir);
                 }
             }

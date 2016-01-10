@@ -13,8 +13,9 @@ public class ScoreManager : MonoBehaviour {
     private DynamoConnecter AWS;
     //private UnityEngine.UI.InputField NameEntryField;
 
-    //----------------------------------
-    // テーブル定義
+    /// <summary>
+    /// テーブルの定義
+    /// </summary>
     private class ScoreClass {
         // 変数群
         public int Score { get; set; }
@@ -66,8 +67,9 @@ public class ScoreManager : MonoBehaviour {
         }
     };
 
-    //----------------------------------
-    // スコアリスト
+    /// <summary>
+    /// スコアのリスト
+    /// </summary>
     private class ScoreList {
         // 実体データ
         private ScoreClass[] Val = new ScoreClass[10];
@@ -148,22 +150,24 @@ public class ScoreManager : MonoBehaviour {
     //----------------------------------
     // プレハブ標準の関数群
     void Start() {
-        //        NameEntryField = GetComponentInChildren<UnityEngine.UI.InputField>();
-
-        AWSStart();
-        // ファイルからスコア読み出し
-        Load();
+        AWSStart();     // AWSシステムを起動
+        Load();         // ファイルからスコア読み出し
     }
 
+    /// <summary>
+    /// AWSシステムを起動させる
+    /// </summary>
     void AWSStart() {
         GameObject AWSObj = this.InstantiateChild(AWSPrefabName);
         AWSObj.name = "AWS";
         AWS = AWSObj.GetComponent<DynamoConnecter>();
     }
 
-
+    /// <summary>
+    /// スコアを追加
+    /// </summary>
+    /// <param name="Score">スコア</param>
     public void AddScore(int Score) {
-        // スコアを追加
         Load();
         int r = SListInstance.Insert(Score) + 1;
         Debug.Log(
@@ -179,6 +183,10 @@ public class ScoreManager : MonoBehaviour {
     }
     #endregion
 
+    /// <summary>
+    /// 暗号化用文字列を生成する
+    /// </summary>
+    /// <returns>機種ごとにユニークな暗号化文字列</returns>
     private string KeyGenerator() {
         string Key = SystemInfo.deviceUniqueIdentifier.ToString();
         Key.PadLeft(32, Key[0]);
@@ -186,6 +194,10 @@ public class ScoreManager : MonoBehaviour {
         return Key;
     }
 
+    /// <summary>
+    /// スコアを暗号化してファイルにセーブする
+    /// </summary>
+    /// <returns>正常で0</returns>
     int Save() {
         // キーを作成
         string Key = KeyGenerator();
@@ -202,6 +214,10 @@ public class ScoreManager : MonoBehaviour {
         return 0;
     }
 
+    /// <summary>
+    /// スコアをファイルからロードする
+    /// </summary>
+    /// <returns>正常で0</returns>
     int Load() {
         try {
             // キーを作成
@@ -221,26 +237,22 @@ public class ScoreManager : MonoBehaviour {
         return 0;
     }
 
-    private void Disp() {
-        Canvas canvas = GetComponentInChildren<Canvas>();
-
-
-        Vector3 Vec = new Vector3(0f, 0f, 0f);
-        Vec.y = -(10 / 12f) + 5f;
-
-        for(int n = 0; n < 10; n++) {
-            Vec.y -= 10 / 12f;
-
-            GameObject Obj = Instantiate(Resources.Load(ScorePlatePrefabName), Vec, Quaternion.identity) as GameObject;
-            Obj.name = "ScorePlate" + n.ToString();
-            //PlateInitializer Script = Obj.GetComponent<PlateInitializer>();
-            //Script.Set("", SListInstance[n].Score);
-        }
-
-    }
-
+    /// <summary>
+    /// AWSに送信する
+    /// </summary>
     public void Send() {
         AWS.Add(SListInstance[0].Score, Name/*NameEntryField.text*/);
     }
 
+    /// <summary>
+    /// スコアの取得
+    /// </summary>
+    /// <param name="Rank">取得するランク。1-10</param>
+    /// <returns>範囲外が指定されたら0</returns>
+    public int GetScore(int Rank) {
+        if(Rank < 1 || 10 < Rank) {
+            return 0;
+        }
+        return SListInstance[Rank].Score;
+    }
 }

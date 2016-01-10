@@ -20,6 +20,18 @@ public class Node_Editor : Editor {
         (tgt.bitLink[2] ? "RD" : "  ") + "  \n";
         EditorGUILayout.LabelField(str, GUILayout.Height(58f));
 
+        str = "";
+        str += tgt.IsAction ? "Action" : "NoAct";
+        str += "  ";
+        str += tgt.IsSlideStart ? "SliSt" : "     ";
+        str += "  ";
+        str += tgt.IsSlideStart ? "Slide" : "     ";
+        str += "  ";
+        str += tgt.IsSlideEnd ? "SliEd" : "     ";
+        str += "  ";
+        str += tgt.IsTurning ? "Turn" : "    ";
+        EditorGUILayout.LabelField(str, GUILayout.Height(20f));
+
         DebugStringfoldout = EditorGUILayout.Foldout(DebugStringfoldout,"DebugStr");
         if(DebugStringfoldout) {
             float Height = guiStyle.CalcSize(new GUIContent(tgt.DebugLog)).y;
