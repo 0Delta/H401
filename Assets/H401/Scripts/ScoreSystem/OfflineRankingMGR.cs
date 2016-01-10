@@ -18,7 +18,7 @@ public class OfflineRankingMGR : MonoBehaviour {
         public float XPostiion = 0.0f;
     }
     [SerializeField]
-    ScorePositon ScorePos;
+    ScorePositon ScorePos = null;
 
     /// <summary>
     ///  順位の位置を調整するための変数群
@@ -31,7 +31,7 @@ public class OfflineRankingMGR : MonoBehaviour {
         public float XPostiion = 0.0f;
     }
     [SerializeField]
-    RankPositon RankPos;
+    RankPositon RankPos = null;
 
     /// <summary>
     /// トップのサイズ倍率を調整するための変数群
@@ -76,7 +76,7 @@ public class OfflineRankingMGR : MonoBehaviour {
         }
     }
     [SerializeField]
-    RankZoom ZoomOption;
+    RankZoom ZoomOption = null;
 
     // Use this for initialization
     void Start() {
@@ -96,7 +96,9 @@ public class OfflineRankingMGR : MonoBehaviour {
             Ypos -= ScorePos.Margin * ZoomOption[n == 1 ? 10 : n - 1] + (ScorePos.WordHeight * ZoomOption[n]);  // マージン追加
 
             // スコア数値を描画する
-            ScoreString = ScoreMgr.GetScore(n).ToString();                                              // スコアの値を取得
+            var ScoreInt = ScoreMgr.GetScore(n);                                              // スコアの値を取得
+            if (ScoreInt < 0) { continue; }
+            ScoreString = ScoreInt.ToString();
             var Canv = ScoreWordMGR.Draw(ScoreString, localCanvas.transform, (ScorePos.WordHeight * ZoomOption[n]));      // 描画
             var CanvRectTrans = Canv.GetComponentInChildren<RectTransform>();                           // 位置を調整
             CanvRectTrans.anchorMax = new Vector2(0.5f, 1.0f);

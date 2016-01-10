@@ -21,19 +21,28 @@ public class ScoreManager : MonoBehaviour {
         public int Score { get; set; }
         public long Date { get; set; }
 
-        // デフォルトコンストラクタ 全ての値を不正値に
+        /// <summary>
+        /// デフォルトコンストラクタ 全ての値を不正値に
+        /// </summary>
         public ScoreClass() {
             Score = -1;
             Date = -1;
         }
 
-        // コンストラクタ。正しく引数を与えて初期化。
+        /// <summary>
+        /// コンストラクタ。正しく引数を与えて初期化。
+        /// </summary>
+        /// <param name="iName">プレイヤーネーム</param>
+        /// <param name="iScore">スコア</param>
         public ScoreClass(string iName, int iScore) {
             Date = GetDate();
             Score = iScore;
         }
 
-        // [Debug] 文字列変換
+        /// <summary>
+        /// [Debug]文字列変換
+        /// </summary>
+        /// <returns>見やすい形で文字列を返す</returns>
         override public string ToString() {
             if(Date == -1) {
                 return "NoData\n";
@@ -49,19 +58,34 @@ public class ScoreManager : MonoBehaviour {
             "Date " + DateTemp + "\nScore " + Score.ToString() + "\n";
         }
 
-        // 比較演算子
+        /// <summary>
+        /// 比較演算子
+        /// </summary>
+        /// <param name="Sc">自身</param>
+        /// <param name="tgt">比較対象</param>
+        /// <returns></returns>
         static public bool operator <(ScoreClass Sc, int tgt) {
             if(Sc.Score < tgt)
                 return true;
             return false;
         }
+        
+        /// <summary>
+        /// 比較演算子
+        /// </summary>
+        /// <param name="Sc">自身</param>
+        /// <param name="tgt">比較対象</param>
+        /// <returns></returns>
         static public bool operator >(ScoreClass Sc, int tgt) {
             if(Sc.Score >= tgt)
                 return true;
             return false;
         }
 
-        // 日付データを取得する
+        /// <summary>
+        /// 日付データを取得する
+        /// </summary>
+        /// <returns>long型、YYMMDDHHMMSSで返す</returns>
         static public long GetDate() {
             return long.Parse(System.DateTime.Now.ToString("yyMMddHHmmss", System.Globalization.DateTimeFormatInfo.InvariantInfo));
         }
@@ -81,7 +105,11 @@ public class ScoreManager : MonoBehaviour {
             }
         }
 
-        // 挿入
+        /// <summary>
+        /// 挿入
+        /// </summary>
+        /// <param name="Score">追加するスコア</param>
+        /// <returns>順位、ランク外で-1</returns>
         public int Insert(int Score) {
             for(int i = 0; i < Val.Length; i++) {
                 if(Val[i] < Score) {
@@ -94,7 +122,10 @@ public class ScoreManager : MonoBehaviour {
             return -1;
         }
 
-        // 後方シフト
+        /// <summary>
+        /// 後方シフト
+        /// </summary>
+        /// <param name="i">0を挿入するインデックス</param>
         private void BackShift(int i) {
             for(int n = Val.Length - 2; n >= i; n--) {
                 Val[n + 1] = Val[n];
@@ -102,17 +133,31 @@ public class ScoreManager : MonoBehaviour {
             Val[i] = new ScoreClass();
         }
 
-        // スコア取得
+        /// <summary>
+        /// スコア取得
+        /// </summary>
+        /// <param name="i">0から始まるインデックス</param>
+        /// <returns>int型スコア</returns>
         public ScoreClass this[int i] {
             set {
-                Val[i] = value;
+                if (CheckIdx(i))
+                {
+                    Val[i] = value;
+                }
             }
             get {
-                return Val[i];
+                if (CheckIdx(i))
+                {
+                    return Val[i];
+                }
+                return null;
             }
         }
 
-        // デバック用文字列
+        /// <summary>
+        /// デバック用文字列
+        /// </summary>
+        /// <returns>string型</returns>
         public override string ToString() {
             string str = "";
             foreach(var it in Val) {
@@ -121,7 +166,10 @@ public class ScoreManager : MonoBehaviour {
             return str;
         }
 
-        // 文字列データ化
+        /// <summary>
+        /// 文字列データ化
+        /// </summary>
+        /// <returns>string型データ</returns>
         public string ToStringData() {
             string buf = "";
             foreach(var it in Val) {
@@ -132,7 +180,11 @@ public class ScoreManager : MonoBehaviour {
             }
             return buf;
         }
-        // 文字列データから復元
+
+        /// <summary>
+        /// 文字列データから復元
+        /// </summary>
+        /// <param name="Dat">string型データ</param>
         public void FromStringData(string Dat) {
             var ScoreLst = Dat.Split(';');
             int Counter = 0;
@@ -143,6 +195,21 @@ public class ScoreManager : MonoBehaviour {
                 if(++Counter > 9) { break; }
             }
         }
+
+        /// <summary>
+        /// インデックスの引数チェック
+        /// </summary>
+        /// <param name="i">渡す値</param>
+        /// <returns>範囲外だとfalse、正常ならtrue</returns>
+        private bool CheckIdx(int i)
+        {
+            if(i < 0 || Val.Length <= i)
+            {
+                return false;
+            }
+            return true;
+        }
+
     }
     // スコアリスト実体を宣言
     ScoreList SListInstance = new ScoreList();
@@ -253,6 +320,11 @@ public class ScoreManager : MonoBehaviour {
         if(Rank < 1 || 10 < Rank) {
             return 0;
         }
-        return SListInstance[Rank].Score;
+        var ScoreVal = SListInstance[Rank];
+        if (ScoreVal != null)
+        {
+            return ScoreVal.Score;
+        }
+        return -1;
     }
 }
