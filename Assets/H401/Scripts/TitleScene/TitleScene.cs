@@ -11,6 +11,7 @@ public class TitleScene : MonoBehaviour {
     [SerializeField] private string backGroundPath;
     [SerializeField] private string titleCanvasPath;
     [SerializeField] private string eventSystemPath;
+    [SerializeField] private string HowToPlayScenePath;
     
     private GameObject mainCameraObject;
     private GameObject subCameraObject;
@@ -20,6 +21,7 @@ public class TitleScene : MonoBehaviour {
     private GameObject backGroundObject;
     private GameObject titleCanvasObject;
     private GameObject eventSystemObject;
+    private GameObject HowToPlaySceneObject;
 
 	// Use this for initialization
 	void Start () {
@@ -46,5 +48,8 @@ public class TitleScene : MonoBehaviour {
 
 	    eventSystemObject = Instantiate(Resources.Load<GameObject>(eventSystemPath));
         eventSystemObject.transform.SetParent(transform);
+
+	    //HowToPlaySceneObject = Instantiate(Resources.Load<GameObject>(HowToPlayScenePath));
+     //   HowToPlaySceneObject.transform.SetParent(transform);
     }
 }

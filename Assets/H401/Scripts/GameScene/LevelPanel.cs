@@ -71,7 +71,7 @@ public class LevelPanel : MonoBehaviour {
 
         //tweenとかで出現エフェクト等
         transform.localScale = new Vector3(popScale,popScale,popScale);
-        transform.DOScale(1.0f, popTime).OnComplete(() => { levelController.LevelState = _eLevelState.LIE; });
+        transform.DOScale(1.0f, popTime);//.OnComplete(() => { levelController.LevelState = _eLevelState.LIE; });
     }
 	
 	// Update is called once per frame

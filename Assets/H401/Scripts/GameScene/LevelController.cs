@@ -63,8 +63,9 @@ public class LevelController : MonoBehaviour {
             currentAngle += Input.GetAxis("Mouse X");
             print(currentAngle.ToString());
         }*/
-
-        currentAngle = 0.0f;//Input.acceleration.x * 90.0f;
+        
+        currentAngle = Input.acceleration.x * 90.0f;
+        
         //姿勢が45度以上135度以下
         switch(levelState)
         {
@@ -122,6 +123,7 @@ public class LevelController : MonoBehaviour {
     public IEnumerator FieldChangeStart(FieldPop fpMethod)
     {
         //アニメーターを生成
+        levelState = _eLevelState.CHANGE;
         if (animationObject)
             Destroy(animationObject);
         animationObject = Instantiate(animationPrefab);
@@ -132,6 +134,7 @@ public class LevelController : MonoBehaviour {
         //アニメーションを消去
         Destroy(animationObject);
         animationObject = null;
+        levelState = _eLevelState.LIE;
 
     }
         //難易度選択をinstantiateする
@@ -154,7 +157,7 @@ public class LevelController : MonoBehaviour {
                 gameScene.gameUI.gamePause.gameObject.SetActive(false);
 
         //animationObject.transform.Rotate(new Vector3(0.0f, 0.0f, -lyingAngle));
-        levelState = _eLevelState.CHANGE;
+        
         }
 
     //切り替え終了
@@ -176,6 +179,18 @@ public class LevelController : MonoBehaviour {
         //アニメーションを消去
         Destroy(animationObject);
         animationObject = null;
+        GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+        if (NextLevel != -1)
+        {
+            gameController.nodeController.currentLevel = NextLevel;
+            gameScene.directionalLight.color = levelTableScript.GetFieldLevel(nextLevel).lightColor;
+        }
+        else
+        {
+            gameScene.directionalLight.color = levelTableScript.GetFieldLevel(gameController.nodeController.currentLevel).lightColor;
+            print("レベル変更なし");
+        }
+        LevelState = _eLevelState.STAND;
     }
 
     public void EndComplete()
@@ -188,21 +203,11 @@ public class LevelController : MonoBehaviour {
         gameScene.gameUI.gamePause.gameObject.SetActive(true);
         Destroy(levelChangeObject);
 
-        if (NextLevel != -1)
-        {
-            gameController.nodeController.currentLevel = NextLevel;
-            gameScene.directionalLight.color = levelTableScript.GetFieldLevel(nextLevel).lightColor;
-        }
-        else
-        {
-            gameScene.directionalLight.color = levelTableScript.GetFieldLevel(gameController.nodeController.currentLevel).lightColor;
-            print("レベル変更なし");
-        }
-        LevelState = _eLevelState.STAND;
+
         
         Camera.main.gameObject.transform.localRotation = Quaternion.identity;
         gameScene.mainCamera.orthographic = true;
-        //        animationObject.transform.rotation = Quaternion
+        // animationObject.transform.rotation = Quaternion
         //ノードのemissionとdirectionalLightに干渉
     }
 
@@ -210,7 +215,4 @@ public class LevelController : MonoBehaviour {
     {
         return levelTableScript.GetFieldLevel(stage).BG_Path;
     }
-
-
-    
 }

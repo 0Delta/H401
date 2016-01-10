@@ -131,7 +131,11 @@ Material:
       data:
         first:
           name: _RateCnt
+<<<<<<< HEAD
         second: 0.37000746
+=======
+        second: 0.09000057
+>>>>>>> goto/master
     m_Colors:
       data:
         first:
