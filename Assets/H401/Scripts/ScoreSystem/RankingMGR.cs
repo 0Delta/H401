@@ -11,9 +11,16 @@ namespace RankingExtension {
         public static GameObject InstantiateChild(this MonoBehaviour Mono, string Name, bool WorldPositionStays = true) {
             GameObject ret = null;
             string Pass = "";
-            RankingMGR mgr = Mono.GetComponentInParent<RankingMGR>();
-            if(mgr.RankingPrefabFolderName != "") {
-                Pass += mgr.RankingPrefabFolderName + "/";
+            try {
+                RankingMGR mgr = Mono.GetComponentInParent<RankingMGR>();
+                if (mgr.RankingPrefabFolderName != "") {
+                    Pass += mgr.RankingPrefabFolderName + "/";
+                }
+            }
+            catch (Exception excep)
+            {
+                Debug.LogException(excep);
+                return null;
             }
             Pass += Name;
 
@@ -95,7 +102,7 @@ public class RankingMGR : MonoBehaviour {
             .Subscribe(x => {
                 switch(x) {
                     case RANKING_MODE.OFFLINE:
-                        OfflineObj.transform.DOLocalMoveY(700, 0.5f);
+                        OfflineObj.transform.DOLocalMoveY(1500, 0.5f);
                         Mode = RANKING_MODE.ONLINE;
                         if(OnlineObj != null) {
                             //OnlineObj.gameObject.SetActive(true);
