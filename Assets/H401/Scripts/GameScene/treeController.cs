@@ -17,11 +17,14 @@ public class treeController : MonoBehaviour {
     [SerializeField] private Color emissionColor;
 
     [SerializeField] private float effectPopPosZ = 0.0f;
+    [SerializeField] private float effectMoveDurationTime = 0.0f;
     [SerializeField] private int[] effectOverScore;
     [SerializeField] private string[] particlePaths;
 
     static private GameObject treeNodePrefab = null;
     static private GameObject[] particlePrefabs;
+
+    private Transform limitTimeTransform = null;
 
     void Awake()
     {
@@ -31,17 +34,11 @@ public class treeController : MonoBehaviour {
         particlePrefabs = new GameObject[particlePaths.Length];
         for(int i = 0; i < particlePaths.Length; ++i)
             particlePrefabs[i] = Resources.Load<GameObject>(particlePaths[i]);
+
+        // 体力ゲージの transform を取得
+        //GameObject curScene = transform.root.GetComponent<AppliController>().GetCurrentScene();
+        //limitTimeTransform = curScene.GetComponent<GameScene>().gameUI.gameInfoCanvas.limitTime.transform;
     }
-
-	// Use this for initialization
-	void Start () {
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
     //ノード配列をもらって、（スクリプトのない）オブジェクトだけをコピーして登録
     public void SetTree(List<GameObject> trees, int score)
@@ -65,7 +62,9 @@ public class treeController : MonoBehaviour {
             // エフェクト出現
             Vector3 pos = node.transform.position;
             pos.z -= effectPopPosZ;
-            Instantiate(particlePrefabs[0], pos, node.transform.rotation);
+            GameObject effect = (GameObject)Instantiate(particlePrefabs[0], pos, node.transform.rotation);
+//            effect.GetComponent<GameParticle>().MoveFinishedDestroy(limitTimeTransform.position, effectMoveDurationTime);
+            effect.GetComponent<GameParticle>().MoveFinishedDestroy(new Vector3(0.0f, 4.0f, -effectPopPosZ), effectMoveDurationTime);
 
             Node nodeScript = node.GetComponent<Node>();
             // 枝先か壁ならエフェクトを出現
@@ -77,7 +76,11 @@ public class treeController : MonoBehaviour {
                     }
                 }
                 --j;
-                Instantiate(particlePrefabs[j], pos, node.transform.rotation);
+                if(j > 0) {
+                    effect = (GameObject)Instantiate(particlePrefabs[j], pos, node.transform.rotation);
+//            effect.GetComponent<GameParticle>().MoveFinishedDestroy(limitTimeTransform.position, effectMoveDurationTime);
+                    effect.GetComponent<GameParticle>().MoveFinishedDestroy(new Vector3(0.0f, 4.0f, -effectPopPosZ), effectMoveDurationTime);
+                }
             }
 
             i++;

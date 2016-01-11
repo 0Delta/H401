@@ -25,7 +25,7 @@ public class MapField : MonoBehaviour {
         //右下が1,1になるように割合で渡すように
         scPos.y = ((float)sCamera.pixelHeight - scPos.y) / (float)sCamera.pixelHeight;
         scPos.x /= (float)sCamera.pixelWidth;
-        mRenderer.sharedMaterial.SetVector("_HighLightPos", new Vector4(scPos.x,scPos.y,0.0f,0.0f));
+        mRenderer.material.SetVector("_HighLightPos", new Vector4(scPos.x,scPos.y,0.0f,0.0f));
         rateCnt = 0.0f;
         
 	}

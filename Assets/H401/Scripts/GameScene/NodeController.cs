@@ -258,6 +258,9 @@ public class NodeController : MonoBehaviour {
         // ----- ノード準備
         InitNode();
 
+        // treeControllerPrefab 初期化
+//        treeControllerPrefab.transform.SetParent(transform.root);
+
         //開始演出が終わるまでは操作を受け付けない
         SetActionAll(true);
         
