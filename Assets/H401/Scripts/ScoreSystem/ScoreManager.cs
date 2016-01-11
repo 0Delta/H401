@@ -275,9 +275,25 @@ public class ScoreManager : MonoBehaviour {
         byte[] Sav = AesInstance.Encrypt(Dat);
 
         // 書き込み
-        var sw = File.Create(Application.persistentDataPath + "/save");
-        sw.Dispose();
-        File.WriteAllBytes(Application.persistentDataPath + "/save", Sav);
+        //#if UNITY_EDITOR
+        try
+        {
+            Debug.Log("FileSave");
+            var sw = File.Create(Application.persistentDataPath + "/save");
+            sw.Dispose();
+            File.WriteAllBytes(Application.persistentDataPath + "/save", Sav);
+            //#elif UNITY_ANDROID
+            //WWW www = new WWW("jar:file://" + Application.dataPath + "!/assets" + "/save");
+            //yield return www;
+        }
+        catch (System.IO.IsolatedStorage.IsolatedStorageException) {
+            Debug.LogError("IsolatedStorage_Catch");
+            return -1;
+        }
+
+        //txtReader = new StringReader(www.text);
+        //#endif
+
         return 0;
     }
 
