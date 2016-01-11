@@ -144,7 +144,7 @@ public class Node : MonoBehaviour {
                 .OnComplete(() => {
                     BitLinkRotate(_RotCounter);                                     // 終了と同時にビット変更、アクション終了。
                     isAction = false;
-                    nodeControllerScript.unChainController.Remove();                // unChain更新
+                    //nodeControllerScript.unChainController.Remove();                // unChain更新
                 });
             }).AddTo(this);
 

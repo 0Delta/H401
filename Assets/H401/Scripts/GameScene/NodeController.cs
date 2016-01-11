@@ -1190,7 +1190,7 @@ public class NodeController : MonoBehaviour {
 
 
     // 接続をチェックする関数
-    public void CheckLink(bool NoCheckLeftCallback = false) {
+    public void CheckLink(bool NoCheckLeftCallback = false) { 
         Log.Debug("CheckLink");
         if(Debug.isDebugBuild && bNodeLinkDebugLog)
             Debug.Log("CheckLink");
@@ -1237,6 +1237,7 @@ public class NodeController : MonoBehaviour {
                     Checker.Dispose();      // チェッカは役目を終えたので消す
                 }).AddTo(this);
         }
+        unChainController.Remove();
     }
 
     //閲覧済みフラグを戻す処理
@@ -1557,7 +1558,7 @@ public class NodeController : MonoBehaviour {
         #endregion
 
         CheckLink();
-        unChainController.Remove();
+        //unChainController.Remove();
     }
 	//ノード全変更時の演出
     public void RotateAllNode(float movedAngle, Ease easeType) {

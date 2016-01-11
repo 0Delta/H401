@@ -11,8 +11,6 @@ public class MapField : MonoBehaviour {
 
     private int _mapNum = 0;
     public int mapNum { get { return _mapNum; } set { _mapNum = value; } }
-    /*private float _rateCnt = 0.0f;
-    public float rateCnt { get { return _rateCnt; } set { _rateCnt = value; } }*/
     private MeshRenderer mRenderer;//Material mat;
 
 	// Use this for initialization
@@ -49,9 +47,7 @@ public class MapField : MonoBehaviour {
         print("レベル選択：" + _mapNum.ToString());
         levelPanel.ChangeText(_mapNum);
         //色変えとかここに
-        transform.parent.parent.gameObject.GetComponent<LevelChange>().SetArrowPos(mapNum);//ChangeMapColor(mapNum);
-        //SetColor();
-
+        transform.parent.parent.gameObject.GetComponent<LevelChange>().SetArrowPos(mapNum);
     }
     void OnTriggerEnter(Collider col)
     {

@@ -4,7 +4,6 @@ using DG.Tweening;
 
 public class UnChainObject : MonoBehaviour
 {
-
     [SerializeField]
     private float tweenDuration;
 
@@ -15,6 +14,7 @@ public class UnChainObject : MonoBehaviour
     public _eLinkDir linkVec { get { return _linkVec; } set { _linkVec = value; } }
     private bool _bChecked; //更新されなかったものは途切れでなくなったとして破棄するように
     public bool bChecked { get { return _bChecked; } set { _bChecked = value; } }
+    private bool bDeleted;
 
     //どのノードに付随しているかを記憶しておいて、スライド処理開始時にスライドするノードに付随しているものが消えるように
     //private Node _parentNode;
@@ -35,13 +35,16 @@ public class UnChainObject : MonoBehaviour
         mRenderer.material.DOFade(0.0f, 0.0f);
         mRenderer.material.DOFade(1.0f, tweenDuration);
 
-        //_bChecked = true;
+        bDeleted = false;
 
     }
 
     public void Vanish()
     {
-        mRenderer.material.DOFade(0.0f, tweenDuration)
+        if (bDeleted)
+            return;
+        bDeleted = true;
+            mRenderer.material.DOFade(0.0f, tweenDuration)
             .OnComplete(() =>
             {
                 Destroy(this.gameObject);
