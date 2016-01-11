@@ -56,6 +56,11 @@ public class LevelChange : MonoBehaviour {
             i++;
         }
     }
+
+    void OnDestroy()
+    {
+        mapArrowObj.transform.DOKill();
+    }
 	// Update is called once per frame
 	void Update () {
         

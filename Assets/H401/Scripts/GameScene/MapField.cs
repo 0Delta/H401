@@ -22,6 +22,10 @@ public class MapField : MonoBehaviour {
         mRenderer.material.SetColor("_EmissionColor", Color.black);
 	}
 	
+    void OnDestroy()
+    {
+        mRenderer.material.DOKill();
+    }
 	// Update is called once per frame
 	void Update (){
 
