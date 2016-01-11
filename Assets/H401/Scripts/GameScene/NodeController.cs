@@ -31,10 +31,20 @@ public class NodeController : MonoBehaviour {
 
     [SerializeField]    private int row = 0;                    // 横配置数 リストIDが奇数の行は＋１とする
     [SerializeField]    private int col = 0;                    // 縦配置数
+
+    #region // ノード系プレハブへのパス、実体
     [SerializeField]    private string gameNodePrefabPath  = null;     // ノードのプレハブのパス
     [SerializeField]    private string frameNodePrefabPath = null;     // フレームノードのプレハブのパス
     [SerializeField]    private string floorNodePrefabPath = null;     // 下端ノードのプレハブのパス
     [SerializeField]    private string treeControllerPrefabPath  = null;     // 完成ノードのプレハブのパス
+    [SerializeField]    private string floorLeftNodeMaterialPath = null;    // 左下端ノードのマテリアルのパス
+    [SerializeField]    private string floorRightNodeMaterialPath = null;   // 右下端ノードのマテリアルのパス
+    private GameObject gameNodePrefab = null;                 // ノードのプレハブ
+    private GameObject frameNodePrefab = null;                 // フレームノードのプレハブ
+    private GameObject floorNodePrefab = null;                 // 下端ノードのプレハブ
+    private GameObject treeControllerPrefab = null;           // 完成ノードのプレハブ
+    #endregion
+
     [SerializeField]    private string unChainControllerPath = null;
     [SerializeField]    private float widthMargin  = 0.0f;      // ノード位置の左右間隔の調整値
     [SerializeField]    private float heightMargin = 0.0f;      // ノード位置の上下間隔の調整値
@@ -43,15 +53,10 @@ public class NodeController : MonoBehaviour {
                                                          //    [SerializeField] private string levelControllerObjectPath = null;
                                                          //    [SerializeField] private string pauseObjectPath = null;
     [SerializeField]    private float repRotateTime = 0;        //ノード再配置時の時間
-    [SerializeField]    private string floorLeftNodeMaterialPath = null;    // 左下端ノードのマテリアルのパス
-    [SerializeField]    private string floorRightNodeMaterialPath = null;   // 右下端ノードのマテリアルのパス
 //    [SerializeField] private string[] nodeMaterialsPath = null;
     [SerializeField]    private NodeTemplate[] NodeTemp = null;
 
-    private GameObject gameNodePrefab   = null;                 // ノードのプレハブ
-    private GameObject frameNodePrefab  = null;                 // フレームノードのプレハブ
-    private GameObject floorNodePrefab  = null;                 // 下端ノードのプレハブ
-    private GameObject treeControllerPrefab   = null;           // 完成ノードのプレハブ
+
     private GameObject unChainControllerPrefab = null;
 
     private GameObject[][]  gameNodePrefabs;                    // ノードのプレハブリスト
@@ -62,9 +67,10 @@ public class NodeController : MonoBehaviour {
 //    private Square  gameArea = Square.zero;                     // ゲームの画面領域(パズル領域)
     private Vector2 nodeSize = Vector2.zero;                    // 描画するノードのサイズ
 
+    private bool        isNodeAction    = false;                // ノードがアクション中かフラグ
+    #region // スライドに使用する変数
     private bool        isTap           = false;                // タップ成功フラグ
     private bool        isSlide         = false;                // ノードスライドフラグ
-    private bool        isNodeAction    = false;                // ノードがアクション中かフラグ
     private bool        isSlideEnd      = false;                // ノードがスライド終了処理中かフラグ
     private Vec2Int     tapNodeID       = Vec2Int.zero;         // タップしているノードのID
     private _eSlideDir  slideDir        = _eSlideDir.NONE;      // スライド中の方向
@@ -82,6 +88,7 @@ public class NodeController : MonoBehaviour {
 
     private Vec2Int slidingLimitNodeID        = Vec2Int.zero;   // スライド方向の端ノードのID
     private Vec2Int slidingReverseLimitNodeID = Vec2Int.zero;   // スライド方向の逆端ノードのID
+    #endregion
 
     private FieldLevelInfo fieldLevel;
 
