@@ -1,8 +1,12 @@
 ﻿
 using System.Collections.Generic;
+using System.Diagnostics;
+
 // デバック用ログシステム
 namespace CustomDebugLog {
-    public class CDebugLog {
+    [Conditional("DEBUG")]
+    public class CDebugLog : System.Attribute
+    {
 
         #region // 型宣言
         /// <summary>
@@ -14,6 +18,7 @@ namespace CustomDebugLog {
         /// <see cref="Assert(string)"/>
         /// </summary>
         public enum LOGTYPE {
+
             DEBUG,
             INFO,
             WARNING,
@@ -25,7 +30,8 @@ namespace CustomDebugLog {
         /// ログ一つを表現するクラス
         /// 開発者が使用する事はありません
         /// </summary>
-        public class Log {
+        public class Log
+        {
             readonly private LOGTYPE type;
             readonly private string message;
 
@@ -108,7 +114,6 @@ namespace CustomDebugLog {
         /// </summary>
         /// <param name="message">デバック用コメント</param>
         /// <returns>何も返しません</returns>
-    [System.Diagnostics.Conditional("DEBUG")]
         public void Debug(string message) {
             LogDat.Add(new Log(LOGTYPE.DEBUG, message));
         }
