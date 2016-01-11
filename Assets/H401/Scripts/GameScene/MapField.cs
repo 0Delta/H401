@@ -1,41 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using DG.Tweening;
 public class MapField : MonoBehaviour {
 
     [SerializeField]private Color fieldColor;
+    [SerializeField]private float colorDuration;
  
     static private LevelPanel levelPanel;
     static public void SetPanel(LevelPanel panel) { levelPanel = panel; }
 
     private int _mapNum = 0;
     public int mapNum { get { return _mapNum; } set { _mapNum = value; } }
-    private float _rateCnt = 0.0f;
-    public float rateCnt { get { return _rateCnt; } set { _rateCnt = value; } }
+    /*private float _rateCnt = 0.0f;
+    public float rateCnt { get { return _rateCnt; } set { _rateCnt = value; } }*/
     private MeshRenderer mRenderer;//Material mat;
 
 	// Use this for initialization
 	void Start () {
         //mat = GetComponent<Material>();
         mRenderer = GetComponent<MeshRenderer>();
-
-        Camera sCamera = Camera.main;//transform.parent.parent.GetComponent<LevelChange>().subCamera;
-        Vector2 scPos = sCamera.WorldToScreenPoint(mRenderer.bounds.center);
-        //左上が0,0になるように直す
-        //右下が1,1になるように割合で渡すように
-        scPos.y = ((float)sCamera.pixelHeight - scPos.y) / (float)sCamera.pixelHeight;
-        scPos.x /= (float)sCamera.pixelWidth;
-        mRenderer.sharedMaterial.SetVector("_HighLightPos", new Vector4(scPos.x,scPos.y,0.0f,0.0f));
-        rateCnt = 0.0f;
-        
+        mRenderer.material.SetColor("_EmissionColor", Color.black);
 	}
 	
 	// Update is called once per frame
 	void Update (){
-        rateCnt += 0.01f;
-        rateCnt %= 1.0f;
-        mRenderer.sharedMaterial.SetFloat("_RateCnt", 1.0f - rateCnt);
-
 
 	}
     void RedirectedOnTriggerEnter(Collider collider)
@@ -57,8 +45,8 @@ public class MapField : MonoBehaviour {
         print("レベル選択：" + _mapNum.ToString());
         levelPanel.ChangeText(_mapNum);
         //色変えとかここに
-        transform.parent.parent.gameObject.GetComponent<LevelChange>().ChangeMapColor(mapNum);
-        SetColor();
+        transform.parent.parent.gameObject.GetComponent<LevelChange>().SetArrowPos(mapNum);//ChangeMapColor(mapNum);
+        //SetColor();
 
     }
     void OnTriggerEnter(Collider col)
@@ -66,19 +54,12 @@ public class MapField : MonoBehaviour {
         SetLevel();
     }
 
-    public void SetColor(Color color)
+    public void SetColor(bool bColor)
     {
         if (!mRenderer)
             mRenderer = GetComponent<MeshRenderer>();
-
-        mRenderer.sharedMaterial.SetColor("_HighLightCol", color);
+        Color color = bColor ? fieldColor : Color.black;
+        mRenderer.material.EnableKeyword("_Emission");
+        mRenderer.material.DOColor(color,"_EmissionColor", colorDuration).OnComplete( () => { SetColor(!bColor); });
     }
-    public void SetColor()
-    {
-        if (!mRenderer)
-            mRenderer = GetComponent<MeshRenderer>();
-
-        mRenderer.sharedMaterial.SetColor("_HighLightCol", fieldColor);
-    }
-
 }

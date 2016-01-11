@@ -7,9 +7,9 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: map2mat
-  m_Shader: {fileID: 4800000, guid: bb2d6ca008192eb4d9956f7d6c981f60, type: 3}
-  m_ShaderKeywords: _ALPHABLEND_ON
-  m_LightmapFlags: 5
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: _ALPHABLEND_ON _EMISSION
+  m_LightmapFlags: 2
   m_CustomRenderQueue: 3000
   stringTagMap:
     RenderType: Transparent
@@ -94,6 +94,10 @@ Material:
         second: 0.5
       data:
         first:
+          name: _Shininess
+        second: 0.078125
+      data:
+        first:
           name: _Parallax
         second: 0.02
       data:
@@ -131,12 +135,12 @@ Material:
       data:
         first:
           name: _RateCnt
-        second: 0.09000057
+        second: 0.55000967
     m_Colors:
       data:
         first:
           name: _EmissionColor
-        second: {r: 0, g: 0, b: 0, a: 1}
+        second: {r: 0.102941155, g: 0.102941155, b: 0.102941155, a: 1}
       data:
         first:
           name: _Color
@@ -144,11 +148,11 @@ Material:
       data:
         first:
           name: _HighLightCol
-        second: {r: 0.89705884, g: 0.639814, b: 0.639814, a: 0}
+        second: {r: 1, g: 1, b: 1, a: 0}
       data:
         first:
           name: _HighLightPos
-        second: {r: 0.7019242, g: 0.7741163, b: 0, a: 0}
+        second: {r: 0.70250326, g: 0.7741163, b: 0, a: 0}
       data:
         first:
           name: _HightLidghtPos
