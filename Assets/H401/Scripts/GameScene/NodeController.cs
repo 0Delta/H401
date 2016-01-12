@@ -22,10 +22,7 @@ col のIDが奇数の行は +1 とする
 
 public class NodeController : MonoBehaviour {
     private static readonly CustomDebugLog.CDebugLog Log = new CustomDebugLog.CDebugLog("NodeController");
-
-
-    //    private const float ADJUST_PIXELS_PER_UNIT = 0.01f;     // Pixels Per Unit の調整値
-    //    private readonly Square GAME_AREA = new Square(0.0f, 0.0f, 5.0f * 2.0f * 750.0f / 1334.0f, 5.0f * 2.0f);    // ゲームの画面領域(パズル領域)
+    
     private const float FRAME_POSZ_MARGIN = -1.0f;              // フレームとノードとの距離(Z座標)
     private const float NODE_EASE_STOP_THRESHOLD = 0.01f;       // ノードの easing を終了するための、タップ位置とノード位置との閾値
 
@@ -36,13 +33,11 @@ public class NodeController : MonoBehaviour {
     [SerializeField]    private string gameNodePrefabPath  = null;     // ノードのプレハブのパス
     [SerializeField]    private string frameNodePrefabPath = null;     // フレームノードのプレハブのパス
     [SerializeField]    private string floorNodePrefabPath = null;     // 下端ノードのプレハブのパス
-    [SerializeField]    private string treeControllerPrefabPath  = null;     // 完成ノードのプレハブのパス
     [SerializeField]    private string floorLeftNodeMaterialPath = null;    // 左下端ノードのマテリアルのパス
     [SerializeField]    private string floorRightNodeMaterialPath = null;   // 右下端ノードのマテリアルのパス
     private GameObject gameNodePrefab = null;                 // ノードのプレハブ
     private GameObject frameNodePrefab = null;                 // フレームノードのプレハブ
     private GameObject floorNodePrefab = null;                 // 下端ノードのプレハブ
-    private GameObject treeControllerPrefab = null;           // 完成ノードのプレハブ
     #endregion
 
     [SerializeField]    private string unChainControllerPath = null;
@@ -63,8 +58,8 @@ public class NodeController : MonoBehaviour {
     private Node[][]        gameNodeScripts;                    // ノードのnodeスクリプトリスト
     private Vector3[][]     nodePlacePosList;                   // ノードの配置位置リスト
     private GameObject      frameController;                    // フレームコントローラープレハブ
-
-//    private Square  gameArea = Square.zero;                     // ゲームの画面領域(パズル領域)
+    private GameEffect      gameEffect;                         // GameEffect スクリプト
+    
     private Vector2 nodeSize = Vector2.zero;                    // 描画するノードのサイズ
 
     private bool        isNodeAction    = false;                // ノードがアクション中かフラグ
@@ -225,6 +220,7 @@ public class NodeController : MonoBehaviour {
         }
         nodeMaterials = new Material[NodeTemp.Length];
     }
+
     // Use this for initialization
     void Start() {
         Log.Debug("Start");
@@ -233,7 +229,6 @@ public class NodeController : MonoBehaviour {
         gameNodePrefab = Resources.Load<GameObject>(gameNodePrefabPath);
         frameNodePrefab = Resources.Load<GameObject>(frameNodePrefabPath);
         floorNodePrefab = Resources.Load<GameObject>(floorNodePrefabPath);
-        treeControllerPrefab = Resources.Load<GameObject>(treeControllerPrefabPath);
 
         // ノードのテンプレからマテリアルを取得
         NodeTemplate.AllCalc(NodeTemp);
@@ -248,6 +243,8 @@ public class NodeController : MonoBehaviour {
             }
         }
         
+        // GameEffect スクリプトを取得
+        gameEffect = transform.GetComponent<GameEffect>();
 
         //unChainCubeList = new ArrayList;
         //levelControllerScript = appController.gameScene.gameUI.levelCotroller;
@@ -264,9 +261,6 @@ public class NodeController : MonoBehaviour {
         
         // ----- ノード準備
         InitNode();
-
-        // treeControllerPrefab 初期化
-//        treeControllerPrefab.transform.SetParent(transform.root);
 
         //開始演出が終わるまでは操作を受け付けない
         SetActionAll(true);
@@ -453,7 +447,7 @@ public class NodeController : MonoBehaviour {
 
         // フレームを生成
         frameController = new GameObject();
-        frameController.transform.parent = transform.parent;
+        frameController.transform.SetParent(transform.parent);
         frameController.name = "FrameController";
 
         Node.SetNodeController(this); //ノードにコントローラーを設定
@@ -1444,13 +1438,12 @@ public class NodeController : MonoBehaviour {
         timeScript.PlusTime(nodeCount);
         feverScript.Gain(nodeCount);
         
-        //完成時演出のためにマテリアルをコピーして
+        // 完成時演出
         List<GameObject> treeNodes = new List<GameObject>();
         foreach(Node obj in List) {
             treeNodes.Add(obj.gameObject);
         }
-        GameObject newTree = (GameObject)Instantiate(treeControllerPrefab, transform.position, Quaternion.identity);
-        newTree.GetComponent<treeController>().SetTree(treeNodes, curScore);
+        gameEffect.TreeCompleteEffect(treeNodes, curScore);
         
         //ノードを再配置
         foreach(Node obj in List) {

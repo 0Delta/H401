@@ -9,6 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 461412}
   - 114: {fileID: 11421218}
+  - 114: {fileID: 11439424}
   m_Layer: 0
   m_Name: NodeController
   m_TagString: Untagged
@@ -44,14 +45,13 @@ MonoBehaviour:
   gameNodePrefabPath: Prefabs/GameScene/GameNode
   frameNodePrefabPath: Prefabs/GameScene/FrameNode
   floorNodePrefabPath: Prefabs/GameScene/FloorNode
-  treeControllerPrefabPath: Prefabs/GameScene/TreeController
+  floorLeftNodeMaterialPath: Materials/floorLeft
+  floorRightNodeMaterialPath: Materials/floorRight
   unChainControllerPath: Prefabs/GameScene/UnChainController
   widthMargin: 0
   heightMargin: 0.275
   headerHeight: 1.3
   repRotateTime: 0.5
-  floorLeftNodeMaterialPath: Materials/floorLeft
-  floorRightNodeMaterialPath: Materials/floorRight
   NodeTemp:
   - MaterialName: Materials/hex0
     LinkDir: 000000000001
@@ -93,6 +93,25 @@ MonoBehaviour:
     Ready: 0
     LinkNum: 0
     ID: 0
+--- !u!114 &11439424
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 110356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821252d6dc730b7409c88587f634805d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectPopPosZ: -5
+  effectMoveDurationTime: 1
+  effectMoveWaitTime: 0.35
+  effectOverScore: 00000000e8030000
+  particlePaths:
+  - Prefabs/Particles/kirakira
+  - Prefabs/Particles/Effect_Sakura
+  particlePoolSize: 500000001e000000
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -105,6 +124,18 @@ Prefab:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 0}
+      propertyPath: particlePaths.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: effectOverScore.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: particlePoolSize.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
       propertyPath: nodeMaterialsPath.Array.size
       value: 8
       objectReference: {fileID: 0}
@@ -114,7 +145,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: col
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: headerHeight
@@ -271,6 +302,42 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: floorRightNodeMaterialPath
       value: Materials/floorRight
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: effectPopPosZ
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: effectMoveDurationTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: effectOverScore.Array.data[1]
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: particlePaths.Array.data[0]
+      value: Prefabs/Particles/kirakira
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: particlePaths.Array.data[1]
+      value: Prefabs/Particles/Effect_Sakura
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: effectMoveWaitTime
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: row
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: particlePoolSize.Array.data[0]
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: particlePoolSize.Array.data[1]
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

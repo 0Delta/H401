@@ -148,7 +148,7 @@ Material:
       data:
         first:
           name: _HighLightCol
-        second: {r: 1, g: 1, b: 1, a: 0}
+        second: {r: 0.89705884, g: 0.639814, b: 0.639814, a: 0}
       data:
         first:
           name: _HighLightPos

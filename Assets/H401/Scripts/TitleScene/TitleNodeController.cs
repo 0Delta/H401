@@ -62,7 +62,6 @@ public class TitleNodeController : MonoBehaviour {
             pos.y = transform.position.y + nodeSize.y * -(col * 0.5f - (i + 0.5f));
             for (int j = 0; j < AdjustRow(i); ++j) {
                 // ノードの配置位置を調整(X座標)
-                //pos.x = i % 2 == 0 ? transform.position.x + nodeSize.x * -(AdjustRow(i) * 0.5f - j) : transform.position.x + nodeSize.x * -(AdjustRow(i) * 0.5f - (j + 0.5f));
                 pos.x = transform.position.x + nodeSize.x * -(AdjustRow(i) * 0.5f - (j + 0.5f));
                 pos.z = transform.position.z;
 
