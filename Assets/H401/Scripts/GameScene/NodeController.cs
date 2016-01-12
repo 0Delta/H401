@@ -1378,6 +1378,7 @@ public class NodeController : MonoBehaviour
                     Checker.Dispose();      // チェッカは役目を終えたので消す
                 }).AddTo(this);
         }
+        unChainController.Remove();
     }
 
     //閲覧済みフラグを戻す処理
