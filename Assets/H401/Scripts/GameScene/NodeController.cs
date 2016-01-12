@@ -401,7 +401,7 @@ public class NodeController : MonoBehaviour
         // ノードのアニメーション終了と同時に接続チェック
         Observable
             .EveryUpdate()
-            .Select(x => !(isNodeAction | isSlide))
+            .Select(x => !isNodeAction)
             .DistinctUntilChanged()
             .Where(x => x)
             .ThrottleFrame(2)

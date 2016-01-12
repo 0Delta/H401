@@ -83,20 +83,30 @@ public class Node : MonoBehaviour
     #endregion
 
     #region // ノードがパズル外かのフラグ
-    private bool isOutScreen = false;           // 画面外フラグ
-    private bool isOutPuzzle = false;           // パズル外フラグ
+    /// <summary>
+    /// 画面外フラグ
+    /// </summary>
+    private bool isOutScreen = false;
     public bool IsOutScreen
     {
         set { isOutScreen = value; }
         get { return isOutScreen; }
     }
+    /// <summary>
+    /// パズル外フラグ 
+    /// フレームノードの裏ならTRUE
+    /// </summary>
     public bool IsOutPuzzle
     {
-        get
-        {
-            isOutPuzzle = (nodeID.y < 1 || nodeControllerScript.Col - 2 < nodeID.y || nodeID.x < 1 || nodeControllerScript.AdjustRow(nodeID.y) - 2 < nodeID.x);
-            return isOutPuzzle;
-        }
+        get { return (nodeID.y < 1 || nodeControllerScript.Col - 2 < nodeID.y || nodeID.x < 1 || nodeControllerScript.AdjustRow(nodeID.y) - 2 < nodeID.x); }
+    }
+    /// <summary>
+    /// 地面フラグ
+    /// ノードIDが Y=0 ならTRUE
+    /// </summary>
+    public bool IsGroundNode
+    {
+        get { return (NodeID.y == 0); }
     }
     #endregion
 
@@ -147,23 +157,14 @@ public class Node : MonoBehaviour
     {
         NodeDebugLog += "Start\n";
 
-        // IDが変化したときにパズル外フラグを更新
-        Observable
-            .EveryUpdate()
-            .Select(_ => nodeID)
-            .DistinctUntilChanged()
-            .Subscribe(_ => {
-                NodeDebugLog += "ChengeNodeID [" + nodeID.y + "][" + nodeID.x + "]\n";
-            }).AddTo(this);
-
         // Transformを矯正
         Observable
             .EveryUpdate()
-            .Select(_ => !IsAction)
+            .Select(_ => !IsSlideEnd)
             .DistinctUntilChanged()
-            .Select(x => x)
-            .ThrottleFrame(5)
-            .Subscribe(_ => {
+            .Where(x => x)
+            .Subscribe(_ =>
+            {
                 NodeDebugLog += "ForceTween : ID [" + nodeID.y + "][" + nodeID.x + "]\n";
                 transform.DOMove(nodeControllerScript.NodePlacePosList[nodeID.y][nodeID.x], 0.1f);
             }).AddTo(this);
@@ -173,12 +174,17 @@ public class Node : MonoBehaviour
             .EveryUpdate()
             .Select(_ => _RotCounter)
             .DistinctUntilChanged()
-            .Subscribe(_ => {
+            .Subscribe(_ =>
+            {
                 NodeDebugLog += "Rotation : " + _RotCounter + "\n";
                 IsTurning = true;                                                    // アクション開始
                 Vector3 Rot = new Vector3(0, 0, ROT_HEX_ANGLE * (6 - RotCounter));  // 回転角確定
                 transform.DOLocalRotate(Rot, actionTime)                            // DoTweenで回転
-                .OnComplete(() => {
+                .OnComplete(() =>
+                {
+                    this.DOKill();
+                }).OnKill(() =>
+                {
                     NodeDebugLog += "RotationComplete : " + _RotCounter + "\n";
                     BitLinkRotate(_RotCounter);                                     // 終了と同時にビット変更、アクション終了。
 
@@ -192,7 +198,8 @@ public class Node : MonoBehaviour
             .EveryUpdate()
             .Select(x => bChain)
             .DistinctUntilChanged()
-            .Subscribe(x => {
+            .Subscribe(x =>
+            {
                 NodeDebugLog += "ChangeEmission : " + bChain + "\n";
                 if (x == true)
                 {
@@ -203,8 +210,24 @@ public class Node : MonoBehaviour
                 }
             });
         ChangeEmissionColor(0);
-    }
 
+        // フラグ不正修正
+        Observable
+            .EveryUpdate()
+            .Where(_ => IsAction)
+            .Select(_ => transform)
+            .DistinctUntilChanged()
+            .ThrottleFrame(5)
+            .Subscribe(x =>
+            {
+                NodeDebugLog += "Force Flag Reset";
+                IsTurning = false;
+                IsSlideStart = false;
+                IsSlide = false;
+                IsSlideEnd = false;
+                IsFlip = false;
+            });
+    }
     // Update is called once per frame
     private void Update()
     {
