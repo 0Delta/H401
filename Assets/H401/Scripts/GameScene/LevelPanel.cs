@@ -44,7 +44,7 @@ public class LevelPanel : MonoBehaviour {
         levelController.NextLevel = -1;
         float rot = levelController.LyingAngle;
 
-        fieldImage = gameObject.transform.FindChild("FieldNameImage").GetComponent<Image>();
+        fieldImage = gameObject.transform.FindChild("fieldBG1").FindChild("FieldNameImage").GetComponent<Image>();
 
         //テキストオブジェクトと関連つけ
         //fieldText = gameObject.transform.FindChild("FieldNameImage").FindChild("fieldNameText").GetComponent<Text>();
@@ -68,10 +68,19 @@ public class LevelPanel : MonoBehaviour {
         MapField.SetPanel(this);
 
         transform.Rotate(new Vector3(0.0f, 0.0f, rot));
+        transform.localScale = Vector3.one;
 
         //tweenとかで出現エフェクト等
-        transform.localScale = new Vector3(popScale,popScale,popScale);
-        transform.DOScale(1.0f, popTime);//.OnComplete(() => { levelController.LevelState = _eLevelState.LIE; });
+        //transform.localScale = new Vector3(popScale,popScale,popScale);
+        //transform.DOScale(1.0f, popTime);//.OnComplete(() => { levelController.LevelState = _eLevelState.LIE; });
+
+        Transform fBG1 = transform.FindChild("fieldBG1");
+        fBG1.localPosition += new Vector3(-50.0f, 0.0f, 0.0f);
+        fBG1.DOLocalMoveX(fBG1.localPosition.x + 50.0f ,popTime);
+
+        Transform fBG2 = transform.FindChild("fieldBG2");
+        fBG2.localPosition += new Vector3(50.0f, 0.0f, 0.0f);
+        fBG2.DOLocalMoveX(fBG2.localPosition.x - 50.0f, popTime); ;
     }
 	
 	// Update is called once per frame
@@ -90,7 +99,7 @@ public class LevelPanel : MonoBehaviour {
         transform.DOScale(popScale, popTime)
             .OnComplete(levelController.EndComplete);
     }
-
+    
     public void ChangeText(int stage)
     {
         //fieldText.text = levelController.GetFieldName(stage);

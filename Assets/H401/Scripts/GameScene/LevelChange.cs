@@ -75,12 +75,13 @@ public class LevelChange : MonoBehaviour {
 
     public void SetArrowPos(int selectedNum)
     {
-        mapArrowObj.transform.position = _mapFields[selectedNum].transform.position + new Vector3(0.0f, 1.0f, 0.0f);
+        Vector3 vBounds =  _mapFields[selectedNum].gameObject.GetComponent<MeshRenderer>().bounds.size;
+        mapArrowObj.transform.position = _mapFields[selectedNum].transform.position + Vector3.Normalize(Camera.main.transform.position - _mapFields[selectedNum].transform.position) * 2.0f + new Vector3(0.0f,1.0f,0.0f);
     }
 
     public void SetArrowRot()
     {
-        mapArrowObj.transform.DORotate(transform.rotation.eulerAngles + new Vector3(0.0f, 30.0f, 0.0f), 0.3f,RotateMode.WorldAxisAdd).SetEase(Ease.Linear).OnComplete( () => { SetArrowRot(); });
+        mapArrowObj.transform.FindChild("arrow").transform.DORotate(transform.rotation.eulerAngles + new Vector3(0.0f, 30.0f, 0.0f), 0.3f,RotateMode.WorldAxisAdd).SetEase(Ease.Linear).OnComplete( () => { SetArrowRot(); });
     }
 
 }

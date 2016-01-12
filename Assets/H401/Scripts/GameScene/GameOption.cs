@@ -16,6 +16,7 @@ public class GameOption : MonoBehaviour {
     private _ePauseState _pauseState;
     public _ePauseState pauseState{ get{return _pauseState;}}
     public Canvas optionCanvas = null;
+    public GameObject optionButton = null;
 
 	// Use this for initialization
     void Start()
@@ -30,6 +31,8 @@ public class GameOption : MonoBehaviour {
 
 //        sPanel.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
         sPanel.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+
+        optionButton = optionCanvas.gameObject.transform.FindChild("Option").gameObject;
 
     }
 	
