@@ -131,11 +131,7 @@ Material:
       data:
         first:
           name: _RateCnt
-<<<<<<< HEAD
-        second: 0.37000746
-=======
-        second: 0.09000057
->>>>>>> goto/master
+        second: 0.39000386
     m_Colors:
       data:
         first:
@@ -152,12 +148,12 @@ Material:
       data:
         first:
           name: _HighLightPos
-        second: {r: 0.48825085, g: 0.58467305, b: 0, a: 0}
-      data:
-        first:
-          name: _HightLightPos
-        second: {r: -61.605007, g: 266.06607, b: 0, a: 0}
+        second: {r: 0.48823616, g: 0.58467305, b: 0, a: 0}
       data:
         first:
           name: _HightLidghtPos
         second: {r: 0, g: 0, b: 0, a: 1}
+      data:
+        first:
+          name: _HightLightPos
+        second: {r: -61.605007, g: 266.06607, b: 0, a: 0}

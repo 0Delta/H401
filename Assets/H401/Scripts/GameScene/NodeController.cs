@@ -23,10 +23,7 @@ col のIDが奇数の行は +1 とする
 public class NodeController : MonoBehaviour
 {
     private static readonly CustomDebugLog.CDebugLog Log = new CustomDebugLog.CDebugLog("NodeController");
-
-
-    //    private const float ADJUST_PIXELS_PER_UNIT = 0.01f;     // Pixels Per Unit の調整値
-    //    private readonly Square GAME_AREA = new Square(0.0f, 0.0f, 5.0f * 2.0f * 750.0f / 1334.0f, 5.0f * 2.0f);    // ゲームの画面領域(パズル領域)
+    
     private const float FRAME_POSZ_MARGIN = -1.0f;              // フレームとノードとの距離(Z座標)
     private const float NODE_EASE_STOP_THRESHOLD = 0.01f;       // ノードの easing を終了するための、タップ位置とノード位置との閾値
 
@@ -61,7 +58,6 @@ public class NodeController : MonoBehaviour
     private GameObject gameNodePrefab = null;                 // ノードのプレハブ
     private GameObject frameNodePrefab = null;                 // フレームノードのプレハブ
     private GameObject floorNodePrefab = null;                 // 下端ノードのプレハブ
-    private GameObject treeControllerPrefab = null;           // 完成ノードのプレハブ
 
     [SerializeField]
     private string unChainControllerPath = null;
@@ -82,26 +78,18 @@ public class NodeController : MonoBehaviour
     }
     #endregion
 
-    //    [SerializeField] private string levelTableObjectPath = null;
-    //    [SerializeField] private string levelControllerObjectPath = null;
-    //    [SerializeField] private string pauseObjectPath = null;
-
     [SerializeField]
     private float repRotateTime = 0;        //ノード再配置時の時間
-                                            //    [SerializeField] private string[] nodeMaterialsPath = null;
     [SerializeField]
     private NodeTemplate[] NodeTemp = null;
-
-
+    
 
     private GameObject[][] gameNodePrefabs;                    // ノードのプレハブリスト
     private Node[][] gameNodeScripts;                    // ノードのnodeスクリプトリスト
     private Vector3[][] nodePlacePosList;                   // ノードの配置位置リスト
     private GameObject frameController;                    // フレームコントローラープレハブ
-
-    //    private Square  gameArea = Square.zero;                     // ゲームの画面領域(パズル領域)
-
-
+    private GameEffect      gameEffect;                         // GameEffect スクリプト
+    
     private bool isNodeAction = false;                // ノードがアクション中かフラグ
     #region // スライドに使用する変数
     private bool isTap = false;                // タップ成功フラグ
@@ -252,6 +240,7 @@ public class NodeController : MonoBehaviour
         }
         nodeMaterials = new Material[NodeTemp.Length];
     }
+
     // Use this for initialization
     void Start()
     {
@@ -261,7 +250,6 @@ public class NodeController : MonoBehaviour
         gameNodePrefab = Resources.Load<GameObject>(gameNodePrefabPath);
         frameNodePrefab = Resources.Load<GameObject>(frameNodePrefabPath);
         floorNodePrefab = Resources.Load<GameObject>(floorNodePrefabPath);
-        treeControllerPrefab = Resources.Load<GameObject>(treeControllerPrefabPath);
 
         // ノードのテンプレからマテリアルを取得
         NodeTemplate.AllCalc(NodeTemp);
@@ -278,7 +266,9 @@ public class NodeController : MonoBehaviour
                 Debug.LogWarning("Failed Load Material No." + i.ToString());
             }
         }
-
+        
+        // GameEffect スクリプトを取得
+        gameEffect = transform.GetComponent<GameEffect>();
 
         //unChainCubeList = new ArrayList;
         //levelControllerScript = appController.gameScene.gameUI.levelCotroller;
@@ -497,7 +487,7 @@ public class NodeController : MonoBehaviour
 
         // フレームを生成
         frameController = new GameObject();
-        frameController.transform.parent = transform.parent;
+        frameController.transform.SetParent(transform.parent);
         frameController.name = "FrameController";
 
         Node.SetNodeController(this); //ノードにコントローラーを設定
@@ -1336,8 +1326,7 @@ public class NodeController : MonoBehaviour
 
 
     // 接続をチェックする関数
-    public void CheckLink(bool NoCheckLeftCallback = false)
-    {
+    public void CheckLink(bool NoCheckLeftCallback = false) { 
         Log.Debug("CheckLink");
         if (Debug.isDebugBuild && bNodeLinkDebugLog)
             Debug.Log("CheckLink");
@@ -1388,6 +1377,7 @@ public class NodeController : MonoBehaviour
                     Checker.Dispose();      // チェッカは役目を終えたので消す
                 }).AddTo(this);
         }
+        unChainController.Remove();
     }
 
     //閲覧済みフラグを戻す処理
@@ -1633,15 +1623,14 @@ public class NodeController : MonoBehaviour
         curScore = scoreScript.PlusScore(nodeCount);
         timeScript.PlusTime(nodeCount);
         feverScript.Gain(nodeCount);
-
-        //完成時演出のためにマテリアルをコピーして
+        
+        // 完成時演出
         List<GameObject> treeNodes = new List<GameObject>();
         foreach (Node obj in List)
         {
             treeNodes.Add(obj.gameObject);
         }
-        GameObject newTree = (GameObject)Instantiate(treeControllerPrefab, transform.position, Quaternion.identity);
-        newTree.GetComponent<treeController>().SetTree(treeNodes, curScore);
+        gameEffect.TreeCompleteEffect(treeNodes, curScore);
 
         //ノードを再配置
         foreach (Node obj in List)
@@ -1778,7 +1767,7 @@ public class NodeController : MonoBehaviour
         }
 
         CheckLink();
-        unChainController.Remove();
+        //unChainController.Remove();
     }
     //ノード全変更時の演出
     public void RotateAllNode(float movedAngle, Ease easeType)

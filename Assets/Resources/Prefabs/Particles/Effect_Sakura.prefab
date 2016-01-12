@@ -10,14 +10,14 @@ GameObject:
   - 4: {fileID: 414714}
   - 198: {fileID: 19801770}
   - 199: {fileID: 19932688}
-  - 114: {fileID: 11470182}
+  - 114: {fileID: 11481058}
   m_Layer: 0
   m_Name: Effect_Sakura
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &414714
 Transform:
   m_ObjectHideFlags: 1
@@ -30,7 +30,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &11470182
+--- !u!114 &11481058
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1572,6 +1572,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: InitialModule.startSpeed.scalar
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

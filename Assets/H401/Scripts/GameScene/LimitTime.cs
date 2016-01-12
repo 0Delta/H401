@@ -40,6 +40,8 @@ public class LimitTime : MonoBehaviour {
         }
     }
 
+   public delegate void fdel(); 
+
 	// Use this for initialization
 	void Start () {
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
@@ -82,13 +84,17 @@ public class LimitTime : MonoBehaviour {
             gameEndpanel.transform.localPosition = new Vector3(0.0f, 1334.0f, 0.0f);
             //gameEndpanel.GetComponent<GUI>()
 
+            //ボタンでなく時間経過で勝手に移行するように
             // リザルトへ戻るボタンを設定
-            Button ToResultBtn = gameEndPanelObject.GetComponentInChildren<Button>();
-            UnityEngine.Events.UnityAction onClickAction = () => {
+            //Button ToResultBtn = gameEndPanelObject.GetComponentInChildren<Button>();
+            //UnityEngine.Events.UnityAction onClickAction = () => {
+            fdel del = () => {
                 AppliController AppliCtr = GetComponentInParent<AppliController>();
                 AppliCtr.ChangeScene(AppliController._eSceneID.RANKING, 0.5f, 0.5f);
             };
-            ToResultBtn.onClick.AddListener(onClickAction);
+            
+            StartCoroutine(ToResult(del));
+            //ToResultBtn.onClick.AddListener(onClickAction);
 
             gameEndpanel.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
@@ -105,8 +111,6 @@ public class LimitTime : MonoBehaviour {
             timeLevel = levelTableScript.GetTimeLevel(nowTimeLevel);
             print("時間レベル変更：" + nowTimeLevel.ToString());
         }
-
-
 	}
 
     //枝の数と種類をもらって時間を割合で回復させる
@@ -136,7 +140,6 @@ public class LimitTime : MonoBehaviour {
         //
     }
 
-
     private void SetImage()
     {
         //float lastRate = 1.0f - nowTime / maxTime;
@@ -144,5 +147,11 @@ public class LimitTime : MonoBehaviour {
         timeImage.fillAmount = lastRate;
 
         ojityanAnimator.SetFloat("lastTime", lastRate);
+    }
+    
+    public IEnumerator ToResult(fdel del)
+    {
+        yield return new WaitForSeconds(5.0f);
+        del();
     }
 }

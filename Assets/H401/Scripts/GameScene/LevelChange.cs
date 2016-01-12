@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using DG.Tweening;
 
 public class LevelChange : MonoBehaviour {
 
@@ -7,14 +8,15 @@ public class LevelChange : MonoBehaviour {
     [SerializeField]private string fieldMapPath = null;
     //[SerializeField]private string subCameraPath = null;
     [SerializeField]private string levelPanelPath = null;
+    [SerializeField]private string mapArrowPath = null;
     [SerializeField]private Color normalColor;
-
     private LevelController _levelController;
     public LevelController levelController { get { return _levelController; } set { _levelController = value; } }
     private MapField[] _mapFields;
     public MapField[] mapField { get { return _mapFields; } }
     private LevelPanel _levelPanel;
     public LevelPanel levelPanel { get { return _levelPanel; } }
+    private GameObject mapArrowObj = null;
 //    private Camera _subCamera;
 //    public Camera subCamera { get { return _subCamera; } }
 
@@ -37,17 +39,27 @@ public class LevelChange : MonoBehaviour {
         LevelCanvas lCanvas = lPanel.GetComponent<LevelCanvas>();
         //lCanvas.SetCamera(subCamera.GetComponent<Camera>(),_levelController.LyingAngle);
 
+        mapArrowObj = Instantiate(Resources.Load<GameObject>(mapArrowPath));
+        mapArrowObj.transform.SetParent(transform);
+        SetArrowRot();
         //mapfieldから各メッシュをエミッションでちかちかさせる
         int i = 0;
+        int cLevel = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().gameController.nodeController.currentLevel;
         foreach(var mf in _mapFields)
         {
-            if (i == transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().gameController.nodeController.currentLevel)
-                mf.SetColor();
+            if (i == cLevel)
+                mapArrowObj.transform.position = mf.gameObject.transform.position + new Vector3(0.0f, 1.0f, 0.0f);//mf.SetColor();
             else
-                mf.SetColor(normalColor);
+                //mf.SetColor(normalColor);
             mf.mapNum = i;
+            mf.SetColor(true);
             i++;
         }
+    }
+
+    void OnDestroy()
+    {
+        mapArrowObj.transform.DOKill();
     }
 	// Update is called once per frame
 	void Update () {
@@ -61,18 +73,14 @@ public class LevelChange : MonoBehaviour {
         
     }
 
-    public void ChangeMapColor(int highLightNum)
+    public void SetArrowPos(int selectedNum)
     {
-        int n = 0;
-        foreach(var mf in _mapFields)
-        {
-            if (n == highLightNum)
-            {
-                n++;
-                continue;
-            }
-            mf.SetColor(normalColor);
-            n++;
-        }
+        mapArrowObj.transform.position = _mapFields[selectedNum].transform.position + new Vector3(0.0f, 1.0f, 0.0f);
     }
+
+    public void SetArrowRot()
+    {
+        mapArrowObj.transform.DORotate(transform.rotation.eulerAngles + new Vector3(0.0f, 30.0f, 0.0f), 0.3f,RotateMode.WorldAxisAdd).SetEase(Ease.Linear).OnComplete( () => { SetArrowRot(); });
+    }
+
 }

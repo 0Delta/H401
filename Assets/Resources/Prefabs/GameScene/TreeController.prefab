@@ -47,7 +47,8 @@ MonoBehaviour:
   treePrefabPath: Prefabs/GameScene/TreeNode
   emissionColor: {r: 1, g: 1, b: 0, a: 0}
   effectPopPosZ: 5
-  effectOverScore: 00000000e8030000
+  effectMoveDurationTime: 1
+  effectOverScore: 0000000000000000
   particlePaths:
   - Prefabs/Particles/kirakira
   - Prefabs/Particles/Effect_Sakura
@@ -124,7 +125,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: effectOverScore.Array.data[1]
-      value: 1000
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: effectMoveDurationTime
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
