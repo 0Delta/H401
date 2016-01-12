@@ -83,20 +83,30 @@ public class Node : MonoBehaviour
     #endregion
 
     #region // ノードがパズル外かのフラグ
-    private bool isOutScreen = false;           // 画面外フラグ
-    private bool isOutPuzzle = false;           // パズル外フラグ
+    /// <summary>
+    /// 画面外フラグ
+    /// </summary>
+    private bool isOutScreen = false;
     public bool IsOutScreen
     {
         set { isOutScreen = value; }
         get { return isOutScreen; }
     }
+    /// <summary>
+    /// パズル外フラグ 
+    /// フレームノードの裏ならTRUE
+    /// </summary>
     public bool IsOutPuzzle
     {
-        get
-        {
-            isOutPuzzle = (nodeID.y < 1 || nodeControllerScript.Col - 2 < nodeID.y || nodeID.x < 1 || nodeControllerScript.AdjustRow(nodeID.y) - 2 < nodeID.x);
-            return isOutPuzzle;
-        }
+        get { return (nodeID.y < 1 || nodeControllerScript.Col - 2 < nodeID.y || nodeID.x < 1 || nodeControllerScript.AdjustRow(nodeID.y) - 2 < nodeID.x); }
+    }
+    /// <summary>
+    /// 地面フラグ
+    /// ノードIDが Y=0 ならTRUE
+    /// </summary>
+    public bool IsGroundNode
+    {
+        get { return (NodeID.y == 0); }
     }
     #endregion
 
@@ -150,7 +160,7 @@ public class Node : MonoBehaviour
         // Transformを矯正
         Observable
             .EveryUpdate()
-            .Select(_ => (nodeID.x+1) / (NodeID.y+1))
+            .Select(_ => (float)(nodeID.x+1) / (NodeID.y+1))
             .DistinctUntilChanged()
             .Subscribe(_ => {
                 NodeDebugLog += "ForceTween : ID [" + nodeID.y + "][" + nodeID.x + "]\n";
