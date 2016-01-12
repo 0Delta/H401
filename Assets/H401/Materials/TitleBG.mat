@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: TitleBG
-  m_Shader: {fileID: 4800000, guid: be3044c713c8c384789df3c6dc8adb39, type: 3}
+  m_Shader: {fileID: 4800000, guid: 88b738004ad21ba4faa0f80ade3d9acb, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: 2000
@@ -130,7 +130,7 @@ Material:
       data:
         first:
           name: _UVGap
-        second: 0.015
+        second: 0.01
       data:
         first:
           name: _DisplaceL1
@@ -179,4 +179,4 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 0.63235295, g: 0.63235295, b: 0.63235295, a: 1}
+        second: {r: 0.625, g: 0.625, b: 0.625, a: 1}
