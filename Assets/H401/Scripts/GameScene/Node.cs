@@ -115,8 +115,6 @@ public class Node : MonoBehaviour
                                                 // 4   1
                                                 //  3 2  とする
 
-    //public Vec2Int[] ChainNodes = new Vec2Int[5];
-
     private MeshRenderer meshRenderer = null;
     public NodeTemplate Temp = null;               // 使用したテンプレート
     private int _RotCounter = 0;
@@ -189,7 +187,6 @@ public class Node : MonoBehaviour
                     BitLinkRotate(_RotCounter);                                     // 終了と同時にビット変更、アクション終了。
 
                     IsTurning = false;
-                    //nodeControllerScript.unChainController.Remove();                // unChain更新
                 });
             }).AddTo(this);
 
@@ -228,10 +225,6 @@ public class Node : MonoBehaviour
                 IsFlip = false;
             });
     }
-    // Update is called once per frame
-    private void Update()
-    {
-    }
 
     public override string ToString()
     {
@@ -262,7 +255,6 @@ public class Node : MonoBehaviour
             return;
 
         // ----- 回転処理
-
         // ノーウエイト版。フィーバー時の配置に使用
         if (NoWait)
         {
@@ -595,7 +587,6 @@ public class Node : MonoBehaviour
         //ChangeEmissionColor(0);
     }
 
-
     #region // ゲッター
     public bool GetLinkDir(_eLinkDir parentDir)
     {
@@ -651,7 +642,6 @@ public class Node : MonoBehaviour
         NodeDebugLog += "Copy from " + copy.ToString() + "\n";
         transform.rotation = copy.transform.rotation;
         RotCounter = copy.RotCounter;
-        //ChangeEmissionColor(0);
     }
 
     public void ChangeEmissionColor(int colorNum)

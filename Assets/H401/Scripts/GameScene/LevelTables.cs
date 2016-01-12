@@ -2,9 +2,10 @@
 using System.Collections;
 
 public class LevelTables : MonoBehaviour {
-    [SerializeField] private FieldLevelInfo[] fieldLevelTable = null;// = new FieldLevelInfo[5];
+
+    [SerializeField] private FieldLevelInfo[] fieldLevelTable = null;
     [SerializeField] private float timeLevelInterval = 0;    //時間難易度の変更感覚
-    [SerializeField] public TimeLevelInfo[] timeLevelTable;// = new TimeLevelInfo[5];
+    [SerializeField] public TimeLevelInfo[] timeLevelTable;
     [SerializeField]private Color[] nodeColorList = null;
     [SerializeField]private ScoreInfo scoreRatio;
     [SerializeField]private FeverInfo feverRatio;
@@ -33,17 +34,10 @@ public class LevelTables : MonoBehaviour {
         get { return feverRatio;}
     }
 
-
 	// Use this for initialization
 	void Start () {
         fieldLevelCount = fieldLevelTable.Length;
         timeLevelCount = timeLevelTable.Length;
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 
     public TimeLevelInfo GetTimeLevel(int i)

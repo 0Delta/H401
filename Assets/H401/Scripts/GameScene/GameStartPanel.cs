@@ -33,7 +33,7 @@ public class GameStartPanel : MonoBehaviour {
                         gameText.transform.DOLocalMoveX(750 - textWMargin, tweenDuration / 4.0f).SetEase(Ease.OutQuad)
                             .OnComplete(() => {
                                 GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
-                                gameScene.gameController.nodeController.SetActionAll(false); //ノードを操作可能状態に
+                                gameScene.gameController.nodeController.SetSlideAll(false); //ノードを操作可能状態に
                                 gameScene.gameUI.gameInfoCanvas.limitTime.eventRatio = 1.0f;    //時間が減るように
                                 Destroy(this.gameObject);
                             });
@@ -52,12 +52,5 @@ public class GameStartPanel : MonoBehaviour {
                         startText.transform.DOLocalMoveX(750 + textWMargin, tweenDuration / 4.0f).SetEase(Ease.OutQuad);
                     });
             });
-        
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
 }

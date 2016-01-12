@@ -15,8 +15,8 @@ public class GameOption : MonoBehaviour {
 
     private _ePauseState _pauseState;
     public _ePauseState pauseState{ get{return _pauseState;}}
-    public Canvas optionCanvas = null;
-    public GameObject optionButton = null;
+    [HideInInspector] public Canvas optionCanvas = null;
+    [HideInInspector] public GameObject optionButton = null;
 
 	// Use this for initialization
     void Start()
@@ -28,22 +28,11 @@ public class GameOption : MonoBehaviour {
 
         GameObject sPanel = Instantiate(Resources.Load<GameObject>(gameStartPanelPath));
         sPanel.transform.SetParent(optionCanvas.transform);
-
-//        sPanel.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
         sPanel.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
         optionButton = optionCanvas.gameObject.transform.FindChild("Option").gameObject;
 
     }
-	
-	// Update is called once per frame
-
- 
-	void Update () {
-
-	}
- 
-
 
     public void StartOption()
     {
@@ -56,11 +45,8 @@ public class GameOption : MonoBehaviour {
         gameObject.GetComponentInChildren<Button>().interactable = false;
 
         //パネル生成
-        //Transform trans = gameObject.transform.FindChild("PauseCanvas").transform;
         panelObject = (GameObject)Instantiate(Resources.Load<GameObject>(pausePanelPath));
         
-
-
         //tweenによる出現演出
         //とりあえずフィールド変更と同じにしておく
         //ただし、タイムスケールに左右されない
@@ -86,7 +72,5 @@ public class GameOption : MonoBehaviour {
 
                 _pauseState = _ePauseState.GAME;
             });
-        
     }
-
 }

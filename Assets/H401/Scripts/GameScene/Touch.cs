@@ -2,13 +2,16 @@
 using System.Collections;
 
 public class Touch : MonoBehaviour {
+
     private Camera c;
+
+    public float distance = 100f;
+
 	// Use this for initialization
 	void Start () {
         c = GetComponent<Camera>();
 	}
 
-    public float distance = 100f;
     void Update()
     {
         // 左クリックを取得

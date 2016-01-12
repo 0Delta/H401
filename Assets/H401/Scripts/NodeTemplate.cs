@@ -7,8 +7,7 @@ public class NodeTemplate {
     // 設定部分
     public string MaterialName;
     public bool[] LinkDir = new  bool[6];
-
-
+    
     // 算出部分
     public bool Ready;
     public BitArray Link = new BitArray(6);

@@ -12,21 +12,11 @@ public class UnChainObject : MonoBehaviour
     public Vec2Int nodeVec { get { return _nodeVec; } set { _nodeVec = value; } }
     private _eLinkDir _linkVec;
     public _eLinkDir linkVec { get { return _linkVec; } set { _linkVec = value; } }
-    private bool _bChecked; //更新されなかったものは途切れでなくなったとして破棄するように
+    private bool _bChecked = true;      //更新されなかったものは途切れでなくなったとして破棄するように
     public bool bChecked { get { return _bChecked; } set { _bChecked = value; } }
     private bool bDeleted;
 
-    //どのノードに付随しているかを記憶しておいて、スライド処理開始時にスライドするノードに付随しているものが消えるように
-    //private Node _parentNode;
-    //public Node parentNode { set { _parentNode = value;} }
-
     private MeshRenderer mRenderer = null;
-    // Use this for initialization
-    void Awake()
-    {
-        _bChecked = true;
-
-    }
 
     void Start()
     {
@@ -36,7 +26,6 @@ public class UnChainObject : MonoBehaviour
         mRenderer.material.DOFade(1.0f, tweenDuration);
 
         bDeleted = false;
-
     }
 
     public void Vanish()
@@ -58,11 +47,5 @@ public class UnChainObject : MonoBehaviour
         catch(System.NullReferenceException) {
             return;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

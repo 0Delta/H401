@@ -37,8 +37,7 @@ public class GameScene : MonoBehaviour {
         levelTableObject =  Instantiate(Resources.Load<GameObject>(levelTablePath));
         levelTableObject.transform.SetParent(transform);   
         _levelTables = levelTableObject.GetComponent<LevelTables>();
-
-
+        
         mainCameraObject =  Instantiate(Resources.Load<GameObject>(mainCameraPath));
         mainCameraObject.transform.SetParent(transform);
         _mainCamera = mainCameraObject.GetComponent<Camera>();
@@ -50,7 +49,6 @@ public class GameScene : MonoBehaviour {
         lightObject.transform.SetParent(transform);
         _directionalLight = lightObject.GetComponent<Light>();
         
-
         eventSystemObject =  Instantiate(Resources.Load<GameObject>(eventSystemPath));
         eventSystemObject.transform.SetParent(transform);
 

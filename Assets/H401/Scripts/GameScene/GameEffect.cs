@@ -81,14 +81,14 @@ public class GameEffect : MonoBehaviour {
 
         // ParticlePool を初期化
         for(int i = 0; i < kirakiraEffectParam.poolSize; ++i) {
-            kirakiraPool[i].obj = (GameObject)Instantiate(kirakiraPrefab, kirakiraController.transform.position, kirakiraController.transform.rotation);
+            kirakiraPool[i].obj = (GameObject)Instantiate(kirakiraPrefab, kirakiraController.transform.position, kirakiraPrefab.transform.rotation);
             kirakiraPool[i].obj.transform.SetParent(kirakiraController.transform);
             kirakiraPool[i].obj.SetActive(false);
             kirakiraPool[i].isUse = false;
         }
         for (int i = 0; i < flowerEffectParams.Length; ++i) {
             for(int j = 0; j < flowerEffectParams[i].poolSize; ++j) {
-                flowerPools[i][j].obj = (GameObject)Instantiate(flowerPrefabs[i], flowerControllers[i].transform.position, flowerControllers[i].transform.rotation);
+                flowerPools[i][j].obj = (GameObject)Instantiate(flowerPrefabs[i], flowerControllers[i].transform.position, flowerPrefabs[i].transform.rotation);
                 flowerPools[i][j].obj.transform.SetParent(flowerControllers[i].transform);
                 flowerPools[i][j].obj.SetActive(false);
                 flowerPools[i][j].isUse = false;

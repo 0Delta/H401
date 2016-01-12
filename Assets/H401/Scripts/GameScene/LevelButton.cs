@@ -14,13 +14,6 @@ public class LevelButton : MonoBehaviour {
         GetComponent<Button>().onClick.AddListener(SetLevel);
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-    //public void SetLevelMap(LevelMap map) { levelMap = map; }
-
     void SetLevel()
     {
         levelPanel.NextLevel = levelNumber;

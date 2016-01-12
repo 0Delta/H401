@@ -3,8 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class LimitTime : MonoBehaviour {
-
-
+    
     [SerializeField] private float maxTime = 0.0f;  //時間の最大値(秒？)
     [SerializeField] private string gameEndPanelPath = null;
     public Image timeImage;
@@ -22,13 +21,9 @@ public class LimitTime : MonoBehaviour {
     }
 
     private int nowTimeLevel;   //現在の難易度
-
     private float timeLevelInterval;    //時間難易度の変更感覚 
-
     private float startTime;
-
-//    [SerializeField] private GameObject levelTableObject = null;
-
+    
     private LevelTables _levelTableScript = null;
     public LevelTables levelTableScript{
         get{
@@ -45,9 +40,7 @@ public class LimitTime : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
-
-        //levelTableScript = transform.root.gameObject.GetComponent<AppliController>().gameScene.levelTables;
-
+        
         timeLevel = levelTableScript.GetTimeLevel(0);
         timeLevelInterval = levelTableScript.TimeLevelInterval;
         startTime = Time.time;
@@ -71,7 +64,7 @@ public class LimitTime : MonoBehaviour {
             _eventRatio = 0.0f;
             GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
 
-            gameScene.gameController.nodeController.SetActionAll(true); //ノードを操作不能にする
+            gameScene.gameController.nodeController.SetSlideAll(true); //ノードを操作不能にする
 
             //スコアをもってくる
             GameInfoCanvas gInfoCanvas = GetComponentInParent<GameInfoCanvas>();
@@ -82,26 +75,20 @@ public class LimitTime : MonoBehaviour {
             gameEndpanel.transform.SetParent(gameScene.gameUI.gamePause.optionCanvas.transform);
             gameEndpanel.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
             gameEndpanel.transform.localPosition = new Vector3(0.0f, 1334.0f, 0.0f);
-            //gameEndpanel.GetComponent<GUI>()
 
             //ボタンでなく時間経過で勝手に移行するように
             // リザルトへ戻るボタンを設定
-            //Button ToResultBtn = gameEndPanelObject.GetComponentInChildren<Button>();
-            //UnityEngine.Events.UnityAction onClickAction = () => {
             fdel del = () => {
                 AppliController AppliCtr = GetComponentInParent<AppliController>();
                 AppliCtr.ChangeScene(AppliController._eSceneID.RANKING, 0.5f, 0.5f);
             };
             
             StartCoroutine(ToResult(del));
-            //ToResultBtn.onClick.AddListener(onClickAction);
 
             gameEndpanel.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
             //オプションボタンをノンアクに
             gameScene.gameUI.gamePause.optionCanvas.gameObject.GetComponentInChildren<Button>().interactable = false;
-
-                        print("タイムオーバー");
         }
 
         //時間経過による難易度変更処理
@@ -109,7 +96,6 @@ public class LimitTime : MonoBehaviour {
         {
             nowTimeLevel++;
             timeLevel = levelTableScript.GetTimeLevel(nowTimeLevel);
-            print("時間レベル変更：" + nowTimeLevel.ToString());
         }
 	}
 
@@ -136,14 +122,10 @@ public class LimitTime : MonoBehaviour {
         {
             nowTime = 0.0f;
         }
-
-        //
     }
 
     private void SetImage()
     {
-        //float lastRate = 1.0f - nowTime / maxTime;
-
         timeImage.fillAmount = lastRate;
         if(ojityanAnimator.gameObject.activeSelf)
             ojityanAnimator.SetFloat("lastTime", lastRate);

@@ -6,13 +6,6 @@ public class Score : MonoBehaviour {
 
     //表示用の何か
     [SerializeField] private string ScoreManagerPath;
-    //計算用の何か
-    //[SerializeField] private int basePoint = 0;
-    //[SerializeField] private int bonusAtNodes = 0;
-    //[SerializeField] private int bonusPerCap = 0;
-    //[SerializeField] private int bonusPer2Path = 0;
-    //[SerializeField] private int bonusPer3Path = 0;
-    //[SerializeField] private int bonusPer4Path = 0;
 
     private ScoreInfo scoreInfo;
 
@@ -31,19 +24,9 @@ public class Score : MonoBehaviour {
 
     [SerializeField] private Text scoreText;
 
-    void Awake()
-    {
-        //scoreText = GameObject.Find("ScoreNum").GetComponent<Text>();
-    }
-
 	// Use this for initialization
 	void Start () {
         SetScore();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 
     //表示機構
@@ -56,22 +39,6 @@ public class Score : MonoBehaviour {
     //計算機構
     public int PlusScore(NodeCountInfo nodeCount)
     {
-
-        /*int tempScore =　nodeCount.nodes * scoreInfo.BonusAtNodes;
-        tempScore += nodeCount.path2 * scoreInfo.BonusPerCap;
-        tempScore += nodeCount.path2 * scoreInfo.BonusPer2Path;
-        tempScore += nodeCount.path3 * scoreInfo.BonusPer3Path;
-        tempScore += nodeCount.path4 * scoreInfo.BonusPer4Path;
-        tempScore += scoreInfo.BasePoint;
-        tempScore *= nodeCount.nodes;
-
-        int tempScore = nodeCount.nodes + scoreInfo.BasePoint;  //基礎ポイント = ノード数×ベース
-        tempScore *= nodeCount.cap * scoreInfo.BonusPerCap;     //先端ノード数分の倍率
-        tempScore *= nodeCount.path2 * scoreInfo.BonusPer2Path;     //先端ノード数分の倍率
-        tempScore *= nodeCount.path3 * scoreInfo.BonusPer3Path;     //先端ノード数分の倍率
-        tempScore *= nodeCount.path4 * scoreInfo.BonusPer4Path;     //先端ノード数分の倍率
-        gameScore += tempScore;
-        */
         //ツムツム方式で得点計算をしてみる
         float tempScore = 0;
         for (int i = 1; i < nodeCount.nodes + 1; i++)           //ベースポイントを100とすると、

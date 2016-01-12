@@ -21,9 +21,7 @@ public class LevelController : MonoBehaviour {
     private float currentAngle = 0.0f;
 
     public delegate void FieldPop();             //回転再配置用のデリゲート
-
-//    private GameObject panelObject;
-    //private LevelPanel panelScript;
+    
     private float lyingAngle;
     public float LyingAngle
     {
@@ -41,8 +39,6 @@ public class LevelController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
-        //Input.gyro.enabled = true;
-        //levelCanvasObject = Resources.Load<GameObject>(levelCanvasString);
         gameController = gameScene.gameController;
         nextLevel = -1;
 
@@ -56,19 +52,9 @@ public class LevelController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //右クリックしている間マウスの移動を姿勢回転に反映させる
-        /*
-        if (Input.GetMouseButton(1))
-        {
-            currentAngle += Input.GetAxis("Mouse X");
-            print(currentAngle.ToString());
-        }*/
-
-
         //ノードが１つでもアクション状態であれば判定しない
         if (gameController.nodeController.isNodeSlide)
             return;
-
 
         currentAngle = Input.acceleration.x * 90.0f;
 
@@ -118,11 +104,6 @@ public class LevelController : MonoBehaviour {
                 //変更中は何もしない
                 break;
         }
-
-        //else
-            //levelState = _eLevelState.STAND;
-
-        //preState = levelState;
 	}
 
     //難易度切り替え状態へ
@@ -148,36 +129,32 @@ public class LevelController : MonoBehaviour {
         Destroy(animationObject);
         animationObject = null;
         levelState = _eLevelState.LIE;
-
     }
-        //難易度選択をinstantiateする
-        void  FCStart()
-        {
-                levelChangeObject = Instantiate(levelChangePrefab);//(GameObject)Instantiate(canvasPrefab, transform.position, transform.rotation);
-                levelChangeObject.transform.SetParent(this.transform);
-                fChangeScript = levelChangeObject.GetComponent<LevelChange>();
-                fChangeScript.levelController = this;
-                //panelScript = levelCanvasObject.GetComponentInChildren<LevelPanel>();
-                //メインカメラをノンアクにする
-                GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
-                gameScene.mainCamera.transform.Rotate(new Vector3(0.0f, 0.0f, -lyingAngle),Space.Self);
-                gameScene.mainCamera.orthographic = false;
-                gameScene.directionalLight.color = new Color(1.0f,1.0f,1.0f);
 
-                gameScene.gameController.gameObject.SetActive(false);
-//                gameScene.gameUI.ojityanAnimator.gameObject.SetActive(false);
-                gameScene.gameUI.gameInfoCanvas.gameObject.SetActive(false);
-//                gameScene.gameUI.gamePause.gameObject.SetActive(false);
+    //難易度選択をinstantiateする
+    void  FCStart()
+    {
+        levelChangeObject = Instantiate(levelChangePrefab);
+        levelChangeObject.transform.SetParent(this.transform);
+        fChangeScript = levelChangeObject.GetComponent<LevelChange>();
+        fChangeScript.levelController = this;
 
-        //animationObject.transform.Rotate(new Vector3(0.0f, 0.0f, -lyingAngle));
-        
-        }
+        //メインカメラをノンアクにする
+        GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+        gameScene.mainCamera.transform.Rotate(new Vector3(0.0f, 0.0f, -lyingAngle),Space.Self);
+        gameScene.mainCamera.orthographic = false;
+        gameScene.directionalLight.color = new Color(1.0f,1.0f,1.0f);
+
+        gameScene.gameController.gameObject.SetActive(false);
+        gameScene.gameUI.gameInfoCanvas.gameObject.SetActive(false);
+    }
 
     //切り替え終了
     public IEnumerator FieldChangeEnd(FieldPop fpMethod)
     {
         if (animationObject)
             Destroy(animationObject);
+
         animationObject = Instantiate(animationPrefab);
         animationObject.transform.rotation = Quaternion.identity;
         animationObject.transform.SetParent(Camera.main.transform);
@@ -195,7 +172,7 @@ public class LevelController : MonoBehaviour {
         //アニメーションを消去
         Destroy(animationObject);
         animationObject = null;
-         if (NextLevel != -1)
+        if (NextLevel != -1)
         {
             gameController.nodeController.currentLevel = NextLevel;
             gameScene.directionalLight.color = levelTableScript.GetFieldLevel(nextLevel).lightColor;
@@ -217,13 +194,9 @@ public class LevelController : MonoBehaviour {
         gameScene.gameUI.gameInfoCanvas.gameObject.SetActive(true);
         gameScene.gameUI.gamePause.optionButton.SetActive(true);
         Destroy(levelChangeObject);
-
-
         
         Camera.main.gameObject.transform.localRotation = Quaternion.identity;
         gameScene.mainCamera.orthographic = true;
-        // animationObject.transform.rotation = Quaternion
-        //ノードのemissionとdirectionalLightに干渉
     }
 
     public string GetFieldName(int stage)

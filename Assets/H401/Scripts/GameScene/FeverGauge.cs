@@ -23,11 +23,6 @@ public class FeverGauge : MonoBehaviour {
     private GameObject FLightPrefab = null;
     private GameObject FLightObject = null;
 
-//    [SerializeField]private GameObject levelTableObject = null;
-
-
-
-    //private FeverLevelInfo feverLevel;
 	// Use this for initialization
 	void Start () {
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
@@ -46,10 +41,8 @@ public class FeverGauge : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
         if (_feverState == _eFeverState.FEVER)
         {
-
             feverValue -= feverInfo.decreaseRatio;
 
             if (feverValue < 0.0f)
@@ -57,7 +50,6 @@ public class FeverGauge : MonoBehaviour {
                 ChangeState(_eFeverState.NORMAL);
             }
         }
-
 
         FGImage.fillAmount = feverValue;
 	}
@@ -84,7 +76,6 @@ public class FeverGauge : MonoBehaviour {
         {
             ChangeState(_eFeverState.FEVER);
         }
-
     }
 
     void ChangeState(_eFeverState state)

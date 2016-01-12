@@ -23,14 +23,8 @@ public class GameUI : MonoBehaviour {
     public GameOption       gamePause { get { return  _gamePause; } }
     public Animator         ojityanAnimator { get { return _ojityanAnimator; } }
 
-    void Awake()
-    {
-
-    }
-
 	// Use this for initialization
 	void Start () {
-
         levelControllerObject   = Instantiate(Resources.Load<GameObject>(levelControllerPath));
         ojityanObject           = Instantiate(Resources.Load<GameObject>(ojityanPath));
         gameInfoCanvasObject    = Instantiate(Resources.Load<GameObject>(gameInfoCanvasPath));
@@ -45,13 +39,5 @@ public class GameUI : MonoBehaviour {
         _gameInfoCanvas = gameInfoCanvasObject.GetComponent<GameInfoCanvas>();
         _gamePause = gamePauseObject.GetComponent<GameOption>();
         _ojityanAnimator = ojityanObject.GetComponent<Animator>();
-
-
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }

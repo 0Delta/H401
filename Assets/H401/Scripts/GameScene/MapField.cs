@@ -23,27 +23,16 @@ public class MapField : MonoBehaviour {
     {
         mRenderer.material.DOKill();
     }
-	// Update is called once per frame
-	void Update (){
 
-	}
     void RedirectedOnTriggerEnter(Collider collider)
     {
         //処理を記述
         SetLevel();
-
     }
-
-    void RedirectedOnTriggerStay(Collider collider)
-    {
-        //処理を記述
-    }
-
 
     public void SetLevel()
     {
         levelPanel.NextLevel = _mapNum;
-        print("レベル選択：" + _mapNum.ToString());
         levelPanel.ChangeText(_mapNum);
         //色変えとかここに
         transform.parent.parent.gameObject.GetComponent<LevelChange>().SetArrowPos(mapNum);
