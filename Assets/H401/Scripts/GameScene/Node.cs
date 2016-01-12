@@ -160,9 +160,11 @@ public class Node : MonoBehaviour
         // Transformを矯正
         Observable
             .EveryUpdate()
-            .Select(_ => (float)(nodeID.x+1) / (NodeID.y+1))
+            .Select(_ => !IsSlideEnd)
             .DistinctUntilChanged()
-            .Subscribe(_ => {
+            .Where(x => x)
+            .Subscribe(_ =>
+            {
                 NodeDebugLog += "ForceTween : ID [" + nodeID.y + "][" + nodeID.x + "]\n";
                 transform.DOMove(nodeControllerScript.NodePlacePosList[nodeID.y][nodeID.x], 0.1f);
             }).AddTo(this);
@@ -172,14 +174,17 @@ public class Node : MonoBehaviour
             .EveryUpdate()
             .Select(_ => _RotCounter)
             .DistinctUntilChanged()
-            .Subscribe(_ => {
+            .Subscribe(_ =>
+            {
                 NodeDebugLog += "Rotation : " + _RotCounter + "\n";
                 IsTurning = true;                                                    // アクション開始
                 Vector3 Rot = new Vector3(0, 0, ROT_HEX_ANGLE * (6 - RotCounter));  // 回転角確定
                 transform.DOLocalRotate(Rot, actionTime)                            // DoTweenで回転
-                .OnComplete(() => {
+                .OnComplete(() =>
+                {
                     this.DOKill();
-                }).OnKill(()=> {
+                }).OnKill(() =>
+                {
                     NodeDebugLog += "RotationComplete : " + _RotCounter + "\n";
                     BitLinkRotate(_RotCounter);                                     // 終了と同時にビット変更、アクション終了。
 
@@ -193,7 +198,8 @@ public class Node : MonoBehaviour
             .EveryUpdate()
             .Select(x => bChain)
             .DistinctUntilChanged()
-            .Subscribe(x => {
+            .Subscribe(x =>
+            {
                 NodeDebugLog += "ChangeEmission : " + bChain + "\n";
                 if (x == true)
                 {
@@ -204,8 +210,24 @@ public class Node : MonoBehaviour
                 }
             });
         ChangeEmissionColor(0);
-    }
 
+        // フラグ不正修正
+        Observable
+            .EveryUpdate()
+            .Where(_ => IsAction)
+            .Select(_ => transform)
+            .DistinctUntilChanged()
+            .ThrottleFrame(5)
+            .Subscribe(x =>
+            {
+                NodeDebugLog += "Force Flag Reset";
+                IsTurning = false;
+                IsSlideStart = false;
+                IsSlide = false;
+                IsSlideEnd = false;
+                IsFlip = false;
+            });
+    }
     // Update is called once per frame
     private void Update()
     {

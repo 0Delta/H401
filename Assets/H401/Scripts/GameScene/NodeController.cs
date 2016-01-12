@@ -913,8 +913,6 @@ public class NodeController : MonoBehaviour
     void CopyNodeInfo(int x, int y, GameObject prefab, Node script)
     {
         Log.Debug("CopyNodeInfo : " + x + "/" + y + "/" + script);
-//        gameNodeScripts[y][x].SetNodeType(script.Temp, script.RotCounter);
-//        gameNodeScripts[y][x].IsSlide = true;
         gameNodePrefabs[y][x] = prefab;
         gameNodeScripts[y][x] = script;
         gameNodeScripts[y][x].RegistNodeID(x, y);
