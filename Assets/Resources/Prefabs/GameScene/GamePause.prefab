@@ -93,6 +93,7 @@ MonoBehaviour:
   popTime: 1
   popScale: 0.01
   optionCanvas: {fileID: 0}
+  optionButton: {fileID: 0}
 --- !u!114 &11455700
 MonoBehaviour:
   m_ObjectHideFlags: 1
