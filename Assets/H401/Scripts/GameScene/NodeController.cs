@@ -407,7 +407,6 @@ public class NodeController : MonoBehaviour
             .ThrottleFrame(2)
             .Subscribe(x => {
                 CheckLink();
-                //    unChainController.Remove();
             })
             .AddTo(gameObject);
 
@@ -1376,7 +1375,6 @@ public class NodeController : MonoBehaviour
                     Checker.Dispose();      // チェッカは役目を終えたので消す
                 }).AddTo(this);
         }
-        unChainController.Remove();
     }
 
     //閲覧済みフラグを戻す処理
@@ -1766,7 +1764,6 @@ public class NodeController : MonoBehaviour
         }
 
         CheckLink();
-        //unChainController.Remove();
     }
     //ノード全変更時の演出
     public void RotateAllNode(float movedAngle, Ease easeType)
