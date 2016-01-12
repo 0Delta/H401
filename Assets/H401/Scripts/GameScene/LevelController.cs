@@ -64,6 +64,12 @@ public class LevelController : MonoBehaviour {
             print(currentAngle.ToString());
         }*/
 
+
+        //ノードが１つでもアクション状態であれば判定しない
+        if (gameController.nodeController.isNodeSlide)
+            return;
+
+
         currentAngle = Input.acceleration.x * 90.0f;
 
         //姿勢が45度以上135度以下

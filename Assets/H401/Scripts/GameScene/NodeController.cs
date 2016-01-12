@@ -90,10 +90,12 @@ public class NodeController : MonoBehaviour
     private GameObject frameController;                    // フレームコントローラープレハブ
     private GameEffect      gameEffect;                         // GameEffect スクリプト
     
-    private bool isNodeAction = false;                // ノードがアクション中かフラグ
+    private bool _isNodeAction = false;                // ノードがアクション中かフラグ
+
     #region // スライドに使用する変数
     private bool isTap = false;                // タップ成功フラグ
     private bool isSlide = false;                // ノードスライドフラグ
+    public bool isNodeSlide { get { return isSlide; } }     //
     private bool isSlideEnd = false;                // ノードがスライド終了処理中かフラグ
     private Vec2Int tapNodeID = Vec2Int.zero;         // タップしているノードのID
     private _eSlideDir slideDir = _eSlideDir.NONE;      // スライド中の方向
@@ -288,6 +290,7 @@ public class NodeController : MonoBehaviour
 
         //開始演出が終わるまでは操作を受け付けない
         SetActionAll(true);
+        //_isNodeAction = true;
 
         // スライドベクトルの垂線を算出
         Vector3 leftUp = gameNodePrefabs[0][1].transform.position - gameNodePrefabs[0][0].transform.position;
@@ -336,7 +339,7 @@ public class NodeController : MonoBehaviour
                             Vector3.Distance(gameNodePrefabs[nextNodeID.y][nextNodeID.x].transform.position, worldTapPos))
                         {
                             isSlide = true;
-                            isNodeAction = true;
+                            _isNodeAction = true;
                             StartSlideNodes(nextNodeID, dir);
                         }
                     }
@@ -390,7 +393,7 @@ public class NodeController : MonoBehaviour
                     if (tapNodeID.x > -1)
                     {
                         gameNodeScripts[tapNodeID.y][tapNodeID.x].RotationNode();
-                        isNodeAction = true;
+                        _isNodeAction = true;
                     }
                 }
 
@@ -401,7 +404,7 @@ public class NodeController : MonoBehaviour
         // ノードのアニメーション終了と同時に接続チェック
         Observable
             .EveryUpdate()
-            .Select(x => !(isNodeAction | isSlide))
+            .Select(x => !(_isNodeAction | isSlide))
             .DistinctUntilChanged()
             .Where(x => x)
             .ThrottleFrame(2)
@@ -414,7 +417,7 @@ public class NodeController : MonoBehaviour
         // ノードがアクション中かチェック
         Observable
             .EveryUpdate()
-            .Where(_ => isNodeAction)
+            .Where(_ => _isNodeAction)
             .Subscribe(_ => {
                 for (int i = 0; i < col; ++i)
                 {
@@ -424,7 +427,7 @@ public class NodeController : MonoBehaviour
                             return;
                     }
                 }
-                isNodeAction = false;
+                _isNodeAction = false;
             })
             .AddTo(gameObject);
 
