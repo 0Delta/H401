@@ -145,8 +145,8 @@ public class LimitTime : MonoBehaviour {
         //float lastRate = 1.0f - nowTime / maxTime;
 
         timeImage.fillAmount = lastRate;
-
-        ojityanAnimator.SetFloat("lastTime", lastRate);
+        if(ojityanAnimator.gameObject.activeSelf)
+            ojityanAnimator.SetFloat("lastTime", lastRate);
     }
     
     public IEnumerator ToResult(fdel del)

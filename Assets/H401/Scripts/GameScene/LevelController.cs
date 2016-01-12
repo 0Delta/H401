@@ -63,9 +63,9 @@ public class LevelController : MonoBehaviour {
             currentAngle += Input.GetAxis("Mouse X");
             print(currentAngle.ToString());
         }*/
-        
+
         currentAngle = Input.acceleration.x * 90.0f;
-        
+
         //姿勢が45度以上135度以下
         switch(levelState)
         {
@@ -122,12 +122,19 @@ public class LevelController : MonoBehaviour {
     //難易度切り替え状態へ
     public IEnumerator FieldChangeStart(FieldPop fpMethod)
     {
+        GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+
         //アニメーターを生成
         levelState = _eLevelState.CHANGE;
         if (animationObject)
             Destroy(animationObject);
         animationObject = Instantiate(animationPrefab);
         animationObject.transform.SetParent(Camera.main.transform);
+
+        //手前にあるオブジェクトを非表示
+        gameScene.gameUI.ojityanAnimator.gameObject.SetActive(false);
+        gameScene.gameUI.gamePause.optionButton.SetActive(false);
+
         yield return new WaitForSeconds(changePopTime);
         fpMethod();
         yield return new WaitForSeconds(changeEndTime);
@@ -148,13 +155,13 @@ public class LevelController : MonoBehaviour {
                 //メインカメラをノンアクにする
                 GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
                 gameScene.mainCamera.transform.Rotate(new Vector3(0.0f, 0.0f, -lyingAngle),Space.Self);
-        gameScene.mainCamera.orthographic = false;
-        gameScene.directionalLight.color = new Color(1.0f,1.0f,1.0f);
+                gameScene.mainCamera.orthographic = false;
+                gameScene.directionalLight.color = new Color(1.0f,1.0f,1.0f);
 
                 gameScene.gameController.gameObject.SetActive(false);
-                gameScene.gameUI.ojityanAnimator.gameObject.SetActive(false);
+//                gameScene.gameUI.ojityanAnimator.gameObject.SetActive(false);
                 gameScene.gameUI.gameInfoCanvas.gameObject.SetActive(false);
-                gameScene.gameUI.gamePause.gameObject.SetActive(false);
+//                gameScene.gameUI.gamePause.gameObject.SetActive(false);
 
         //animationObject.transform.Rotate(new Vector3(0.0f, 0.0f, -lyingAngle));
         
@@ -170,17 +177,19 @@ public class LevelController : MonoBehaviour {
         animationObject.transform.SetParent(Camera.main.transform);
         levelState = _eLevelState.CHANGE;
         lyingAngle = 0;
-        //オブジェクト破棄
-        //小さくなって消えるように
+
+        //各オブジェクトの表示復帰
+       GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+        fChangeScript.levelPanel.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(changePopTime);
         fChangeScript.Delete();
+        gameScene.gameUI.ojityanAnimator.gameObject.SetActive(true);
         yield return new WaitForSeconds(changeEndTime);
         //アニメーションを消去
         Destroy(animationObject);
         animationObject = null;
-        GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
-        if (NextLevel != -1)
+         if (NextLevel != -1)
         {
             gameController.nodeController.currentLevel = NextLevel;
             gameScene.directionalLight.color = levelTableScript.GetFieldLevel(nextLevel).lightColor;
@@ -200,7 +209,7 @@ public class LevelController : MonoBehaviour {
         gameScene.gameController.gameObject.SetActive(true);
         gameScene.gameUI.ojityanAnimator.gameObject.SetActive(true);
         gameScene.gameUI.gameInfoCanvas.gameObject.SetActive(true);
-        gameScene.gameUI.gamePause.gameObject.SetActive(true);
+        gameScene.gameUI.gamePause.optionButton.SetActive(true);
         Destroy(levelChangeObject);
 
 
