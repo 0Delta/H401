@@ -41,14 +41,23 @@ public class UnChainObject : MonoBehaviour
 
     public void Vanish()
     {
-        if (bDeleted)
-            return;
-        bDeleted = true;
+        try
+        {
+            if (bDeleted)
+                return;
+            bDeleted = true;
             mRenderer.material.DOFade(0.0f, tweenDuration)
             .OnComplete(() =>
             {
+                this.DOKill();
+            }).OnKill(() =>
+            {
                 Destroy(this.gameObject);
             });
+        }
+        catch(System.NullReferenceException) {
+            return;
+        }
     }
 
     // Update is called once per frame
