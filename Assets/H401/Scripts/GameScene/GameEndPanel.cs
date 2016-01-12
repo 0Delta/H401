@@ -11,8 +11,8 @@ public class GameEndPanel : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        Button toResultButton = GetComponentInChildren<Button>();
-        toResultButton.interactable = false;
+        /*Button toResultButton = GetComponentInChildren<Button>();
+        toResultButton.interactable = false;*/
 
         //パネル自体が降ってくるようにtween 透過はわからんかった
         transform.localPosition.Set(0.0f, 1334.0f, 0.0f);
@@ -23,14 +23,15 @@ public class GameEndPanel : MonoBehaviour {
                     transform.DOLocalMoveY(0.0f, tweenDuration / 4.0f).SetEase(Ease.InCubic).OnComplete(() =>
                     {
                         //ボタンをアクティブに
-                        toResultButton.interactable = true;
+                        //toResultButton.interactable = true;
+                        //transform.DOLocalMoveY(0.0f,)
                     });
                 });
             });
        
         
         //ボタンにリザルトへ遷移するように設定
-        toResultButton.onClick.AddListener(() => { });
+        //toResultButton.onClick.AddListener(() => { });
 	}
 	
 	// Update is called once per frame

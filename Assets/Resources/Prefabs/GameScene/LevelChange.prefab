@@ -40,8 +40,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fieldMapPath: Prefabs/GameScene/fieldMap
-  subCameraPath: Prefabs/GameScene/SubCamera
   levelPanelPath: Prefabs/GameScene/LevelCanvas
+  mapArrowPath: Prefabs/GameScene/MapArrow
   normalColor: {r: 1, g: 1, b: 1, a: 0}
 --- !u!1001 &100100000
 Prefab:
@@ -81,6 +81,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: normalColor.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: mapArrowPath
+      value: Prefabs/GameScene/MapArrow
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

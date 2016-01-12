@@ -181,6 +181,7 @@ public class Node : MonoBehaviour
                 .OnComplete(() => {
                     NodeDebugLog += "RotationComplete : " + _RotCounter + "\n";
                     BitLinkRotate(_RotCounter);                                     // 終了と同時にビット変更、アクション終了。
+
                     IsTurning = false;
                     nodeControllerScript.unChainController.Remove();                // unChain更新
                 });

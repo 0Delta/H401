@@ -54,7 +54,7 @@ Material:
         first:
           name: _EmissionMap
         second:
-          m_Texture: {fileID: 2800000, guid: ad79ea1de0d02ad4e8ed8325f49c0e8f, type: 3}
+          m_Texture: {fileID: 2800000, guid: 24fc386d0c7041945b6a860a7d6eb8a9, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -97,16 +97,12 @@ Material:
         second: 0.02
       data:
         first:
-          name: _Glossiness
-        second: 0.5
-      data:
-        first:
-          name: _Metallic
-        second: 0
-      data:
-        first:
           name: _ZWrite
         second: 1
+      data:
+        first:
+          name: _Glossiness
+        second: 0.5
       data:
         first:
           name: _BumpScale
@@ -126,6 +122,10 @@ Material:
       data:
         first:
           name: _Mode
+        second: 0
+      data:
+        first:
+          name: _Metallic
         second: 0
     m_Colors:
       data:

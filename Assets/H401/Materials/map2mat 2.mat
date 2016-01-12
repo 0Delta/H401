@@ -6,12 +6,13 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: hex2
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _EMISSION
-  m_LightmapFlags: 2
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_Name: map2mat 2
+  m_Shader: {fileID: 4800000, guid: bb2d6ca008192eb4d9956f7d6c981f60, type: 3}
+  m_ShaderKeywords: _ALPHABLEND_ON
+  m_LightmapFlags: 5
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
@@ -19,7 +20,7 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: bbc8e007b031c2c4e8eda2118d975e08, type: 3}
+          m_Texture: {fileID: 2800000, guid: 4e3ba76a3dcce8c4baeea571931dd77e, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -54,7 +55,7 @@ Material:
         first:
           name: _EmissionMap
         second:
-          m_Texture: {fileID: 2800000, guid: e6b9b5814403e6f49b4ace267f79ee8a, type: 3}
+          m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -82,11 +83,11 @@ Material:
       data:
         first:
           name: _SrcBlend
-        second: 1
+        second: 5
       data:
         first:
           name: _DstBlend
-        second: 0
+        second: 10
       data:
         first:
           name: _Cutoff
@@ -98,7 +99,7 @@ Material:
       data:
         first:
           name: _ZWrite
-        second: 1
+        second: 0
       data:
         first:
           name: _Glossiness
@@ -122,17 +123,37 @@ Material:
       data:
         first:
           name: _Mode
-        second: 0
+        second: 2
       data:
         first:
           name: _Metallic
         second: 0
+      data:
+        first:
+          name: _RateCnt
+        second: 0.39000386
     m_Colors:
       data:
         first:
           name: _EmissionColor
-        second: {r: 1, g: 1, b: 1, a: 1}
+        second: {r: 0, g: 0, b: 0, a: 1}
       data:
         first:
           name: _Color
         second: {r: 1, g: 1, b: 1, a: 1}
+      data:
+        first:
+          name: _HighLightCol
+        second: {r: 1, g: 1, b: 1, a: 0}
+      data:
+        first:
+          name: _HighLightPos
+        second: {r: 0.37917465, g: 0.39539427, b: 0, a: 0}
+      data:
+        first:
+          name: _HightLidghtPos
+        second: {r: 0, g: 0, b: 0, a: 1}
+      data:
+        first:
+          name: _HightLightPos
+        second: {r: -61.605007, g: 266.06607, b: 0, a: 0}
