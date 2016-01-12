@@ -5,8 +5,6 @@ using AES;
 
 public class ScoreManager : MonoBehaviour {
     [SerializeField]
-    public string ScorePlatePrefabName;
-    [SerializeField]
     public string AWSPrefabName;
     [SerializeField]
     public string Name;
