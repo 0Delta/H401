@@ -45,6 +45,7 @@ MonoBehaviour:
   gameNodePrefabPath: Prefabs/GameScene/GameNode
   frameNodePrefabPath: Prefabs/GameScene/FrameNode
   floorNodePrefabPath: Prefabs/GameScene/FloorNode
+  treeControllerPrefabPath: 
   floorLeftNodeMaterialPath: Materials/floorLeft
   floorRightNodeMaterialPath: Materials/floorRight
   unChainControllerPath: Prefabs/GameScene/UnChainController
@@ -107,11 +108,20 @@ MonoBehaviour:
   effectPopPosZ: -5
   effectMoveDurationTime: 1
   effectMoveWaitTime: 0.35
-  effectOverScore: 00000000e8030000
-  particlePaths:
-  - Prefabs/Particles/kirakira
-  - Prefabs/Particles/Effect_Sakura
-  particlePoolSize: 500000001e000000
+  kirakiraEffectParam:
+    prefabPath: Prefabs/Particles/kirakira
+    controllerName: KirakiraController
+    overScore: 0
+    poolSize: 80
+  flowerEffectParams:
+  - prefabPath: Prefabs/Particles/Particle System
+    controllerName: Flower0Controller
+    overScore: 1000
+    poolSize: 30
+  - prefabPath: Prefabs/Particles/Effect_Sakura
+    controllerName: Flower1Controller
+    overScore: 2000
+    poolSize: 30
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -125,19 +135,23 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: particlePaths.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: effectOverScore.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: particlePoolSize.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: nodeMaterialsPath.Array.size
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.size
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: treeControllerPrefabPath
@@ -313,7 +327,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: effectOverScore.Array.data[1]
-      value: 1000
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: particlePaths.Array.data[0]
@@ -338,6 +352,58 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: particlePoolSize.Array.data[1]
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: effectOverScore.Array.data[2]
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: particlePaths.Array.data[2]
+      value: Prefabs/Particles/Particle System
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: kirakiraEffectParam.path
+      value: P
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: kirakiraEffectParam.prefabPath
+      value: Prefabs/Particles/kirakira
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: kirakiraEffectParam.controllerName
+      value: KirakiraController
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: kirakiraEffectParam.poolSize
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[0].prefabPath
+      value: Prefabs/Particles/Particle System
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[0].controllerName
+      value: Flower0Controller
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[0].overScore
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[0].poolSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[1].overScore
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[1].prefabPath
+      value: Prefabs/Particles/Effect_Sakura
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[1].controllerName
+      value: Flower1Controller
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

@@ -5,18 +5,6 @@ using DG.Tweening;
 
 public class GameEffect : MonoBehaviour {
 
-    private static string[] PARTICLE_CONTROLLER_NAMES = {
-        "KiraKiraController",
-        "Flower0Controller",
-    };
-    
-    private enum _eParticleType {
-        KIRAKIRA = 0,
-        FLOWER_0,
-
-        MAX
-    }
-
     private enum _eParticleEffectType {
         MOVE_TIMEGAUGE,
         MOVE_FEVERGAUGE,
@@ -30,27 +18,44 @@ public class GameEffect : MonoBehaviour {
         public bool           isUse;
     }
 
+    [System.Serializable] private struct EffectParam {
+        public string prefabPath;
+        public string controllerName;
+        public int overScore;
+        public int poolSize;
+    };
+
     [SerializeField] private float effectPopPosZ = 0.0f;
     [SerializeField] private float effectMoveDurationTime = 0.0f;
     [SerializeField] private float effectMoveWaitTime = 0.0f;
-    [SerializeField] private int[] effectOverScore;
-    [SerializeField] private string[] particlePaths;
-    [SerializeField] private int[] particlePoolSize;
+    [SerializeField] private EffectParam   kirakiraEffectParam;
+    [SerializeField] private EffectParam[] flowerEffectParams;
     
-    private GameObject[] particleController;
-    private GameObject[] particlePrefabs;
-    private ParticleSystem[] particleSystems;
-    private ParticlePool[][] particlePool;
-    private int[] poolSearchID;
+    private GameObject kirakiraController;
+    private GameObject[] flowerControllers;
+    private GameObject kirakiraPrefab;
+    private GameObject[] flowerPrefabs;
+    private ParticlePool[] kirakiraPool;
+    private ParticlePool[][] flowerPools;
+    private int kirakiraPoolSearchID;
+    private int[] flowerPoolSearchID;
     private Vector3 limitTimePos;
     private Vector3 feverGaugePos;
 
     void Awake() {
+        // 花エフェクト関連のメモリを確保
+        flowerControllers = new GameObject[flowerEffectParams.Length];
+        flowerPrefabs = new GameObject[flowerEffectParams.Length];
+
         // Pool のメモリを確保
-        particlePool = new ParticlePool[(int)_eParticleType.MAX][];
-        for(int i = 0; i < (int)_eParticleType.MAX; ++i) {
-            particlePool[i] = new ParticlePool[particlePoolSize[i]];
+        kirakiraPool = new ParticlePool[kirakiraEffectParam.poolSize];
+        flowerPools = new ParticlePool[flowerEffectParams.Length][];
+        for(int i = 0; i < flowerEffectParams.Length; ++i) {
+            flowerPools[i] = new ParticlePool[flowerEffectParams[i].poolSize];
         }
+
+        // サーチIDのメモリを確保
+        flowerPoolSearchID = new int[flowerEffectParams.Length];
     }
 
     void Start() {
@@ -59,35 +64,41 @@ public class GameEffect : MonoBehaviour {
         GameScene gameSceneScript = gameScene.GetComponent<GameScene>();
 
         // パーティクルコントローラーを生成
-        particleController = new GameObject[(int)_eParticleType.MAX];
-        for(int i = 0; i < (int)_eParticleType.MAX; ++i) {
-            particleController[i] = new GameObject();
-            particleController[i].transform.SetParent(transform.parent);
-            particleController[i].name = PARTICLE_CONTROLLER_NAMES[i];
+        kirakiraController = new GameObject();
+        kirakiraController.transform.SetParent(transform.parent);
+        kirakiraController.name = kirakiraEffectParam.controllerName;
+        for(int i = 0; i < flowerEffectParams.Length; ++i) {
+            flowerControllers[i] = new GameObject();
+            flowerControllers[i].transform.SetParent(transform.parent);
+            flowerControllers[i].name = flowerEffectParams[i].controllerName;
         }
 
         // パーティクルの prefab を取得
-        particlePrefabs = new GameObject[particlePaths.Length];
-        particleSystems = new ParticleSystem[particlePaths.Length];
-        for(int i = 0; i < particlePaths.Length; ++i) {
-            particlePrefabs[i] = Resources.Load<GameObject>(particlePaths[i]);
-            particleSystems[i] = particlePrefabs[i].transform.GetComponent<ParticleSystem>();
+        kirakiraPrefab = Resources.Load<GameObject>(kirakiraEffectParam.prefabPath);
+        for(int i = 0; i < flowerEffectParams.Length; ++i) {
+            flowerPrefabs[i] = Resources.Load<GameObject>(flowerEffectParams[i].prefabPath);
         }
 
         // ParticlePool を初期化
-        for(int i = 0; i < (int)_eParticleType.MAX; ++i) {
-            for(int j = 0; j < particlePoolSize[i]; ++j) {
-                particlePool[i][j].obj = (GameObject)Instantiate(particlePrefabs[i], particleController[i].transform.position, particleController[i].transform.rotation);
-                particlePool[i][j].obj.transform.SetParent(particleController[i].transform);
-                particlePool[i][j].obj.SetActive(false);
-                particlePool[i][j].isUse = false;
+        for(int i = 0; i < kirakiraEffectParam.poolSize; ++i) {
+            kirakiraPool[i].obj = (GameObject)Instantiate(kirakiraPrefab, kirakiraController.transform.position, kirakiraController.transform.rotation);
+            kirakiraPool[i].obj.transform.SetParent(kirakiraController.transform);
+            kirakiraPool[i].obj.SetActive(false);
+            kirakiraPool[i].isUse = false;
+        }
+        for (int i = 0; i < flowerEffectParams.Length; ++i) {
+            for(int j = 0; j < flowerEffectParams[i].poolSize; ++j) {
+                flowerPools[i][j].obj = (GameObject)Instantiate(flowerPrefabs[i], flowerControllers[i].transform.position, flowerControllers[i].transform.rotation);
+                flowerPools[i][j].obj.transform.SetParent(flowerControllers[i].transform);
+                flowerPools[i][j].obj.SetActive(false);
+                flowerPools[i][j].isUse = false;
             }
         }
 
         // poolSearchID を初期化
-        poolSearchID = new int[(int)_eParticleType.MAX];
-        for(int i = 0; i < (int)_eParticleType.MAX; ++i)
-            poolSearchID[i] = 0;
+        kirakiraPoolSearchID = 0;
+        for(int i = 0; i < flowerEffectParams.Length; ++i)
+            flowerPoolSearchID[i] = 0;
 
         // 各種ゲージの position を取得
         GameInfoCanvas gic = gameSceneScript.gameUI.gameInfoCanvas;
@@ -105,65 +116,94 @@ public class GameEffect : MonoBehaviour {
             pos.z = effectPopPosZ;
 
             // キラキラエフェクト
-            SearchParticlePool(pos, (int)_eParticleType.KIRAKIRA, _eParticleEffectType.MOVE_TIMEGAUGE);  // 体力ゲージ
-            SearchParticlePool(pos, (int)_eParticleType.KIRAKIRA, _eParticleEffectType.MOVE_FEVERGAUGE);  // フィーバーゲージ
+            KirakiraSearchParticlePool(pos, _eParticleEffectType.MOVE_TIMEGAUGE);   // 体力ゲージ
+            KirakiraSearchParticlePool(pos, _eParticleEffectType.MOVE_FEVERGAUGE);  // フィーバーゲージ
             
             Node nodeScript = node.GetComponent<Node>();
             // 枝先か壁ならエフェクトを出現
-            if(nodeScript.Temp.LinkNum == 1 || nodeScript.Temp.LinkNum >= 3 || nodeScript.CheckLinkedWall()) {
-                int i = -1;
-                while(i < (int)_eParticleType.MAX - 1) {
-                    if(score < effectOverScore[i + 1]) {
-                        break;
+            if((nodeScript.Temp.LinkNum == 1 || nodeScript.Temp.LinkNum >= 3 || nodeScript.CheckLinkedWall()) && nodeScript.NodeID.y >= 2) {
+                int i = 0;
+                for( ; i < flowerEffectParams.Length; ++i) {
+                    if(score >= flowerEffectParams[i].overScore) {
+                        continue;
                     }
 
-                    ++i;
+                    break;
                 }
+                --i;
 
                 // 花エフェクト
-                if(i > 0) {
-//                    SearchParticlePool(pos, i);
-                }
+                if(i >= 0)
+                    FlowerSearchParticlePool(pos, i);
             }
         }
     }
 
-    void SearchParticlePool(Vector3 appearPos, int type, _eParticleEffectType pet = _eParticleEffectType.NONE) {
-        for(int i = 0; i < particlePoolSize[type]; ++i) {
-            if(particlePool[type][poolSearchID[type]].isUse != true) {
-                particlePool[type][poolSearchID[type]].obj.transform.position = appearPos;
-                particlePool[type][poolSearchID[type]].obj.SetActive(true);
-                particlePool[type][poolSearchID[type]].isUse = true;
+    void KirakiraSearchParticlePool(Vector3 appearPos, _eParticleEffectType pet = _eParticleEffectType.NONE) {
+        for(int i = 0; i < kirakiraEffectParam.poolSize; ++i) {
+            if (kirakiraPool[kirakiraPoolSearchID].isUse != true) {
+                kirakiraPool[kirakiraPoolSearchID].obj.transform.position = appearPos;
+                kirakiraPool[kirakiraPoolSearchID].obj.SetActive(true);
+                kirakiraPool[kirakiraPoolSearchID].isUse = true;
 
                 switch(pet) {
                     case _eParticleEffectType.MOVE_TIMEGAUGE:
-                        MoveFinishedBanish(type, poolSearchID[type], limitTimePos, effectMoveDurationTime, effectMoveWaitTime);
+                        MoveFinishedBanish(kirakiraPool, kirakiraPoolSearchID, limitTimePos, effectMoveDurationTime, effectMoveWaitTime);
                         break;
 
                     case _eParticleEffectType.MOVE_FEVERGAUGE:
-                        MoveFinishedBanish(type, poolSearchID[type], feverGaugePos, effectMoveDurationTime, effectMoveWaitTime);
+                        MoveFinishedBanish(kirakiraPool, kirakiraPoolSearchID, feverGaugePos, effectMoveDurationTime, effectMoveWaitTime);
                         break;
 
                     default:
                         break;
                 }
 
-                ++poolSearchID[type];
-                if(poolSearchID[type] >= particlePoolSize[type])
-                    poolSearchID[type] = 0;
+                ++kirakiraPoolSearchID;
+                if(kirakiraPoolSearchID >= kirakiraEffectParam.poolSize)
+                    kirakiraPoolSearchID = 0;
+
+                break;
+            }
+        }
+    }
+
+    void FlowerSearchParticlePool(Vector3 appearPos, int type, _eParticleEffectType pet = _eParticleEffectType.NONE) {
+        for(int i = 0; i < flowerEffectParams[type].poolSize; ++i) {
+            if (flowerPools[type][flowerPoolSearchID[type]].isUse != true) {
+                flowerPools[type][flowerPoolSearchID[type]].obj.transform.position = appearPos;
+                flowerPools[type][flowerPoolSearchID[type]].obj.SetActive(true);
+                flowerPools[type][flowerPoolSearchID[type]].isUse = true;
+
+                switch(pet) {
+                    case _eParticleEffectType.MOVE_TIMEGAUGE:
+                        MoveFinishedBanish(flowerPools[type], flowerPoolSearchID[type], limitTimePos, effectMoveDurationTime, effectMoveWaitTime);
+                        break;
+
+                    case _eParticleEffectType.MOVE_FEVERGAUGE:
+                        MoveFinishedBanish(flowerPools[type], flowerPoolSearchID[type], feverGaugePos, effectMoveDurationTime, effectMoveWaitTime);
+                        break;
+
+                    default:
+                        break;
+                }
+
+                ++flowerPoolSearchID[type];
+                if(flowerPoolSearchID[type] >= flowerEffectParams[type].poolSize)
+                    flowerPoolSearchID[type] = 0;
 
                 break;
             }
         }
     }
     
-    void MoveFinishedBanish(int type, int poolID, Vector3 endPos, float duration, float waitTime) {
-        particlePool[type][poolID].obj.transform.DOMove(endPos, duration)
+    void MoveFinishedBanish(ParticlePool[] pool, int poolID, Vector3 endPos, float duration, float waitTime) {
+        pool[poolID].obj.transform.DOMove(endPos, duration)
             .OnComplete(() => {
-                particlePool[type][poolID].obj.transform.DOScale(0.0f, waitTime)
+                pool[poolID].obj.transform.DOScale(0.0f, waitTime)
                 .OnComplete(() => {
-                    particlePool[type][poolID].obj.SetActive(false);
-                    particlePool[type][poolID].isUse = false;
+                    pool[poolID].obj.SetActive(false);
+                    pool[poolID].isUse = false;
                 });
             })
             .SetEase(Ease.InCubic);
