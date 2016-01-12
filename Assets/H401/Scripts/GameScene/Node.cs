@@ -147,22 +147,11 @@ public class Node : MonoBehaviour
     {
         NodeDebugLog += "Start\n";
 
-        // IDが変化したときにパズル外フラグを更新
-        Observable
-            .EveryUpdate()
-            .Select(_ => nodeID)
-            .DistinctUntilChanged()
-            .Subscribe(_ => {
-                NodeDebugLog += "ChengeNodeID [" + nodeID.y + "][" + nodeID.x + "]\n";
-            }).AddTo(this);
-
         // Transformを矯正
         Observable
             .EveryUpdate()
-            .Select(_ => !IsAction)
+            .Select(_ => (nodeID.x+1) / (NodeID.y+1))
             .DistinctUntilChanged()
-            .Select(x => x)
-            .ThrottleFrame(5)
             .Subscribe(_ => {
                 NodeDebugLog += "ForceTween : ID [" + nodeID.y + "][" + nodeID.x + "]\n";
                 transform.DOMove(nodeControllerScript.NodePlacePosList[nodeID.y][nodeID.x], 0.1f);
@@ -179,6 +168,8 @@ public class Node : MonoBehaviour
                 Vector3 Rot = new Vector3(0, 0, ROT_HEX_ANGLE * (6 - RotCounter));  // 回転角確定
                 transform.DOLocalRotate(Rot, actionTime)                            // DoTweenで回転
                 .OnComplete(() => {
+                    this.DOKill();
+                }).OnKill(()=> {
                     NodeDebugLog += "RotationComplete : " + _RotCounter + "\n";
                     BitLinkRotate(_RotCounter);                                     // 終了と同時にビット変更、アクション終了。
                     IsTurning = false;

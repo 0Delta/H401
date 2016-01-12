@@ -411,7 +411,7 @@ public class NodeController : MonoBehaviour
         // ノードのアニメーション終了と同時に接続チェック
         Observable
             .EveryUpdate()
-            .Select(x => !(isNodeAction | isSlide))
+            .Select(x => !isNodeAction)
             .DistinctUntilChanged()
             .Where(x => x)
             .ThrottleFrame(2)
@@ -923,6 +923,7 @@ public class NodeController : MonoBehaviour
     void CopyNodeInfo(int x, int y, GameObject prefab, Node script)
     {
         Log.Debug("CopyNodeInfo : " + x + "/" + y + "/" + script);
+//        gameNodeScripts[y][x].SetNodeType(script.Temp, script.RotCounter);
         gameNodePrefabs[y][x] = prefab;
         gameNodeScripts[y][x] = script;
         gameNodeScripts[y][x].RegistNodeID(x, y);
