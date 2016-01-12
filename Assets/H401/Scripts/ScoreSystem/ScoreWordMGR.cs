@@ -16,8 +16,14 @@ public class ScoreWordMGR {
     /// <returns>成功で0、失敗で-1以下が帰ります</returns>
     public int Load() {
         int ret = 0;
-        NumSprite = Resources.LoadAll<Sprite>("Sprites/Ranking_Number");
-        AlpSprite = Resources.LoadAll<Sprite>("Sprites/Ranking_Alphabet");
+        if (NumSprite == null)
+        {
+            NumSprite = Resources.LoadAll<Sprite>("Sprites/Ranking_Number");
+        }
+        if (AlpSprite == null)
+        {
+            AlpSprite = Resources.LoadAll<Sprite>("Sprites/Ranking_Alphabet");
+        }
 
         if(NumSprite == null) {
             Debug.LogError("Failed Load NumSprite");
