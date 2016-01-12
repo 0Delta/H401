@@ -121,7 +121,7 @@ public class GameEffect : MonoBehaviour {
             
             Node nodeScript = node.GetComponent<Node>();
             // 枝先か壁ならエフェクトを出現
-            if(nodeScript.Temp.LinkNum == 1 || nodeScript.Temp.LinkNum >= 3 || nodeScript.CheckLinkedWall()) {
+            if((nodeScript.Temp.LinkNum == 1 || nodeScript.Temp.LinkNum >= 3 || nodeScript.CheckLinkedWall()) && nodeScript.NodeID.y >= 2) {
                 int i = 0;
                 for( ; i < flowerEffectParams.Length; ++i) {
                     if(score >= flowerEffectParams[i].overScore) {
