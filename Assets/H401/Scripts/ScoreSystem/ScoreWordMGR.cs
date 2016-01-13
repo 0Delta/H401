@@ -18,11 +18,11 @@ public class ScoreWordMGR {
         int ret = 0;
         if (NumSprite == null)
         {
-            NumSprite = Resources.LoadAll<Sprite>("Sprites/Ranking_Number");
+            NumSprite = Resources.LoadAll<Sprite>("Sprites/Ranking/Ranking_Number");
         }
         if (AlpSprite == null)
         {
-            AlpSprite = Resources.LoadAll<Sprite>("Sprites/Ranking_Alphabet");
+            AlpSprite = Resources.LoadAll<Sprite>("Sprites/Ranking/Ranking_Alphabet");
         }
 
         if(NumSprite == null) {

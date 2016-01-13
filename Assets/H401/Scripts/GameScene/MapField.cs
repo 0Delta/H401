@@ -11,25 +11,24 @@ public class MapField : MonoBehaviour {
 
     private int _mapNum = 0;
     public int mapNum { get { return _mapNum; } set { _mapNum = value; } }
-    private MeshRenderer mRenderer;
+    private SpriteRenderer sRenderer;
 
 	// Use this for initialization
 	void Start () {
-        mRenderer = GetComponent<MeshRenderer>();
-        mRenderer.material.SetColor("_EmissionColor", Color.black);
+        sRenderer = GetComponent<SpriteRenderer>();
+        sRenderer.material.SetColor("_EmissionColor", Color.black);
 	}
 	
     void OnDestroy()
     {
-        mRenderer.material.DOKill();
+        sRenderer.material.DOKill();
     }
 
-    void RedirectedOnTriggerEnter(Collider collider)
+    //2DになったのでRayCastを受ける必要がなくなった
+    void OnMouseDown()
     {
-        //処理を記述
         SetLevel();
     }
-
     public void SetLevel()
     {
         levelPanel.NextLevel = _mapNum;
@@ -44,10 +43,10 @@ public class MapField : MonoBehaviour {
 
     public void SetColor(bool bColor)
     {
-        if (!mRenderer)
-            mRenderer = GetComponent<MeshRenderer>();
+        if (!sRenderer)
+            sRenderer = GetComponent<SpriteRenderer>();
         Color color = bColor ? fieldColor : Color.black;
-        mRenderer.material.EnableKeyword("_Emission");
-        mRenderer.material.DOColor(color,"_EmissionColor", colorDuration).OnComplete( () => { SetColor(!bColor); });
+        sRenderer.material.EnableKeyword("_Emission");
+        sRenderer.material.DOColor(color,"_EmissionColor", colorDuration).OnComplete( () => { SetColor(!bColor); });
     }
 }

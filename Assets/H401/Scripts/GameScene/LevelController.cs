@@ -142,7 +142,7 @@ public class LevelController : MonoBehaviour {
         //メインカメラをノンアクにする
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
         gameScene.mainCamera.transform.Rotate(new Vector3(0.0f, 0.0f, -lyingAngle),Space.Self);
-        gameScene.mainCamera.orthographic = false;
+        //gameScene.mainCamera.orthographic = false;
         gameScene.directionalLight.color = new Color(1.0f,1.0f,1.0f);
 
         gameScene.gameController.gameObject.SetActive(false);
@@ -196,7 +196,7 @@ public class LevelController : MonoBehaviour {
         Destroy(levelChangeObject);
         
         Camera.main.gameObject.transform.localRotation = Quaternion.identity;
-        gameScene.mainCamera.orthographic = true;
+        //gameScene.mainCamera.orthographic = true;
     }
 
     public string GetFieldName(int stage)
