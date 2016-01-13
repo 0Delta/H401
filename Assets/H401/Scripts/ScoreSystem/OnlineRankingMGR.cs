@@ -23,7 +23,6 @@ public class OnlineRankingMGR : MonoBehaviour {
     private void Start() {
         // 円形に座標を設定
         Vector3 Pos;
-        Quaternion Q = Quaternion.identity;
         int n = 0;
         while((n / 7f) < Mathf.PI) {
             Pos = CenterPoint;
@@ -36,7 +35,7 @@ public class OnlineRankingMGR : MonoBehaviour {
         }
 
         // 設定された座標にスコアを表示
-        foreach(Vector3 it in ScorePosList) {
+        for(int i = 0; i < ScorePosList.Count; ++i) {
             GameObject obj = this.InstantiateChild(ScorePrefabName);
             ScoreList.Add(obj);
         }
