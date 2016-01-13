@@ -25,13 +25,13 @@ public class LevelPanel : MonoBehaviour {
         levelController.NextLevel = -1;
         float rot = levelController.LyingAngle;
 
-        fieldImage = new Image[4];
+        fieldImage = new Image[5];
         Transform fBG1 = gameObject.transform.FindChild("fieldBG1");
-        fieldImage[0] = fBG1.FindChild("easy").GetComponent<Image>();
-        fieldImage[1] = fBG1.FindChild("normal").GetComponent<Image>();
-        fieldImage[2] = fBG1.FindChild("hard").GetComponent<Image>();
-        fieldImage[3] = fBG1.FindChild("veryhard").GetComponent<Image>();
-
+        fieldImage[0] = fBG1.FindChild("veryeasy").GetComponent<Image>();
+        fieldImage[1] = fBG1.FindChild("easy").GetComponent<Image>();
+        fieldImage[2] = fBG1.FindChild("normal").GetComponent<Image>();
+        fieldImage[3] = fBG1.FindChild("hard").GetComponent<Image>();
+        fieldImage[4] = fBG1.FindChild("veryhard").GetComponent<Image>();
         //ボタンを並べてリンクを付ける
         //ボタンからメッシュデータに変更されました
         fieldScripts = levelController.levelChange.mapField;
@@ -66,7 +66,7 @@ public class LevelPanel : MonoBehaviour {
     
     public void ChangeText(int stage)
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 5; i++)
             fieldImage[i].color = i == stage ? Color.yellow : Color.white;
     }
 }
