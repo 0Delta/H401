@@ -108,20 +108,28 @@ MonoBehaviour:
   effectPopPosZ: -5
   effectMoveDurationTime: 1
   effectMoveWaitTime: 0.35
+  feverKirakiraColor: {r: 1, g: 0.24264705, b: 0.24264705, a: 1}
   kirakiraEffectParam:
     prefabPath: Prefabs/Particles/kirakira
     controllerName: KirakiraController
-    overScore: 0
+    poolSize: 50
+  lastKirakiraEffectParam:
+    prefabPath: Prefabs/Particles/LastKirakira
+    controllerName: LastKirakiraController
     poolSize: 80
   flowerEffectParams:
-  - prefabPath: Prefabs/Particles/Particle System
-    controllerName: Flower0Controller
+  - param:
+      prefabPath: Prefabs/Particles/sakura
+      controllerName: Flower0Controller
+      poolSize: 30
     overScore: 1000
-    poolSize: 30
-  - prefabPath: Prefabs/Particles/Effect_Sakura
-    controllerName: Flower1Controller
+    kirakiraColor: {r: 1, g: 0.76551723, b: 0, a: 1}
+  - param:
+      prefabPath: Prefabs/Particles/sakura
+      controllerName: Flower0Controller
+      poolSize: 30
     overScore: 2000
-    poolSize: 30
+    kirakiraColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -375,7 +383,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: kirakiraEffectParam.poolSize
-      value: 80
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[0].prefabPath
@@ -404,6 +412,102 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[1].controllerName
       value: Flower1Controller
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: kirakiraEffectParam.kirakiraColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: kirakiraEffectParam.kirakiraColor.g
+      value: 0.46206903
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: kirakiraEffectParam.kirakiraColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[0].kirakiraColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[0].kirakiraColor.g
+      value: 0.76551723
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[0].kirakiraColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: kirakiraEffectParam.kirakiraColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[0].kirakiraColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: LastkirakiraEffectParam.prefabPath
+      value: Prefabs/Particles/LastKirakira
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: LastkirakiraEffectParam.poolSize
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: LastkirakiraEffectParam.controllerName
+      value: LastKirakiraController
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[0].param.prefabPath
+      value: Prefabs/Particles/sakura
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[0].param.controllerName
+      value: Flower0Controller
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[0].param.poolSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[1].kirakiraColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[1].kirakiraColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[1].kirakiraColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: lastKirakiraEffectParam.prefabPath
+      value: Prefabs/Particles/LastKirakira
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: lastKirakiraEffectParam.controllerName
+      value: LastKirakiraController
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: lastKirakiraEffectParam.poolSize
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: feverKirakiraColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: feverKirakiraColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: feverKirakiraColor.g
+      value: 0.24264705
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: feverKirakiraColor.b
+      value: 0.24264705
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

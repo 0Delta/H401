@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: be871363cafd0d543b2682ebb22d9f6f
-timeCreated: 1452142331
+timeCreated: 1452672228
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -11,6 +11,14 @@ TextureImporter:
     21300008: "UI_512px_\u5727\u7E2E_4"
     21300010: "UI_512px_\u5727\u7E2E_5"
     21300012: "UI_512px_\u5727\u7E2E_6"
+    21300014: UIArchive_0
+    21300016: UIArchive_1
+    21300018: UIArchive_2
+    21300020: UIArchive_3
+    21300022: UIArchive_4
+    21300024: UIArchive_5
+    21300026: UIArchive_6
+    21300028: UIArchive_7
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -57,169 +65,136 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: "UI_512px_\u5727\u7E2E_0"
+    - name: UIArchive_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 468
-        width: 506
-        height: 44
+        x: 2
+        y: 467
+        width: 508
+        height: 37
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 244, y: 4}
-        - {x: 86, y: 16}
-        - {x: -253, y: 16}
-        - {x: -253, y: -22}
-        - {x: 253, y: -22}
-        - {x: 253, y: 2}
-        - {x: 251, y: 3}
-    - name: "UI_512px_\u5727\u7E2E_1"
+      - - {x: 244, y: 8.5}
+        - {x: -27, y: 18.5}
+        - {x: -254, y: 18.5}
+        - {x: -254, y: -18.5}
+        - {x: 254, y: -18.5}
+        - {x: 254, y: 9.5}
+        - {x: 253, y: 12.5}
+    - name: UIArchive_1
       rect:
         serializedVersion: 2
-        x: 5
-        y: 388
-        width: 426
-        height: 71
+        x: 2
+        y: 384
+        width: 430
+        height: 76
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -213, y: 35.5}
-        - {x: -213, y: -35.5}
-        - {x: 213, y: -35.5}
-        - {x: 213, y: 35.5}
-      - - {x: -189, y: 8.5}
-        - {x: 188, y: 8.5}
-        - {x: 188, y: -10.5}
-        - {x: -189, y: -10.5}
-    - name: "UI_512px_\u5727\u7E2E_2"
+      - - {x: 215, y: 38}
+        - {x: 168, y: 38}
+        - {x: 163, y: 31}
+        - {x: -100, y: 38}
+        - {x: -214, y: 38}
+        - {x: -215, y: 37}
+        - {x: -215, y: -37}
+        - {x: 215, y: -37}
+    - name: UIArchive_2
       rect:
         serializedVersion: 2
-        x: 22
-        y: 341
-        width: 283
-        height: 29
+        x: 19
+        y: 339
+        width: 287
+        height: 31
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 244, y: 4}
-        - {x: 86, y: 16}
-        - {x: -253, y: 16}
-        - {x: -253, y: -22}
-        - {x: 253, y: -22}
-        - {x: 253, y: 2}
-        - {x: 251, y: 3}
-        - {x: 244, y: 4}
-        - {x: 86, y: 16}
-        - {x: -253, y: 16}
-        - {x: -253, y: -22}
-        - {x: 253, y: -22}
-        - {x: 253, y: 2}
-        - {x: 251, y: 3}
-        - {x: 244, y: 4}
-        - {x: 86, y: 16}
-        - {x: -253, y: 16}
-        - {x: -253, y: -22}
-        - {x: 253, y: -22}
-        - {x: 253, y: 2}
-        - {x: 251, y: 3}
-      - - {x: 244, y: 4}
-        - {x: 86, y: 16}
-        - {x: -253, y: 16}
-        - {x: -253, y: -22}
-        - {x: 253, y: -22}
-        - {x: 253, y: 2}
-        - {x: 251, y: 3}
-        - {x: 244, y: 4}
-        - {x: 86, y: 16}
-        - {x: -253, y: 16}
-        - {x: -253, y: -22}
-        - {x: 253, y: -22}
-        - {x: 253, y: 2}
-        - {x: 251, y: 3}
-      - - {x: 244, y: 4}
-        - {x: 86, y: 16}
-        - {x: -253, y: 16}
-        - {x: -253, y: -22}
-        - {x: 253, y: -22}
-        - {x: 253, y: 2}
-        - {x: 251, y: 3}
-    - name: "UI_512px_\u5727\u7E2E_3"
+      outline: []
+    - name: UIArchive_3
       rect:
         serializedVersion: 2
         x: 316
-        y: 319
-        width: 193
-        height: 51
+        y: 327
+        width: 182
+        height: 45
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -95.5, y: 25.5}
-        - {x: -96.5, y: 24.5}
-        - {x: -96.5, y: -16.5}
-        - {x: -93.5, y: -19.5}
-        - {x: 86.5, y: -19.5}
-        - {x: 87.5, y: -15.5}
-        - {x: 87.5, y: 25.5}
-    - name: "UI_512px_\u5727\u7E2E_4"
+      - - {x: -91, y: 19.5}
+        - {x: -91, y: -21.5}
+        - {x: -90, y: -22.5}
+        - {x: 91, y: -22.5}
+        - {x: 91, y: 22.5}
+        - {x: -88, y: 22.5}
+    - name: UIArchive_4
       rect:
         serializedVersion: 2
-        x: 187
-        y: 18
-        width: 135
-        height: 135
+        x: 249
+        y: 145
+        width: 11
+        height: 5
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -8.5, y: 66.5}
-        - {x: -22.5, y: 58.5}
-        - {x: -60.5, y: 34.5}
-        - {x: -60.5, y: -38.5}
-        - {x: -13.5, y: -67.5}
-        - {x: 8.5, y: -67.5}
-        - {x: 32.5, y: -54.5}
-        - {x: 60.5, y: -36.5}
-        - {x: 60.5, y: 36.5}
-        - {x: 7.5, y: 66.5}
-    - name: "UI_512px_\u5727\u7E2E_5"
+      outline: []
+    - name: UIArchive_5
       rect:
         serializedVersion: 2
-        x: 336
-        y: 12
-        width: 83
-        height: 144
+        x: 332
+        y: 8
+        width: 88
+        height: 149
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -41.5, y: 72}
-        - {x: -41.5, y: -72}
-        - {x: 41.5, y: -72}
-        - {x: 41.5, y: 72}
-      - - {x: -19.5, y: 49}
-        - {x: 19.5, y: 49}
-        - {x: 19.5, y: -48}
-        - {x: -19.5, y: -48}
-    - name: "UI_512px_\u5727\u7E2E_6"
+      - - {x: -43, y: 74.5}
+        - {x: -43, y: -71.5}
+        - {x: -41, y: -73.5}
+        - {x: 44, y: -73.5}
+        - {x: 44, y: 74.5}
+      - - {x: -18, y: 50.5}
+        - {x: 21, y: 50.5}
+        - {x: 21, y: -46.5}
+        - {x: -18, y: -46.5}
+    - name: UIArchive_6
       rect:
         serializedVersion: 2
-        x: 444
-        y: 29
-        width: 53
-        height: 110
+        x: 196
+        y: 19
+        width: 117
+        height: 124
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -26.5, y: 55}
-        - {x: -26.5, y: -55}
-        - {x: 26.5, y: -55}
-        - {x: 26.5, y: 55}
+      - - {x: -25.5, y: 62}
+        - {x: -58.5, y: 48}
+        - {x: -58.5, y: -35}
+        - {x: -20.5, y: -62}
+        - {x: 15.5, y: -62}
+        - {x: 58.5, y: -38}
+        - {x: 58.5, y: 43}
+        - {x: 37.5, y: 62}
+    - name: UIArchive_7
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 28
+        width: 55
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -27.5, y: 56.5}
+        - {x: -27.5, y: -56.5}
+        - {x: 27.5, y: -56.5}
+        - {x: 27.5, y: 56.5}
     outline: []
   spritePackingTag: 
   userData: 

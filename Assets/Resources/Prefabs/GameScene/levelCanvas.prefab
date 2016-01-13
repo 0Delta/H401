@@ -41,9 +41,16 @@ GameObject:
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
+<<<<<<< HEAD
   - 224: {fileID: 22467666}
   - 222: {fileID: 22254618}
   - 114: {fileID: 11419044}
+=======
+  - 224: {fileID: 22491932}
+  - 223: {fileID: 22319860}
+  - 114: {fileID: 11434600}
+  - 114: {fileID: 11439726}
+>>>>>>> UpStream/master
   m_Layer: 0
   m_Name: feverFrame
   m_TagString: Untagged
@@ -225,6 +232,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+<<<<<<< HEAD
 --- !u!1 &175340
 GameObject:
   m_ObjectHideFlags: 1
@@ -244,6 +252,10 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &180708
 GameObject:
+=======
+--- !u!114 &11433278
+MonoBehaviour:
+>>>>>>> UpStream/master
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}

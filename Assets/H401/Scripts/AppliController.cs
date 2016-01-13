@@ -15,9 +15,9 @@ public class AppliController : MonoBehaviour {
 		GAME,               // ゲーム本編
 		RESULT,             // リザルト
 		RANKING,	        // ランキング
-	    OPTION,             // オプション
-        HOWTOPLAY,          // 遊び方
-        CREDIT,             // クレジット
+		OPTION,             // オプション
+		HOWTOPLAY,          // 遊び方
+		CREDIT,             // クレジット
 
 		MAX_NUM
 	}

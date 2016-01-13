@@ -1564,12 +1564,7 @@ public class NodeController : MonoBehaviour
         feverScript.Gain(nodeCount);
         
         // 完成時演出
-        List<GameObject> treeNodes = new List<GameObject>();
-        foreach (Node obj in List)
-        {
-            treeNodes.Add(obj.gameObject);
-        }
-        gameEffect.TreeCompleteEffect(treeNodes, curScore);
+        gameEffect.TreeCompleteEffect(List, curScore);
 
         //ノードを再配置
         foreach (Node obj in List)
