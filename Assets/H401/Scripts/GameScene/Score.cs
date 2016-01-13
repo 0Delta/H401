@@ -6,7 +6,9 @@ public class Score : MonoBehaviour {
 
     //表示用の何か
     [SerializeField] private string ScoreManagerPath;
-
+    [SerializeField] private float scoreHeight;
+    //    [SerializeField] private Text scoreText;
+    private ScoreWordMGR swManager;
     private ScoreInfo scoreInfo;
 
     private int HiScore;
@@ -22,18 +24,31 @@ public class Score : MonoBehaviour {
         get { return gameScore; }
     }
 
-    [SerializeField] private Text scoreText;
+    private Canvas _scoreCanvas;
+    public Canvas scoreCanvas { get { return _scoreCanvas; } }
 
 	// Use this for initialization
 	void Start () {
+        gameScore = 0;
+        swManager = new ScoreWordMGR();
+        swManager.Load();
+        scoreInfo = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().levelTables.ScoreRatio;
+        _scoreCanvas = null;
         SetScore();
+
 	}
 
     //表示機構
     public void SetScore()
     {
-        scoreText.text = gameScore.ToString();
-        scoreInfo = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().levelTables.ScoreRatio;
+        //scoreText.text = gameScore.ToString();
+        if (_scoreCanvas != null)
+            Destroy(_scoreCanvas.gameObject);
+
+        _scoreCanvas = ScoreWordMGR.Draw(gameScore.ToString(),transform,scoreHeight);
+        RectTransform canvRect = _scoreCanvas.GetComponentInChildren<RectTransform>();
+        _scoreCanvas.transform.position = transform.position;
+        _scoreCanvas.transform.localPosition -= new Vector3(canvRect.offsetMax.x * 0.5f,0.0f,0.0f);
     }
 
     //計算機構

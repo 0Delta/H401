@@ -16,14 +16,14 @@ public class UnChainObject : MonoBehaviour
     public bool bChecked { get { return _bChecked; } set { _bChecked = value; } }
     private bool bDeleted;
 
-    private MeshRenderer mRenderer = null;
+    private SpriteRenderer sRenderer = null;
 
     void Start()
     {
         //出現時tween
-        mRenderer = gameObject.GetComponent<MeshRenderer>();
-        mRenderer.material.DOFade(0.0f, 0.0f);
-        mRenderer.material.DOFade(1.0f, tweenDuration);
+        sRenderer = gameObject.GetComponent<SpriteRenderer>();
+        sRenderer.material.DOFade(0.0f, 0.0f);
+        sRenderer.material.DOFade(1.0f, tweenDuration);
 
         bDeleted = false;
     }
@@ -35,7 +35,7 @@ public class UnChainObject : MonoBehaviour
             if (bDeleted)
                 return;
             bDeleted = true;
-            mRenderer.material.DOFade(0.0f, tweenDuration)
+           sRenderer.material.DOFade(0.0f, tweenDuration)
             .OnComplete(() =>
             {
                 this.DOKill();

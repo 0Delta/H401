@@ -39,8 +39,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d23e63bfed0820409730b8ae52fdbc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unChainCubePath: Prefabs/GameScene/UnChainCube
-  linkDistance: .435000002
+  unChainCubePath: Prefabs/GameScene/unChain
+  linkDistance: 0.435
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -51,6 +51,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: linkDistance
       value: .435000002
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: unChainCubePath
+      value: Prefabs/GameScene/unChain
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

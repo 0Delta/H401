@@ -39,7 +39,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63c383944c9ec2b458b2ab7bbbff6647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldMapPath: Prefabs/GameScene/fieldMap
+  fieldMapPath: Prefabs/GameScene/2DMap
   levelPanelPath: Prefabs/GameScene/LevelCanvas
   mapArrowPath: Prefabs/GameScene/MapArrow
   normalColor: {r: 1, g: 1, b: 1, a: 0}
@@ -68,7 +68,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: fieldMapPath
-      value: Prefabs/GameScene/fieldMap
+      value: Prefabs/GameScene/2DMap
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: normalColor.r
