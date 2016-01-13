@@ -29,6 +29,7 @@ public class Score : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        gameScore = 0;
         swManager = new ScoreWordMGR();
         swManager.Load();
         scoreInfo = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().levelTables.ScoreRatio;
