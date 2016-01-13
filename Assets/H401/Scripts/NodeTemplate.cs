@@ -5,6 +5,9 @@ using System.Collections;
 public class NodeTemplate {
 
     // 設定部分
+    static public string SpriteName;
+
+
     public string MaterialName;
     public bool[] LinkDir = new  bool[6];
     
