@@ -3,6 +3,8 @@
 		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
 		_UVGap ("UV Gap", Range(0.0, 1.0)) = 0.5
+		_BrightnessHighThreshold ("Brightness Threshold (High)", Range(0.0, 1.0)) = 0.5
+		_BrightnessLowThreshold ("Brightness Threshold (Low)", Range(0.0, 1.0)) = 0.5
 		_DisplaceL1 ("DisplaceL1", Range(0.0, 1.0)) = 0.5
 		_DisplaceR1 ("DisplaceR1", Range(0.0, 1.0)) = 0.5
 		_DisplaceL2 ("DisplaceL2", Range(0.0, 1.0)) = 0.5
@@ -28,6 +30,8 @@
 			uniform fixed4 _Color;
 			uniform sampler2D _MainTex;
 			uniform float _UVGap;
+			uniform float _BrightnessHighThreshold;
+			uniform float _BrightnessLowThreshold;
 			uniform float _DisplaceL1;
 			uniform float _DisplaceR1;
 			uniform float _DisplaceL2;
@@ -65,7 +69,13 @@
 					uv.y += _UVGap;
 					tex = tex2D(_MainTex, uv);
 
-					tex.rgb /= _Color.rgb;
+					if(uv.y > _BrightnessHighThreshold)
+						uv.y = _BrightnessHighThreshold;
+
+					if(uv.y < _BrightnessLowThreshold)
+						uv.y = _BrightnessLowThreshold;
+
+					tex.rgb /= _Color.rgb * (1.0f - uv.y);
 					tex.a /= _Color.a;
 				} else {
 					tex = tex2D(_MainTex, i.uv);
