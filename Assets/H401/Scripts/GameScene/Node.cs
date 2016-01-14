@@ -200,7 +200,7 @@ public class Node : MonoBehaviour
                 NodeDebugLog += "ChangeEmission : " + bChain + "\n";
                 if (x == true)
                 {
-                    ChangeEmissionColor(3);
+                    ChangeEmissionColor(1);
                 }
                 else {
                     ChangeEmissionColor(0);
@@ -584,7 +584,7 @@ public class Node : MonoBehaviour
         RotCounter = (Rot == -1 ? RotI : Rot);
 
         // 色をリセット
-        //ChangeEmissionColor(0);
+        ChangeEmissionColor(0);
     }
 
     #region // ゲッター

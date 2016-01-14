@@ -5,7 +5,6 @@ public class TitleScene : MonoBehaviour {
     
     [SerializeField] private string mainCameraPath;
     [SerializeField] private string subCameraPath;
-    [SerializeField] private string lightPath;
     [SerializeField] private string renderTexturePath;
     [SerializeField] private string titleNodeControllerPath;
     [SerializeField] private string titleCanvasPath;
@@ -14,7 +13,6 @@ public class TitleScene : MonoBehaviour {
     
     private GameObject mainCameraObject;
     private GameObject subCameraObject;
-    private GameObject lightObject;
     private GameObject renderTextureObject;
     private GameObject titleNodeControllerObject;
     private GameObject titleCanvasObject;
@@ -28,9 +26,6 @@ public class TitleScene : MonoBehaviour {
 
 	    subCameraObject = Instantiate(Resources.Load<GameObject>(subCameraPath));
         subCameraObject.transform.SetParent(transform);
-
-	    lightObject = Instantiate(Resources.Load<GameObject>(lightPath));
-        lightObject.transform.SetParent(transform);
 
 	    renderTextureObject = Instantiate(Resources.Load<GameObject>(renderTexturePath));
         renderTextureObject.transform.SetParent(transform);

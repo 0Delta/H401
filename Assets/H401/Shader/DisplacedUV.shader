@@ -76,7 +76,7 @@
 						uv.y = _BrightnessLowThreshold;
 
 					tex.rgb /= _Color.rgb * (1.0f - uv.y);
-					tex.a /= _Color.a;
+//					tex.a /= _Color.a;
 				} else {
 					tex = tex2D(_MainTex, i.uv);
 				}

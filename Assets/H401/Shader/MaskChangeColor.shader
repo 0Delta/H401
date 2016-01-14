@@ -78,7 +78,7 @@
 				fixed4 maskColor = tex2D(_MaskTex, uv);
 				if(maskColor.r >= _Threshold) {
 					color.rgb /= _Color.rgb;
-					color.a /= _Color.a;
+//					color.a /= _Color.a;
 				}
 
 				return color;
