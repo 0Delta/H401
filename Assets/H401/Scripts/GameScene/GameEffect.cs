@@ -38,6 +38,9 @@ public class GameEffect : MonoBehaviour {
     [SerializeField] private EffectParam kirakiraEffectParam;
     [SerializeField] private EffectParam lastKirakiraEffectParam;
     [SerializeField] private FlowerEffectParam[] flowerEffectParams;
+
+    //ゲージの回復タイミングのために
+    [HideInInspector]public Vector2 effectTimeInfo { get { return new Vector2(effectMoveDurationTime,effectMoveWaitTime); } }
     
     private GameObject kirakiraController;
     private GameObject lastKirakiraController;

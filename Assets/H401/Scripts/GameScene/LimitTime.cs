@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-
+using DG.Tweening;
 public class LimitTime : MonoBehaviour {
     
     [SerializeField] private float maxTime = 0.0f;  //時間の最大値(秒？)
@@ -35,12 +35,20 @@ public class LimitTime : MonoBehaviour {
         }
     }
 
-   public delegate void fdel(); 
+    private float gainDuration;
+    private float fillWaitTime;
+
+    //private Tweener fillTweener;
+    private float changedValueTime; //tweenのDurationにつかう 前回Durationを変更した時間
+
+   public delegate void TMethod(); 
 
 	// Use this for initialization
 	void Start () {
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
-        
+        Vector2 effectTimeInfo = gameScene.gameController.nodeController.gameObject.GetComponent<GameEffect>().effectTimeInfo;
+        gainDuration = effectTimeInfo.x;
+        fillWaitTime = effectTimeInfo.y;
         timeLevel = levelTableScript.GetTimeLevel(0);
         timeLevelInterval = levelTableScript.TimeLevelInterval;
         startTime = Time.time;
@@ -54,7 +62,6 @@ public class LimitTime : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         nowTime += Time.deltaTime * timeLevel.SlipRatio * _eventRatio;
-
         SetImage();
 
         if(nowTime > maxTime)
@@ -78,7 +85,7 @@ public class LimitTime : MonoBehaviour {
 
             //ボタンでなく時間経過で勝手に移行するように
             // リザルトへ戻るボタンを設定
-            fdel del = () => {
+            TMethod del = () => {
                 AppliController AppliCtr = GetComponentInParent<AppliController>();
                 AppliCtr.ChangeScene(AppliController._eSceneID.RANKING, 0.5f, 0.5f);
             };
@@ -122,16 +129,39 @@ public class LimitTime : MonoBehaviour {
         {
             nowTime = 0.0f;
         }
+
+        StartCoroutine(WaitGain(() => {
+            timeImage.DOKill();
+            timeImage.DOFillAmount(lastRate,fillWaitTime);
+            
+            changedValueTime = Time.deltaTime;
+            }
+            ));
     }
 
     private void SetImage()
     {
-        timeImage.fillAmount = lastRate;
+        timeImage.DOKill();
+        if (fillWaitTime - changedValueTime > 0.0f)
+        {
+            timeImage.DOFillAmount(lastRate, fillWaitTime - changedValueTime);
+            changedValueTime = Time.deltaTime;
+        }
+        else
+            timeImage.fillAmount = lastRate;
+
+
         if(ojityanAnimator.gameObject.activeSelf)
             ojityanAnimator.SetFloat("lastTime", lastRate);
     }
+
+    private IEnumerator WaitGain(TMethod Gain)
+    {
+        yield return new WaitForSeconds(gainDuration);
+        Gain();
+    }
     
-    public IEnumerator ToResult(fdel del)
+    public IEnumerator ToResult(TMethod del)
     {
         yield return new WaitForSeconds(5.0f);
         del();

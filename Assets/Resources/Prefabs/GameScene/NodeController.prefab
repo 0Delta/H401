@@ -42,7 +42,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24394866, guid: 9b707a9c23c935c4e9996a7418d1ff26,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: d774c8ec0bd43044ab71a5bef03f21c0, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ce583be0cbec80a4eb70396415505f46, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -117,7 +117,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24394866, guid: 9b707a9c23c935c4e9996a7418d1ff26,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 2169c0b07188d824aabb451a3164613b, type: 3}
+  m_audioClip: {fileID: 8300000, guid: bd339ac434739604db060e401490b3bf, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -192,11 +192,11 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24394866, guid: 9b707a9c23c935c4e9996a7418d1ff26,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: fced08d81fa1e9744904a5bb7e6005e0, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 794223d34c719284e9b4950b5fc93e0e, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   Priority: 128
@@ -770,7 +770,7 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: fced08d81fa1e9744904a5bb7e6005e0, type: 3}
+      objectReference: {fileID: 8300000, guid: bd339ac434739604db060e401490b3bf, type: 3}
     - target: {fileID: 0}
       propertyPath: panLevelCustomCurve.m_RotationOrder
       value: 0
@@ -790,7 +790,7 @@ Prefab:
         type: 2}
     - target: {fileID: 0}
       propertyPath: Loop
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[0].SpriteIdx

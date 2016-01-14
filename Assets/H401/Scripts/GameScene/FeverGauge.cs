@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class FeverGauge : MonoBehaviour {
 
@@ -25,9 +26,18 @@ public class FeverGauge : MonoBehaviour {
 
     private AudioSource audioSource = null;
 
+    private float gainDuration;
+    private float fillWaitTime;
+
+    private Tweener fillTweener;
+
+    delegate void gainMethod();
+
 	void Start () {
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
-
+        Vector2 effectTimeInfo = gameScene.gameController.nodeController.gameObject.GetComponent<GameEffect>().effectTimeInfo;
+        gainDuration = effectTimeInfo.x;
+        fillWaitTime = effectTimeInfo.y;
         audioSource = GetComponent<AudioSource>();
 
         feverValue = 0.0f;
@@ -43,7 +53,7 @@ public class FeverGauge : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+        //FGImage.
         if (_feverState == _eFeverState.FEVER)
         {
 
@@ -53,10 +63,16 @@ public class FeverGauge : MonoBehaviour {
             {
                 ChangeState(_eFeverState.NORMAL);
             }
+
+        if (fillTweener != null && fillTweener.IsPlaying())
+            fillTweener.ChangeEndValue(feverValue);
+        else
+            FGImage.fillAmount = feverValue;
+
+
+
         }
 
-
-        FGImage.fillAmount = feverValue;
 	}
     public void Gain(NodeCountInfo nodeCount)
     {
@@ -74,7 +90,7 @@ public class FeverGauge : MonoBehaviour {
         //MAXになったらフィーバーモードへ
         //今はとりあえず0に戻す
 
-        audioSource.Play();
+        //audioSource.Play();
 
         if (_feverState == _eFeverState.FEVER)
             return;
@@ -84,6 +100,19 @@ public class FeverGauge : MonoBehaviour {
             ChangeState(_eFeverState.FEVER);
         }
 
+        if (fillTweener != null)
+            fillTweener.Kill();
+
+        if (feverState != _eFeverState.FEVER)
+            StartCoroutine(WaitGain(() => { fillTweener = FGImage.DOFillAmount(feverValue, fillWaitTime); audioSource.Play(); }));
+        else
+            FGImage.fillAmount = feverValue;
+    }
+
+    IEnumerator WaitGain(gainMethod gainM)
+    {
+        yield return new WaitForSeconds(gainDuration);
+        gainM();
     }
 
     void ChangeState(_eFeverState state)
