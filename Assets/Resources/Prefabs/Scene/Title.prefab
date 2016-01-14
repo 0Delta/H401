@@ -119,9 +119,9 @@ MonoBehaviour:
   lightPath: Prefabs/TitleScene/Directional Light
   renderTexturePath: Prefabs/TitleScene/RenderTexture
   titleNodeControllerPath: Prefabs/TitleScene/TitleNodeController
-  backGroundPath: Prefabs/TitleScene/BG
   titleCanvasPath: Prefabs/TitleScene/TitleCanvas
   eventSystemPath: Prefabs/TitleScene/EventSystem
+  HowToPlayScenePath: 
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -151,7 +151,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: backGroundPath
-      value: Prefabs/TitleScene/BG
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: titleCanvasPath

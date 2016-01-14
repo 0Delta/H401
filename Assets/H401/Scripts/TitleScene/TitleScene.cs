@@ -8,7 +8,6 @@ public class TitleScene : MonoBehaviour {
     [SerializeField] private string lightPath;
     [SerializeField] private string renderTexturePath;
     [SerializeField] private string titleNodeControllerPath;
-    [SerializeField] private string backGroundPath;
     [SerializeField] private string titleCanvasPath;
     [SerializeField] private string eventSystemPath;
     [SerializeField] private string HowToPlayScenePath;
@@ -18,7 +17,6 @@ public class TitleScene : MonoBehaviour {
     private GameObject lightObject;
     private GameObject renderTextureObject;
     private GameObject titleNodeControllerObject;
-    private GameObject backGroundObject;
     private GameObject titleCanvasObject;
     private GameObject eventSystemObject;
     private GameObject HowToPlaySceneObject;
@@ -39,9 +37,6 @@ public class TitleScene : MonoBehaviour {
 
 	    titleNodeControllerObject = Instantiate(Resources.Load<GameObject>(titleNodeControllerPath));
         titleNodeControllerObject.transform.SetParent(transform);
-
-	    backGroundObject = Instantiate(Resources.Load<GameObject>(backGroundPath));
-        backGroundObject.transform.SetParent(transform);
 
 	    titleCanvasObject = Instantiate(Resources.Load<GameObject>(titleCanvasPath));
         titleCanvasObject.transform.SetParent(transform);
