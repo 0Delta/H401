@@ -577,7 +577,7 @@ public class Node : MonoBehaviour
         Temp = type;
 
         //テクスチャを設定
-//        meshRenderer.material = nodeControllerScript.GetMaterial(type);
+        SpriteRenderer.sprite = nodeControllerScript.GetSprite(Temp.SpriteIdx);
 
         //ランダムに回転
         int RotI = RandomEx.RangeforInt(0, 6);

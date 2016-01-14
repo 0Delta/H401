@@ -45,13 +45,20 @@ public class NodeController : MonoBehaviour
     #region // ノード系プレハブへのパス、実体
     [SerializeField] private string gameNodePrefabPath = null;          // ノードのプレハブのパス
     [SerializeField] private string frameNodePrefabPath = null;         // フレームノードのプレハブのパス
-    [SerializeField] private string gameNodeSpritePath = null;          // ノードのスプライトのパス
-    [SerializeField] private string frameNodeSpritePath = null;         // フレームノードのスプライトのパス
+    [SerializeField] public string gameNodeSpritePath = null;          // ノードのスプライトのパス
+    [SerializeField] public string frameNodeSpritePath = null;         // フレームノードのスプライトのパス
 
     private GameObject gameNodePrefab = null;                 // ノードのプレハブ
     private GameObject frameNodePrefab = null;                 // フレームノードのプレハブ
 
     private Sprite[] gameNodeSprite;    // ノードのスプライトリスト
+    public Sprite GetSprite(int Idx) {
+        if (gameNodeSprite != null && gameNodeSprite.Length > Idx && Idx > -1)
+        {
+            return gameNodeSprite[Idx];
+        }
+        return null;
+    }
     private Sprite[] frameNodeSprite;   // フレームノードのスプライトリスト
 
     [SerializeField]
@@ -224,9 +231,6 @@ public class NodeController : MonoBehaviour
         MAX,
     }
 
-    private Material[] nodeMaterials = null;
-    public Material GetMaterial(NodeTemplate nodeType) { return nodeMaterials[nodeType.ID]; }
-
     public Vector3[][] NodePlacePosList { get { return nodePlacePosList; } }
 
     void Awake()
@@ -242,7 +246,6 @@ public class NodeController : MonoBehaviour
             gameNodeScripts[i] = new Node[adjustRow];
             nodePlacePosList[i] = new Vector3[adjustRow];
         }
-        nodeMaterials = new Material[NodeTemp.Length];
     }
 
     // Use this for initialization
@@ -262,27 +265,12 @@ public class NodeController : MonoBehaviour
         // ----- スプライトデータを Resources から取得
         gameNodeSprite = Resources.LoadAll<Sprite>(gameNodeSpritePath);
         frameNodeSprite = Resources.LoadAll<Sprite>(frameNodeSpritePath);
-
-        // ノードのテンプレからマテリアルを取得
-        //NodeTemplate.AllCalc(NodeTemp);
-        //int n = 0;
-        //for (int i = 0; i < NodeTemp.Length; ++i)
-        //{
-        //    if (NodeTemp[i].Ready)
-        //    {
-        //        nodeMaterials[n] = Resources.Load<Material>(NodeTemp[i].MaterialName);
-        //        NodeTemp[i].ID = n;
-        //        n++;
-        //    }
-        //    else {
-        //        Debug.LogWarning("Failed Load Material No." + i.ToString());
-        //    }
-        //}
         
         // GameEffect スクリプトを取得
         gameEffect = transform.GetComponent<GameEffect>();
 
         // ----- ノード準備
+        NodeTemplate.AllCalc(NodeTemp);
         InitNode();
 
         //開始演出が終わるまでは操作を受け付けない
@@ -1516,9 +1504,8 @@ public class NodeController : MonoBehaviour
             (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3) ? 3 :
             (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3 + fieldLevel.Ratio_Path4) ? 4 :
             1;
-
-        node.gameObject.GetComponent<SpriteRenderer>().sprite = gameNodeSprite[Random.Range(0, 7)];
-//        node.SetNodeType(NodeTemplate.GetTempFromBranchRandom(NodeTemp, branchNum));
+        
+        node.SetNodeType(NodeTemplate.GetTempFromBranchRandom(NodeTemp, branchNum));
     }
 
     /// <summary>
