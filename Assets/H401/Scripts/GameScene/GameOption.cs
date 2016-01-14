@@ -17,6 +17,7 @@ public class GameOption : MonoBehaviour {
     public _ePauseState pauseState{ get{return _pauseState;}}
     [HideInInspector] public Canvas optionCanvas = null;
     [HideInInspector] public GameObject optionButton = null;
+    private Button triggerButton;
 
 	// Use this for initialization
     void Start()
@@ -33,6 +34,8 @@ public class GameOption : MonoBehaviour {
 
         optionButton = optionCanvas.gameObject.transform.FindChild("Option").gameObject;
 
+        triggerButton = GetComponentInChildren<Button>();
+        triggerButton.onClick.AddListener(StartOption);
     }
 
     public void StartOption()
@@ -43,7 +46,7 @@ public class GameOption : MonoBehaviour {
         _pauseState = _ePauseState.PAUSE;
         
         //オプションボタンをノンアクに
-        gameObject.GetComponentInChildren<Button>().interactable = false;
+        triggerButton.interactable = false;
 
         //パネル生成
         panelObject = (GameObject)Instantiate(Resources.Load<GameObject>(pausePanelPath));
@@ -56,22 +59,30 @@ public class GameOption : MonoBehaviour {
         panelObject.transform.localPosition = panelObject.transform.parent.position; //addChildほしい
         panelObject.transform.localScale = new Vector3(popScale, popScale, 1.0f);
  
-        panelObject.transform.DOScale(1.0f, popTime).SetUpdate(true);
+        panelObject.transform.DOScale(1.0f, popTime).SetUpdate(true)
+            .OnComplete( () => { triggerButton.interactable = true; });
 
         //ここでもう終了時処理の設定をしておく
-        panelObject.GetComponentInChildren<Button>().onClick.AddListener( EndOption);
+        triggerButton.onClick.RemoveAllListeners();
+        triggerButton.onClick.AddListener(EndOption);
+
     }
 
     public void EndOption()
     {
         Time.timeScale = 1.0f;
+        triggerButton.interactable = false;
+        triggerButton.onClick.RemoveAllListeners();
+        triggerButton.onClick.AddListener(StartOption);
         panelObject.transform.DOScale(popScale, popTime)
             .OnComplete(() =>
             {
-                gameObject.GetComponentInChildren<Button>().interactable = true;
+                triggerButton.interactable = true;
                 Destroy(panelObject);
 
                 _pauseState = _ePauseState.GAME;
+
             });
+
     }
 }
