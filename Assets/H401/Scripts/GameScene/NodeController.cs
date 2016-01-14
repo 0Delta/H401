@@ -368,7 +368,7 @@ public class NodeController : MonoBehaviour
                 if (isSlide)
                 {
                     AdjustNodeStop();
-                    audioSources[(int)_eAudioNumber.SLIDE].Stop();
+                    //audioSources[(int)_eAudioNumber.SLIDE].Stop();
                     isSlideEnd = true;
                     tapNodeID = Vec2Int.zero;
                 }
@@ -660,7 +660,7 @@ public class NodeController : MonoBehaviour
 
     public void StartSlideNodes(Vec2Int nextNodeID, _eSlideDir newSlideDir)
     {
-        audioSources[(int)_eAudioNumber.SLIDE].Play();
+        //audioSources[(int)_eAudioNumber.SLIDE].Play();
         Log.Debug("StartSlideNodes : " + nextNodeID + " / " + newSlideDir);
         moveNodeDist = new Vector2(gameNodePrefabs[nextNodeID.y][nextNodeID.x].transform.position.x, gameNodePrefabs[nextNodeID.y][nextNodeID.x].transform.position.y)
                      - new Vector2(gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.x, gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.y);   // スライド方向ベクトル兼移動量を算出
@@ -693,6 +693,7 @@ public class NodeController : MonoBehaviour
     // ゲームの画面外にはみ出したノードを逆側に移動する
     void LoopBackNode()
     {
+        audioSources[(int)_eAudioNumber.SLIDE].Play();
         Log.Debug("LoopBackNode");
         if (gameNodeScripts[slidingLimitNodeID.y][slidingLimitNodeID.x].IsOutScreen)
         {
