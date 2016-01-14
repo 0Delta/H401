@@ -8,7 +8,7 @@ public class TitleNodeController : MonoBehaviour {
     [SerializeField] private int row = 0;       // 横配置数 リストIDが奇数の行は＋１とする
     [SerializeField] private int col = 0;       // 縦配置数
     [SerializeField] private string nodePrefabPath      = null;     // ノードのプレハブのパス
-    [SerializeField] private string frameNodePrefabPath = null;     // フレームノードのプレハブのパス
+    [SerializeField] private string frameNodeSpritePath = null;     // フレームノードのスプライトのパス
     [SerializeField] private float widthMargin  = 0.0f;  // ノード位置の左右間隔の調整値
     [SerializeField] private float heightMargin = 0.0f;  // ノード位置の上下間隔の調整値
 
@@ -17,11 +17,12 @@ public class TitleNodeController : MonoBehaviour {
     [SerializeField] private float[] moveSpd;   // 移動するノードの移動速度
     
     private GameObject nodePrefab       = null;     // ノードのプレハブ
-    private GameObject frameNodePrefab  = null;     // フレームノードのプレハブ
     
     private GameObject[][]  nodePrefabs;        // ノードのプレハブリスト
     private Vector3[][]     nodePlacePosList;   // ノードの配置位置リスト
     private GameObject      frameController;    // フレームコントローラープレハブ
+    
+    private Sprite[] frameNodeSprite;   // フレームノードのスプライトリスト
 
 	private Vector2 nodeSize = Vector2.zero;    // 描画するノードのサイズ
 
@@ -37,15 +38,18 @@ public class TitleNodeController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Vector3 pos = transform.position;
+
 		// ----- プレハブデータを Resources から取得
         nodePrefab =  Resources.Load<GameObject>(nodePrefabPath);
-        frameNodePrefab =  Resources.Load<GameObject>(frameNodePrefabPath);
+        
+        // ----- スプライトデータを Resources から取得
+        frameNodeSprite = Resources.LoadAll<Sprite>(frameNodeSpritePath);
 
         // 描画するノードの大きさを取得
-        MeshFilter nodeMeshInfo = nodePrefab.GetComponent<MeshFilter>();    // ノードのメッシュ情報を取得
-        Vector3 pos = transform.position;
-        nodeSize.x = nodeMeshInfo.sharedMesh.bounds.size.x * nodePrefab.transform.localScale.x;
-        nodeSize.y = nodeMeshInfo.sharedMesh.bounds.size.y * nodePrefab.transform.localScale.y;
+        SpriteRenderer sr = nodePrefab.GetComponent<SpriteRenderer>();
+        nodeSize.x = sr.sprite.bounds.size.x;
+        nodeSize.y = sr.sprite.bounds.size.y;
         nodeSize.x -= widthMargin;
         nodeSize.y -= heightMargin;
         
@@ -74,15 +78,17 @@ public class TitleNodeController : MonoBehaviour {
                 if(i >= col - 1) {
                     Vector3 framePos = pos;
                     framePos.z = transform.position.z + FRAME_POSZ_MARGIN;
-                    frameObject = (GameObject)Instantiate(frameNodePrefab, framePos, transform.rotation);
+                    frameObject = (GameObject)Instantiate(nodePrefab, framePos, transform.rotation);
                     frameObject.transform.parent = frameController.transform;
+                    frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.FRAME];
                 }
                 // フレーム生成(下端)
                 if(i <= 0) {
                     Vector3 framePos = pos;
                     framePos.z = transform.position.z + FRAME_POSZ_MARGIN;
-                    frameObject = (GameObject)Instantiate(frameNodePrefab, framePos, transform.rotation);
+                    frameObject = (GameObject)Instantiate(nodePrefab, framePos, transform.rotation);
                     frameObject.transform.parent = frameController.transform;
+                    frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.FRAME];
                 }
             }
            
@@ -90,12 +96,14 @@ public class TitleNodeController : MonoBehaviour {
                 // フレーム生成(左端)
                 pos.x = transform.position.x + nodeSize.x * -(AdjustRow(i) * 0.5f - (0 + 0.5f));
                 pos.z = transform.position.z + FRAME_POSZ_MARGIN;
-                frameObject = (GameObject)Instantiate(frameNodePrefab, pos, transform.rotation);
+                frameObject = (GameObject)Instantiate(nodePrefab, pos, transform.rotation);
                 frameObject.transform.parent = frameController.transform;
+                frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.FRAME];
                 // フレーム生成(右端)
                 pos.x = transform.position.x + nodeSize.x * -(AdjustRow(i) * 0.5f - (AdjustRow(i) - 1 + 0.5f));
-                frameObject = (GameObject)Instantiate(frameNodePrefab, pos, transform.rotation);
+                frameObject = (GameObject)Instantiate(nodePrefab, pos, transform.rotation);
                 frameObject.transform.parent = frameController.transform;
+                frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.FRAME];
             }
         }
 

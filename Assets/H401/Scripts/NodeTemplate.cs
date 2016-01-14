@@ -5,6 +5,10 @@ using System.Collections;
 public class NodeTemplate {
 
     // 設定部分
+    static public string SpriteName = null;
+    public int SpriteIdx = -1;
+    public int MaskIdx = -1;
+
     public string MaterialName;
     public bool[] LinkDir = new  bool[6];
     
@@ -17,7 +21,6 @@ public class NodeTemplate {
     public NodeTemplate() {
         MaterialName = "";
         LinkDir = new bool[6];
-
 
         // 算出部分
         Ready = false;
@@ -58,7 +61,6 @@ public class NodeTemplate {
 
     // 指定した枝数を持つノードのX番目を取得する
     static public NodeTemplate GetTempFromBranchIndex(NodeTemplate[] TempList, int BranchNum, int Index) {
-        int ret = Index;
         foreach(var it in TempList) {
             if(it.LinkNum == BranchNum) {
                 if(Index <= 0) {

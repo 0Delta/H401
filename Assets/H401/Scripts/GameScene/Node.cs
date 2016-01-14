@@ -115,7 +115,7 @@ public class Node : MonoBehaviour
                                                 // 4   1
                                                 //  3 2  とする
 
-    private MeshRenderer meshRenderer = null;
+    private SpriteRenderer spriteRenderer = null;
     public NodeTemplate Temp = null;               // 使用したテンプレート
     private int _RotCounter = 0;
     public int RotCounter
@@ -124,9 +124,9 @@ public class Node : MonoBehaviour
         set { _RotCounter = value % 6; }
     }
 
-    public MeshRenderer MeshRenderer
+    public SpriteRenderer SpriteRenderer
     {
-        get { return meshRenderer; }
+        get { return spriteRenderer; }
     }
 
     private bool bChecked = false;
@@ -147,7 +147,7 @@ public class Node : MonoBehaviour
 
     private void Awake()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Use this for initialization
@@ -577,7 +577,7 @@ public class Node : MonoBehaviour
         Temp = type;
 
         //テクスチャを設定
-        meshRenderer.material = nodeControllerScript.GetMaterial(type);
+//        meshRenderer.material = nodeControllerScript.GetMaterial(type);
 
         //ランダムに回転
         int RotI = RandomEx.RangeforInt(0, 6);
@@ -646,8 +646,8 @@ public class Node : MonoBehaviour
 
     public void ChangeEmissionColor(int colorNum)
     {
-        meshRenderer.material.EnableKeyword("_EMISSION");
-        meshRenderer.material.DOColor(nodeControllerScript.GetNodeColor(colorNum), "_EmissionColor", colorDuration);
+        //meshRenderer.material.EnableKeyword("_EMISSION");
+        //meshRenderer.material.DOColor(nodeControllerScript.GetNodeColor(colorNum), "_EmissionColor", colorDuration);
     }
 
     public void FlipNode(float repRotateTime, Ease easeType)

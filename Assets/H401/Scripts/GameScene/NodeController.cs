@@ -43,21 +43,16 @@ public class NodeController : MonoBehaviour
     #endregion
 
     #region // ノード系プレハブへのパス、実体
-    [SerializeField]
-    private string gameNodePrefabPath = null;     // ノードのプレハブのパス
-    [SerializeField]
-    private string frameNodePrefabPath = null;     // フレームノードのプレハブのパス
-    [SerializeField]
-    private string floorNodePrefabPath = null;     // 下端ノードのプレハブのパス
-    [SerializeField]
-    private string treeControllerPrefabPath = null;     // 完成ノードのプレハブのパス
-    [SerializeField]
-    private string floorLeftNodeMaterialPath = null;    // 左下端ノードのマテリアルのパス
-    [SerializeField]
-    private string floorRightNodeMaterialPath = null;   // 右下端ノードのマテリアルのパス
+    [SerializeField] private string gameNodePrefabPath = null;          // ノードのプレハブのパス
+    [SerializeField] private string frameNodePrefabPath = null;         // フレームノードのプレハブのパス
+    [SerializeField] private string gameNodeSpritePath = null;          // ノードのスプライトのパス
+    [SerializeField] private string frameNodeSpritePath = null;         // フレームノードのスプライトのパス
+
     private GameObject gameNodePrefab = null;                 // ノードのプレハブ
     private GameObject frameNodePrefab = null;                 // フレームノードのプレハブ
-    private GameObject floorNodePrefab = null;                 // 下端ノードのプレハブ
+
+    private Sprite[] gameNodeSprite;    // ノードのスプライトリスト
+    private Sprite[] frameNodeSprite;   // フレームノードのスプライトリスト
 
     [SerializeField]
     private string unChainControllerPath = null;
@@ -263,23 +258,26 @@ public class NodeController : MonoBehaviour
         // ----- プレハブデータを Resources から取得
         gameNodePrefab = Resources.Load<GameObject>(gameNodePrefabPath);
         frameNodePrefab = Resources.Load<GameObject>(frameNodePrefabPath);
-        floorNodePrefab = Resources.Load<GameObject>(floorNodePrefabPath);
+
+        // ----- スプライトデータを Resources から取得
+        gameNodeSprite = Resources.LoadAll<Sprite>(gameNodeSpritePath);
+        frameNodeSprite = Resources.LoadAll<Sprite>(frameNodeSpritePath);
 
         // ノードのテンプレからマテリアルを取得
-        NodeTemplate.AllCalc(NodeTemp);
-        int n = 0;
-        for (int i = 0; i < NodeTemp.Length; ++i)
-        {
-            if (NodeTemp[i].Ready)
-            {
-                nodeMaterials[n] = Resources.Load<Material>(NodeTemp[i].MaterialName);
-                NodeTemp[i].ID = n;
-                n++;
-            }
-            else {
-                Debug.LogWarning("Failed Load Material No." + i.ToString());
-            }
-        }
+        //NodeTemplate.AllCalc(NodeTemp);
+        //int n = 0;
+        //for (int i = 0; i < NodeTemp.Length; ++i)
+        //{
+        //    if (NodeTemp[i].Ready)
+        //    {
+        //        nodeMaterials[n] = Resources.Load<Material>(NodeTemp[i].MaterialName);
+        //        NodeTemp[i].ID = n;
+        //        n++;
+        //    }
+        //    else {
+        //        Debug.LogWarning("Failed Load Material No." + i.ToString());
+        //    }
+        //}
         
         // GameEffect スクリプトを取得
         gameEffect = transform.GetComponent<GameEffect>();
@@ -299,7 +297,7 @@ public class NodeController : MonoBehaviour
         leftDown = mtx.MultiplyVector(leftDown).normalized;
         slideLeftUpPerNorm = new Vector2(leftUp.x, leftUp.y);
         slideLeftDownPerNorm = new Vector2(leftDown.x, leftDown.y);
-
+        
         // ----- インプット処理
         Observable
             .EveryUpdate()
@@ -462,11 +460,12 @@ public class NodeController : MonoBehaviour
     // ----- ノード準備
     void InitNode()
     {
-        // 描画するノードの大きさを取得
-        MeshFilter nodeMeshInfo = gameNodePrefab.GetComponent<MeshFilter>();    // ノードのメッシュ情報を取得
         Vector3 pos = transform.position;
-        nodeSize.x = nodeMeshInfo.sharedMesh.bounds.size.x * gameNodePrefab.transform.localScale.x;
-        nodeSize.y = nodeMeshInfo.sharedMesh.bounds.size.y * gameNodePrefab.transform.localScale.y;
+
+        // 描画するノードの大きさを取得
+        SpriteRenderer sr = gameNodePrefab.GetComponent<SpriteRenderer>();
+        nodeSize.x = sr.sprite.bounds.size.x;
+        nodeSize.y = sr.sprite.bounds.size.y;
         nodeSize.x -= widthMargin;
         nodeSize.y -= heightMargin;
 
@@ -517,24 +516,26 @@ public class NodeController : MonoBehaviour
                     framePos.z = transform.position.z + FRAME_POSZ_MARGIN;
                     frameObject = (GameObject)Instantiate(frameNodePrefab, framePos, transform.rotation);
                     frameObject.transform.parent = frameController.transform;
+                    frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.FRAME];
                 }
                 // フレーム生成(下端)
                 if (i <= 0)
                 {
                     Vector3 framePos = pos;
                     framePos.z = transform.position.z + FRAME_POSZ_MARGIN;
-                    frameObject = (GameObject)Instantiate(floorNodePrefab, framePos, transform.rotation);
+                    frameObject = (GameObject)Instantiate(frameNodePrefab, framePos, transform.rotation);
                     frameObject.transform.parent = frameController.transform;
 
-                    // 左端
-                    if (j <= 1)
-                    {
-                        frameObject.GetComponent<MeshRenderer>().material = Resources.Load<Material>(floorLeftNodeMaterialPath);
-                    }
-                    // 右端
-                    if (j >= AdjustRow(i) - 2)
-                    {
-                        frameObject.GetComponent<MeshRenderer>().material = Resources.Load<Material>(floorRightNodeMaterialPath);
+                    // フレームのスプライトを変更
+                    if (j <= 1) {
+                        // 左端
+                        frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.GROUND_L];
+                    } else if(j >= AdjustRow(i) - 2) {
+                        // 右端
+                        frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.GROUND_R];
+                    } else {
+                        // 中央
+                        frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.GROUND_C];
                     }
                 }
             }
@@ -546,10 +547,13 @@ public class NodeController : MonoBehaviour
                 pos.z = transform.position.z + FRAME_POSZ_MARGIN;
                 frameObject = (GameObject)Instantiate(frameNodePrefab, pos, transform.rotation);
                 frameObject.transform.parent = frameController.transform;
+                frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.FRAME];
+
                 // フレーム生成(右端)
                 pos.x = transform.position.x + nodeSize.x * -(AdjustRow(i) * 0.5f - (AdjustRow(i) - 1 + 0.5f));
                 frameObject = (GameObject)Instantiate(frameNodePrefab, pos, transform.rotation);
                 frameObject.transform.parent = frameController.transform;
+                frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.FRAME];
             }
         }
     }
@@ -1513,8 +1517,8 @@ public class NodeController : MonoBehaviour
             (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3 + fieldLevel.Ratio_Path4) ? 4 :
             1;
 
-        node.SetNodeType(NodeTemplate.GetTempFromBranchRandom(NodeTemp, branchNum));
-        node.MeshRenderer.material.color = levelTableScript.GetFieldLevel(_currentLevel).NodeColor;
+        node.gameObject.GetComponent<SpriteRenderer>().sprite = gameNodeSprite[Random.Range(0, 7)];
+//        node.SetNodeType(NodeTemplate.GetTempFromBranchRandom(NodeTemp, branchNum));
     }
 
     /// <summary>

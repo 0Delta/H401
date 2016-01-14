@@ -41,10 +41,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 7
   col: 13
-  nodePrefabPath: Prefabs/TitleScene/TitleNode
-  frameNodePrefabPath: Prefabs/GameScene/FrameNode
-  widthMargin: 0
-  heightMargin: 0.275
+  nodePrefabPath: Prefabs/Common/Node
+  frameNodeSpritePath: Sprites/Game/NodeMaskList
+  widthMargin: 0.015
+  heightMargin: 0.38
   moveCol: 03000000070000000a000000
   moveDir: 000000000100000000000000
   moveSpd:
@@ -57,7 +57,23 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: nodePrefabPath
+      value: Prefabs/Common/Node
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: frameNodeSpritePath
+      value: Sprites/Game/NodeMaskList
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: widthMargin
+      value: 0.015
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: heightMargin
+      value: 0.38
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 148902}
