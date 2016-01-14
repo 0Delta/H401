@@ -87,8 +87,51 @@ public class Score3D_Editor : Editor
     }
 }
 
+class SpriteLoader
+{
+    static public string SpritePath = "";
+    static public Sprite[] spr = null;
+    static public Texture2D tex = null;
+}
+[CustomEditor(typeof(NodeController))]
+public class NodeController_Editor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        try {
+            var tgt = target as NodeController;
+            SpriteLoader.SpritePath = tgt.gameNodeSpritePath;
+            var spr = Resources.LoadAll<Sprite>(SpriteLoader.SpritePath);
+            if (spr != null)
+            {
+                SpriteLoader.spr = spr;
+            }
+            else
+            {
+                SpriteLoader.spr = null;
+                SpriteLoader.tex = null;
+            }
+            var tex = spr[0].texture;
+            if (tex != null)
+            {
+                SpriteLoader.tex = tex;
+            }
+            else
+            {
+                SpriteLoader.tex = null;
+            }
+        }
+        catch {
+            SpriteLoader.spr = null;
+            SpriteLoader.tex = null;
+        }
+
+        base.OnInspectorGUI();
+    }
+}
+
 [CustomPropertyDrawer(typeof(NodeTemplate))]
-public class NodeController_Editor : PropertyDrawer
+public class NodeTemplate_Editor : PropertyDrawer
 {
     string MatBak = "";
     Material Mat = null;
@@ -104,16 +147,16 @@ public class NodeController_Editor : PropertyDrawer
     // Draw the property inside the given rect
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-
         // 初期設定
         EditorGUI.BeginProperty(position, label, property);
-        //Rect contentPosition = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), GUIContent.none);
         EditorGUI.indentLevel = 0;
 
         // ワーク用の場所を設定
         Rect contentPosition = position;
         var Link = property.FindPropertyRelative("LinkDir");
         float ImagePosXRevision = position.width / -4f;
+        var sIdx = property.FindPropertyRelative("SpriteIdx").intValue;
+        var mIdx = property.FindPropertyRelative("MaskIdx").intValue;
 
 
         // 外枠描画
@@ -121,102 +164,120 @@ public class NodeController_Editor : PropertyDrawer
         EditorGUI.DrawRect(contentPosition, Color.gray);
 
         EditorGUI.BeginChangeCheck();
-        // マテリアル名の入力フィールド
+        // 入力フィールド
         EditorGUIUtility.labelWidth = position.width * 0.25f;
         contentPosition.height = 16f;
-        contentPosition.width = position.width - 5f;
-        EditorGUI.PropertyField(contentPosition, property.FindPropertyRelative("MaterialName"), new GUIContent("Mat"));
+        // スプライトのインデックス
+        contentPosition.width = (position.width - 15f)/4f;
+        EditorGUI.LabelField(contentPosition, "SpriteIndex");
+        contentPosition.x += (position.width - 15f) / 4f;
+        property.FindPropertyRelative("SpriteIdx").intValue = EditorGUI.IntField(contentPosition, sIdx);
+        // マスクのインデックス
+        contentPosition.x += (position.width - 15f) / 4f + 10f;
+        EditorGUI.LabelField(contentPosition, "MaskIndex");
+        contentPosition.x += (position.width - 15f) / 4f;
+        property.FindPropertyRelative("MaskIdx").intValue = EditorGUI.IntField(contentPosition, mIdx);
 
-        // 画像
-        var path = property.FindPropertyRelative("MaterialName").stringValue;
-        if (path.Length != 0)
+        // 画像の表示
+        try
         {
-            bool TrueTex = false;
-            if (path != MatBak)
+            if (SpriteLoader.tex != null)
             {
-                Mat = Resources.Load<Material>(path);
-                if (Mat != null)
+                if (SpriteLoader.spr.Length > sIdx && sIdx > -1)
                 {
-                    texture = Mat.GetTexture("_MainTex") as Texture2D;
-                    try
-                    {
-                        texture.filterMode = FilterMode.Point;
-                    }
-                    catch (System.NullReferenceException)
-                    {
-                        TrueTex = false;
-                        Debug.LogWarning("Failed Load Texture from Material. \n Please Set Texture");
-                        return;
-                    }
-                    MatBak = path;
-                    TrueTex = true;
+                    contentPosition.x = position.width / 2f - 20f + ImagePosXRevision;
+                    contentPosition.y = position.y + 25f;
+                    contentPosition.width = 40f;
+                    contentPosition.height = 40f;
+                    var rect = SpriteLoader.spr[sIdx].rect;
+                    rect.x /= SpriteLoader.tex.width;
+                    rect.width /= SpriteLoader.tex.width;
+                    rect.y /= SpriteLoader.tex.height;
+                    rect.height /= SpriteLoader.tex.height;
+                    GUI.DrawTextureWithTexCoords(contentPosition, SpriteLoader.tex, rect);
+                }
+                else
+                {
+                    contentPosition.x = position.width / 3f;
+                    contentPosition.y = position.y + position.height / 2f;
+                    contentPosition.width = position.width / 4f * 3f;
+                    EditorGUI.LabelField(contentPosition, "Error : Length Error");
+                }
+                if (SpriteLoader.spr.Length > mIdx && mIdx > -1)
+                {
+                    contentPosition.x = position.width / 2f - 20f - ImagePosXRevision;
+                    contentPosition.y = position.y + 25f;
+                    contentPosition.width = 40f;
+                    contentPosition.height = 40f;
+                    var rect = SpriteLoader.spr[mIdx].rect;
+                    rect.x /= SpriteLoader.tex.width;
+                    rect.width /= SpriteLoader.tex.width;
+                    rect.y /= SpriteLoader.tex.height;
+                    rect.height /= SpriteLoader.tex.height;
+                    GUI.DrawTextureWithTexCoords(contentPosition, SpriteLoader.tex, rect);
+                }
+                else
+                {
+                    contentPosition.x = position.width / 3f * 2f;
+                    contentPosition.y = position.y + position.height / 2f;
+                    contentPosition.width = position.width / 4f * 3f;
+                    EditorGUI.LabelField(contentPosition, "Error : Length Error");
                 }
             }
-            else {
-                TrueTex = true;
-            }
-            if (texture != null && TrueTex)
+            else
             {
-                contentPosition.x = position.width / 2f - 20f + ImagePosXRevision;
-                contentPosition.y = position.y + 25f;
-                contentPosition.width = 40f;
-                contentPosition.height = 40f;
-                EditorGUI.DrawPreviewTexture(contentPosition, texture);
-            }
-
-            contentPosition.width = 16f;
-            // 各チェックボックス
-            if (Link != null && Link.arraySize > 5)
-            {
-                contentPosition.x = position.width / 2f + 12f + ImagePosXRevision;
-                contentPosition.y = position.y + 17f;
-                Link.GetArrayElementAtIndex(5).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(5).boolValue);
-
-                contentPosition.x = position.width / 2f + 22f + ImagePosXRevision;
-                contentPosition.y = position.y + 17f + 20f;
-                Link.GetArrayElementAtIndex(4).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(4).boolValue);
-
-                contentPosition.x = position.width / 2f + 12f + ImagePosXRevision;
-                contentPosition.y = position.y + 17f + 40f;
-                Link.GetArrayElementAtIndex(3).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(3).boolValue);
-
-                contentPosition.x = position.width / 2f - 25f + ImagePosXRevision;
-                contentPosition.y = position.y + 17f + 40f;
-                Link.GetArrayElementAtIndex(2).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(2).boolValue);
-
-                contentPosition.x = position.width / 2f - 35f + ImagePosXRevision;
-                contentPosition.y = position.y + 17f + 20f;
-                Link.GetArrayElementAtIndex(1).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(1).boolValue);
-
-                contentPosition.x = position.width / 2f - 25f + ImagePosXRevision;
-                contentPosition.y = position.y + 17f;
-                Link.GetArrayElementAtIndex(0).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(0).boolValue);
-
-                // ステータス
-                contentPosition.x = position.width / 3f * 2;
-                contentPosition.y = position.y + position.height / 2f;
-                int Cnt = 0;
-                for (int n = 0; n < 6; n++)
-                {
-                    if (Link.GetArrayElementAtIndex(n).boolValue)
-                    {
-                        Cnt++;
-                    }
-                }
-                EditorGUI.LabelField(contentPosition, Cnt.ToString());
-            }
-            else {
                 contentPosition.x = position.width / 3f;
                 contentPosition.y = position.y + position.height / 2f;
                 contentPosition.width = position.width / 4f * 3f;
-                if (Link == null)
+                EditorGUI.LabelField(contentPosition, "Error : Texture Null");
+            }
+        }
+        catch (System.Exception excep)
+        {
+            Debug.LogWarning(excep.ToString());
+        }
+
+        contentPosition.width = 16f;
+        // 各チェックボックス
+        if (Link != null && Link.arraySize > 5)
+        {
+            contentPosition.x = position.width / 2f + 12f + ImagePosXRevision;
+            contentPosition.y = position.y + 17f;
+            Link.GetArrayElementAtIndex(5).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(5).boolValue);
+
+            contentPosition.x = position.width / 2f + 22f + ImagePosXRevision;
+            contentPosition.y = position.y + 17f + 20f;
+            Link.GetArrayElementAtIndex(4).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(4).boolValue);
+
+            contentPosition.x = position.width / 2f + 12f + ImagePosXRevision;
+            contentPosition.y = position.y + 17f + 40f;
+            Link.GetArrayElementAtIndex(3).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(3).boolValue);
+
+            contentPosition.x = position.width / 2f - 25f + ImagePosXRevision;
+            contentPosition.y = position.y + 17f + 40f;
+            Link.GetArrayElementAtIndex(2).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(2).boolValue);
+
+            contentPosition.x = position.width / 2f - 35f + ImagePosXRevision;
+            contentPosition.y = position.y + 17f + 20f;
+            Link.GetArrayElementAtIndex(1).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(1).boolValue);
+
+            contentPosition.x = position.width / 2f - 25f + ImagePosXRevision;
+            contentPosition.y = position.y + 17f;
+            Link.GetArrayElementAtIndex(0).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(0).boolValue);
+
+            // ステータス
+            contentPosition.x = position.width / 5f * 2f;
+            contentPosition.y = position.y + position.height / 4f * 3;
+            int Cnt = 0;
+            for (int n = 0; n < 6; n++)
+            {
+                if (Link.GetArrayElementAtIndex(n).boolValue)
                 {
-                    EditorGUI.LabelField(contentPosition, "Error : Array is NULL");
-                }
-                else {
-                    EditorGUI.LabelField(contentPosition, "Error : Array Size - " + Link.arraySize.ToString());
+                    Cnt++;
                 }
             }
+            EditorGUI.LabelField(contentPosition, Cnt.ToString());
+
         }
         EditorGUI.EndChangeCheck();
 
@@ -224,68 +285,66 @@ public class NodeController_Editor : PropertyDrawer
         EditorGUI.EndProperty();
     }
 
-
-}
-
-public class EditorExWindow : EditorWindow
-{
-
-    int SelectLogIdx;
-    private static Vector2 ScrollPos = new Vector2();
-    int Exported = 0;
-
-    [MenuItem("Window/CDebugLogConsole")]
-    static void Open()
+    public class EditorExWindow : EditorWindow
     {
-        GetWindow<EditorExWindow>("CustomLogger");
-    }
 
-    void OnGUI()
-    {
-        if (CustomDebugLog.CDebugLog.InstanceList.Count == 0)
+        int SelectLogIdx;
+        private static Vector2 ScrollPos = new Vector2();
+        int Exported = 0;
+
+        [MenuItem("Window/CDebugLogConsole")]
+        static void Open()
         {
-            EditorGUILayout.LabelField("Not Run CDebugLog");
+            GetWindow<EditorExWindow>("CustomLogger");
         }
-        else {
-            string[] LogList = new string[CustomDebugLog.CDebugLog.InstanceList.Count];
-            CustomDebugLog.CDebugLog.InstanceList.Keys.CopyTo(LogList, 0);
 
-            SelectLogIdx = EditorGUILayout.Popup(SelectLogIdx, LogList, GUILayout.ExpandWidth(true));
-            CustomDebugLog.CDebugLog Log = null;
-            try
+        void OnGUI()
+        {
+            if (CustomDebugLog.CDebugLog.InstanceList.Count == 0)
             {
-                CustomDebugLog.CDebugLog.InstanceList.TryGetValue(LogList[SelectLogIdx], out Log);
-            }
-            catch (System.IndexOutOfRangeException)
-            {
-                SelectLogIdx = 0;
-            }
-            var ExportBtn = GUILayout.Button("Export", GUILayout.ExpandWidth(true));
-            if (Log != null)
-            {
-                ScrollPos = EditorGUILayout.BeginScrollView(ScrollPos);
-                EditorGUILayout.SelectableLabel(Log.ToStringReverse(100), GUILayout.Height(Log.Count < 100 ? Log.Count : 100 * EditorGUIUtility.singleLineHeight));
-                EditorGUILayout.EndScrollView();
+                EditorGUILayout.LabelField("Not Run CDebugLog");
             }
             else {
-                EditorGUILayout.LabelField("faled get Instance");
-            }
+                string[] LogList = new string[CustomDebugLog.CDebugLog.InstanceList.Count];
+                CustomDebugLog.CDebugLog.InstanceList.Keys.CopyTo(LogList, 0);
 
-            // ExportBtn
-            if (ExportBtn && Exported <= 0)
-            {
-                Exported = 20;
-                System.IO.File.WriteAllText(Application.persistentDataPath + "/" + LogList[SelectLogIdx] + ".log", Log.ToStringReverse());
-            }
-            else if (Exported > 0)
-            {
-                Exported--;
+                SelectLogIdx = EditorGUILayout.Popup(SelectLogIdx, LogList, GUILayout.ExpandWidth(true));
+                CustomDebugLog.CDebugLog Log = null;
+                try
+                {
+                    CustomDebugLog.CDebugLog.InstanceList.TryGetValue(LogList[SelectLogIdx], out Log);
+                }
+                catch (System.IndexOutOfRangeException)
+                {
+                    SelectLogIdx = 0;
+                }
+                var ExportBtn = GUILayout.Button("Export", GUILayout.ExpandWidth(true));
+                if (Log != null)
+                {
+                    ScrollPos = EditorGUILayout.BeginScrollView(ScrollPos);
+                    EditorGUILayout.SelectableLabel(Log.ToStringReverse(100), GUILayout.Height(Log.Count < 100 ? Log.Count : 100 * EditorGUIUtility.singleLineHeight));
+                    EditorGUILayout.EndScrollView();
+                }
+                else {
+                    EditorGUILayout.LabelField("faled get Instance");
+                }
+
+                // ExportBtn
+                if (ExportBtn && Exported <= 0)
+                {
+                    Exported = 20;
+                    System.IO.File.WriteAllText(Application.persistentDataPath + "/" + LogList[SelectLogIdx] + ".log", Log.ToStringReverse());
+                }
+                else if (Exported > 0)
+                {
+                    Exported--;
+                }
             }
         }
-    }
 
-    void Update()
-    {
-        Repaint();
+        void Update()
+        {
+            Repaint();
+        }
     }
 }

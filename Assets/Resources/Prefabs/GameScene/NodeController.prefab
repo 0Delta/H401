@@ -280,57 +280,57 @@ MonoBehaviour:
   headerHeight: 1.3
   repRotateTime: 0.5
   NodeTemp:
-  - SpriteIdx: -1
-    MaskIdx: -1
+  - SpriteIdx: 4
+    MaskIdx: 12
     MaterialName: Materials/hex0
     LinkDir: 000000000001
     Ready: 0
     LinkNum: 0
     ID: 0
-  - SpriteIdx: -1
-    MaskIdx: -1
+  - SpriteIdx: 2
+    MaskIdx: 10
     MaterialName: Materials/hex1
     LinkDir: 000001000001
     Ready: 0
     LinkNum: 0
     ID: 0
-  - SpriteIdx: -1
-    MaskIdx: -1
+  - SpriteIdx: 6
+    MaskIdx: 14
     MaterialName: Materials/hex2
     LinkDir: 000000010001
     Ready: 0
     LinkNum: 0
     ID: 0
-  - SpriteIdx: -1
-    MaskIdx: -1
+  - SpriteIdx: 7
+    MaskIdx: 15
     MaterialName: Materials/hex3
     LinkDir: 000000000101
     Ready: 0
     LinkNum: 0
     ID: 0
-  - SpriteIdx: -1
-    MaskIdx: -1
+  - SpriteIdx: 5
+    MaskIdx: 13
     MaterialName: Materials/hex4
     LinkDir: 000100010001
     Ready: 0
     LinkNum: 0
     ID: 0
-  - SpriteIdx: -1
-    MaskIdx: -1
+  - SpriteIdx: 3
+    MaskIdx: 11
     MaterialName: Materials/hex5
     LinkDir: 000001010001
     Ready: 0
     LinkNum: 0
     ID: 0
-  - SpriteIdx: -1
-    MaskIdx: -1
+  - SpriteIdx: 0
+    MaskIdx: 8
     MaterialName: Materials/hex6
     LinkDir: 000000010101
     Ready: 0
     LinkNum: 0
     ID: 0
-  - SpriteIdx: -1
-    MaskIdx: -1
+  - SpriteIdx: 1
+    MaskIdx: 9
     MaterialName: Materials/hex7
     LinkDir: 010001010001
     Ready: 0
@@ -791,6 +791,74 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: Loop
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[0].SpriteIdx
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[0].MaskIdx
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[1].SpriteIdx
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[1].MaskIdx
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[2].SpriteIdx
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[2].MaskIdx
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[3].SpriteIdx
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[3].MaskIdx
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[4].SpriteIdx
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[4].MaskIdx
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[5].SpriteIdx
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[5].MaskIdx
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[5].LinkDir.Array.data[4]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[6].SpriteIdx
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[6].MaskIdx
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[7].SpriteIdx
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[7].MaskIdx
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
