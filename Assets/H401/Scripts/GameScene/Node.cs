@@ -646,8 +646,8 @@ public class Node : MonoBehaviour
 
     public void ChangeEmissionColor(int colorNum)
     {
-        //meshRenderer.material.EnableKeyword("_EMISSION");
-        //meshRenderer.material.DOColor(nodeControllerScript.GetNodeColor(colorNum), "_EmissionColor", colorDuration);
+        SpriteRenderer.material.EnableKeyword("_Color");
+        SpriteRenderer.material.DOColor(nodeControllerScript.GetNodeColor(colorNum), "_Color", colorDuration);
     }
 
     public void FlipNode(float repRotateTime, Ease easeType)
