@@ -64,6 +64,9 @@ public class Score : MonoBehaviour {
         tempScore *= (1.0f + scoreInfo.BonusPer3Path * nodeCount.path3); //ツムツムでは加算していたが、
         tempScore *= (1.0f + scoreInfo.BonusPer4Path  * nodeCount.path4); //分岐の重みを増やすために乗算に
 
+        //とりあえずフィーバー中はポイント3倍点
+        tempScore *= transform.parent.FindChild("FeverMask").FindChild("FeverGauge").gameObject.GetComponent<FeverGauge>().feverState == _eFeverState.FEVER ? 3 : 1;
+
         gameScore += (int)tempScore;
         SetScore();
 

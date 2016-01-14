@@ -36,11 +36,15 @@ public class LevelController : MonoBehaviour {
 
     private bool isDebug;
 
+    private AudioSource audioSource;
+
 	// Use this for initialization
 	void Start () {
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
         gameController = gameScene.gameController;
         nextLevel = -1;
+
+        audioSource = GetComponent<AudioSource>();
 
         levelState = _eLevelState.STAND;
 
@@ -110,13 +114,14 @@ public class LevelController : MonoBehaviour {
     public IEnumerator FieldChangeStart(FieldPop fpMethod)
     {
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
-
         //アニメーターを生成
         levelState = _eLevelState.CHANGE;
         if (animationObject)
             Destroy(animationObject);
         animationObject = Instantiate(animationPrefab);
         animationObject.transform.SetParent(Camera.main.transform);
+
+        audioSource.Play();
 
         //手前にあるオブジェクトを非表示
         gameScene.gameUI.ojityanAnimator.gameObject.SetActive(false);
@@ -142,7 +147,6 @@ public class LevelController : MonoBehaviour {
         //メインカメラをノンアクにする
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
         gameScene.mainCamera.transform.Rotate(new Vector3(0.0f, 0.0f, -lyingAngle),Space.Self);
-        //gameScene.mainCamera.orthographic = false;
         gameScene.directionalLight.color = new Color(1.0f,1.0f,1.0f);
 
         gameScene.gameController.gameObject.SetActive(false);
@@ -155,6 +159,10 @@ public class LevelController : MonoBehaviour {
         if (animationObject)
             Destroy(animationObject);
 
+        audioSource.Play();
+
+        levelChange.levelPanel.PanelSlide();
+
         animationObject = Instantiate(animationPrefab);
         animationObject.transform.rotation = Quaternion.identity;
         animationObject.transform.SetParent(Camera.main.transform);
@@ -163,10 +171,11 @@ public class LevelController : MonoBehaviour {
 
         //各オブジェクトの表示復帰
        GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
-        fChangeScript.levelPanel.gameObject.SetActive(false);
+                
 
         yield return new WaitForSeconds(changePopTime);
         fChangeScript.Delete();
+
         gameScene.gameUI.ojityanAnimator.gameObject.SetActive(true);
         yield return new WaitForSeconds(changeEndTime);
         //アニメーションを消去
@@ -196,7 +205,6 @@ public class LevelController : MonoBehaviour {
         Destroy(levelChangeObject);
         
         Camera.main.gameObject.transform.localRotation = Quaternion.identity;
-        //gameScene.mainCamera.orthographic = true;
     }
 
     public string GetFieldName(int stage)

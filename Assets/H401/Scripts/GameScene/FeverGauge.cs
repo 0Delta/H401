@@ -23,14 +23,12 @@ public class FeverGauge : MonoBehaviour {
     private GameObject FLightPrefab = null;
     private GameObject FLightObject = null;
 
-//    [SerializeField]private GameObject levelTableObject = null;
+    private AudioSource audioSource = null;
 
-
-
-    //private FeverLevelInfo feverLevel;
-	// Use this for initialization
 	void Start () {
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+
+        audioSource = GetComponent<AudioSource>();
 
         feverValue = 0.0f;
         FGImage.fillAmount = 0.0f;
@@ -41,7 +39,6 @@ public class FeverGauge : MonoBehaviour {
         feverInfo = ltScript.FeverRatio;
 
         FLightPrefab = Resources.Load<GameObject>(FLightPath);
-        
 	}
 	
 	// Update is called once per frame
@@ -76,6 +73,8 @@ public class FeverGauge : MonoBehaviour {
         }
         //MAXになったらフィーバーモードへ
         //今はとりあえず0に戻す
+
+        audioSource.Play();
 
         if (_feverState == _eFeverState.FEVER)
             return;

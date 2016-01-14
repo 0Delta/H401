@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
+guid: dc5f621f47255d344b70db4f837de5db
+timeCreated: 1452678787
+=======
 guid: 2e8c38f7f4a3adb41af1617fb5613e79
 timeCreated: 1452678336
+>>>>>>> UpStream/master
 licenseType: Free
 MonoImporter:
   serializedVersion: 2

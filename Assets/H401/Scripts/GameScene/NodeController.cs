@@ -214,6 +214,16 @@ public class NodeController : MonoBehaviour
     }
     #endregion
 
+    //音声
+    private AudioSource[] audioSources;
+    enum _eAudioNumber {
+        ROTATE,
+        SLIDE,
+        TREE,
+
+        MAX,
+    }
+
     private Material[] nodeMaterials = null;
     public Material GetMaterial(NodeTemplate nodeType) { return nodeMaterials[nodeType.ID]; }
 
@@ -239,6 +249,11 @@ public class NodeController : MonoBehaviour
     void Start()
     {
         Log.Debug("Start");
+
+        //音声データを取得 添字をenum化すべきか
+        audioSources = GetComponents<AudioSource>();
+        /*if (audioSources.Length != (int)_eAudioNumber.MAX)
+            print("音声取得に失敗");*/
 
         // ----- プレハブデータを Resources から取得
         gameNodePrefab = Resources.Load<GameObject>(gameNodePrefabPath);
@@ -365,13 +380,14 @@ public class NodeController : MonoBehaviour
                 if (isSlide)
                 {
                     AdjustNodeStop();
-
+                    audioSources[(int)_eAudioNumber.SLIDE].Stop();
                     isSlideEnd = true;
                     tapNodeID = Vec2Int.zero;
                 }
                 else {
                     if (tapNodeID.x > -1)
                     {
+                        audioSources[(int)_eAudioNumber.ROTATE].Play();
                         gameNodeScripts[tapNodeID.y][tapNodeID.x].RotationNode();
                         _isNodeAction = true;
                     }
@@ -656,6 +672,7 @@ public class NodeController : MonoBehaviour
 
     public void StartSlideNodes(Vec2Int nextNodeID, _eSlideDir newSlideDir)
     {
+        audioSources[(int)_eAudioNumber.SLIDE].Play();
         Log.Debug("StartSlideNodes : " + nextNodeID + " / " + newSlideDir);
         moveNodeDist = new Vector2(gameNodePrefabs[nextNodeID.y][nextNodeID.x].transform.position.x, gameNodePrefabs[nextNodeID.y][nextNodeID.x].transform.position.y)
                      - new Vector2(gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.x, gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.y);   // スライド方向ベクトル兼移動量を算出
@@ -1569,6 +1586,7 @@ public class NodeController : MonoBehaviour
         
         // 完成時演出
         gameEffect.TreeCompleteEffect(List, curScore);
+        audioSources[(int)_eAudioNumber.TREE].Play();
 
         //ノードを再配置
         foreach (Node obj in List)
@@ -1730,6 +1748,7 @@ public class NodeController : MonoBehaviour
     public IEnumerator ReplaceRotate(Replace repMethod)
     {
         Log.Debug("ReplaceRotate : " + repMethod);
+        isSlide = true;     //この回転中に操作できないように
         //全ノードを90°回転tween
         RotateAllNode(90.0f, Ease.InSine);
         yield return new WaitForSeconds(repRotateTime / 2.0f);
@@ -1749,7 +1768,10 @@ public class NodeController : MonoBehaviour
         //全ノードを90°回転
         RotateAllNode(0.0f, Ease.OutSine);
         yield return new WaitForSeconds(repRotateTime / 2.0f);
+        isSlide = false;    //終わったら操作できるように
         CheckLink();
+
+
     }
 
     //操作終了時の処理をここで

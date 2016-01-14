@@ -17,14 +17,18 @@ public class LevelPanel : MonoBehaviour {
 
     private MapField[] fieldScripts;
     private Image[] fieldImage;
-    
-	// Use this for initialization
+
+    private AudioSource audioSource;
+
+    // Use this for initialization
     void Start()
     {
         //このあたりをコントローラ側からセットするように
         levelController.NextLevel = -1;
         float rot = levelController.LyingAngle;
 
+        audioSource = GetComponent<AudioSource>();
+        
         fieldImage = new Image[5];
         Transform fBG1 = gameObject.transform.FindChild("fieldBG1");
         fieldImage[0] = fBG1.FindChild("veryeasy").GetComponent<Image>();
@@ -50,23 +54,28 @@ public class LevelPanel : MonoBehaviour {
         transform.localScale = Vector3.one;
 
  //       Transform fBG1 = transform.FindChild("fieldBG1");
-        fBG1.localPosition += new Vector3(-50.0f, 0.0f, 0.0f);
-        fBG1.DOLocalMoveX(fBG1.localPosition.x + 50.0f ,popTime);
+        fBG1.localPosition += new Vector3(-250.0f, 0.0f, 0.0f);
+        fBG1.DOLocalMoveX(fBG1.localPosition.x + 250.0f ,popTime);
 
         Transform fBG2 = transform.FindChild("fieldBG2");
-        fBG2.localPosition += new Vector3(50.0f, 0.0f, 0.0f);
-        fBG2.DOLocalMoveX(fBG2.localPosition.x - 50.0f, popTime); ;
-    }
-	
-    public void Delete()
-    {
-        transform.DOScale(popScale, popTime)
-            .OnComplete(levelController.EndComplete);
+        fBG2.localPosition += new Vector3(250.0f, 0.0f, 0.0f);
+        fBG2.DOLocalMoveX(fBG2.localPosition.x - 250.0f, popTime); ;
     }
     
     public void ChangeText(int stage)
     {
+        audioSource.Play();
         for (int i = 0; i < 5; i++)
             fieldImage[i].color = i == stage ? Color.yellow : Color.white;
+    }
+
+    public void PanelSlide()
+    {
+        Transform fBG1 = transform.FindChild("fieldBG1");
+        Transform fBG2 = transform.FindChild("fieldBG2");
+
+        fBG1.DOLocalMoveX(fBG1.localPosition.x - 250.0f, popTime);
+        fBG2.DOLocalMoveX(fBG2.localPosition.x + 250.0f, popTime);
+
     }
 }

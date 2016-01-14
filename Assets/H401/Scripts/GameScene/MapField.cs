@@ -36,10 +36,6 @@ public class MapField : MonoBehaviour {
         //色変えとかここに
         transform.parent.parent.gameObject.GetComponent<LevelChange>().SetArrowPos(mapNum);
     }
-    void OnTriggerEnter(Collider col)
-    {
-        SetLevel();
-    }
 
     public void SetColor(bool bColor)
     {

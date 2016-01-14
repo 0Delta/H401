@@ -39,9 +39,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: ScoreBackGround
-    uniqueID: 260856791
-    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BackGround
+    uniqueID: 2732647963
+    locked: 0
+  - name: Node
+    uniqueID: 260856791
+    locked: 0
+  - name: GameUI
+    uniqueID: 184806343
+    locked: 0
+  - name: Option
+    uniqueID: 2685478139
     locked: 0

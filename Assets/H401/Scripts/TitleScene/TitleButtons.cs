@@ -13,10 +13,12 @@ public class TitleButtons : MonoBehaviour {
     [SerializeField] private FadeTime[] fadeTimes;            // シーン切り替え用演出にかかる時間リスト
 
     private Transform[] buttonTransList;        // ボタンの Transform リスト
+    private AudioSource audioSource;
     private bool isOnClick = false;     // ボタン押下フラグ
 
     void Start() {
         buttonTransList = transform.GetComponentsInChildren<Transform>().Where(x => gameObject != x.gameObject).ToArray();
+        audioSource = GetComponent<AudioSource>();
 
         isOnClick = false;
     }
@@ -65,7 +67,10 @@ public class TitleButtons : MonoBehaviour {
 
     public void OnClick(Transform trans) {
         if(!isOnClick) {
+            audioSource.Play();
+
             ActionDirection(trans);
+
             isOnClick = true;
         }
     }

@@ -25,6 +25,7 @@ public class GameOption : MonoBehaviour {
 
         optionCanvas = GetComponentInChildren<Canvas>();
         optionCanvas.worldCamera= gameScene.mainCamera;
+        optionCanvas.sortingLayerName = "Option"; 
 
         GameObject sPanel = Instantiate(Resources.Load<GameObject>(gameStartPanelPath));
         sPanel.transform.SetParent(optionCanvas.transform);
