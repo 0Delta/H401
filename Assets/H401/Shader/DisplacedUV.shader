@@ -1,6 +1,7 @@
 ﻿Shader "Custom/DisplacedUV" {
 	Properties {
-		_Color ("Color", Color) = (1,1,1,1)
+		_TexColor ("Texture Color", Color) = (1,1,1,1)
+		_BrightnessColor ("Brightness Color", Color) = (1,1,1,1)
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
 		_UVGap ("UV Gap", Range(0.0, 1.0)) = 0.5
 		_BrightnessHighThreshold ("Brightness Threshold (High)", Range(0.0, 1.0)) = 0.5
@@ -27,7 +28,8 @@
 
 			#include "UnityCG.cginc"
 
-			uniform fixed4 _Color;
+			uniform fixed4 _TexColor;
+			uniform fixed4 _BrightnessColor;
 			uniform sampler2D _MainTex;
 			uniform float _UVGap;
 			uniform float _BrightnessHighThreshold;
@@ -69,16 +71,22 @@
 					uv.y += _UVGap;
 					tex = tex2D(_MainTex, uv);
 
+					tex.rgb *= _TexColor.rgb;
+					tex.a *= _TexColor.a;
+
 					if(uv.y > _BrightnessHighThreshold)
 						uv.y = _BrightnessHighThreshold;
 
 					if(uv.y < _BrightnessLowThreshold)
 						uv.y = _BrightnessLowThreshold;
 
-					tex.rgb /= _Color.rgb * (1.0f - uv.y);
-//					tex.a /= _Color.a;
+					tex.rgb /= _BrightnessColor.rgb * (1.0f - uv.y);
+//					tex.a /= _BrightnessColor.a;
 				} else {
 					tex = tex2D(_MainTex, i.uv);
+
+					tex.rgb *= _TexColor.rgb;
+					tex.a *= _TexColor.a;
 				}
 
 				return tex;

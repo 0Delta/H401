@@ -89,6 +89,17 @@ public class AppliController : MonoBehaviour {
 	}
 
 	//---------------------------------------------------------------
+	// フェードイン・アウト(フェード中に任意の処理を行う)
+	//---------------------------------------------------------------
+    public void FadeInOut(float fadeInTime, float fadeOutTime, System.Action action) {
+        fade.FadeIn(fadeOutTime, () => {
+            action();
+
+            fade.FadeOut(fadeInTime);
+        });
+    }
+
+	//---------------------------------------------------------------
 	// 現在のシーンを取得
 	//---------------------------------------------------------------
     public GameObject GetCurrentScene() {

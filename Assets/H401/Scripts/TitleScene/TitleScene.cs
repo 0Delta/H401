@@ -19,6 +19,9 @@ public class TitleScene : MonoBehaviour {
     private GameObject eventSystemObject;
     private GameObject HowToPlaySceneObject;
 
+    private TitleNodeController titleNodeControllerScript;
+    private TitleCanvas titleCanvasScript;
+
 	// Use this for initialization
 	void Start () {
 	    mainCameraObject = Instantiate(Resources.Load<GameObject>(mainCameraPath));
@@ -41,5 +44,22 @@ public class TitleScene : MonoBehaviour {
 
 	    //HowToPlaySceneObject = Instantiate(Resources.Load<GameObject>(HowToPlayScenePath));
      //   HowToPlaySceneObject.transform.SetParent(transform);
+
+        titleNodeControllerScript = titleNodeControllerObject.GetComponent<TitleNodeController>();
+        titleCanvasScript = titleCanvasObject.GetComponent<TitleCanvas>();
+    }
+
+    // ポップアップ的にシーンを遷移する
+    public void PopupChangeScene(AppliController._eSceneID sceneID, float fadeInTime, float fadeOutTime) {
+        // シーン遷移
+        transform.root.gameObject.GetComponent<AppliController>().FadeInOut(fadeInTime, fadeOutTime, () => {
+            // ----- フェード中に行う処理
+
+            // ノードの位置を初期位置へ戻す
+            titleNodeControllerScript.InitNodesPosition();
+
+            // タイトルで使用している UI を非アクティブにする
+            titleCanvasScript.DisableTitleUI();
+        });
     }
 }

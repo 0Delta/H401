@@ -13,11 +13,13 @@ public class TitleButtons : MonoBehaviour {
     [SerializeField] private AppliController._eSceneID[] popupSceneList;       // ポップアップ的に遷移するシーンのリスト
     [SerializeField] private FadeTime[] fadeTimes;            // シーン切り替え用演出にかかる時間リスト
 
+    private TitleScene titleScene = null;   // タイトルシーンのスクリプト
     private Transform[] buttonTransList;        // ボタンの Transform リスト
     private AudioSource audioSource;
     private bool isOnClick = false;     // ボタン押下フラグ
 
     void Start() {
+        titleScene = transform.root.GetComponent<AppliController>().GetCurrentScene().GetComponent<TitleScene>();
         buttonTransList = transform.GetComponentsInChildren<Transform>().Where(x => gameObject != x.gameObject).ToArray();
         audioSource = GetComponent<AudioSource>();
 
@@ -68,7 +70,7 @@ public class TitleButtons : MonoBehaviour {
 
                     // 次のシーンへ
                     if(isPopup) {
-                        PopupSceneChange(sceneID);
+                        titleScene.PopupChangeScene(sceneID, fadeTimes[fadeID].inTime, fadeTimes[fadeID].outTime);
                     } else {
                         transform.root.gameObject.GetComponent<AppliController>().ChangeScene(sceneID, fadeTimes[fadeID].inTime, fadeTimes[fadeID].outTime);
                     }
@@ -76,10 +78,7 @@ public class TitleButtons : MonoBehaviour {
                 .SetEase(Ease.OutCubic);
             })
             .SetEase(Ease.OutCubic);
-        }        
-    }
-
-    void PopupSceneChange(AppliController._eSceneID sceneID) {
+        }
     }
 
     public void OnClick(Transform trans) {

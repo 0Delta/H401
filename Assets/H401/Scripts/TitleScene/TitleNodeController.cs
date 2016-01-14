@@ -48,8 +48,6 @@ public class TitleNodeController : MonoBehaviour {
 
         // ノードを生成
         for(int i = 0; i < col; ++i) {
-            GameObject  frameObject     = null;
-
             // ノードの配置位置を調整(Y座標)
             pos.y = transform.position.y + nodeSize.y * -(col * 0.5f - (i + 0.5f));
             for (int j = 0; j < AdjustRow(i); ++j) {
@@ -113,4 +111,13 @@ public class TitleNodeController : MonoBehaviour {
 	public int AdjustRow(int col) {
 		return col % 2 == 0 ? row + 1 : row;
 	}
+
+    // ノードを初期位置へ戻す
+    public void InitNodesPosition() {
+        for (int i = 0; i < col; ++i) {
+            for (int j = 0; j < AdjustRow(i); ++j) {
+                nodePrefabs[i][j].transform.position = nodePlacePosList[i][j];
+            }
+        }
+    }
 }
