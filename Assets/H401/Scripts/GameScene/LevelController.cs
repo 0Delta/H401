@@ -161,6 +161,8 @@ public class LevelController : MonoBehaviour {
 
         audioSource.Play();
 
+        levelChange.levelPanel.PanelSlide();
+
         animationObject = Instantiate(animationPrefab);
         animationObject.transform.rotation = Quaternion.identity;
         animationObject.transform.SetParent(Camera.main.transform);
@@ -169,11 +171,11 @@ public class LevelController : MonoBehaviour {
 
         //各オブジェクトの表示復帰
        GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
-        fChangeScript.levelPanel.gameObject.SetActive(false);
-        
+                
 
         yield return new WaitForSeconds(changePopTime);
         fChangeScript.Delete();
+
         gameScene.gameUI.ojityanAnimator.gameObject.SetActive(true);
         yield return new WaitForSeconds(changeEndTime);
         //アニメーションを消去

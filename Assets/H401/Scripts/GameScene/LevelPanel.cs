@@ -54,12 +54,12 @@ public class LevelPanel : MonoBehaviour {
         transform.localScale = Vector3.one;
 
  //       Transform fBG1 = transform.FindChild("fieldBG1");
-        fBG1.localPosition += new Vector3(-50.0f, 0.0f, 0.0f);
-        fBG1.DOLocalMoveX(fBG1.localPosition.x + 50.0f ,popTime);
+        fBG1.localPosition += new Vector3(-250.0f, 0.0f, 0.0f);
+        fBG1.DOLocalMoveX(fBG1.localPosition.x + 250.0f ,popTime);
 
         Transform fBG2 = transform.FindChild("fieldBG2");
-        fBG2.localPosition += new Vector3(50.0f, 0.0f, 0.0f);
-        fBG2.DOLocalMoveX(fBG2.localPosition.x - 50.0f, popTime); ;
+        fBG2.localPosition += new Vector3(250.0f, 0.0f, 0.0f);
+        fBG2.DOLocalMoveX(fBG2.localPosition.x - 250.0f, popTime); ;
     }
     
     public void ChangeText(int stage)
@@ -67,5 +67,15 @@ public class LevelPanel : MonoBehaviour {
         audioSource.Play();
         for (int i = 0; i < 5; i++)
             fieldImage[i].color = i == stage ? Color.yellow : Color.white;
+    }
+
+    public void PanelSlide()
+    {
+        Transform fBG1 = transform.FindChild("fieldBG1");
+        Transform fBG2 = transform.FindChild("fieldBG2");
+
+        fBG1.DOLocalMoveX(fBG1.localPosition.x - 250.0f, popTime);
+        fBG2.DOLocalMoveX(fBG2.localPosition.x + 250.0f, popTime);
+
     }
 }
