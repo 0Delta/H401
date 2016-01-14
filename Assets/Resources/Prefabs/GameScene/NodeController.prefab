@@ -283,49 +283,49 @@ MonoBehaviour:
   - SpriteIdx: 4
     MaskIdx: 12
     MaterialName: Materials/hex0
-    LinkDir: 000000000001
+    LinkDir: 010000000000
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 2
     MaskIdx: 10
     MaterialName: Materials/hex1
-    LinkDir: 000001000001
+    LinkDir: 010000010000
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 6
     MaskIdx: 14
     MaterialName: Materials/hex2
-    LinkDir: 000000010001
+    LinkDir: 010001000000
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 7
     MaskIdx: 15
     MaterialName: Materials/hex3
-    LinkDir: 000000000101
+    LinkDir: 010100000000
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 5
     MaskIdx: 13
     MaterialName: Materials/hex4
-    LinkDir: 000100010001
+    LinkDir: 010001000100
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 3
     MaskIdx: 11
     MaterialName: Materials/hex5
-    LinkDir: 000001010001
+    LinkDir: 010001010000
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 0
     MaskIdx: 8
     MaterialName: Materials/hex6
-    LinkDir: 000000010101
+    LinkDir: 010101000000
     Ready: 0
     LinkNum: 0
     ID: 0
@@ -465,19 +465,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[0].LinkDir.Array.data[5]
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[1].LinkDir.Array.data[5]
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[1].LinkDir.Array.data[2]
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[2].LinkDir.Array.data[5]
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[2].LinkDir.Array.data[4]
@@ -485,27 +485,27 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[2].LinkDir.Array.data[3]
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[3].LinkDir.Array.data[5]
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[3].LinkDir.Array.data[4]
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[4].LinkDir.Array.data[5]
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[4].LinkDir.Array.data[3]
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[4].LinkDir.Array.data[1]
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[5].LinkDir.Array.data[3]
@@ -513,7 +513,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[5].LinkDir.Array.data[5]
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[5].LinkDir.Array.data[2]
@@ -521,15 +521,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[6].LinkDir.Array.data[5]
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[6].LinkDir.Array.data[4]
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[6].LinkDir.Array.data[3]
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[7].LinkDir.Array.data[5]
@@ -859,6 +859,66 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[7].MaskIdx
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[0].LinkDir.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[1].LinkDir.Array.data[3]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[1].LinkDir.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[1].LinkDir.Array.data[1]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[2].LinkDir.Array.data[2]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[2].LinkDir.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[3].LinkDir.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[3].LinkDir.Array.data[1]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[4].LinkDir.Array.data[4]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[4].LinkDir.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[4].LinkDir.Array.data[2]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[5].LinkDir.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[6].LinkDir.Array.data[1]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[6].LinkDir.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: NodeTemp.Array.data[6].LinkDir.Array.data[2]
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

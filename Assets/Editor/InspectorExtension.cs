@@ -243,27 +243,27 @@ public class NodeTemplate_Editor : PropertyDrawer
         {
             contentPosition.x = position.width / 2f + 12f + ImagePosXRevision;
             contentPosition.y = position.y + 17f;
-            Link.GetArrayElementAtIndex(5).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(5).boolValue);
+            Link.GetArrayElementAtIndex(0).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(0).boolValue);
 
             contentPosition.x = position.width / 2f + 22f + ImagePosXRevision;
             contentPosition.y = position.y + 17f + 20f;
-            Link.GetArrayElementAtIndex(4).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(4).boolValue);
+            Link.GetArrayElementAtIndex(1).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(1).boolValue);
 
             contentPosition.x = position.width / 2f + 12f + ImagePosXRevision;
             contentPosition.y = position.y + 17f + 40f;
-            Link.GetArrayElementAtIndex(3).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(3).boolValue);
+            Link.GetArrayElementAtIndex(2).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(2).boolValue);
 
             contentPosition.x = position.width / 2f - 25f + ImagePosXRevision;
             contentPosition.y = position.y + 17f + 40f;
-            Link.GetArrayElementAtIndex(2).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(2).boolValue);
+            Link.GetArrayElementAtIndex(3).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(3).boolValue);
 
             contentPosition.x = position.width / 2f - 35f + ImagePosXRevision;
             contentPosition.y = position.y + 17f + 20f;
-            Link.GetArrayElementAtIndex(1).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(1).boolValue);
+            Link.GetArrayElementAtIndex(4).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(4).boolValue);
 
             contentPosition.x = position.width / 2f - 25f + ImagePosXRevision;
             contentPosition.y = position.y + 17f;
-            Link.GetArrayElementAtIndex(0).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(0).boolValue);
+            Link.GetArrayElementAtIndex(5).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(5).boolValue);
 
             // ステータス
             contentPosition.x = position.width / 5f * 2f;
