@@ -9,7 +9,6 @@ public class CreateSimplePlane : MonoBehaviour {
 	{
 		GameObject obj = new GameObject("SimplePlane");
 		MeshFilter meshFilter = obj.AddComponent<MeshFilter>();
-		MeshRenderer meshRenderer = obj.AddComponent<MeshRenderer>();
 		Mesh m = (Mesh)AssetDatabase.LoadAssetAtPath("Assets/SimplePlane.asset", typeof(Mesh));
 		if(m == null)
 		{

@@ -28,7 +28,7 @@ GameObject:
   - 223: {fileID: 22378094}
   - 114: {fileID: 11478890}
   - 114: {fileID: 11471814}
-  - 114: {fileID: 11471578}
+  - 114: {fileID: 11441274}
   m_Layer: 5
   m_Name: Option
   m_TagString: Untagged
@@ -47,7 +47,7 @@ GameObject:
   - 222: {fileID: 22249284}
   - 114: {fileID: 11432886}
   - 114: {fileID: 11437610}
-  - 114: {fileID: 11423592}
+  - 114: {fileID: 11470754}
   m_Layer: 5
   m_Name: ReturnButton
   m_TagString: Untagged
@@ -99,17 +99,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &11423592
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 152784}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a91ae468f19b9f4398101ef53bb6a94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &11432886
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -176,7 +165,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11423592}
+      - m_Target: {fileID: 11470754}
         m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
@@ -189,7 +178,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &11471578
+--- !u!114 &11441274
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -197,12 +186,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 124570}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e505dbdfa40f89340b43376aee85d244, type: 3}
+  m_Script: {fileID: 11500000, guid: aad163d93a31cf44782d88c5ecb8b07a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   fadeTimes:
     inTime: 0.8
     outTime: 0.8
+--- !u!114 &11470754
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 152784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d196edaf575b62347a874d0147bf3dba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11471814
 MonoBehaviour:
   m_ObjectHideFlags: 1
