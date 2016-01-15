@@ -6,9 +6,9 @@ using DG.Tweening;
 public class FeverGauge : MonoBehaviour {
 
     [SerializeField]private Image FGImage;
-    [SerializeField]private Vector3 lightPosition;
+//    [SerializeField]private Vector3 lightPosition;
     [SerializeField]private Color FGEmission;
-    [SerializeField]private string FLightPath = null;
+    [SerializeField]private string FPanelPath = null;
     [SerializeField]private string FeverLogoPath = null;
     [SerializeField]private float gainDuration;
 
@@ -26,8 +26,8 @@ public class FeverGauge : MonoBehaviour {
     }
 
 
-    private GameObject FLightPrefab = null;
-    private GameObject FLightObject = null;
+    private GameObject FPanelPrefab = null;
+    private GameObject FPanelObject = null;
 
     private AudioSource audioSource = null;
 
@@ -57,7 +57,7 @@ public class FeverGauge : MonoBehaviour {
         LevelTables ltScript = gameScene.levelTables;
         feverInfo = ltScript.FeverRatio;
 
-        FLightPrefab = Resources.Load<GameObject>(FLightPath);
+        FPanelPrefab = Resources.Load<GameObject>(FPanelPath);
 	}
 	
 	// Update is called once per frame
@@ -131,31 +131,32 @@ public class FeverGauge : MonoBehaviour {
 
     void ChangeState(_eFeverState state)
     {
+        GameScene gameScene = transform.root.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
         _feverState = state;
         switch(_feverState)
         {
             case _eFeverState.NORMAL:
                 feverValue = 0.0f;
-                if (FLightObject != null)
-                    Destroy(FLightObject);
+                if (FPanelObject != null)
+                    Destroy(FPanelObject);
                 FGImage.material.EnableKeyword("_EMISSION");
                 FGImage.material.SetColor("_EmissionColor", Color.black);
                 
                 // ゲーム本編のBGMを再生
-                transform.root.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().PlayBGM();
+                gameScene.PlayBGM();
 
                 break;
             case _eFeverState.FEVER:
                 //中心地点を設定しなければならないらしい
-                FLightObject = Instantiate(FLightPrefab);
-                FLightObject.transform.position = lightPosition;
+                FPanelObject = Instantiate(FPanelPrefab);
+                FPanelObject.transform.SetParent(gameScene.gameUI.gamePause.optionCanvas.transform,false);
                     //lightPosition,transform.rotation);
                 FGImage.material.EnableKeyword("_EMISSION");
                 FGImage.material.SetColor("_EmissionColor",FGEmission);
                 feverValue = GAUGE_MAX;
                 LogoPop();
                 // ゲーム本編のBGMを停止
-                transform.root.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().StopBGM();
+                gameScene.StopBGM();
 
                 break;
         }
