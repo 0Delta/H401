@@ -83,7 +83,7 @@ MonoBehaviour:
   timeLevelInterval: 60
   timeLevelTable:
   - MaxRegainRatio: 0.8
-    SlipRatio: 3
+    SlipRatio: 1
     RegainPerNodes: 0
     RegainPerCap: 0
     RegainPer2Path: 0.05
@@ -129,7 +129,7 @@ MonoBehaviour:
     BonusPer3Path: 0.2
     BonusPer4Path: 0.5
   feverRatio:
-    gainRatio: 0.01
+    gainRatio: 0.1
     decreaseRatio: 0.001
     gainPerCap: 0
     gainPerPath2: 0
@@ -300,7 +300,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: timeLevelTable.Array.data[0].SlipRatio
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: fieldLevelTable.Array.data[3].Ratio_Path4
@@ -344,7 +344,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: feverRatio.gainRatio
-      value: .00999999978
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: feverRatio.decreaseRatio

@@ -8,6 +8,11 @@ public class FeverGauge : MonoBehaviour {
     [SerializeField]private Image FGImage;
     [SerializeField]private Vector3 lightPosition;
     [SerializeField]private Color FGEmission;
+    [SerializeField]private string FLightPath = null;
+    [SerializeField]private string FeverLogoPath = null;
+    [SerializeField]private float gainDuration;
+
+    private GameObject logoObject;
     private float GAUGE_MAX = 1.0f;   //最大値
     private FeverInfo feverInfo;
     
@@ -20,29 +25,33 @@ public class FeverGauge : MonoBehaviour {
         get { return _feverState; }
     }
 
-    [SerializeField]private string FLightPath = null;
+
     private GameObject FLightPrefab = null;
     private GameObject FLightObject = null;
 
     private AudioSource audioSource = null;
 
-    private float gainDuration;
+    private float gainWaitTime;
     private float fillWaitTime;
 
-    private Tweener fillTweener;
+    //private Tweener fillTweener;
+    private float gainedTime;
+    private float nextGain;
 
     delegate void gainMethod();
 
 	void Start () {
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
         Vector2 effectTimeInfo = gameScene.gameController.nodeController.gameObject.GetComponent<GameEffect>().effectTimeInfo;
-        gainDuration = effectTimeInfo.x;
+        gainWaitTime = effectTimeInfo.x;
         fillWaitTime = effectTimeInfo.y;
         audioSource = GetComponent<AudioSource>();
 
+        logoObject = Resources.Load<GameObject>(FeverLogoPath);
+
         feverValue = 0.0f;
         FGImage.fillAmount = 0.0f;
-
+        nextGain = 0.0f;
         _feverState = _eFeverState.NORMAL;
 
         LevelTables ltScript = gameScene.levelTables;
@@ -64,12 +73,8 @@ public class FeverGauge : MonoBehaviour {
                 ChangeState(_eFeverState.NORMAL);
             }
 
-        if (fillTweener != null && fillTweener.IsPlaying())
-            fillTweener.ChangeEndValue(feverValue);
-        else
-            FGImage.fillAmount = feverValue;
-
-
+            FGImage.DOKill();
+            FGImage.DOFillAmount(feverValue,gainDuration);
 
         }
 
@@ -85,7 +90,29 @@ public class FeverGauge : MonoBehaviour {
             tempRegain *= 1.0f + nodeCount.path3 * feverInfo.gainPerPath3;
             tempRegain *= 1.0f + nodeCount.path4 * feverInfo.gainPerPath4;
 
-            feverValue += tempRegain;
+            feverValue += nextGain;
+            if (feverValue > GAUGE_MAX)
+            {
+                feverValue = GAUGE_MAX;
+                if(feverState == _eFeverState.NORMAL)
+                    ChangeState(_eFeverState.FEVER);
+            }
+            nextGain = tempRegain;
+            //feverValue += tempRegain;
+            StartCoroutine(WaitGain(() =>
+           {
+               feverValue += nextGain;
+               FGImage.DOKill();
+               FGImage.DOFillAmount(feverValue,gainDuration);
+               nextGain = 0;
+               if (feverValue > GAUGE_MAX)
+               {
+                   feverValue = GAUGE_MAX;
+                   if(feverState == _eFeverState.NORMAL)
+                       ChangeState(_eFeverState.FEVER);
+               }
+               audioSource.Play();
+           }));
         }
         //MAXになったらフィーバーモードへ
         //今はとりあえず0に戻す
@@ -94,24 +121,11 @@ public class FeverGauge : MonoBehaviour {
 
         if (_feverState == _eFeverState.FEVER)
             return;
-
-        if(feverValue > GAUGE_MAX)
-        {
-            ChangeState(_eFeverState.FEVER);
-        }
-
-        if (fillTweener != null)
-            fillTweener.Kill();
-
-        if (feverState != _eFeverState.FEVER)
-            StartCoroutine(WaitGain(() => { fillTweener = FGImage.DOFillAmount(feverValue, fillWaitTime); audioSource.Play(); }));
-        else
-            FGImage.fillAmount = feverValue;
     }
 
     IEnumerator WaitGain(gainMethod gainM)
     {
-        yield return new WaitForSeconds(gainDuration);
+        yield return new WaitForSeconds(gainWaitTime);
         gainM();
     }
 
@@ -139,11 +153,30 @@ public class FeverGauge : MonoBehaviour {
                 FGImage.material.EnableKeyword("_EMISSION");
                 FGImage.material.SetColor("_EmissionColor",FGEmission);
                 feverValue = GAUGE_MAX;
-
+                LogoPop();
                 // ゲーム本編のBGMを停止
                 transform.root.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().StopBGM();
 
                 break;
         }
+    }
+
+    private void LogoPop()
+    {
+        GameObject logo = Instantiate(logoObject);
+        logo.transform.position = new Vector3(0.0f, -500.0f, -2.5f);
+        logo.transform.DOMoveY(-0.1f,0.8f)
+            .OnComplete( () => 
+            {
+                logo.transform.DOMoveY(0.1f,1.6f)
+                    .OnComplete( () => 
+                    {
+                        logo.transform.DOMoveY(500.0f,0.8f)
+                        .OnComplete(() => 
+                        {
+                            Destroy(logo);
+                        });
+                    });
+            });
     }
 }

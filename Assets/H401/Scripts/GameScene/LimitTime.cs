@@ -6,6 +6,7 @@ public class LimitTime : MonoBehaviour {
     
     [SerializeField] private float maxTime = 0.0f;  //時間の最大値(秒？)
     [SerializeField] private string gameEndPanelPath = null;
+    [SerializeField] private float gainDuration = 0.0f;
     public Image timeImage;
     private float nowTime;  //現在時間
     public float lastRate { get { return 1.0f - nowTime / maxTime; } }
@@ -35,9 +36,9 @@ public class LimitTime : MonoBehaviour {
         }
     }
 
-    private float gainDuration;
+    private float gainWaitTime;
     private float fillWaitTime;
-
+    private float nextGain;
     //private Tweener fillTweener;
     private float changedValueTime; //tweenのDurationにつかう 前回Durationを変更した時間
 
@@ -47,7 +48,7 @@ public class LimitTime : MonoBehaviour {
 	void Start () {
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
         Vector2 effectTimeInfo = gameScene.gameController.nodeController.gameObject.GetComponent<GameEffect>().effectTimeInfo;
-        gainDuration = effectTimeInfo.x;
+        gainWaitTime = effectTimeInfo.x;
         fillWaitTime = effectTimeInfo.y;
         timeLevel = levelTableScript.GetTimeLevel(0);
         timeLevelInterval = levelTableScript.TimeLevelInterval;
@@ -124,32 +125,32 @@ public class LimitTime : MonoBehaviour {
         if (tempRatio > timeLevel.MaxRegainRatio)
             tempRatio = timeLevel.MaxRegainRatio;
 
-        nowTime -= maxTime * tempRatio;
-        if(nowTime < 0)
-        {
-            nowTime = 0.0f;
-        }
+        //nowTime -= maxTime * tempRatio;
 
+
+        nowTime -= nextGain;
+        if (nowTime < 0)
+            nowTime = 0;
+
+        nextGain = maxTime * tempRatio;
         StartCoroutine(WaitGain(() => {
             timeImage.DOKill();
             timeImage.DOFillAmount(lastRate,fillWaitTime);
             
-            changedValueTime = Time.deltaTime;
-            }
-            ));
+            changedValueTime = Time.frameCount;
+
+            nowTime -= nextGain;
+            if (nowTime < 0)
+                nowTime = 0;
+
+            nextGain = 0;
+            }));
     }
 
     private void SetImage()
     {
         timeImage.DOKill();
-        if (fillWaitTime - changedValueTime > 0.0f)
-        {
-            timeImage.DOFillAmount(lastRate, fillWaitTime - changedValueTime);
-            changedValueTime = Time.deltaTime;
-        }
-        else
-            timeImage.fillAmount = lastRate;
-
+        timeImage.DOFillAmount(lastRate,gainDuration);
 
         if(ojityanAnimator.gameObject.activeSelf)
             ojityanAnimator.SetFloat("lastTime", lastRate);
@@ -157,7 +158,7 @@ public class LimitTime : MonoBehaviour {
 
     private IEnumerator WaitGain(TMethod Gain)
     {
-        yield return new WaitForSeconds(gainDuration);
+        yield return new WaitForSeconds(gainWaitTime);
         Gain();
     }
     
