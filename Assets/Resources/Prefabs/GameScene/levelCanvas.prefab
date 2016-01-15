@@ -304,9 +304,9 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24394866, guid: 9b707a9c23c935c4e9996a7418d1ff26,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 0abc16441d7d944479b7049e77c5deda, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 8ae82b1c6eef2394eb1b6819dd17098d, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1311,7 +1311,7 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 0abc16441d7d944479b7049e77c5deda, type: 3}
+      objectReference: {fileID: 8300000, guid: 8ae82b1c6eef2394eb1b6819dd17098d, type: 3}
     - target: {fileID: 0}
       propertyPath: OutputAudioMixerGroup
       value: 
@@ -1320,6 +1320,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_PlayOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Volume
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
