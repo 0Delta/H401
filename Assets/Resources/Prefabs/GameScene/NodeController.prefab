@@ -273,7 +273,7 @@ MonoBehaviour:
   gameNodePrefabPath: Prefabs/GameScene/GameNode
   frameNodePrefabPath: Prefabs/Common/Node
   gameNodeSpritePath: Sprites/Game/NodeList
-  frameNodeSpritePath: Sprites/Game/NodeMaskList
+  frameNodeSpritePath: Sprites/Game/FrameNodeList
   unChainControllerPath: Prefabs/GameScene/UnChainController
   widthMargin: 0.125
   heightMargin: 0.43
@@ -761,7 +761,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: frameNodeSpritePath
-      value: Sprites/Game/NodeMaskList
+      value: Sprites/Game/FrameNodeList
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: widthMargin
