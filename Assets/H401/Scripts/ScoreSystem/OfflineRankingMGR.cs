@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using RankingExtension;
 
 public class OfflineRankingMGR : MonoBehaviour {
 

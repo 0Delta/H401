@@ -8,10 +8,10 @@ using UnityEngine;
 public class OnlineRankingMGR : MonoBehaviour {
 
     [SerializeField]
-    public string ScorePrefabName;
+    public string ScorePrefabName = null;
 
     [SerializeField, Range(0.01f, 0.8f)]
-    public float TweenSpeed;
+    public float TweenSpeed = 0.05f;
 
     private const float Radius = 40f;                                   // スコアの位置を決定する円の半径と中心
     private Vector3 CenterPoint = new Vector3(-5f, 0f, Radius * 5f);
@@ -20,11 +20,13 @@ public class OnlineRankingMGR : MonoBehaviour {
     private int RingPos = 0;                                            // 現在のスコア位置
 
     // Use this for initialization
-    private void Start() {
+    private void Start()
+    {
         // 円形に座標を設定
         Vector3 Pos;
         int n = 0;
-        while((n / 7f) < Mathf.PI) {
+        while ((n / 7f) < Mathf.PI)
+        {
             Pos = CenterPoint;
             Pos.z -= Radius * (Mathf.Sin(n / 7f) * 4f);
             Pos.y -= Radius * (Mathf.Cos(n / 7f));
@@ -35,7 +37,8 @@ public class OnlineRankingMGR : MonoBehaviour {
         }
 
         // 設定された座標にスコアを表示
-        for(int i = 0; i < ScorePosList.Count; ++i) {
+        for (int i = 0; i < ScorePosList.Count; ++i)
+        {
             GameObject obj = this.InstantiateChild(ScorePrefabName);
             ScoreList.Add(obj);
         }
@@ -44,29 +47,36 @@ public class OnlineRankingMGR : MonoBehaviour {
         this.UpdateAsObservable()
             .Select(_ => RingPos)
             .DistinctUntilChanged()
-            .Subscribe(_ => {
+            .Subscribe(_ =>
+            {
                 int x = 0;
-                foreach(var it in ScoreList) {
+                foreach (var it in ScoreList)
+                {
                     Vector3 TargetPos = ScorePosList[((RingPos + x) >= ScorePosList.Count ? (RingPos + x) - ScorePosList.Count : (RingPos + x))];
                     it.GetComponent<Transform>().DOMove(TargetPos, TweenSpeed);
                     x++;
                 }
-            });
+            }).AddTo(this);
 
         // オンラインとオフラインを切り替える時の処理
         this.UpdateAsObservable()
-        .Select(_ => GetComponentInParent<RankingMGR>().Mode)
-        .DistinctUntilChanged()
-        .Subscribe(x => {
-            if(x == RankingMGR.RANKING_MODE.OFFLINE) {
-                foreach(var it in ScoreList) {
-                    it.GetComponent<Transform>().DOMove(CenterPoint, TweenSpeed);
-                    it.GetComponent<Transform>().DOScale(0, TweenSpeed);
+            .Select(_ => GetComponentInParent<RankingMGR>().Mode)
+            .DistinctUntilChanged()
+            .Subscribe(x =>
+            {
+                if (x == RankingMGR.RANKING_MODE.OFFLINE)
+                {
+                    foreach (var it in ScoreList)
+                    {
+                        it.GetComponent<Transform>().DOMove(CenterPoint, TweenSpeed);
+                        it.GetComponent<Transform>().DOScale(0, TweenSpeed);
+                    }
                 }
-            } else if((x == RankingMGR.RANKING_MODE.ONLINE)) {
-                SetPosition();
-            }
-        });
+                else if ((x == RankingMGR.RANKING_MODE.ONLINE))
+                {
+                    SetPosition();
+                }
+            }).AddTo(this);
     }
 
     private void SetPosition() {

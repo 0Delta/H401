@@ -14,7 +14,7 @@ public class Score3D : MonoBehaviour {
         this.UpdateAsObservable()
             .Select(_ => AlphaOneZ + trans.localPosition.z + AlphaZeroZ)
             .DistinctUntilChanged()
-            .Subscribe(_ => ColorSeter());
+            .Subscribe(_ => { ColorSeter(); }).AddTo(this);
 
     }
 

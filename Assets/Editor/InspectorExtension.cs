@@ -133,10 +133,6 @@ public class NodeController_Editor : Editor
 [CustomPropertyDrawer(typeof(NodeTemplate))]
 public class NodeTemplate_Editor : PropertyDrawer
 {
-    string MatBak = "";
-    Material Mat = null;
-    Texture2D texture = new Texture2D(1, 1);
-
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
         //return Screen.width < 333 ? (16f + 18f) : 16f;

@@ -44,8 +44,12 @@ namespace AES {
             byte[] src = binData;
 
             // 暗号化する
-            csEncrypt.Write(src, 0, src.Length);
-            csEncrypt.FlushFinalBlock();
+            try
+            {
+                csEncrypt.Write(src, 0, src.Length);
+                csEncrypt.FlushFinalBlock();
+            }
+            catch { return null; }
 
             byte[] dest = msEncrypt.ToArray();
 
@@ -80,7 +84,11 @@ namespace AES {
             CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read);
 
             // 複号化する
-            csDecrypt.Read(dest, 0, dest.Length);
+            try
+            {
+                csDecrypt.Read(dest, 0, dest.Length);
+            }
+            catch { return null; }
 
             return dest;
         }

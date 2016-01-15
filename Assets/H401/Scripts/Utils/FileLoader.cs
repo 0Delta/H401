@@ -1,64 +1,70 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Text;
 using System.IO;
 
-public class FileLoader{
-
-    private byte[] dat = null;
-
-    #if UNITY_ANDROID
-    public IEnumerator Load(string path,Encoding encode)
-#else
-    public void Load(string path,Encoding encode)
-#endif
-    {
-        string fullpath = "";
-
-#if UNITY_ANDROID
-        fullpath = "jar:file://" + Application.dataPath + "!/assets" + "/" + path;
-        WWW www = new WWW(fullpath);
-        yield return www;
-        AssetBundle bundle = www.assetBundle;        // Load and retrieve the AssetBundle
-        dat = encode.GetBytes(www.text);
-#elif UNITY_IOS
-        fullpath = Application.dataPath + "/Raw" + path;
-        dat = File.ReadAllBytes(fullpath);
-#else
-        fullpath = Application.persistentDataPath + path;        
-        dat = File.ReadAllBytes(fullpath);
-#endif
-    }
-
-    public byte[] GetByte()
-    {
-        return dat;
-    }
-}
-
-public class FileWriter
+public class FileAES
 {
-    public void Save(string path, byte[] dat)
-    {
-        string fullpath = "";
+    protected AES.AesCryptography aes = new AES.AesCryptography();
+    private FileAES() { }
+    public FileAES(string str) { aes = new AES.AesCryptography(str); }
+}
 
-#if UNITY_ANDROID
-        var sw = new System.IO.StreamWriter(Application.dataPath + "!/assets" + "/" + path);
-        sw.Write(dat);
-        //fullpath = "jar:file://" + Application.dataPath + "!/assets" + "/" + path;
-        //WWW www = new WWW(fullpath);
-        //yield return www;
-        //AssetBundle bundle = www.assetBundle;        // Load and retrieve the AssetBundle        
-#elif UNITY_IOS
-        fullpath = Application.dataPath + "/Raw" + path;
-        var sw = File.Create(fullpath);
-        sw.Dispose();
-        File.WriteAllBytes(fullpath,dat);
-#else
-        fullpath = Application.persistentDataPath + path;
-        var sw = File.Create(fullpath);
-        sw.Dispose();
-        File.WriteAllBytes(fullpath, dat);
-#endif
+public class AESLoader:FileAES
+{
+    private string str = null;
+
+    private AESLoader() : base(null) { }
+    public AESLoader(string Key) : base(Key) { }
+
+    public int Load(string path, Encoding encode)
+    {
+        try
+        {
+            FileStream fs = new FileStream(Application.persistentDataPath + "/" + path, FileMode.Open, FileAccess.Read);
+            BinaryReader br = new BinaryReader(fs);
+            var bin = new System.Collections.Generic.List<byte>();
+            try
+            {
+                while (true) { bin.Add(br.ReadByte()); }
+            }
+            catch (EndOfStreamException) { }
+            str = encode.GetString(aes.Decrypt(bin.ToArray()));
+            br.Close();
+        }
+        catch {
+            // ロード失敗
+            return -1;
+        }
+        return 0;
+    }
+
+    public string GetString()
+    {
+        return str;
     }
 }
+
+public class AESWriter:FileAES
+{
+    private AESWriter() : base(null) { }
+    public AESWriter(string Key) : base(Key) { }
+
+    public int Save(string path, string dat,Encoding encode)
+    {
+        try
+        {
+            FileStream fs = new FileStream(Application.persistentDataPath + "/" + path, FileMode.Create, FileAccess.Write);
+            BinaryWriter sw = new BinaryWriter(fs);
+            var bin = aes.Encrypt(encode.GetBytes(dat));
+            sw.Write(bin);
+            sw.Flush();
+            sw.Close();
+        }
+        catch {
+            // セーブ失敗
+            return -1;
+        }
+        return 0;
+    }
+}
+

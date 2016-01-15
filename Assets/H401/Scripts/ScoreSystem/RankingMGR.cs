@@ -1,37 +1,36 @@
-﻿using UnityEngine;
+﻿#pragma warning disable 414
+using UnityEngine;
 using DG.Tweening;
 using UniRx;
 using UniRx.Triggers;
 using System;
-using UnityEngine.UI;
 
-namespace RankingExtension {
-    public static class InstantiateEx {
+namespace RankingExtension
+{
+    public static class InstantiateEx
+    {
         // ゲームオブジェクトを生成して、子に登録する関数
-        public static GameObject InstantiateChild(this MonoBehaviour Mono, string Name, bool WorldPositionStays = true) {
+        public static GameObject InstantiateChild(this MonoBehaviour Mono, string Name, bool WorldPositionStays = true)
+        {
             GameObject ret = null;
             string Pass = "";
-            try {
+            try
+            {
                 RankingMGR mgr = Mono.GetComponentInParent<RankingMGR>();
-                if (mgr.RankingPrefabFolderName != "") {
+                if (mgr.RankingPrefabFolderName != "")
+                {
                     Pass += mgr.RankingPrefabFolderName + "/";
                 }
             }
-            catch (Exception excep)
-            {
-                Debug.LogException(excep);
-                return null;
-            }
+            catch { return null; }
             Pass += Name;
 
-            try {
+            try
+            {
                 ret = MonoBehaviour.Instantiate(Resources.Load(Pass)) as GameObject;
                 ret.transform.SetParent(Mono.transform, WorldPositionStays);
             }
-            catch(Exception excep) {
-                ret = null;
-                Debug.LogException(excep);
-            }
+            catch { ret = null; }
             return ret;
         }
     }
@@ -39,13 +38,13 @@ namespace RankingExtension {
 
 public class RankingMGR : MonoBehaviour {
 
-    [SerializeField] public string RankingPrefabFolderName;
-    [SerializeField] public string OnlinePrefabName;
-    [SerializeField] public string OfflinePrefabName;
-    [SerializeField] public string BGPrefabName;
-    [SerializeField] public string ScorePrefabName;
-    [SerializeField] public string CameraPrefabName;
-    [SerializeField] public string ReturnButtonName;
+    [SerializeField] public string RankingPrefabFolderName = null;
+    [SerializeField] public string OnlinePrefabName = null;
+    [SerializeField] public string OfflinePrefabName = null;
+    [SerializeField] public string BGPrefabName = null;
+    [SerializeField] public string ScorePrefabName = null;
+    [SerializeField] public string CameraPrefabName = null;
+    [SerializeField] public string ReturnButtonName = null;
 
     GameObject ScoreObj = null;
     GameObject OnlineObj = null;
@@ -121,10 +120,11 @@ public class RankingMGR : MonoBehaviour {
 
         // オンラインランキングの初期化
         this.UpdateAsObservable()
-            .First(_ => Mode == RANKING_MODE.ONLINE)
+            .Where(_ => Mode == RANKING_MODE.ONLINE)
+            .Take(1)
             .Subscribe(_ => {
                 OnlineObj = InstantiateChild(OnlinePrefabName, false);
-            });
+            }).AddTo(this);
     }
 
     // Update is called once per frame
@@ -139,3 +139,5 @@ public class RankingMGR : MonoBehaviour {
         FlipRanking = true;
     }
 }
+#pragma warning restore 414
+

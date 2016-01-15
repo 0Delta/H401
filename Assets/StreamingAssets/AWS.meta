@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 6c34a98b865116f4f8c6adb1fcf59556
 timeCreated: 1452696830
+=======
+guid: cbd642182d62ce741ae552de30bf748d
+timeCreated: 1452827249
+>>>>>>> seno/master
 licenseType: Free
 DefaultImporter:
   userData: 
