@@ -149,7 +149,7 @@ public class FeverGauge : MonoBehaviour {
             case _eFeverState.FEVER:
                 //中心地点を設定しなければならないらしい
                 FPanelObject = Instantiate(FPanelPrefab);
-                FPanelObject.transform.SetParent(gameScene.gameUI.gamePause.optionCanvas.transform,false);
+                FPanelObject.transform.SetParent(gameScene.gameUI.gameInfoCanvas.transform,false);
                     //lightPosition,transform.rotation);
                 FGImage.material.EnableKeyword("_EMISSION");
                 FGImage.material.SetColor("_EmissionColor",FGEmission);

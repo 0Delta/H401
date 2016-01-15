@@ -126,10 +126,9 @@ public class LevelController : MonoBehaviour {
         //手前にあるオブジェクトを非表示
         gameScene.gameUI.ojityanAnimator.gameObject.SetActive(false);
         gameScene.gameUI.gamePause.optionButton.SetActive(false);
-//        if (gameScene.gameUI.gameInfoCanvas.feverGauge.feverState == _eFeverState.FEVER)
-//            gameScene.gameUI.gamePause.optionCanvas.transform.FindChild("FeverPanel").gameObject.SetActive(false);
-
+ 
         yield return new WaitForSeconds(changePopTime);
+        fpMethod();
         yield return new WaitForSeconds(changeEndTime);
         //アニメーションを消去
         Destroy(animationObject);
@@ -176,8 +175,6 @@ public class LevelController : MonoBehaviour {
 
         yield return new WaitForSeconds(changePopTime);
         fChangeScript.Delete();
-//        if (gameScene.gameUI.gameInfoCanvas.feverGauge.feverState == _eFeverState.FEVER)
-//            gameScene.gameUI.gamePause.optionCanvas.transform.FindChild("PauseCanvas").FindChild("FeverPanel").gameObject.SetActive(true);
         gameScene.gameUI.ojityanAnimator.gameObject.SetActive(true);
         yield return new WaitForSeconds(changeEndTime);
         //アニメーションを消去
