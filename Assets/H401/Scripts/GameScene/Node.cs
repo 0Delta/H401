@@ -646,8 +646,16 @@ public class Node : MonoBehaviour
 
     public void ChangeEmissionColor(int colorNum)
     {
-        SpriteRenderer.material.EnableKeyword("_Color");
-        SpriteRenderer.material.DOColor(nodeControllerScript.GetNodeColor(colorNum), "_Color", colorDuration);
+        if (!bChain)
+        {
+            SpriteRenderer.sharedMaterial.EnableKeyword("_Color");
+            SpriteRenderer.sharedMaterial.DOColor(nodeControllerScript.GetNodeColor(colorNum), "_Color", colorDuration);
+        }
+        else {
+            SpriteRenderer.material.EnableKeyword("_Color");
+            SpriteRenderer.material.DOColor(nodeControllerScript.GetNodeColor(colorNum), "_Color", colorDuration);
+        }
+
     }
 
     public void FlipNode(float repRotateTime, Ease easeType)
