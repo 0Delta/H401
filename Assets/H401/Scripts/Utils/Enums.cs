@@ -57,10 +57,10 @@ public enum _ePauseState
 }
 
 public enum _eFrameNodeSpriteIndex {
-    FRAME       = 0,
+    GROUND_R    = 0,
     GROUND_L    = 1,
-    GROUND_R    = 2,
-    GROUND_C    = 3,
+    GROUND_C    = 2,
+    FRAME       = 3,
 
     MAX
 }
