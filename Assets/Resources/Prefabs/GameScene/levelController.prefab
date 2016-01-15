@@ -39,7 +39,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24394866, guid: 9b707a9c23c935c4e9996a7418d1ff26,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 22a70681b94d64a47b52d60e30d56396, type: 3}
+  m_audioClip: {fileID: 8300000, guid: d1549fa3f491f394d9d4efae6b61c54a, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -154,7 +154,7 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 22a70681b94d64a47b52d60e30d56396, type: 3}
+      objectReference: {fileID: 8300000, guid: d1549fa3f491f394d9d4efae6b61c54a, type: 3}
     - target: {fileID: 0}
       propertyPath: panLevelCustomCurve.m_RotationOrder
       value: 0
