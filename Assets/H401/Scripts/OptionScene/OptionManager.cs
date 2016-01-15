@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HowToPlayManager : MonoBehaviour {
+public class OptionManager : MonoBehaviour {
 
     [SerializeField] private FadeTime fadeTimes;
 
@@ -11,6 +11,6 @@ public class HowToPlayManager : MonoBehaviour {
 	}
 
     public void ReturnTitleScene() {
-        transform.parent.GetComponent<TitleScene>().ReturnTitleScene(AppliController._eSceneID.HOWTOPLAY, fadeTimes.inTime, fadeTimes.outTime);
+        transform.parent.GetComponent<TitleScene>().ReturnTitleScene(AppliController._eSceneID.OPTION, fadeTimes.inTime, fadeTimes.outTime);
     }
 }

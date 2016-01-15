@@ -105,13 +105,13 @@ MonoBehaviour:
   startSceneID: 1
   gameFrameRate: 60
   scenePrefabPaths:
-  - Prefabs/Scene/Title
-  - Prefabs/Scene/Game
-  - Prefabs/Scene/Result
-  - Prefabs/Scene/Ranking
-  - Prefabs/Scene/Option
-  - Prefabs/Scene/HowToPlay
-  - Prefabs/Scene/Credit
+  - Prefabs/Scenes/Title
+  - Prefabs/Scenes/Game
+  - Prefabs/Scenes/Result
+  - Prefabs/Scenes/Ranking
+  - Prefabs/Scenes/Option
+  - Prefabs/Scenes/HowToPlay
+  - Prefabs/Scenes/Credit
   fadeCanvasName: FadeCanvas
   gameStartFadeTime:
     inTime: 2
@@ -227,6 +227,34 @@ Prefab:
       propertyPath: scenePrefabs.Array.data[5]
       value: 
       objectReference: {fileID: 116258, guid: 96b8bba368661e646a2c0ea274081da7, type: 2}
+    - target: {fileID: 0}
+      propertyPath: scenePrefabPaths.Array.data[0]
+      value: Prefabs/Scenes/Title
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: scenePrefabPaths.Array.data[1]
+      value: Prefabs/Scenes/Game
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: scenePrefabPaths.Array.data[2]
+      value: Prefabs/Scenes/Result
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: scenePrefabPaths.Array.data[3]
+      value: Prefabs/Scenes/Ranking
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: scenePrefabPaths.Array.data[4]
+      value: Prefabs/Scenes/Option
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: scenePrefabPaths.Array.data[5]
+      value: Prefabs/Scenes/HowToPlay
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: scenePrefabPaths.Array.data[6]
+      value: Prefabs/Scenes/Credit
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 188584}

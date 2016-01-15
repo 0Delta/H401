@@ -22,6 +22,12 @@ public class TitleNodeController : MonoBehaviour {
 
 	private Vector2 nodeSize = Vector2.zero;    // 描画するノードのサイズ
 
+    private bool _isMoveNodes = false;   // ノードの移動処理フラグ
+    public bool isMoveNodes {
+        set { _isMoveNodes = value; }
+        get { return _isMoveNodes; }
+    }
+
     void Awake() {
         nodePrefabs  = new GameObject[col][];
         nodePlacePosList = new Vector3[col][];
@@ -72,10 +78,15 @@ public class TitleNodeController : MonoBehaviour {
                 nodePrefabs[k][j].transform.position = tmp;
             }
         }
+
+        isMoveNodes = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        if(!isMoveNodes)
+            return;
+
 	    for(int i = 0; i < moveCol.Length; ++i) {
             int k = moveCol[i];
 

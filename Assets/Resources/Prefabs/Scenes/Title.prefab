@@ -117,12 +117,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCameraPath: Prefabs/TitleScene/Camera
   subCameraPath: Prefabs/TitleScene/SubCamera
-  lightPath: Prefabs/TitleScene/Directional Light
   renderTexturePath: Prefabs/TitleScene/RenderTexture
   titleNodeControllerPath: Prefabs/TitleScene/TitleNodeController
   titleCanvasPath: Prefabs/TitleScene/TitleCanvas
   eventSystemPath: Prefabs/TitleScene/EventSystem
-  HowToPlayScenePath: 
+  optionScenePath: Prefabs/Scenes/Option
+  howToPlayScenePath: Prefabs/Scenes/HowToPlay
+  creditScenePath: Prefabs/Scenes/Credit
+  normalSceneFilterColor: {r: 1, g: 1, b: 1, a: 1}
+  popupSceneFilterColor: {r: 0.42647058, g: 0.42647058, b: 0.42647058, a: 1}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -179,6 +182,66 @@ Prefab:
       value: 
       objectReference: {fileID: 24387180, guid: 9b707a9c23c935c4e9996a7418d1ff26,
         type: 2}
+    - target: {fileID: 0}
+      propertyPath: PopupSceneFilterColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: PopupSceneFilterColor.r
+      value: 0.43382353
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: PopupSceneFilterColor.g
+      value: 0.43382353
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: PopupSceneFilterColor.b
+      value: 0.43382353
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: optionScenePath
+      value: Prefabs/Scenes/Option
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: howToPlayScenePath
+      value: Prefabs/Scenes/HowToPlay
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: creditScenePath
+      value: Prefabs/Scenes/Credit
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: popupSceneFilterColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: popupSceneFilterColor.r
+      value: 0.42647058
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: popupSceneFilterColor.g
+      value: 0.42647058
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: popupSceneFilterColor.b
+      value: 0.42647058
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: normalSceneFilterColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: normalSceneFilterColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: normalSceneFilterColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: normalSceneFilterColor.a
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 133444}

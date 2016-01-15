@@ -15,6 +15,8 @@ public class TitleButtons : MonoBehaviour {
 
     private TitleScene titleScene = null;   // タイトルシーンのスクリプト
     private Transform[] buttonTransList;        // ボタンの Transform リスト
+    private Vector3[] buttonPosList;        // ボタンの position リスト
+    private Vector3[] buttonScaleList;        // ボタンの scale リスト
     private AudioSource audioSource;
     private bool isOnClick = false;     // ボタン押下フラグ
 
@@ -24,6 +26,13 @@ public class TitleButtons : MonoBehaviour {
         audioSource = GetComponent<AudioSource>();
 
         isOnClick = false;
+
+        buttonPosList = new Vector3[buttonTransList.Length];
+        buttonScaleList = new Vector3[buttonTransList.Length];
+        for(int i = 0; i < buttonTransList.Length; ++i) {
+            buttonPosList[i] = buttonTransList[i].localPosition;
+            buttonScaleList[i] = buttonTransList[i].localScale;
+        }
     }
 
     void ActionDirection(Transform trans) {
@@ -67,6 +76,9 @@ public class TitleButtons : MonoBehaviour {
                             break;
                         }
                     }
+                    
+                    // クリックフラグを戻す
+                    isOnClick = false;
 
                     // 次のシーンへ
                     if(isPopup) {
@@ -78,6 +90,14 @@ public class TitleButtons : MonoBehaviour {
                 .SetEase(Ease.OutCubic);
             })
             .SetEase(Ease.OutCubic);
+        }
+    }
+
+    public void InitButtonsTransform() {
+        // ボタンの Transform を初期値へ戻す
+        for(int i = 0; i < buttonTransList.Length; ++i) {
+            buttonTransList[i].localPosition = buttonPosList[i];
+            buttonTransList[i].localScale = buttonScaleList[i];
         }
     }
 

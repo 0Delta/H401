@@ -34,12 +34,16 @@ public class TitleCanvas : MonoBehaviour {
     // タイトルシーンで使用している UI をアクティブにする
     public void EnableTitleUI() {
         titleLogosObject.SetActive(true);
-        titleBacksObject.SetActive(true);
+        titleButtonsObject.SetActive(true);
     }
 
     // タイトルシーンで使用している UI を非アクティブにする
     public void DisableTitleUI() {
         titleLogosObject.SetActive(false);
-        titleBacksObject.SetActive(false);
+        titleButtonsObject.SetActive(false);
+    }
+
+    public void InitButtonsTransform() {
+        titleButtonsObject.GetComponent<TitleButtons>().InitButtonsTransform();
     }
 }
