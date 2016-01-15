@@ -5,7 +5,6 @@ using Amazon.Runtime;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using Amazon.DynamoDBv2.DataModel;
-using AES;
 using System.IO;
 
 public class DynamoConnecter : MonoBehaviour {

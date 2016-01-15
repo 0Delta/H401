@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using UnityEngine;
 using RankingExtension;
-using AES;
 
 public class ScoreManager : MonoBehaviour {
     [SerializeField]
@@ -238,13 +237,14 @@ public class ScoreManager : MonoBehaviour {
     /// スコアを追加
     /// </summary>
     /// <param name="Score">スコア</param>
-    public void AddScore(int Score) {
+    public int AddScore(int Score) {
         Load();
         int r = SListInstance.Insert(Score) + 1;
         //Debug.Log(
         //    (r == -1) ? ("Out of Ranking.") : ("Rank : " + r)
         //    + "\n" + SListInstance.ToString());
         Save();
+        return r;
     }
 
     #region // 未実装
