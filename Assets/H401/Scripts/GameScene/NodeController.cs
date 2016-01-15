@@ -452,8 +452,8 @@ public class NodeController : MonoBehaviour
 
         // 描画するノードの大きさを取得
         SpriteRenderer sr = gameNodePrefab.GetComponent<SpriteRenderer>();
-        nodeSize.x = sr.sprite.bounds.size.x;
-        nodeSize.y = sr.sprite.bounds.size.y;
+        nodeSize.x = sr.sprite.bounds.size.x * gameNodePrefab.transform.localScale.x;
+        nodeSize.y = sr.sprite.bounds.size.y * gameNodePrefab.transform.localScale.y;
         nodeSize.x -= widthMargin;
         nodeSize.y -= heightMargin;
 

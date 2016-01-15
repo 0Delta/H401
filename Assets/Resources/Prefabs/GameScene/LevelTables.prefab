@@ -118,10 +118,8 @@ MonoBehaviour:
     RegainPer3Path: 0.05
     RegainPer4Path: 0
   nodeColorList:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0.102941155, g: 0.044658296, b: 0.044658296, a: 0}
-  - {r: 0.32352942, g: 0.13083911, b: 0.13083911, a: 0}
-  - {r: 0.5514706, g: 0.5514706, b: 0.5514706, a: 0}
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 0, g: 0.29655218, b: 1, a: 1}
   scoreRatio:
     BasePoint: 100
     BonusPerCap: 0
@@ -143,40 +141,44 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 0}
+      propertyPath: nodeColorList.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
       propertyPath: nodeColorList.Array.data[3].r
-      value: .551470578
+      value: 0.19999981
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: nodeColorList.Array.data[3].g
-      value: .551470578
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: nodeColorList.Array.data[3].b
-      value: .551470578
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: nodeColorList.Array.data[2].r
-      value: .323529422
+      value: 0.15862082
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: nodeColorList.Array.data[2].g
-      value: .130839109
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: nodeColorList.Array.data[2].b
-      value: .130839109
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: nodeColorList.Array.data[1].r
-      value: .102941155
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: nodeColorList.Array.data[1].g
-      value: .0446582958
+      value: 0.29655218
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: nodeColorList.Array.data[1].b
-      value: .0446582958
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: fieldLevelTable.Array.data[0].lightColor.r
@@ -377,6 +379,26 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: fieldLevelTable.Array.data[4].BG_Path
       value: Sprites/hard
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: nodeColorList.Array.data[0].r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: nodeColorList.Array.data[0].g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: nodeColorList.Array.data[0].b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: nodeColorList.Array.data[0].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: nodeColorList.Array.data[1].a
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

@@ -134,7 +134,7 @@ Material:
       data:
         first:
           name: _DisplaceL1
-        second: 0.25
+        second: 0.249
       data:
         first:
           name: _DisplaceR1
@@ -158,11 +158,11 @@ Material:
       data:
         first:
           name: _DisplaceL4
-        second: 0.6
+        second: 0.567
       data:
         first:
           name: _DisplaceR4
-        second: 0.63
+        second: 0.598
       data:
         first:
           name: _DisplaceL5
@@ -171,6 +171,26 @@ Material:
         first:
           name: _DisplaceR5
         second: 0.755
+      data:
+        first:
+          name: _BrightnessRatio
+        second: 0.476
+      data:
+        first:
+          name: _BrightnessThreshold
+        second: 0.447
+      data:
+        first:
+          name: _BrightnessHeightThreshold
+        second: 0
+      data:
+        first:
+          name: _BrightnessLowThreshold
+        second: 0.254
+      data:
+        first:
+          name: _BrightnessHighThreshold
+        second: 0.45
     m_Colors:
       data:
         first:
@@ -179,4 +199,4 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 0.63235295, g: 0.63235295, b: 0.63235295, a: 1}
+        second: {r: 1, g: 1, b: 1, a: 1}
