@@ -1,7 +1,5 @@
 ﻿// BitArray型を拡張
-using System;
 using System.Collections;
-using UnityEngine;
 
 namespace BitArrayExtension
 {

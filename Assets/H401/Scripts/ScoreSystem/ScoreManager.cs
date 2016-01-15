@@ -223,9 +223,15 @@ public class ScoreManager : MonoBehaviour {
     /// AWSシステムを起動させる
     /// </summary>
     void AWSStart() {
-        GameObject AWSObj = this.InstantiateChild(AWSPrefabName);
-        AWSObj.name = "AWS";
-        AWS = AWSObj.GetComponent<DynamoConnecter>();
+        try {
+            GameObject AWSObj = this.InstantiateChild(AWSPrefabName);
+            AWSObj.name = "AWS";
+            AWS = AWSObj.GetComponent<DynamoConnecter>();
+        }
+        catch
+        {
+            AWS = null;
+        }
     }
 
     /// <summary>
@@ -235,11 +241,10 @@ public class ScoreManager : MonoBehaviour {
     public void AddScore(int Score) {
         Load();
         int r = SListInstance.Insert(Score) + 1;
-        Debug.Log(
-            (r == -1) ? ("Out of Ranking.") : ("Rank : " + r)
-            + "\n" + SListInstance.ToString());
+        //Debug.Log(
+        //    (r == -1) ? ("Out of Ranking.") : ("Rank : " + r)
+        //    + "\n" + SListInstance.ToString());
         Save();
-
     }
 
     #region // 未実装
@@ -266,32 +271,17 @@ public class ScoreManager : MonoBehaviour {
     int Save() {
         // キーを作成
         string Key = KeyGenerator();
-        var AesInstance = new AesCryptography(Key);
-
-        // データを読みだして暗号化
-        byte[] Dat = System.Text.Encoding.UTF8.GetBytes(SListInstance.ToStringData());
-        byte[] Sav = AesInstance.Encrypt(Dat);
-
+        
         // 書き込み
-        //#if UNITY_EDITOR
         try
         {
-            Debug.Log("FileSave");
-            var sw = File.Create(Application.persistentDataPath + "/save");
-            sw.Dispose();
-            File.WriteAllBytes(Application.persistentDataPath + "/save", Sav);
-            //#elif UNITY_ANDROID
-            //WWW www = new WWW("jar:file://" + Application.dataPath + "!/assets" + "/save");
-            //yield return www;
+            // データを読みだして暗号化
+            var fw = new AESWriter(Key);
+            fw.Save("save", SListInstance.ToStringData(), System.Text.Encoding.UTF8);
         }
         catch (System.IO.IsolatedStorage.IsolatedStorageException) {
-            Debug.LogError("IsolatedStorage_Catch");
             return -1;
         }
-
-        //txtReader = new StringReader(www.text);
-        //#endif
-
         return 0;
     }
 
@@ -303,14 +293,13 @@ public class ScoreManager : MonoBehaviour {
         try {
             // キーを作成
             string Key = KeyGenerator();
-            var AesInstance = new AesCryptography(Key);
 
             // データを読みだして復号化
-            byte[] Sav = File.ReadAllBytes(Application.persistentDataPath + "/save");
-            byte[] Dat = AesInstance.Decrypt(Sav);
+            var fl = new AESLoader(Key);
+            fl.Load("save", System.Text.Encoding.UTF8);
 
             // データセット
-            SListInstance.FromStringData(System.Text.Encoding.UTF8.GetString(Dat));
+            SListInstance.FromStringData(fl.GetString());
         }
         catch(FileNotFoundException) { return -1; }        // ファイルが見当たらない場合
         catch(System.FormatException) { return -1; }       // ファイルデータ不正

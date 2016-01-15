@@ -11,27 +11,23 @@ namespace RankingExtension {
         public static GameObject InstantiateChild(this MonoBehaviour Mono, string Name, bool WorldPositionStays = true) {
             GameObject ret = null;
             string Pass = "";
-            try {
+            try
+            {
                 RankingMGR mgr = Mono.GetComponentInParent<RankingMGR>();
-                if (mgr.RankingPrefabFolderName != "") {
+                if (mgr.RankingPrefabFolderName != "")
+                {
                     Pass += mgr.RankingPrefabFolderName + "/";
                 }
             }
-            catch (Exception excep)
-            {
-                Debug.LogException(excep);
-                return null;
-            }
+            catch { return null; }
             Pass += Name;
 
-            try {
+            try
+            {
                 ret = MonoBehaviour.Instantiate(Resources.Load(Pass)) as GameObject;
                 ret.transform.SetParent(Mono.transform, WorldPositionStays);
             }
-            catch(Exception excep) {
-                ret = null;
-                Debug.LogException(excep);
-            }
+            catch { ret = null; }
             return ret;
         }
     }

@@ -11,23 +11,22 @@ using System.IO;
 public class DynamoConnecter : MonoBehaviour {
     // 固有関数
     [SerializeField]
-    public bool UseProxy;
+    public bool UseProxy = false;
     [SerializeField]
-    public string ProxyHost;
+    public string ProxyHost = null;
     [SerializeField]
-    public int ProxyPort;
+    public int ProxyPort = 8080;
     [SerializeField]
-    public string UserName;
+    public string UserName = null;
     [SerializeField]
-    public string Password;
+    public string Password = null;
     [SerializeField]
     public const string DefaultName = "NoName";
 
-    public const string TABLE_NAME = "H401_6";                                          // テーブルの名前
+    public const string TABLE_NAME = "H401_6";                                    // テーブルの名前
     private string publicKey = "AKIAJLMLMLC4KEYK77LQ";                            // 接続用ID
     private string secretKey = "QmbJyIdcQ+db4jho2qaea6ZdWaaU/60La8lxbCdP";        // 接続用PASSWORD
-    private AmazonDynamoDBClient client;                                                // コネクタ
-    private AesCryptography AesInstance = new AesCryptography(@"H401_AESEnctyptSystemFirstVector");
+    private AmazonDynamoDBClient client = null;                                   // コネクタ
 
     // テーブル定義(DBと同期させること)
     [DynamoDBTable(TABLE_NAME)]
@@ -77,24 +76,18 @@ public class DynamoConnecter : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        // キーをロード
-        //// データを読みだして暗号化
-        //byte[] Dat = System.Text.Encoding.UTF8.GetBytes("pksk");
-        //byte[] Sav = AesInstance.Encrypt(Dat);
-
-        //// 書き込み
-        //var sw = File.Create(Application.persistentDataPath + "/AWS");
-        //sw.Dispose();
-        //File.WriteAllBytes(Application.persistentDataPath + "/AWS", Sav);
-
+        //キーをロード
+        // データを読みだして暗号化
+        //var fw = new AESWriter("");
+        //fw.Save("AWS", "pksk", System.Text.Encoding.UTF8);
 
         try {
             // データを読みだして復号化
-            byte[] Sav = File.ReadAllBytes(Application.persistentDataPath + "/AWS");
-            byte[] Dat = AesInstance.Decrypt(Sav);
-            
+            var fl = new AESLoader(@"H401_AESEnctyptSystemFirstVector");
+            fl.Load("AWS", System.Text.Encoding.UTF8);
+
             // データセット
-            string str = System.Text.Encoding.UTF8.GetString(Dat);
+            string str = fl.GetString();
             publicKey = str.Substring(0, 20);
             secretKey = str.Substring(20);
      }
