@@ -92,14 +92,20 @@ class SpriteLoader
     static public string SpritePath = "";
     static public Sprite[] spr = null;
     static public Texture2D tex = null;
+
+    static public string mSpritePath = "";
+    static public Sprite[] mspr = null;
+    static public Texture2D mtex = null;
+
 }
 [CustomEditor(typeof(NodeController))]
 public class NodeController_Editor : Editor
 {
     public override void OnInspectorGUI()
     {
+        var tgt = target as NodeController;
         try {
-            var tgt = target as NodeController;
+            // スプライト
             SpriteLoader.SpritePath = tgt.gameNodeSpritePath;
             var spr = Resources.LoadAll<Sprite>(SpriteLoader.SpritePath);
             if (spr != null)
@@ -124,6 +130,35 @@ public class NodeController_Editor : Editor
         catch {
             SpriteLoader.spr = null;
             SpriteLoader.tex = null;
+        }
+        // マスク
+        try
+        {
+            SpriteLoader.mSpritePath = tgt.nodeMaskSpritePath;
+            var spr = Resources.LoadAll<Sprite>(SpriteLoader.mSpritePath);
+            if (spr != null)
+            {
+                SpriteLoader.mspr = spr;
+            }
+            else
+            {
+                SpriteLoader.mspr = null;
+                SpriteLoader.mtex = null;
+            }
+            var tex = spr[0].texture;
+            if (tex != null)
+            {
+                SpriteLoader.mtex = tex;
+            }
+            else
+            {
+                SpriteLoader.mtex = null;
+            }
+        }
+        catch
+        {
+            SpriteLoader.mspr = null;
+            SpriteLoader.mtex = null;
         }
 
         base.OnInspectorGUI();
@@ -199,18 +234,18 @@ public class NodeTemplate_Editor : PropertyDrawer
                     contentPosition.width = position.width / 4f * 3f;
                     EditorGUI.LabelField(contentPosition, "Error : Length Error");
                 }
-                if (SpriteLoader.spr.Length > mIdx && mIdx > -1)
+                if (SpriteLoader.mspr.Length > mIdx && mIdx > -1)
                 {
                     contentPosition.x = position.width / 2f - 20f - ImagePosXRevision;
                     contentPosition.y = position.y + 25f;
                     contentPosition.width = 40f;
                     contentPosition.height = 40f;
-                    var rect = SpriteLoader.spr[mIdx].rect;
-                    rect.x /= SpriteLoader.tex.width;
-                    rect.width /= SpriteLoader.tex.width;
-                    rect.y /= SpriteLoader.tex.height;
-                    rect.height /= SpriteLoader.tex.height;
-                    GUI.DrawTextureWithTexCoords(contentPosition, SpriteLoader.tex, rect);
+                    var rect = SpriteLoader.mspr[mIdx].rect;
+                    rect.x /= SpriteLoader.mtex.width;
+                    rect.width /= SpriteLoader.mtex.width;
+                    rect.y /= SpriteLoader.mtex.height;
+                    rect.height /= SpriteLoader.mtex.height;
+                    GUI.DrawTextureWithTexCoords(contentPosition, SpriteLoader.mtex, rect);
                 }
                 else
                 {
@@ -228,10 +263,7 @@ public class NodeTemplate_Editor : PropertyDrawer
                 EditorGUI.LabelField(contentPosition, "Error : Texture Null");
             }
         }
-        catch (System.Exception excep)
-        {
-            Debug.LogWarning(excep.ToString());
-        }
+        catch { }
 
         contentPosition.width = 16f;
         // 各チェックボックス

@@ -116,6 +116,7 @@ public class Node : MonoBehaviour
                                                 //  3 2  とする
 
     private SpriteRenderer spriteRenderer = null;
+    private NodeMask NodeMask = null;
     public NodeTemplate Temp = null;               // 使用したテンプレート
     private int _RotCounter = 0;
     public int RotCounter
@@ -128,7 +129,7 @@ public class Node : MonoBehaviour
     {
         get { return spriteRenderer; }
     }
-
+    
     private bool bChecked = false;
 
     public bool CheckFlag                       //走査済みフラグ 枝完成チェックに使用
@@ -148,6 +149,12 @@ public class Node : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        var ret = MonoBehaviour.Instantiate(Resources.Load("Prefabs/GameScene/NodeMask")) as GameObject;
+        ret.transform.SetParent(transform);
+        NodeMask = GetComponentInChildren<NodeMask>();
+        NodeMask.transform.localPosition = new Vector3(0f, 0f, 0f);
+        NodeMask.transform.localScale = new Vector3(1f, 1f, 1f);
+        NodeMask.Enabled = false;
     }
 
     // Use this for initialization
@@ -201,9 +208,11 @@ public class Node : MonoBehaviour
                 if (x == true)
                 {
                     ChangeEmissionColor(1);
+                    NodeMask.Enabled = true;
                 }
                 else {
                     ChangeEmissionColor(0);
+                    NodeMask.Enabled = false;
                 }
             });
         ChangeEmissionColor(0);
@@ -578,6 +587,7 @@ public class Node : MonoBehaviour
 
         //テクスチャを設定
         SpriteRenderer.sprite = nodeControllerScript.GetSprite(Temp.SpriteIdx);
+        NodeMask.SetSprite(nodeControllerScript.GetMaskSprite(Temp.MaskIdx));
 
         //ランダムに回転
         int RotI = RandomEx.RangeforInt(0, 6);
@@ -646,16 +656,8 @@ public class Node : MonoBehaviour
 
     public void ChangeEmissionColor(int colorNum)
     {
-        if (!bChain)
-        {
-            SpriteRenderer.sharedMaterial.EnableKeyword("_Color");
-            SpriteRenderer.sharedMaterial.DOColor(nodeControllerScript.GetNodeColor(colorNum), "_Color", colorDuration);
-        }
-        else {
-            SpriteRenderer.material.EnableKeyword("_Color");
-            SpriteRenderer.material.DOColor(nodeControllerScript.GetNodeColor(colorNum), "_Color", colorDuration);
-        }
-
+        //SpriteRenderer.sharedMaterial.EnableKeyword("_Color");
+        //SpriteRenderer.sharedMaterial.DOColor(nodeControllerScript.GetNodeColor(colorNum), "_Color", colorDuration);
     }
 
     public void FlipNode(float repRotateTime, Ease easeType)

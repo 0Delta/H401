@@ -273,6 +273,7 @@ MonoBehaviour:
   gameNodePrefabPath: Prefabs/GameScene/GameNode
   frameNodePrefabPath: Prefabs/Common/Node
   gameNodeSpritePath: Sprites/Game/NodeList
+  nodeMaskSpritePath: Sprites/Game/MaskNodeList
   frameNodeSpritePath: Sprites/Game/FrameNodeList
   unChainControllerPath: Prefabs/GameScene/UnChainController
   widthMargin: 0.125
@@ -281,56 +282,56 @@ MonoBehaviour:
   repRotateTime: 0.5
   NodeTemp:
   - SpriteIdx: 4
-    MaskIdx: 12
+    MaskIdx: 4
     MaterialName: Materials/hex0
     LinkDir: 010000000000
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 2
-    MaskIdx: 10
+    MaskIdx: 2
     MaterialName: Materials/hex1
     LinkDir: 010000010000
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 6
-    MaskIdx: 14
+    MaskIdx: 6
     MaterialName: Materials/hex2
     LinkDir: 010001000000
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 7
-    MaskIdx: 15
+    MaskIdx: 7
     MaterialName: Materials/hex3
     LinkDir: 010100000000
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 5
-    MaskIdx: 13
+    MaskIdx: 5
     MaterialName: Materials/hex4
     LinkDir: 010001000100
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 3
-    MaskIdx: 11
+    MaskIdx: 3
     MaterialName: Materials/hex5
     LinkDir: 010001010000
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 0
-    MaskIdx: 8
+    MaskIdx: 0
     MaterialName: Materials/hex6
     LinkDir: 010101000000
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 1
-    MaskIdx: 9
+    MaskIdx: 1
     MaterialName: Materials/hex7
     LinkDir: 010001010001
     Ready: 0
@@ -798,7 +799,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[0].MaskIdx
-      value: 12
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[1].SpriteIdx
@@ -806,7 +807,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[1].MaskIdx
-      value: 10
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[2].SpriteIdx
@@ -814,7 +815,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[2].MaskIdx
-      value: 14
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[3].SpriteIdx
@@ -822,7 +823,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[3].MaskIdx
-      value: 15
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[4].SpriteIdx
@@ -830,7 +831,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[4].MaskIdx
-      value: 13
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[5].SpriteIdx
@@ -838,7 +839,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[5].MaskIdx
-      value: 11
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[5].LinkDir.Array.data[4]
@@ -850,7 +851,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[6].MaskIdx
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[7].SpriteIdx
@@ -858,7 +859,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[7].MaskIdx
-      value: 9
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[0].LinkDir.Array.data[0]
@@ -919,6 +920,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[6].LinkDir.Array.data[2]
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: nodeMaskSpritePath
+      value: Sprites/Game/MaskNodeList
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
