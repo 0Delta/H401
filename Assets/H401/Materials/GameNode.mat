@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: GameNode
-  m_Shader: {fileID: 4800000, guid: 98c7d620828e8fa4c82118d8f703a1da, type: 3}
+  m_Shader: {fileID: 10753, guid: 0000000000000000e000000000000000, type: 0}
   m_ShaderKeywords: _Color
   m_LightmapFlags: 5
   m_CustomRenderQueue: 3000
@@ -36,13 +36,6 @@ Material:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _MaskTex
-        second:
-          m_Texture: {fileID: 2800000, guid: d0de8694ae5b9774cb15be444c50f951, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0.1, y: 0.1}
       data:
         first:
           name: _ParallaxMap
@@ -92,6 +85,13 @@ Material:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _MaskTex
+        second:
+          m_Texture: {fileID: 2800000, guid: d0de8694ae5b9774cb15be444c50f951, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0.1, y: 0.1}
     m_Floats:
       data:
         first:
@@ -151,6 +151,10 @@ Material:
         second: 0
       data:
         first:
+          name: _Threshold
+        second: 0.5
+      data:
+        first:
           name: _UVGap
         second: 0.5
       data:
@@ -192,10 +196,6 @@ Material:
       data:
         first:
           name: _DisplaceR5
-        second: 0.5
-      data:
-        first:
-          name: _Threshold
         second: 0.5
     m_Colors:
       data:
