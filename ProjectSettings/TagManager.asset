@@ -51,6 +51,9 @@ TagManager:
   - name: GameUI
     uniqueID: 184806343
     locked: 0
+  - name: Effect
+    uniqueID: 716486131
+    locked: 0
   - name: Option
     uniqueID: 2685478139
     locked: 0
