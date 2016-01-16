@@ -9,7 +9,7 @@ public class NodeTemplate {
     public int SpriteIdx = -1;
     public int MaskIdx = -1;
 
-    public string MaterialName;
+    public string MaterialName = null;
     public bool[] LinkDir = new  bool[6];
     
     // 算出部分

@@ -126,7 +126,7 @@ public class LevelController : MonoBehaviour {
         //手前にあるオブジェクトを非表示
         gameScene.gameUI.ojityanAnimator.gameObject.SetActive(false);
         gameScene.gameUI.gamePause.optionButton.SetActive(false);
-
+ 
         yield return new WaitForSeconds(changePopTime);
         fpMethod();
         yield return new WaitForSeconds(changeEndTime);
@@ -175,7 +175,6 @@ public class LevelController : MonoBehaviour {
 
         yield return new WaitForSeconds(changePopTime);
         fChangeScript.Delete();
-
         gameScene.gameUI.ojityanAnimator.gameObject.SetActive(true);
         yield return new WaitForSeconds(changeEndTime);
         //アニメーションを消去

@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: GameNode
   m_Shader: {fileID: 4800000, guid: 98c7d620828e8fa4c82118d8f703a1da, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: _Color
   m_LightmapFlags: 5
   m_CustomRenderQueue: 3000
   stringTagMap: {}

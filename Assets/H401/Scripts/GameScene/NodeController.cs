@@ -46,6 +46,7 @@ public class NodeController : MonoBehaviour
     [SerializeField] private string gameNodePrefabPath = null;          // ノードのプレハブのパス
     [SerializeField] private string frameNodePrefabPath = null;         // フレームノードのプレハブのパス
     [SerializeField] public string gameNodeSpritePath = null;          // ノードのスプライトのパス
+    [SerializeField] public string nodeMaskSpritePath = null;          // ノードマスクのスプライトのパス
     [SerializeField] public string frameNodeSpritePath = null;         // フレームノードのスプライトのパス
 
     private GameObject gameNodePrefab = null;                 // ノードのプレハブ
@@ -56,6 +57,15 @@ public class NodeController : MonoBehaviour
         if (gameNodeSprite != null && gameNodeSprite.Length > Idx && Idx > -1)
         {
             return gameNodeSprite[Idx];
+        }
+        return null;
+    }
+    private Sprite[] nodeMaskSprite;    // ノードマスクのスプライトリスト
+    public Sprite GetMaskSprite(int Idx)
+    {
+        if (nodeMaskSprite != null && nodeMaskSprite.Length > Idx && Idx > -1)
+        {
+            return nodeMaskSprite[Idx];
         }
         return null;
     }
@@ -264,6 +274,7 @@ public class NodeController : MonoBehaviour
 
         // ----- スプライトデータを Resources から取得
         gameNodeSprite = Resources.LoadAll<Sprite>(gameNodeSpritePath);
+        nodeMaskSprite = Resources.LoadAll<Sprite>(nodeMaskSpritePath);
         frameNodeSprite = Resources.LoadAll<Sprite>(frameNodeSpritePath);
         
         // GameEffect スクリプトを取得
