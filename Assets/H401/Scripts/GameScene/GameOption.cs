@@ -56,11 +56,24 @@ public class GameOption : MonoBehaviour {
         //ただし、タイムスケールに左右されない
  
         panelObject.transform.SetParent(transform.FindChild("PauseCanvas").transform);
-        panelObject.transform.localPosition = panelObject.transform.parent.position; //addChildほしい
+        panelObject.transform.localScale = Vector3.one;
+        panelObject.transform.localPosition = new Vector3(0.0f, -1500.0f,0.0f);
+        panelObject.transform.DOLocalMoveY(0.0f, popTime).SetUpdate(true).OnComplete( () =>
+        {
+            triggerButton.interactable = true;
+        });
+        
+        /*
+        panelObject.transform.position = panelObject.transform.parent.position; //addChildほしい
         panelObject.transform.localScale = new Vector3(popScale, popScale, 1.0f);
  
         panelObject.transform.DOScale(1.0f, popTime).SetUpdate(true)
             .OnComplete( () => { triggerButton.interactable = true; });
+*/
+        AppliController appController = transform.root.gameObject.GetComponent<AppliController>();
+        Button[] butttons = panelObject.transform.GetComponentsInChildren<Button>();
+        butttons[0].onClick.AddListener(() => { Time.timeScale = 1.0f; appController.ChangeScene(AppliController._eSceneID.GAME,0.5f,0.5f); });
+        butttons[1].onClick.AddListener(() => { Time.timeScale = 1.0f; appController.ChangeScene(AppliController._eSceneID.TITLE,1.0f,1.0f); });
 
         //ここでもう終了時処理の設定をしておく
         triggerButton.onClick.RemoveAllListeners();
@@ -74,7 +87,8 @@ public class GameOption : MonoBehaviour {
         triggerButton.interactable = false;
         triggerButton.onClick.RemoveAllListeners();
         triggerButton.onClick.AddListener(StartOption);
-        panelObject.transform.DOScale(popScale, popTime)
+        //panelObject.transform.DOScale(popScale, popTime)
+        panelObject.transform.DOLocalMoveY(1500.0f,popTime)
             .OnComplete(() =>
             {
                 triggerButton.interactable = true;

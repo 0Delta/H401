@@ -78,7 +78,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pausePanelPath: Prefabs/GameScene/OptionPanel
   gameStartPanelPath: Prefabs/GameScene/GameStartPanel
-  popTime: 1
+  popTime: 0.75
   popScale: 0.01
   optionCanvas: {fileID: 0}
   optionButton: {fileID: 0}
@@ -123,7 +123,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 750, y: 1334}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -275,6 +275,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: gameStartPanelPath
       value: Prefabs/GameScene/GameStartPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: popTime
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

@@ -580,7 +580,7 @@ public class Node : MonoBehaviour
         SpriteRenderer.sprite = nodeControllerScript.GetSprite(Temp.SpriteIdx);
 
         //ランダムに回転
-        int RotI = RandomEx.RangeforInt(0, 6);
+        int RotI = RandomEx.RangeforInt(0, 5);
         RotCounter = (Rot == -1 ? RotI : Rot);
 
         // 色をリセット
