@@ -665,7 +665,7 @@ public class Node : MonoBehaviour
         IsFlip = true;
         Vector3 angle = transform.localEulerAngles;
         angle.y += 90.0f;
-        transform.DORotate(angle, (repRotateTime / 2.0f))
+        transform.DOLocalRotate(angle, (repRotateTime / 2.0f))
             .OnComplete(() => {
                 IsFlip = false;
             })

@@ -11,7 +11,7 @@ public class PopupScene{
     [SerializeField]    private string ScenePath = "";
     private GameObject SceneObject = null;
     private static Transform PearObject = null;
-    private static Dictionary<AppliController._eSceneID, GameObject> dic = new Dictionary<AppliController._eSceneID, GameObject>();
+    private static Dictionary<AppliController._eSceneID, GameObject> dic = null;
 
     /// <summary>
     /// ポップアップシーンを初期化、辞書に追加します
@@ -24,7 +24,6 @@ public class PopupScene{
             SceneObject.GetComponent<Canvas>().worldCamera = Camera.main;
         }
         catch { return; }
-
         dic.Add(SceneID, SceneObject);
     }
 
@@ -36,6 +35,7 @@ public class PopupScene{
     public static void InitAll(List<PopupScene> lst, Transform pear)
     {
         PearObject = pear;
+        dic = new Dictionary<AppliController._eSceneID, GameObject>();
         foreach (var it in lst)
         {
             it.Init();
