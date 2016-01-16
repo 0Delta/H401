@@ -313,7 +313,7 @@ public class NodeTemplate_Editor : PropertyDrawer
         EditorGUI.EndProperty();
     }
 
-    public class EditorExWindow : EditorWindow
+    public class CDLogWindow : EditorWindow
     {
 
         int SelectLogIdx;
@@ -321,9 +321,9 @@ public class NodeTemplate_Editor : PropertyDrawer
         int Exported = 0;
 
         [MenuItem("Window/CDebugLogConsole")]
-        static void Open()
+        static void ShowWindow()
         {
-            GetWindow<EditorExWindow>("CustomLogger");
+            GetWindow<CDLogWindow>("CustomLogger");
         }
 
         void OnGUI()
