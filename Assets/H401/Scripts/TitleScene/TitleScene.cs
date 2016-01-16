@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class TitleScene : MonoBehaviour {
@@ -10,9 +9,6 @@ public class TitleScene : MonoBehaviour {
     [SerializeField] private string titleNodeControllerPath;
     [SerializeField] private string titleCanvasPath;
     [SerializeField] private string eventSystemPath;
-    [SerializeField] private string optionScenePath;
-    [SerializeField] private string howToPlayScenePath;
-    [SerializeField] private string creditScenePath;
 
     [SerializeField] private Color normalSceneFilterColor;
     [SerializeField] private Color popupSceneFilterColor;
@@ -23,20 +19,18 @@ public class TitleScene : MonoBehaviour {
     private GameObject titleNodeControllerObject;
     private GameObject titleCanvasObject;
     private GameObject eventSystemObject;
-    private GameObject optionSceneObject;
-    private GameObject howToPlaySceneObject;
-    private GameObject creditSceneObject;
 
     private TitleNodeController titleNodeControllerScript;
     private TitleCanvas titleCanvasScript;
 
     private MeshRenderer renderTextureMeshRenderer;
     
-    // ※決め打ちでポップアップシーンの連想配列をつくる(できればなんとかしたい)
+    // ※ポップアップシーンの連想配列をつくる
     private Dictionary<AppliController._eSceneID, GameObject> popupSceneTable;
-    
-	// Use this for initialization
-	void Start () {
+    [SerializeField]private List<PopupScene> popScene;
+
+    // Use this for initialization
+    void Start () {
 	    mainCameraObject = Instantiate(Resources.Load<GameObject>(mainCameraPath));
         mainCameraObject.transform.SetParent(transform);
 
@@ -55,28 +49,15 @@ public class TitleScene : MonoBehaviour {
 	    eventSystemObject = Instantiate(Resources.Load<GameObject>(eventSystemPath));
         eventSystemObject.transform.SetParent(transform);
 
-        optionSceneObject = Instantiate(Resources.Load<GameObject>(optionScenePath));
-        optionSceneObject.transform.SetParent(transform);
-        optionSceneObject.GetComponent<Canvas>().worldCamera = Camera.main;
-        
-        howToPlaySceneObject = Instantiate(Resources.Load<GameObject>(howToPlayScenePath));
-        howToPlaySceneObject.transform.SetParent(transform);
-        howToPlaySceneObject.GetComponent<Canvas>().worldCamera = Camera.main;
-        
-        creditSceneObject = Instantiate(Resources.Load<GameObject>(creditScenePath));
-        creditSceneObject.transform.SetParent(transform);
-        creditSceneObject.GetComponent<Canvas>().worldCamera = Camera.main;
-
         titleNodeControllerScript = titleNodeControllerObject.GetComponent<TitleNodeController>();
         titleCanvasScript = titleCanvasObject.GetComponent<TitleCanvas>();
 
         renderTextureMeshRenderer = renderTextureObject.GetComponent<MeshRenderer>();
 
-        popupSceneTable = new Dictionary<AppliController._eSceneID, GameObject> {
-            { AppliController._eSceneID.OPTION,     optionSceneObject },
-            { AppliController._eSceneID.HOWTOPLAY,  howToPlaySceneObject },
-            { AppliController._eSceneID.CREDIT,     creditSceneObject },
-        };
+        // ポップアップシーンを設定
+        PopupScene.InitAll(popScene, transform);
+        popupSceneTable = PopupScene.GetDictionaly();
+
         foreach(GameObject scene in popupSceneTable.Values) {
             scene.SetActive(false);
         }
