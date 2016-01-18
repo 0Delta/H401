@@ -205,21 +205,26 @@ public class GameEffect : MonoBehaviour {
 
     // ツリー完成時の演出処理
     public void TreeCompleteEffect(List<Node> nodes, int score) {
+        // スコアのランクを算出
+        int scoreRank = 0;
+        for( ; scoreRank < flowerEffectParams.Length; ++scoreRank) {
+            if(score >= flowerEffectParams[scoreRank].overScore) {
+                continue;
+            }
+
+            break;
+        }
+
+        // 花エフェクト準備
+        Vector3 flowerPos = Vector3.zero;
+        int tipCnt = 0;
+
+        // キラキラエフェクト出現処理
         foreach(var node in nodes) {
-            // エフェクト出現
             Vector3 pos = node.transform.position;
             pos.z = effectPopPosZ;
 
-            int scoreRank = 0;
-            for( ; scoreRank < flowerEffectParams.Length; ++scoreRank) {
-                if(score >= flowerEffectParams[scoreRank].overScore) {
-                    continue;
-                }
-
-                break;
-            }
-
-            // キラキラエフェクト
+            // キラキラエフェクト出現
             if(scoreRank < flowerEffectParams.Length) {
                 EffectSearchParticlePool(_eParticleType.KIRAKIRA, scoreRank, pos, _eParticleEffectType.MOVE_TIMEGAUGE);   // 体力ゲージ
                 EffectSearchParticlePool(_eParticleType.KIRAKIRA, scoreRank, pos, _eParticleEffectType.MOVE_FEVERGAUGE);  // フィーバーゲージ
@@ -230,12 +235,21 @@ public class GameEffect : MonoBehaviour {
 
             // 枝先か壁なら花エフェクトを出現
             if(scoreRank >= 1) {
-                if((node.Temp.LinkNum == 1 || node.Temp.LinkNum >= 3 || node.CheckLinkedWall()) && node.NodeID.y >= 2) {
-                    --scoreRank;
-                    
-                    EffectSearchParticlePool(_eParticleType.FLOWERS, scoreRank, pos);
+                if(node.Temp.LinkNum == 1 || node.CheckLinkedWall()) {
+                    flowerPos += node.transform.position;
+                    ++tipCnt;
                 }
             }
+        }
+
+        // 花エフェクト出現処理
+        if(scoreRank >= 1) {
+            --scoreRank;
+
+            flowerPos /= tipCnt;
+            flowerPos.z = effectPopPosZ;
+
+            EffectSearchParticlePool(_eParticleType.FLOWERS, scoreRank, flowerPos);
         }
     }
 
