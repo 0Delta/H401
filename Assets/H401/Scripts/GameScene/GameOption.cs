@@ -19,6 +19,8 @@ public class GameOption : MonoBehaviour {
     [HideInInspector] public GameObject optionButton = null;
     private Button triggerButton;
 
+    private AudioSource audioSource;
+
 	// Use this for initialization
     void Start()
     {
@@ -36,12 +38,16 @@ public class GameOption : MonoBehaviour {
 
         triggerButton = GetComponentInChildren<Button>();
         triggerButton.onClick.AddListener(StartOption);
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void StartOption()
     {
         //時間を止める
         Time.timeScale = 0.0f;
+
+        audioSource.Play();
 
         _pauseState = _ePauseState.PAUSE;
         
@@ -72,8 +78,8 @@ public class GameOption : MonoBehaviour {
 */
         AppliController appController = transform.root.gameObject.GetComponent<AppliController>();
         Button[] butttons = panelObject.transform.GetComponentsInChildren<Button>();
-        butttons[0].onClick.AddListener(() => { Time.timeScale = 1.0f; appController.ChangeScene(AppliController._eSceneID.GAME,0.5f,0.5f); });
-        butttons[1].onClick.AddListener(() => { Time.timeScale = 1.0f; appController.ChangeScene(AppliController._eSceneID.TITLE,1.0f,1.0f); });
+        butttons[0].onClick.AddListener(() => { Time.timeScale = 1.0f; appController.ChangeScene(AppliController._eSceneID.GAME,0.5f,0.5f); audioSource.Play(); });
+        butttons[1].onClick.AddListener(() => { Time.timeScale = 1.0f; appController.ChangeScene(AppliController._eSceneID.TITLE,1.0f,1.0f); audioSource.Play(); });
 
         //ここでもう終了時処理の設定をしておく
         triggerButton.onClick.RemoveAllListeners();
