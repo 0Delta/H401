@@ -6,7 +6,6 @@ using DG.Tweening;
 public class FeverGauge : MonoBehaviour {
 
     [SerializeField]private Image FGImage;
-//    [SerializeField]private Vector3 lightPosition;
     [SerializeField]private Color FGEmission;
     [SerializeField]private string FPanelPath = null;
     [SerializeField]private string FeverLogoPath = null;
@@ -165,14 +164,16 @@ public class FeverGauge : MonoBehaviour {
     private void LogoPop()
     {
         GameObject logo = Instantiate(logoObject);
-        logo.transform.position = new Vector3(0.0f, -500.0f, -2.5f);
-        logo.transform.DOMoveY(-0.1f,0.8f)
+        logo.transform.SetParent(transform.root.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().gameController.transform);
+        logo.transform.localScale = Vector3.one;
+        logo.transform.position = new Vector3(0.0f, -25.0f, -2.5f);
+        logo.transform.DOMoveY(-0.1f,0.6f)
             .OnComplete( () => 
             {
-                logo.transform.DOMoveY(0.1f,1.6f)
+                logo.transform.DOMoveY(0.1f,0.8f)
                     .OnComplete( () => 
                     {
-                        logo.transform.DOMoveY(500.0f,0.8f)
+                        logo.transform.DOMoveY(25.0f,0.6f)
                         .OnComplete(() => 
                         {
                             Destroy(logo);

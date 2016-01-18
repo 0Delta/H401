@@ -590,7 +590,7 @@ public class Node : MonoBehaviour
         NodeMask.SetSprite(nodeControllerScript.GetMaskSprite(Temp.MaskIdx));
 
         //ランダムに回転
-        int RotI = RandomEx.RangeforInt(0, 6);
+        int RotI = RandomEx.RangeforInt(0, 5);
         RotCounter = (Rot == -1 ? RotI : Rot);
 
         // 色をリセット
@@ -670,5 +670,13 @@ public class Node : MonoBehaviour
                 IsFlip = false;
             })
             .SetEase(easeType);
+    }
+    public void ForceRotateWithBit()
+    {
+        transform.DOKill();
+        Vector3 angle = transform.localEulerAngles;
+        angle.z = ROT_HEX_ANGLE * (6 - RotCounter);
+        transform.rotation = Quaternion.identity;
+        transform.Rotate(angle);
     }
 }

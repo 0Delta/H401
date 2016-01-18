@@ -127,7 +127,7 @@ MonoBehaviour:
     BonusPer3Path: 0.2
     BonusPer4Path: 0.5
   feverRatio:
-    gainRatio: 0.1
+    gainRatio: 0.01
     decreaseRatio: 0.001
     gainPerCap: 0
     gainPerPath2: 0
@@ -346,7 +346,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: feverRatio.gainRatio
-      value: 0.1
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: feverRatio.decreaseRatio

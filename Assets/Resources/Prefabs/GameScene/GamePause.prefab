@@ -9,6 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 467762}
   - 114: {fileID: 11436702}
+  - 82: {fileID: 8203044}
   m_Layer: 0
   m_Name: GamePause
   m_TagString: Untagged
@@ -65,6 +66,81 @@ Transform:
   - {fileID: 22470632}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!82 &8203044
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 114730}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24394866, guid: 9b707a9c23c935c4e9996a7418d1ff26,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: f1de17899b6595e4cbdf6848aa66a8ff, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!114 &11436702
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -78,7 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pausePanelPath: Prefabs/GameScene/OptionPanel
   gameStartPanelPath: Prefabs/GameScene/GameStartPanel
-  popTime: 1
+  popTime: 0.75
   popScale: 0.01
   optionCanvas: {fileID: 0}
   optionButton: {fileID: 0}
@@ -123,7 +199,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 750, y: 1334}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -236,7 +312,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 329, y: 653}
+  m_AnchoredPosition: {x: 304.5, y: 610.05}
   m_SizeDelta: {x: 141, y: 114}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22470632
@@ -276,6 +352,27 @@ Prefab:
       propertyPath: gameStartPanelPath
       value: Prefabs/GameScene/GameStartPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: popTime
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: panLevelCustomCurve.m_RotationOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: reverbZoneMixCustomCurve.m_RotationOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: f1de17899b6595e4cbdf6848aa66a8ff, type: 3}
+    - target: {fileID: 0}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 24394866, guid: 9b707a9c23c935c4e9996a7418d1ff26,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 114730}

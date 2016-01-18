@@ -1751,7 +1751,6 @@ public class NodeController : MonoBehaviour
         //全ノードを90°回転tween
         RotateAllNode(90.0f, Ease.InSine);
         yield return new WaitForSeconds(repRotateTime / 2.0f);
-
         //全ノードを-180°回転
         foreach (var xList in gameNodeScripts)
         {
@@ -1763,6 +1762,8 @@ public class NodeController : MonoBehaviour
 
         //置き換え処理
         repMethod();
+        //yield return new WaitForSeconds(repRotateTime);
+        ForceRotateZ();
 
         //全ノードを90°回転
         RotateAllNode(0.0f, Ease.OutSine);
@@ -1929,6 +1930,17 @@ public class NodeController : MonoBehaviour
                     gameNodeScripts[nextID.y][nextID.x].IsSlideStart = false;
                     nextID = GetDirNode(nextID, reverseDir);
                 }
+            }
+        }
+    }
+    //ビットに合わせてｚ軸回転を強制する
+    void ForceRotateZ()
+    {
+        foreach (var xList in gameNodeScripts)
+        {
+            foreach (var it in xList)
+            {
+                it.ForceRotateWithBit();
             }
         }
     }
