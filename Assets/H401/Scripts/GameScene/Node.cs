@@ -661,4 +661,12 @@ public class Node : MonoBehaviour
             })
             .SetEase(easeType);
     }
+    public void ForceRotateWithBit()
+    {
+        transform.DOKill();
+        Vector3 angle = transform.localEulerAngles;
+        angle.z = ROT_HEX_ANGLE * (6 - RotCounter);
+        transform.rotation = Quaternion.identity;
+        transform.Rotate(angle);
+    }
 }

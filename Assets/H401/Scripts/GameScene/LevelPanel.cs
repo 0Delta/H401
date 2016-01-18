@@ -76,6 +76,5 @@ public class LevelPanel : MonoBehaviour {
 
         fBG1.DOLocalMoveX(fBG1.localPosition.x - 250.0f, popTime);
         fBG2.DOLocalMoveX(fBG2.localPosition.x + 250.0f, popTime);
-
     }
 }
