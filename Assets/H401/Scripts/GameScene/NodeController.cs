@@ -226,6 +226,8 @@ public class NodeController : MonoBehaviour
             fieldLevel = levelTableScript.GetFieldLevel(_currentLevel);
             RatioSum = fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3 + fieldLevel.Ratio_Path4;
 
+            GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+            gameScene.gameUI.gameInfoCanvas.levelImageNum = _currentLevel;
             StartCoroutine(ReplaceRotate(ReplaceNodeAll));
         }
     }
