@@ -11,7 +11,7 @@ AudioMixerController:
   m_Snapshots:
   - {fileID: 24500003}
   m_StartSnapshot: {fileID: 24500003}
-  m_SuspendThreshold: -80
+  m_SuspendThreshold: 1
   m_EnableSuspend: 1
   m_ExposedParameters:
   - guid: 9b01a3f2f6ef92d4e841a505a8c45807
