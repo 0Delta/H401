@@ -147,7 +147,7 @@ public class GameEffect : MonoBehaviour {
         type = (int)_eParticleType.FLOWERS;
         for (int i = 0; i < flowerEffectParams.Length; ++i) {
             for(int j = 0; j < flowerEffectParams[i].param.poolSize; ++j) {
-                effectPools[type + i][j].obj = (GameObject)Instantiate(effectPrefabs[type], flowerControllers[i].transform.position, effectPrefabs[type].transform.rotation);
+                effectPools[type + i][j].obj = (GameObject)Instantiate(effectPrefabs[type + i], flowerControllers[i].transform.position, effectPrefabs[type].transform.rotation);
                 effectPools[type + i][j].obj.transform.SetParent(flowerControllers[i].transform);
                 effectPools[type + i][j].ps = effectPools[(int)_eParticleType.FLOWERS + i][j].obj.GetComponent<ParticleSystem>();
                 effectPools[type + i][j].obj.SetActive(false);
@@ -188,6 +188,7 @@ public class GameEffect : MonoBehaviour {
                     smallerPoolInfo[i] = spi;
 
                     if(smallerPoolInfo[i].time > effectMoveDurationTime + effectMoveScaleUpTime + effectMoveScaleDownTime) {
+                        effectPools[smallerPoolInfo[i].type][smallerPoolInfo[i].id].ps.startColor = effectParticleSystems[smallerPoolInfo[i].type].startColor;
                         effectPools[smallerPoolInfo[i].type][smallerPoolInfo[i].id].ps.startSize = effectParticleSystems[smallerPoolInfo[i].type].startSize;
                         effectPools[smallerPoolInfo[i].type][smallerPoolInfo[i].id].obj.SetActive(false);
                         effectPools[smallerPoolInfo[i].type][smallerPoolInfo[i].id].isUse = false;
@@ -228,11 +229,12 @@ public class GameEffect : MonoBehaviour {
             }
 
             // 枝先か壁なら花エフェクトを出現
-            if((node.Temp.LinkNum == 1 || node.Temp.LinkNum >= 3 || node.CheckLinkedWall()) && node.NodeID.y >= 2) {
-                if(scoreRank >= flowerEffectParams.Length)
+            if(scoreRank >= 1) {
+                if((node.Temp.LinkNum == 1 || node.Temp.LinkNum >= 3 || node.CheckLinkedWall()) && node.NodeID.y >= 2) {
                     --scoreRank;
-
-                EffectSearchParticlePool(_eParticleType.FLOWERS, scoreRank, pos);
+                    
+                    EffectSearchParticlePool(_eParticleType.FLOWERS, scoreRank, pos);
+                }
             }
         }
     }
