@@ -90,19 +90,6 @@ public class NodeController : MonoBehaviour
     }
     #endregion
 
-    [SerializeField]
-    private float repRotateTime = 0;        //ノード再配置時の時間
-    [SerializeField]
-    private NodeTemplate[] NodeTemp = null;
-
-    private GameObject[][] gameNodePrefabs;                    // ノードのプレハブリスト
-    private Node[][] gameNodeScripts;                    // ノードのnodeスクリプトリスト
-    private Vector3[][] nodePlacePosList;                   // ノードの配置位置リスト
-    private GameObject frameController;                    // フレームコントローラープレハブ
-    private GameEffect      gameEffect;                         // GameEffect スクリプト
-    
-    private bool _isNodeAction = false;                // ノードがアクション中かフラグ
-
     #region // スライドに使用する変数
     private bool isTap = false;                // タップ成功フラグ
     private bool isSlide = false;                // ノードスライドフラグ
@@ -125,11 +112,28 @@ public class NodeController : MonoBehaviour
     private Vec2Int slidingLimitNodeID = Vec2Int.zero;   // スライド方向の端ノードのID
     private Vec2Int slidingReverseLimitNodeID = Vec2Int.zero;   // スライド方向の逆端ノードのID
 
+    [SerializeField] private float slideIntervalPlaySE = 0.0f;  // スライドSEを再生する距離(間隔)
+    private float cumSlideIntervalPlaySE = 0.0f;    // SEを再生するまでのスライド量の累計
+
     public _eSlideDir SlideDir
     {
         get { return slideDir; }
     }
     #endregion
+    
+    [SerializeField]
+    private float repRotateTime = 0;        //ノード再配置時の時間
+    [SerializeField]
+    private NodeTemplate[] NodeTemp = null;
+
+    private GameObject[][] gameNodePrefabs;                    // ノードのプレハブリスト
+    private Node[][] gameNodeScripts;                    // ノードのnodeスクリプトリスト
+    private Vector3[][] nodePlacePosList;                   // ノードの配置位置リスト
+    private GameObject frameController;                    // フレームコントローラープレハブ
+    private GameEffect      gameEffect;                         // GameEffect スクリプト
+    
+    private bool _isNodeAction = false;                // ノードがアクション中かフラグ
+
     //ノードの配置割合を記憶しておく
     private float RatioSum = 0.0f;                              // 合計割合
 
@@ -296,6 +300,9 @@ public class NodeController : MonoBehaviour
         leftDown = mtx.MultiplyVector(leftDown).normalized;
         slideLeftUpPerNorm = new Vector2(leftUp.x, leftUp.y);
         slideLeftDownPerNorm = new Vector2(leftDown.x, leftDown.y);
+
+        // SE準備
+        cumSlideIntervalPlaySE = 0.0f;
         
         // ----- インプット処理
         Observable
@@ -379,7 +386,6 @@ public class NodeController : MonoBehaviour
                 if (isSlide)
                 {
                     AdjustNodeStop();
-                    audioSources[(int)_eAudioNumber.SLIDE].Stop();
                     isSlideEnd = true;
                     tapNodeID = Vec2Int.zero;
                 }
@@ -443,6 +449,21 @@ public class NodeController : MonoBehaviour
                 {
                     isSlide = false;
                     slideDir = _eSlideDir.NONE;
+
+                    cumSlideIntervalPlaySE = 0.0f;
+                }
+            })
+            .AddTo(gameObject);
+
+        // SE再生処理
+        Observable
+            .EveryUpdate()
+            .Where(_ => isSlide)
+            .Subscribe(_ => {
+                if(cumSlideIntervalPlaySE > slideIntervalPlaySE) {
+                    audioSources[(int)_eAudioNumber.SLIDE].Play();
+
+                    cumSlideIntervalPlaySE = 0.0f;
                 }
             })
             .AddTo(gameObject);
@@ -671,7 +692,6 @@ public class NodeController : MonoBehaviour
 
     public void StartSlideNodes(Vec2Int nextNodeID, _eSlideDir newSlideDir)
     {
-        audioSources[(int)_eAudioNumber.SLIDE].Play();
         Log.Debug("StartSlideNodes : " + nextNodeID + " / " + newSlideDir);
         moveNodeDist = new Vector2(gameNodePrefabs[nextNodeID.y][nextNodeID.x].transform.position.x, gameNodePrefabs[nextNodeID.y][nextNodeID.x].transform.position.y)
                      - new Vector2(gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.x, gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.y);   // スライド方向ベクトル兼移動量を算出
@@ -704,7 +724,6 @@ public class NodeController : MonoBehaviour
     // ゲームの画面外にはみ出したノードを逆側に移動する
     void LoopBackNode()
     {
-        //audioSources[(int)_eAudioNumber.SLIDE].Play();
         Log.Debug("LoopBackNode");
         if (gameNodeScripts[slidingLimitNodeID.y][slidingLimitNodeID.x].IsOutScreen)
         {
@@ -918,8 +937,13 @@ public class NodeController : MonoBehaviour
         {
             case _eSlideDir.LEFT:
             case _eSlideDir.RIGHT:
-                // タップしているノードを移動
+                // 移動位置をスライドライン上に調整
                 pos = AdjustNodeLinePosition(slideDir);
+
+                // SE再生用にスライド量を計上
+                cumSlideIntervalPlaySE += Vector2.Distance(pos, new Vector2(gameNodeScripts[tapNodeID.y][tapNodeID.x].transform.position.x, gameNodeScripts[tapNodeID.y][tapNodeID.x].transform.position.y));
+
+                // タップしているノードを移動
                 gameNodeScripts[tapNodeID.y][tapNodeID.x].SlideNode(slideDir, pos);
 
                 // タップしているノードより左側のノードを移動
@@ -945,8 +969,13 @@ public class NodeController : MonoBehaviour
 
             case _eSlideDir.LEFTUP:
             case _eSlideDir.RIGHTDOWN:
-                // タップしているノードを移動
+                // 移動位置をスライドライン上に調整
                 standardPos = AdjustNodeLinePosition(slideDir);
+
+                // SE再生用にスライド量を計上
+                cumSlideIntervalPlaySE += Vector2.Distance(standardPos, new Vector2(gameNodeScripts[tapNodeID.y][tapNodeID.x].transform.position.x, gameNodeScripts[tapNodeID.y][tapNodeID.x].transform.position.y));
+
+                // タップしているノードを移動
                 gameNodeScripts[tapNodeID.y][tapNodeID.x].SlideNode(slideDir, standardPos);
 
                 // タップしているノードより左上側のノードを移動
@@ -973,8 +1002,13 @@ public class NodeController : MonoBehaviour
 
             case _eSlideDir.RIGHTUP:
             case _eSlideDir.LEFTDOWN:
-                // タップしているノードを移動
+                // 移動位置をスライドライン上に調整
                 standardPos = AdjustNodeLinePosition(slideDir);
+
+                // SE再生用にスライド量を計上
+                cumSlideIntervalPlaySE += Vector2.Distance(standardPos, new Vector2(gameNodeScripts[tapNodeID.y][tapNodeID.x].transform.position.x, gameNodeScripts[tapNodeID.y][tapNodeID.x].transform.position.y));
+
+                // タップしているノードを移動
                 gameNodeScripts[tapNodeID.y][tapNodeID.x].SlideNode(slideDir, standardPos);
 
                 // タップしているノードより右上側のノードを移動
