@@ -6,9 +6,9 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: GameNode
-  m_Shader: {fileID: 10753, guid: 0000000000000000e000000000000000, type: 0}
-  m_ShaderKeywords: _Color
+  m_Name: Tex_Flower4
+  m_Shader: {fileID: 203, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: 3000
   stringTagMap: {}
@@ -19,7 +19,7 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 0}
+          m_Texture: {fileID: 2800000, guid: 452f99191d8fe8844824ae6767f7701e, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -78,20 +78,6 @@ Material:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _SpecGlossMap
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _MaskTex
-        second:
-          m_Texture: {fileID: 2800000, guid: d0de8694ae5b9774cb15be444c50f951, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0.1, y: 0.1}
     m_Floats:
       data:
         first:
@@ -107,12 +93,8 @@ Material:
         second: 0.5
       data:
         first:
-          name: _Shininess
-        second: 0.078125
-      data:
-        first:
-          name: PixelSnap
-        second: 0
+          name: _InvFade
+        second: 1
       data:
         first:
           name: _Parallax
@@ -149,54 +131,6 @@ Material:
         first:
           name: _Metallic
         second: 0
-      data:
-        first:
-          name: _Threshold
-        second: 0.5
-      data:
-        first:
-          name: _UVGap
-        second: 0.5
-      data:
-        first:
-          name: _DisplaceL1
-        second: 0.5
-      data:
-        first:
-          name: _DisplaceR1
-        second: 0.5
-      data:
-        first:
-          name: _DisplaceL2
-        second: 0.5
-      data:
-        first:
-          name: _DisplaceR2
-        second: 0.5
-      data:
-        first:
-          name: _DisplaceL3
-        second: 0.5
-      data:
-        first:
-          name: _DisplaceR3
-        second: 0.5
-      data:
-        first:
-          name: _DisplaceL4
-        second: 0.5
-      data:
-        first:
-          name: _DisplaceR4
-        second: 0.5
-      data:
-        first:
-          name: _DisplaceL5
-        second: 0.5
-      data:
-        first:
-          name: _DisplaceR5
-        second: 0.5
     m_Colors:
       data:
         first:
@@ -208,5 +142,5 @@ Material:
         second: {r: 1, g: 1, b: 1, a: 1}
       data:
         first:
-          name: _SpecColor
-        second: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+          name: _TintColor
+        second: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}

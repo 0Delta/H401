@@ -1,11 +1,10 @@
-﻿Shader "Custom/Sprites/MaskChangeColor"
+﻿Shader "Custom/Sprites/MaskSetColor"
 {
 	Properties
 	{
 		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
 		_Color ("Tint", Color) = (1,1,1,1)
 		[MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
-		_MaskTex ("Mask Texture", 2D) = "white" {}
 		_Threshold ("Mask Threshold (R)", Range(0, 1)) = 0.5
 	}
 
@@ -63,27 +62,21 @@
 			}
 
 			sampler2D _MainTex;
-
-			sampler2D _MaskTex;
 			float _Threshold;
-
-			fixed4 SampleSpriteTexture (float2 uv)
-			{
-				fixed4 color = tex2D (_MainTex, uv);
-
-				fixed4 maskColor = tex2D(_MaskTex, uv);
-				if(maskColor.r >= _Threshold) {
-					color.rgb /= _Color.rgb;
-				}
-
-				return color;
-			}
 
 			fixed4 frag(v2f IN) : SV_Target
 			{
-				fixed4 c = SampleSpriteTexture (IN.texcoord) * IN.color;
-				c.rgb *= c.a;
-				return c;
+				fixed4 color = tex2D (_MainTex, IN.texcoord);
+
+				if(color.r >= _Threshold) {
+					color.rgb = _Color.rgb;
+					color.a = _Color.a;
+				} else {
+					color.rgb = 0.0f;
+					color.a = 0.0f;
+				}
+
+				return color;
 			}
 		ENDCG
 		}

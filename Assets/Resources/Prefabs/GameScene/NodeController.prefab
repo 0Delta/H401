@@ -273,6 +273,7 @@ MonoBehaviour:
   gameNodePrefabPath: Prefabs/GameScene/GameNode
   frameNodePrefabPath: Prefabs/Common/Node
   gameNodeSpritePath: Sprites/Game/NodeList
+  nodeMaskSpritePath: Sprites/Game/MaskNodeList
   frameNodeSpritePath: Sprites/Game/FrameNodeList
   unChainControllerPath: Prefabs/GameScene/UnChainController
   widthMargin: 0.125
@@ -281,56 +282,56 @@ MonoBehaviour:
   repRotateTime: 0.5
   NodeTemp:
   - SpriteIdx: 4
-    MaskIdx: 12
+    MaskIdx: 4
     MaterialName: Materials/hex0
     LinkDir: 010000000000
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 2
-    MaskIdx: 10
+    MaskIdx: 2
     MaterialName: Materials/hex1
     LinkDir: 010000010000
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 6
-    MaskIdx: 14
+    MaskIdx: 6
     MaterialName: Materials/hex2
     LinkDir: 010001000000
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 7
-    MaskIdx: 15
+    MaskIdx: 7
     MaterialName: Materials/hex3
     LinkDir: 010100000000
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 5
-    MaskIdx: 13
+    MaskIdx: 5
     MaterialName: Materials/hex4
     LinkDir: 010001000100
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 3
-    MaskIdx: 11
+    MaskIdx: 3
     MaterialName: Materials/hex5
     LinkDir: 010001010000
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 0
-    MaskIdx: 8
+    MaskIdx: 0
     MaterialName: Materials/hex6
     LinkDir: 010101000000
     Ready: 0
     LinkNum: 0
     ID: 0
   - SpriteIdx: 1
-    MaskIdx: 9
+    MaskIdx: 1
     MaterialName: Materials/hex7
     LinkDir: 010001010001
     Ready: 0
@@ -349,7 +350,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectPopPosZ: -5
   effectMoveDurationTime: 1
-  effectMoveWaitTime: 0.35
+  effectMoveScaleUpTime: 0.3
+  effectMoveScaleDownTime: 0.5
+  effectMoveScaleUpSize: 0.4
   feverKirakiraColor: {r: 1, g: 0.24264705, b: 0.24264705, a: 1}
   kirakiraEffectParam:
     prefabPath: Prefabs/Particles/kirakira
@@ -361,16 +364,34 @@ MonoBehaviour:
     poolSize: 80
   flowerEffectParams:
   - param:
-      prefabPath: Prefabs/Particles/sakura
+      prefabPath: Prefabs/Particles/Effect_Flower6_Ver0.1
       controllerName: Flower0Controller
       poolSize: 30
     overScore: 1000
     kirakiraColor: {r: 1, g: 0.76551723, b: 0, a: 1}
   - param:
-      prefabPath: Prefabs/Particles/sakura
-      controllerName: Flower0Controller
+      prefabPath: Prefabs/Particles/Effect_Flower5_Ver0.1
+      controllerName: Flower1Controller
       poolSize: 30
     overScore: 2000
+    kirakiraColor: {r: 0.86206913, g: 0, b: 1, a: 1}
+  - param:
+      prefabPath: Prefabs/Particles/Effect_Flower6_Ver0.1
+      controllerName: Flower2Controller
+      poolSize: 30
+    overScore: 3000
+    kirakiraColor: {r: 0, g: 1, b: 0.83448267, a: 1}
+  - param:
+      prefabPath: Prefabs/Particles/Effect_Flower7_Ver0.1
+      controllerName: Flower3Controller
+      poolSize: 30
+    overScore: 4000
+    kirakiraColor: {r: 0.32413793, g: 1, b: 0, a: 1}
+  - param:
+      prefabPath: Prefabs/Particles/Effect_Flower8_Ver0.1
+      controllerName: Flower4Controller
+      poolSize: 30
+    overScore: 5000
     kirakiraColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1001 &100100000
 Prefab:
@@ -401,7 +422,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.size
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: treeControllerPrefabPath
@@ -589,7 +610,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: effectMoveWaitTime
-      value: 0.35
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: row
@@ -637,7 +658,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[0].overScore
-      value: 1000
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[0].poolSize
@@ -645,7 +666,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[1].overScore
-      value: 2000
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[1].prefabPath
@@ -701,7 +722,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[0].param.prefabPath
-      value: Prefabs/Particles/sakura
+      value: Prefabs/Particles/Effect_Flower6_Ver0.1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[0].param.controllerName
@@ -713,7 +734,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[1].kirakiraColor.r
-      value: 0
+      value: 0.86206913
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[1].kirakiraColor.g
@@ -721,7 +742,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[1].kirakiraColor.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: lastKirakiraEffectParam.prefabPath
@@ -798,7 +819,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[0].MaskIdx
-      value: 12
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[1].SpriteIdx
@@ -806,7 +827,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[1].MaskIdx
-      value: 10
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[2].SpriteIdx
@@ -814,7 +835,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[2].MaskIdx
-      value: 14
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[3].SpriteIdx
@@ -822,7 +843,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[3].MaskIdx
-      value: 15
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[4].SpriteIdx
@@ -830,7 +851,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[4].MaskIdx
-      value: 13
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[5].SpriteIdx
@@ -838,7 +859,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[5].MaskIdx
-      value: 11
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[5].LinkDir.Array.data[4]
@@ -850,7 +871,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[6].MaskIdx
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[7].SpriteIdx
@@ -858,7 +879,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[7].MaskIdx
-      value: 9
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[0].LinkDir.Array.data[0]
@@ -919,6 +940,90 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: NodeTemp.Array.data[6].LinkDir.Array.data[2]
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: nodeMaskSpritePath
+      value: Sprites/Game/MaskNodeList
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[1].param.prefabPath
+      value: Prefabs/Particles/Effect_Flower5_Ver0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: effectMoveScaleUpTime
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: effectMoveScaleDownTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: effectMoveScaleUpSize
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[2].param.prefabPath
+      value: Prefabs/Particles/Effect_Flower6_Ver0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[2].overScore
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[2].kirakiraColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[2].kirakiraColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[2].kirakiraColor.b
+      value: 0.83448267
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[3].param.prefabPath
+      value: Prefabs/Particles/Effect_Flower7_Ver0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[3].overScore
+      value: 4000
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[3].kirakiraColor.r
+      value: 0.32413793
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[3].kirakiraColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[3].kirakiraColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[4].param.prefabPath
+      value: Prefabs/Particles/Effect_Flower8_Ver0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[4].overScore
+      value: 5000
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[1].param.controllerName
+      value: Flower1Controller
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[2].param.controllerName
+      value: Flower2Controller
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[3].param.controllerName
+      value: Flower3Controller
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[4].param.controllerName
+      value: Flower4Controller
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
