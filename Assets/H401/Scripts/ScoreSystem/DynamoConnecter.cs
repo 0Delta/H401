@@ -10,7 +10,7 @@ using CustomDebugLog;
 
 public class DynamoConnecter : MonoBehaviour {
     // 固有関数
-    private static CDebugLog Log = new CDebugLog("DynamoConnecter");
+    private static readonly CDebugLog Log = new CDebugLog("DynamoConnecter");
     [SerializeField]
     public bool UseProxy = false;
     [SerializeField]

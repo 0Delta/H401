@@ -320,11 +320,37 @@ public class NodeTemplate_Editor : PropertyDrawer
         private static Vector2 ScrollPos = new Vector2();
         int Exported = 0;
 
-        [MenuItem("User/CustomDebugLogConsole")]
+        [MenuItem("Window/CustomDebugLogConsole")]
         static void ShowWindow()
         {
-            //GetWindow<CDbgLogWindow>("CustomLogger");
-            GetWindow(typeof(CDbgLogWindow));
+            GetWindow<CDbgLogWindow>("CustomLogger");
+        }
+
+        [MenuItem("Window/CustomDebugLogAllExport")]
+        static void AllExport()
+        {
+
+            if (CustomDebugLog.CDebugLog.InstanceList.Count == 0)
+            {
+                EditorGUILayout.LabelField("Not Run CDebugLog");
+            }
+            else {
+                string[] LogList = new string[CustomDebugLog.CDebugLog.InstanceList.Count];
+                CustomDebugLog.CDebugLog.InstanceList.Keys.CopyTo(LogList, 0);
+                CustomDebugLog.CDebugLog Log = null;
+                foreach (var it in LogList)
+                {
+                    try
+                    {
+                        CustomDebugLog.CDebugLog.InstanceList.TryGetValue(it, out Log);
+                    }
+                    catch (System.IndexOutOfRangeException) { }
+                    if (Log != null)
+                    {
+                        System.IO.File.WriteAllText(Application.persistentDataPath + "/" + it + ".log", Log.ToStringReverse());
+                    }
+                }
+            }
         }
 
         void OnGUI()

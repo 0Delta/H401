@@ -32,8 +32,8 @@ namespace CustomDebugLog {
         /// </summary>
         public class Log
         {
-            readonly private LOGTYPE type;
-            readonly private string message;
+            readonly private LOGTYPE type = LOGTYPE.DEBUG;
+            readonly private string message = "";
 
             /// <summary>
             /// ログの種類を返します
@@ -79,7 +79,7 @@ namespace CustomDebugLog {
         private static List<string> NameList = new List<string>();
         public static Dictionary<string,CDebugLog> InstanceList = new Dictionary<string, CDebugLog>();
         // 変数宣言
-        private readonly string LogName;
+        private readonly string LogName = "";
         private List<Log> LogDat = new List<Log>();
 
         /// <summary>
