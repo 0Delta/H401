@@ -15,6 +15,7 @@ public class TitleRenderTexture : MonoBehaviour {
         Observable
             .EveryUpdate()
             .Where(_ => Input.GetMouseButtonDown(0))
+            .Where(_ =>  titleSceneScript != null)
             .Where(_ => titleSceneScript.isPopupScene)
             .Subscribe(_ => {
                 // uGUI に当たっているか
