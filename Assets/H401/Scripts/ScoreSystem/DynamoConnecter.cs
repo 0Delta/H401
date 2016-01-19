@@ -6,9 +6,11 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using Amazon.DynamoDBv2.DataModel;
 using System.IO;
+using CustomDebugLog;
 
 public class DynamoConnecter : MonoBehaviour {
     // 固有関数
+    private static CDebugLog Log = new CDebugLog("DynamoConnecter");
     [SerializeField]
     public bool UseProxy = false;
     [SerializeField]
@@ -75,40 +77,52 @@ public class DynamoConnecter : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+        Log.Debug("Start");
         //キーをロード
         // データを読みだして暗号化
+        //Log.Debug("KeyWrite");
         //var fw = new AESWriter("");
         //fw.Save("AWS", "pksk", System.Text.Encoding.UTF8);
 
-        try {
+        try
+        {
             // データを読みだして復号化
+            Log.Debug("DataLoad");
             var fl = new AESLoader(@"H401_AESEnctyptSystemFirstVector");
             fl.Load("AWS", System.Text.Encoding.UTF8);
 
             // データセット
+            Log.Debug("DataSet");
             string str = fl.GetString();
             publicKey = str.Substring(0, 20);
             secretKey = str.Substring(20);
-     }
-        catch(FileNotFoundException) { return; }        // ファイルが見当たらない場合
-        catch(System.FormatException) { return; }       // ファイルデータ不正
+        }
+        catch (FileNotFoundException) { Log.Error("NotFound Exception"); return; }        // ファイルが見当たらない場合
+        catch (System.FormatException) { Log.Error("Format Exception"); return; }       // ファイルデータ不正
 
         // AWSへの接続
-        var awsCredentials = new BasicAWSCredentials(publicKey, secretKey);
-        var Cconfig = new AmazonDynamoDBConfig();
-        Cconfig.RegionEndpoint = RegionEndpoint.USEast1;
-        // タイムアウト時間をコントロールしたい(みかん)
-        Cconfig.Timeout = new System.TimeSpan(10000);
+        Log.Debug("Initialize AWS System");
+        try {
+            var awsCredentials = new BasicAWSCredentials(publicKey, secretKey);
+            var Cconfig = new AmazonDynamoDBConfig();
+            Cconfig.RegionEndpoint = RegionEndpoint.USEast1;
+            // タイムアウト時間をコントロールしたい(みかん)
+            Cconfig.Timeout = new System.TimeSpan(10000);
 
-        if(UseProxy) {
-            Cconfig.ProxyPort = ProxyPort;
-            Cconfig.ProxyHost = ProxyHost;
-            Cconfig.ProxyCredentials = new System.Net.NetworkCredential(UserName, Password);
+            if (UseProxy) {
+                Log.Info("Proxy Enabled");
+                Cconfig.ProxyPort = ProxyPort;
+                Cconfig.ProxyHost = ProxyHost;
+                Cconfig.ProxyCredentials = new System.Net.NetworkCredential(UserName, Password);
+            }
+            //      Cconfig.ReadWriteTimeout = new System.TimeSpan(1);
+            Cconfig.MaxErrorRetry = 1;
+            client = new AmazonDynamoDBClient(awsCredentials, Cconfig);
         }
-        //      Cconfig.ReadWriteTimeout = new System.TimeSpan(1);
-        Cconfig.MaxErrorRetry = 1;
-
-        client = new AmazonDynamoDBClient(awsCredentials, Cconfig);
+        catch
+        {
+            Log.Debug("AWS Initialize Failed");
+        }
     }
 
     // Update is called once per frame
@@ -122,16 +136,16 @@ public class DynamoConnecter : MonoBehaviour {
         PutItemRequest pReq = new PutItemRequest(TABLE_NAME, Dat.GetDictionary());  // リクエスト作成
 
         // Putリクエスト
+        Log.Debug("AWS Put");
         client.PutItemAsync(pReq, (PutCallBack) => {
             //Pear.SetResponse();                 // 反応があったら親に通知
             if(PutCallBack.Exception == null) {
                 // 正常完了
-                Debug.Log("正常に送信されました");
+                Log.Debug("AWS Put Successed");
             } else {
                 // エラー
-                Debug.LogError(PutCallBack.Exception.ToString());
+                Log.Error("AWS Put Failed\n" + PutCallBack.Exception.ToString());
             }
-            //Destroy(this);  // 自身を消去
         });
     }
 
@@ -154,12 +168,14 @@ public class DynamoConnecter : MonoBehaviour {
         };
 
         // Scanリクエスト
+        Log.Debug("AWS Scan");
         client.ScanAsync(ScanRequest, sr => {
             //Pear.SetResponse();                 // 反応があったら親に通知
             if(sr.Exception == null) {
                 // スキャン成功
                 List<ScoreTable> GetList = new List<ScoreTable>();
                 foreach(var attribs in sr.Response.Items) {
+                    Log.Debug("GetData");
                     // 取得したデータをパッキング
                     ScoreTable ScTemp = new ScoreTable();
                     foreach(var attrib in attribs) {
@@ -171,14 +187,14 @@ public class DynamoConnecter : MonoBehaviour {
                         }
                         GetList.Add(ScTemp);
                     }
+                    Log.Debug("AWS Scan Successed");
                     // 取得したリストを使ってなんやかんや。
                 }
             } else {
                 // エラー
-                Debug.LogError(sr.Exception.ToString());
+                Log.Error("AWS Scan Failed\n" + sr.Exception.ToString());
             }
         });
-        //Destroy(this);  // 自身を消去
     }
 }
 

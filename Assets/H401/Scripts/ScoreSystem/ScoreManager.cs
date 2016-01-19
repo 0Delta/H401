@@ -226,6 +226,7 @@ public class ScoreManager : MonoBehaviour {
             GameObject AWSObj = this.InstantiateChild(AWSPrefabName);
             AWSObj.name = "AWS";
             AWS = AWSObj.GetComponent<DynamoConnecter>();
+            AWS.Read();
         }
         catch
         {

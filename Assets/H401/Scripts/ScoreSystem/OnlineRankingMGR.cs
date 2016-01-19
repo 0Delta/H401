@@ -104,5 +104,6 @@ public class OnlineRankingMGR : MonoBehaviour {
                 RingPos = (RingPos > ScorePosList.Count ? 0 : RingPos);
             }
         }
+        
     }
 }
