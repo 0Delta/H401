@@ -14,15 +14,7 @@ public class UICopy : MonoBehaviour {
         GameInfoCanvas giCanvas = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().gameUI.gameInfoCanvas;
         lTimeScript = giCanvas.limitTime;
         feverScript = giCanvas.feverGauge;
-        GameObject scCanbas = Instantiate(giCanvas.score.scoreCanvas.gameObject);
-
-        scCanbas.transform.SetParent(transform);
-
-        scCanbas.transform.rotation = transform.FindChild("ScoreText").rotation;
-        scCanbas.transform.position = transform.FindChild("ScoreText").position  + new Vector3(3.0f,0.0f,0.0f);
-        scCanbas.transform.localPosition -= new Vector3(scCanbas.GetComponentInChildren<RectTransform>().offsetMax.x * 0.5f, 0.0f, 0.0f);
-
-        scCanbas.transform.localScale = new Vector3(-0.3f,0.3f,0.3f);
+        transform.FindChild("ScoreNum").GetComponent<Text>().text = giCanvas.score.GameScore.ToString();
 
     }
 

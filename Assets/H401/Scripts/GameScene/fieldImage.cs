@@ -6,7 +6,7 @@ public class fieldImage : MonoBehaviour {
     [SerializeField]private float rotDuration = 0.0f;
 	// Use this for initialization
 	void Start () {
-        transform.DORotate(new Vector3(0.0f,0.0f,-90.0f),rotDuration * 0.5f).OnComplete(RotTurn);
+        transform.DOLocalRotate(new Vector3(0.0f,0.0f,-90.0f),rotDuration * 0.5f).OnComplete(RotTurn);
         GetComponent<Button>().onClick.AddListener(transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().gameUI.levelCotroller.TouchChange);
 
 	}
@@ -17,6 +17,6 @@ public class fieldImage : MonoBehaviour {
 	}
     void RotTurn()
     {
-        transform.DORotate(new Vector3(0.0f, 0.0f, transform.localEulerAngles.z > 180 ? 90 : -90),rotDuration).OnComplete(RotTurn);
+        transform.DOLocalRotate(new Vector3(0.0f, 0.0f, transform.localEulerAngles.z > 180 ? 90 : -90),rotDuration).OnComplete(RotTurn);
     }
 }

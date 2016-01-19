@@ -38,6 +38,13 @@ Material:
           m_Offset: {x: 0, y: 0}
       data:
         first:
+          name: _MaskTex
+        second:
+          m_Texture: {fileID: 2800000, guid: d0de8694ae5b9774cb15be444c50f951, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0.1, y: 0.1}
+      data:
+        first:
           name: _ParallaxMap
         second:
           m_Texture: {fileID: 0}
@@ -85,13 +92,6 @@ Material:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _MaskTex
-        second:
-          m_Texture: {fileID: 2800000, guid: d0de8694ae5b9774cb15be444c50f951, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0.1, y: 0.1}
     m_Floats:
       data:
         first:
@@ -151,10 +151,6 @@ Material:
         second: 0
       data:
         first:
-          name: _Threshold
-        second: 0.5
-      data:
-        first:
           name: _UVGap
         second: 0.5
       data:
@@ -196,6 +192,10 @@ Material:
       data:
         first:
           name: _DisplaceR5
+        second: 0.5
+      data:
+        first:
+          name: _Threshold
         second: 0.5
     m_Colors:
       data:
