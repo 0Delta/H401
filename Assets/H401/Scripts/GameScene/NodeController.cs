@@ -93,6 +93,29 @@ public class NodeController : MonoBehaviour
     }
     #endregion
 
+
+    
+    private bool _isNodeAction = false;                // ノードがアクション中かフラグ
+    private bool IsNodeAction
+    {
+        get
+        {
+            if(gameNodeScripts == null)
+            {
+                return false;
+            }
+            for (int i = 0; i < col; ++i)
+            {
+                foreach (var nodes in gameNodeScripts[i])
+                {
+                    if (nodes.IsAction)
+                        return true;
+                }
+            }
+            return false;
+        }
+    }
+
     #region // スライドに使用する変数
     private bool isTap = false;                // タップ成功フラグ
     private bool isSlide = false;                // ノードスライドフラグ
@@ -136,7 +159,7 @@ public class NodeController : MonoBehaviour
     private GameEffect     gameEffect;                  // GameEffect スクリプト
     private GameObject     arrowController;             // GameEffect スクリプト
     
-    private bool _isNodeAction = false;                // ノードがアクション中かフラグ
+    //private bool _isNodeAction = false;                // ノードがアクション中かフラグ
 
     //ノードの配置割合を記憶しておく
     private float RatioSum = 0.0f;                              // 合計割合
@@ -410,10 +433,10 @@ public class NodeController : MonoBehaviour
         // ノードのアニメーション終了と同時に接続チェック
         Observable
             .EveryUpdate()
-            .Select(x => !(_isNodeAction | isSlide))
+            .Select(x => !(IsNodeAction))
             .DistinctUntilChanged()
             .Where(x => x)
-            .ThrottleFrame(10)
+            .ThrottleFrame(3)
             .Subscribe(x => {
                 CheckLink();
             })
