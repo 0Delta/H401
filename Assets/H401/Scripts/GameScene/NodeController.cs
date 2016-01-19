@@ -408,7 +408,7 @@ public class NodeController : MonoBehaviour
             .Select(x => !(_isNodeAction | isSlide))
             .DistinctUntilChanged()
             .Where(x => x)
-            .ThrottleFrame(2)
+            .ThrottleFrame(10)
             .Subscribe(x => {
                 CheckLink();
             })

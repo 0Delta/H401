@@ -83,7 +83,7 @@ MonoBehaviour:
   timeLevelInterval: 60
   timeLevelTable:
   - MaxRegainRatio: 0.8
-    SlipRatio: 1
+    SlipRatio: 0
     RegainPerNodes: 0
     RegainPerCap: 0
     RegainPer2Path: 0.05
@@ -302,7 +302,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: timeLevelTable.Array.data[0].SlipRatio
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: fieldLevelTable.Array.data[3].Ratio_Path4
