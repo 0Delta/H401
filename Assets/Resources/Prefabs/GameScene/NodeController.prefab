@@ -192,7 +192,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24394866, guid: 9b707a9c23c935c4e9996a7418d1ff26,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 81e36ed4f88677b4da5284f6337160b7, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 6d6ba2ace4f2ff740957d20b37ed6b0e, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
   m_Pitch: 1
@@ -369,26 +369,26 @@ MonoBehaviour:
       prefabPath: Prefabs/Particles/Effect_FlowerScore0
       controllerName: Flower0Controller
       poolSize: 30
-    overScore: 1000
-    kirakiraColor: {r: 1, g: 0.76551723, b: 0, a: 1}
+    overScore: 10
+    kirakiraColor: {r: 0.9448277, g: 1, b: 0, a: 1}
   - param:
       prefabPath: Prefabs/Particles/Effect_FlowerScore1
       controllerName: Flower1Controller
       poolSize: 30
     overScore: 2000
-    kirakiraColor: {r: 0.86206913, g: 0, b: 1, a: 1}
+    kirakiraColor: {r: 0, g: 1, b: 0.21379328, a: 1}
   - param:
       prefabPath: Prefabs/Particles/Effect_FlowerScore2
       controllerName: Flower2Controller
       poolSize: 30
     overScore: 3000
-    kirakiraColor: {r: 0, g: 1, b: 0.83448267, a: 1}
+    kirakiraColor: {r: 0, g: 0.2965517, b: 1, a: 1}
   - param:
       prefabPath: Prefabs/Particles/Effect_FlowerScore3
       controllerName: Flower3Controller
       poolSize: 30
     overScore: 4000
-    kirakiraColor: {r: 0.32413793, g: 1, b: 0, a: 1}
+    kirakiraColor: {r: 0.9034481, g: 0, b: 1, a: 1}
   - param:
       prefabPath: Prefabs/Particles/Effect_FlowerScore4
       controllerName: Flower4Controller
@@ -692,11 +692,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[0].kirakiraColor.r
-      value: 1
+      value: .944827676
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[0].kirakiraColor.g
-      value: 0.76551723
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[0].kirakiraColor.b
@@ -736,15 +736,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[1].kirakiraColor.r
-      value: 0.86206913
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: flowerEffectParams.Array.data[1].kirakiraColor.g
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
-      propertyPath: flowerEffectParams.Array.data[1].kirakiraColor.b
+      propertyPath: flowerEffectParams.Array.data[1].kirakiraColor.g
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flowerEffectParams.Array.data[1].kirakiraColor.b
+      value: .213793278
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: lastKirakiraEffectParam.prefabPath
@@ -793,7 +793,7 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 81e36ed4f88677b4da5284f6337160b7, type: 3}
+      objectReference: {fileID: 8300000, guid: 77946e00b667b2741b21a27f468d65ce, type: 3}
     - target: {fileID: 0}
       propertyPath: panLevelCustomCurve.m_RotationOrder
       value: 0
@@ -977,11 +977,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[2].kirakiraColor.g
-      value: 1
+      value: .296551704
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[2].kirakiraColor.b
-      value: 0.83448267
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[3].param.prefabPath
@@ -993,15 +993,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[3].kirakiraColor.r
-      value: 0.32413793
+      value: .903448105
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[3].kirakiraColor.g
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[3].kirakiraColor.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flowerEffectParams.Array.data[4].param.prefabPath
