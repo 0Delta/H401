@@ -87,13 +87,15 @@ public class AppliController : MonoBehaviour {
             fade.FadeOut(fadeInTime);
         });
 	}
-
+   
 	//---------------------------------------------------------------
 	// フェードイン・アウト(フェード中に任意の処理を行う)
 	//---------------------------------------------------------------
     public void FadeInOut(float fadeInTime, float fadeOutTime, System.Action action) {
         fade.FadeIn(fadeOutTime, () => {
             action();
+            System.GC.Collect();                //GC
+            Resources.UnloadUnusedAssets();     //使ってないアセットをアンロード
 
             fade.FadeOut(fadeInTime);
         });

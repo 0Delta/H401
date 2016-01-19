@@ -1,6 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using System.Diagnostics;
+using UniRx;
 
 // デバック用ログシステム
 namespace CustomDebugLog {
@@ -75,6 +76,10 @@ namespace CustomDebugLog {
         }
         #endregion
 
+        private const bool FORCE_LOG = false;
+        private const bool AUTO_EXPORT = true;
+        private const int AUTO_EXPORT_RATE = 2;
+
         // 名前のリスト
         private static List<string> NameList = new List<string>();
         public static Dictionary<string,CDebugLog> InstanceList = new Dictionary<string, CDebugLog>();
@@ -88,16 +93,19 @@ namespace CustomDebugLog {
         /// <see cref="CDebugLog(string)"/>
         /// </summary>
         private CDebugLog() { }
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="Name">名前を入力してください。出力時にはファイル名になります。</param>
-        public CDebugLog(string Name) {
+        public CDebugLog(string Name)
+        {
             // 必ず名前を付けて初期化する
             int RetryCount = 0;
             string LName = Name;
             // 同名がいるなら(1)とか付ける
-            while(NameList.Contains(LName)) {
+            while (NameList.Contains(LName))
+            {
                 RetryCount++;
                 LName = Name + "(" + RetryCount + ")";
             }
@@ -105,6 +113,19 @@ namespace CustomDebugLog {
             LogName = LName;
             NameList.Add(LogName);
             InstanceList.Add(LogName, this);
+
+            // 自動書き出し
+            if (AUTO_EXPORT)
+            {
+                Observable
+                    .EveryUpdate()
+                    .DistinctUntilChanged(x => Count)
+                    .ThrottleFrame(AUTO_EXPORT_RATE * 60)
+                    .Subscribe(_ =>
+                    {
+                        Export();
+                    });
+            }
         }
 
 
@@ -116,6 +137,10 @@ namespace CustomDebugLog {
         /// <returns>何も返しません</returns>
         public void Debug(string message) {
             LogDat.Add(new Log(LOGTYPE.DEBUG, message));
+            if (FORCE_LOG)
+            {
+                UnityEngine.Debug.Log(message);
+            }
         }
         /// <summary>
         /// 情報用メッセージ
@@ -231,6 +256,14 @@ namespace CustomDebugLog {
         /// 格納されているログの総数を返します
         /// </summary>
         public int Count { get { return LogDat.Count; } }
+
+        /// <summary>
+        /// ログをファイルに書き出します
+        /// </summary>
+        public void Export()
+        {
+            System.IO.File.WriteAllText(UnityEngine.Application.persistentDataPath + "/" + LogName + ".log", ToStringReverse());
+        }
     }
 
     /// <summary>
