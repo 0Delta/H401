@@ -41,6 +41,7 @@ public class OnlineRankingMGR : MonoBehaviour {
         {
             GameObject obj = this.InstantiateChild(ScorePrefabName);
             ScoreList.Add(obj);
+            obj.GetComponent<Transform>().localPosition = CenterPoint;
         }
 
         // 実際の座標を移動させる処理
@@ -53,7 +54,7 @@ public class OnlineRankingMGR : MonoBehaviour {
                 foreach (var it in ScoreList)
                 {
                     Vector3 TargetPos = ScorePosList[((RingPos + x) >= ScorePosList.Count ? (RingPos + x) - ScorePosList.Count : (RingPos + x))];
-                    it.GetComponent<Transform>().DOMove(TargetPos, TweenSpeed);
+                    it.GetComponent<Transform>().DOLocalMove(TargetPos, TweenSpeed);
                     x++;
                 }
             }).AddTo(this);
@@ -68,7 +69,7 @@ public class OnlineRankingMGR : MonoBehaviour {
                 {
                     foreach (var it in ScoreList)
                     {
-                        it.GetComponent<Transform>().DOMove(CenterPoint, TweenSpeed);
+                        it.GetComponent<Transform>().DOLocalMove(CenterPoint, TweenSpeed);
                         it.GetComponent<Transform>().DOScale(0, TweenSpeed);
                     }
                 }
@@ -84,7 +85,7 @@ public class OnlineRankingMGR : MonoBehaviour {
         int x = 0;
         foreach(var it in ScoreList) {
             Vector3 TargetPos = ScorePosList[((RingPos + x) >= ScorePosList.Count ? (RingPos + x) - ScorePosList.Count : (RingPos + x))];
-            it.GetComponent<Transform>().DOMove(TargetPos, TweenSpeed);
+            it.GetComponent<Transform>().DOLocalMove(TargetPos, TweenSpeed);
             it.GetComponent<Transform>().DOScale(1, TweenSpeed);
             x++;
         }

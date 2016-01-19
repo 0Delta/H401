@@ -4,6 +4,7 @@ using DG.Tweening;
 using UniRx;
 using UniRx.Triggers;
 using System;
+using System.Collections.Generic;
 
 namespace RankingExtension
 {
@@ -41,17 +42,18 @@ public class RankingMGR : MonoBehaviour {
     [SerializeField] public string RankingPrefabFolderName = null;
     [SerializeField] public string OnlinePrefabName = null;
     [SerializeField] public string OfflinePrefabName = null;
-    [SerializeField] public string BGPrefabName = null;
     [SerializeField] public string ScorePrefabName = null;
     [SerializeField] public string CameraPrefabName = null;
     [SerializeField] public string ReturnButtonName = null;
+    [SerializeField] public List<string> BGPrefabNameList = null;
+    [SerializeField] public Vector3 BGPosition = new Vector3(0f, 0f, 0f);
 
     GameObject ScoreObj = null;
     GameObject OnlineObj = null;
     GameObject OfflineObj = null;
-    GameObject BGObj = null;
     GameObject CameraObj = null;
     GameObject ReturnBtnObj = null;
+    List<GameObject> BGObjList = new List<GameObject>();
     ScoreWordMGR Sword = new ScoreWordMGR();
     private bool FlipRanking = false;
     public enum RANKING_MODE : byte{
@@ -85,11 +87,31 @@ public class RankingMGR : MonoBehaviour {
     void Start() {
         // オブジェクト初期化
         ScoreObj = InstantiateChild(ScorePrefabName);
-        BGObj = InstantiateChild(BGPrefabName, false);
         CameraObj = InstantiateChild(CameraPrefabName, false);
         ReturnBtnObj = InstantiateChild(ReturnButtonName,false);
         OfflineObj = InstantiateChild(OfflinePrefabName, false);
         OnlineObj = null;   // オンラインオブジェは初期化しない
+        foreach (var it in BGPrefabNameList)
+        {
+            try
+            {
+                var ret = Instantiate(Resources.Load(it)) as GameObject;
+                ret.transform.SetParent(transform, false);
+                BGObjList.Add(ret);
+            }
+            catch (Exception excep)
+            {
+                Debug.LogError("Exception ! : " + it);
+                Debug.LogException(excep);
+            }
+        }
+        try {
+            BGObjList[0].transform.localPosition = BGPosition;
+        }
+        catch
+        {
+            // Failed Load BG
+        }
         Sword.Load();
 
         // ランキングのフリップ処理
@@ -101,7 +123,7 @@ public class RankingMGR : MonoBehaviour {
             .Subscribe(x => {
                 switch(x) {
                     case RANKING_MODE.OFFLINE:
-                        OfflineObj.transform.DOLocalMoveY(1500, 0.5f);
+                        OfflineObj.transform.DOLocalMoveY(1000, 0.5f);
                         Mode = RANKING_MODE.ONLINE;
                         if(OnlineObj != null) {
                             //OnlineObj.gameObject.SetActive(true);
