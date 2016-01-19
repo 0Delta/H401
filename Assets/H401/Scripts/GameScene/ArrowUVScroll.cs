@@ -10,15 +10,15 @@ public class ArrowUVScroll : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	    material = GetComponent<SpriteRenderer>().material;
+	    material = GetComponent<SpriteRenderer>().sharedMaterial;
         offset = Vector2.zero;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        offset.y += scrollSpd;
-        if(offset.y > 1.0f)
-            offset.y -= 1.0f;
+        offset.y -= scrollSpd;
+        if(offset.y < -1.0f)
+            offset.y += 2.0f;
 
         print(offset);
 
