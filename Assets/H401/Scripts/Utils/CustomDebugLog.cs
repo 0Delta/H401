@@ -116,6 +116,7 @@ namespace CustomDebugLog {
         /// <returns>何も返しません</returns>
         public void Debug(string message) {
             LogDat.Add(new Log(LOGTYPE.DEBUG, message));
+            UnityEngine.Debug.Log(message);
         }
         /// <summary>
         /// 情報用メッセージ

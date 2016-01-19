@@ -22,7 +22,7 @@ Material:
         second:
           m_Texture: {fileID: 2800000, guid: 062418b597787544c97cb74a1550e0d7, type: 3}
           m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0.64997095}
+          m_Offset: {x: 0, y: 0.3999778}
       data:
         first:
           name: _BumpMap
@@ -176,6 +176,10 @@ Material:
         second: 0
       data:
         first:
+          name: _UseUIAlphaClip
+        second: 0
+      data:
+        first:
           name: _UVGap
         second: 0.5
       data:
@@ -226,10 +230,6 @@ Material:
         first:
           name: _BrightnessHighThreshold
         second: 0.5
-      data:
-        first:
-          name: _UseUIAlphaClip
-        second: 0
       data:
         first:
           name: _Threshold

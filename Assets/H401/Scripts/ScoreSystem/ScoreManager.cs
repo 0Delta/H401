@@ -3,11 +3,9 @@ using UnityEngine;
 using RankingExtension;
 
 public class ScoreManager : MonoBehaviour {
-    [SerializeField]
-    public string AWSPrefabName;
+
     [SerializeField]
     public string Name;
-    private DynamoConnecter AWS;
     //private UnityEngine.UI.InputField NameEntryField;
 
     /// <summary>
@@ -214,24 +212,8 @@ public class ScoreManager : MonoBehaviour {
     //----------------------------------
     // プレハブ標準の関数群
     void Start() {
-        AWSStart();     // AWSシステムを起動
+        //AWSStart();     // AWSシステムを起動
         Load();         // ファイルからスコア読み出し
-    }
-
-    /// <summary>
-    /// AWSシステムを起動させる
-    /// </summary>
-    void AWSStart() {
-        try {
-            GameObject AWSObj = this.InstantiateChild(AWSPrefabName);
-            AWSObj.name = "AWS";
-            AWS = AWSObj.GetComponent<DynamoConnecter>();
-            AWS.Read();
-        }
-        catch
-        {
-            AWS = null;
-        }
     }
 
     /// <summary>
@@ -306,13 +288,6 @@ public class ScoreManager : MonoBehaviour {
         catch(System.FormatException) { return -1; }       // ファイルデータ不正
 
         return 0;
-    }
-
-    /// <summary>
-    /// AWSに送信する
-    /// </summary>
-    public void Send() {
-        AWS.Add(SListInstance[0].Score, Name/*NameEntryField.text*/);
     }
 
     /// <summary>

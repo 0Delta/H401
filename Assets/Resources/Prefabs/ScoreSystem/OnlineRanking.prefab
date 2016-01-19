@@ -40,6 +40,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ScorePrefabName: Score3D
+  OnlineScoreMGRName: OnlineScoreMGR
   TweenSpeed: 0.325
 --- !u!1001 &100100000
 Prefab:
@@ -54,7 +55,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: ScorePrefabName
-      value: Score3D
+      value: AWSPrefab
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: TweenSpeed
@@ -71,6 +72,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: AWSPrefabName
+      value: AWSPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: OnlineScoreMGRName
+      value: OnlineScoreMGR
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
