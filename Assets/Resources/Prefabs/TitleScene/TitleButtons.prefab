@@ -478,19 +478,28 @@ MonoBehaviour:
   scaleMag: 0.8
   moveTime: 0.4
   moveEndPosX: 5
-  sceneButtonOrder: 0100000005000000030000000400000006000000
+  sceneButtons:
+  - order: 1
+    fadeTime:
+      inTime: 0.8
+      outTime: 0.8
+  - order: 5
+    fadeTime:
+      inTime: 0.8
+      outTime: 0.8
+  - order: 3
+    fadeTime:
+      inTime: 0.8
+      outTime: 0.8
+  - order: 4
+    fadeTime:
+      inTime: 0.8
+      outTime: 0.8
+  - order: 6
+    fadeTime:
+      inTime: 0.8
+      outTime: 0.8
   popupSceneList: 040000000500000006000000
-  fadeTimes:
-  - inTime: 0.8
-    outTime: 0.8
-  - inTime: 0.8
-    outTime: 0.8
-  - inTime: 0.8
-    outTime: 0.8
-  - inTime: 0.8
-    outTime: 0.8
-  - inTime: 0.8
-    outTime: 0.8
 --- !u!114 &11481976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -749,6 +758,10 @@ Prefab:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 0}
+      propertyPath: sceneButtons.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
       propertyPath: popupSceneList.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -891,6 +904,34 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: popupSceneList.Array.data[2]
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: sceneButtons.Array.data[0].order
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: sceneButtons.Array.data[0].fadeTime.inTime
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: sceneButtons.Array.data[0].fadeTime.outTime
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: sceneButtons.Array.data[1].order
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: sceneButtons.Array.data[2].order
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: sceneButtons.Array.data[3].order
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: sceneButtons.Array.data[4].order
       value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []

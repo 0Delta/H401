@@ -75,7 +75,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d416d1715bbc06d4789612d1211da8d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cutoutRange: 0
+  cutoutRange: 1
 --- !u!114 &11425576
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5af7abafd6f0ccc4e86725b79b3fba4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startSceneID: 1
+  startSceneID: 0
   gameFrameRate: 60
   scenePrefabPaths:
   - Prefabs/Scenes/Title

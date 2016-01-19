@@ -671,6 +671,7 @@ public class Node : MonoBehaviour
             })
             .SetEase(easeType);
     }
+
     public void ForceRotateWithBit()
     {
         transform.DOKill();

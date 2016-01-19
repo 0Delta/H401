@@ -7,6 +7,7 @@ public class TitleScene : MonoBehaviour {
     [SerializeField] private string subCameraPath;
     [SerializeField] private string renderTexturePath;
     [SerializeField] private string titleNodeControllerPath;
+    [SerializeField] private string titleBGCanvasPath;
     [SerializeField] private string titleCanvasPath;
     [SerializeField] private string eventSystemPath;
 
@@ -17,6 +18,7 @@ public class TitleScene : MonoBehaviour {
     private GameObject subCameraObject;
     private GameObject renderTextureObject;
     private GameObject titleNodeControllerObject;
+    private GameObject titleBGCanvasObject;
     private GameObject titleCanvasObject;
     private GameObject eventSystemObject;
 
@@ -24,6 +26,11 @@ public class TitleScene : MonoBehaviour {
     private TitleCanvas titleCanvasScript;
 
     private MeshRenderer renderTextureMeshRenderer;
+
+    private bool _isPopupScene;
+    public bool isPopupScene {
+        get { return _isPopupScene; }
+    }
     
     // ※ポップアップシーンの連想配列をつくる
     private Dictionary<AppliController._eSceneID, GameObject> popupSceneTable;
@@ -42,6 +49,12 @@ public class TitleScene : MonoBehaviour {
 
 	    titleNodeControllerObject = Instantiate(Resources.Load<GameObject>(titleNodeControllerPath));
         titleNodeControllerObject.transform.SetParent(transform);
+        
+	    titleBGCanvasObject = Instantiate(Resources.Load<GameObject>(titleBGCanvasPath));
+        titleBGCanvasObject.transform.SetParent(transform);
+        Canvas bgCanvas= titleBGCanvasObject.transform.GetComponent<Canvas>();
+        bgCanvas.worldCamera = subCameraObject.GetComponent<Camera>();
+        bgCanvas.sortingLayerName = "GameUI";
 
 	    titleCanvasObject = Instantiate(Resources.Load<GameObject>(titleCanvasPath));
         titleCanvasObject.transform.SetParent(transform);
@@ -53,6 +66,8 @@ public class TitleScene : MonoBehaviour {
         titleCanvasScript = titleCanvasObject.GetComponent<TitleCanvas>();
 
         renderTextureMeshRenderer = renderTextureObject.GetComponent<MeshRenderer>();
+
+        _isPopupScene = false;
 
         // ポップアップシーンを設定
         PopupScene.InitAll(popScene, transform);
@@ -85,20 +100,35 @@ public class TitleScene : MonoBehaviour {
 
             // 遷移先シーンをアクティブにする
             popupSceneTable[sceneID].SetActive(true);
+
+            _isPopupScene = true;
         });
     }
 
     // ポップアップシーンからタイトルへ戻す
-    public void ReturnTitleScene(AppliController._eSceneID sceneID, float fadeInTime, float fadeOutTime) {
+    public void ReturnTitleScene() {
+        // 遷移元のシーンIDを算出
+        AppliController._eSceneID sceneID = AppliController._eSceneID.TITLE;
+        foreach(var key in popupSceneTable.Keys) {
+            if(popupSceneTable[key].activeSelf) {
+                sceneID = key;
+                break;
+            }
+        }
+
+        FadeTime fadeTime = titleCanvasScript.GetFadeTime(sceneID);
+
         // シーン遷移
-        transform.root.gameObject.GetComponent<AppliController>().FadeInOut(fadeInTime, fadeOutTime, () => {
+        transform.root.gameObject.GetComponent<AppliController>().FadeInOut(fadeTime.inTime, fadeTime.outTime, () => {
             // ----- フェード中に行う処理
 
             // フィルターの色を元に戻す
             renderTextureMeshRenderer.material.SetColor("_TexColor", normalSceneFilterColor);
 
             // ポップアップシーンを非アクティブにする
-            popupSceneTable[sceneID].SetActive(false);
+            foreach(var key in popupSceneTable.Keys) {
+                popupSceneTable[key].SetActive(false);
+            }
 
             // タイトルで使用しているオブジェクトをアクティブにする
             subCameraObject.SetActive(true);
@@ -106,6 +136,8 @@ public class TitleScene : MonoBehaviour {
 
             // ノードの動きを再開する
             titleNodeControllerScript.isMoveNodes = true;
+
+            _isPopupScene = false;
         });
     }
 }
