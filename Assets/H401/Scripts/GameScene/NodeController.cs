@@ -1595,7 +1595,7 @@ public class NodeController : MonoBehaviour
     /// <summary>
     ///  完成した枝情報を保持するクラス
     /// </summary>
-    private class FinNode
+    public class FinNode
     {
         public Vec2Int ID;
         public int Rot;
@@ -1616,6 +1616,11 @@ public class NodeController : MonoBehaviour
             }
             return Val;
         }
+
+        public override string ToString()
+        {
+            return ID.x.ToString() + "," + ID.y.ToString() + "," + Rot.ToString() + "," + Temp.ID.ToString();
+        }
     }
     private List<List<FinNode>> FinishNodeList = new List<List<FinNode>>();
 
@@ -1626,6 +1631,10 @@ public class NodeController : MonoBehaviour
         if (List.Count > 2)
         {
             FinishNodeList.Add(FinNode.Convert(List));
+            if(List.Count > 3)
+            {
+                NodeSaver.Write(FinNode.Convert(List));
+            }
         }
 
         NodeCountInfo nodeCount = new NodeCountInfo();
