@@ -12,6 +12,17 @@ public class OnlineRankingMGR : MonoBehaviour {
     [SerializeField]
     public string OnlineScoreMGRName = null;
 
+    public enum ONLINE_STATUS
+    {
+        UNLINK,
+        LINKED,
+        SCANING
+    }
+    [SerializeField]private ONLINE_STATUS Status = ONLINE_STATUS.UNLINK;
+    public void SetResponse() { Status = ONLINE_STATUS.LINKED; }
+    public void StartLink() { Status = ONLINE_STATUS.SCANING; }
+    public void LinkFailed() { Status = ONLINE_STATUS.UNLINK; }
+
     [SerializeField, Range(0.01f, 0.8f)]
     public float TweenSpeed = 0.05f;
 
@@ -20,15 +31,13 @@ public class OnlineRankingMGR : MonoBehaviour {
     private List<Vector3> ScorePosList = new List<Vector3>();           // スコアの位置リストとスコアオブジェクトの位置
     private List<GameObject> ScoreList = new List<GameObject>();
     private int RingPos = 0;                                            // 現在のスコア位置
-    private ScoreManager sm;
 
     // Use this for initialization
     private void Start()
     {
-        this.InstantiateChild(OnlineScoreMGRName);
-
-        sm = transform.parent.GetComponentInChildren<ScoreManager>();
-        //sm.AWS.Read();
+        var OScoreMGR = this.InstantiateChild(OnlineScoreMGRName).GetComponent<OnlineScoreMGR>();
+        var ScoreObj = GetComponentInParent<RankingMGR>().ScoreObj.GetComponent<ScoreManager>();
+        OScoreMGR.Send(ScoreObj.GetScore(1), ScoreObj.Name);
 
         // 円形に座標を設定
         Vector3 Pos;

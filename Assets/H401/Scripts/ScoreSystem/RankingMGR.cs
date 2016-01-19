@@ -48,7 +48,7 @@ public class RankingMGR : MonoBehaviour {
     [SerializeField] public List<string> BGPrefabNameList = null;
     [SerializeField] public Vector3 BGPosition = new Vector3(0f, 0f, 0f);
 
-    GameObject ScoreObj = null;
+    public GameObject ScoreObj = null;
     GameObject OnlineObj = null;
     GameObject OfflineObj = null;
     GameObject CameraObj = null;
@@ -62,7 +62,12 @@ public class RankingMGR : MonoBehaviour {
     };
     public RANKING_MODE Mode = RANKING_MODE.OFFLINE;
 
-    // ゲームオブジェクトを生成して、子に登録する関数
+    /// <summary>
+    /// ゲームオブジェクトを生成して、子に登録する関数
+    /// </summary>
+    /// <param name="Name">オブジェクト名</param>
+    /// <param name="WorldPositionStays">座標固定</param>
+    /// <returns>失敗した場合NULL</returns>
     private GameObject InstantiateChild(string Name, bool WorldPositionStays = true) {
         GameObject ret = null;
         string Pass = "";
@@ -91,12 +96,23 @@ public class RankingMGR : MonoBehaviour {
         ReturnBtnObj = InstantiateChild(ReturnButtonName,false);
         OfflineObj = InstantiateChild(OfflinePrefabName, false);
         OnlineObj = null;   // オンラインオブジェは初期化しない
+
+        Transform BGPear = null;
+        try {
+            var Objtemp = GetComponentsInChildren<Transform>();
+            BGPear = Objtemp[2].transform;
+        }
+        catch
+        {
+            BGPear = transform;
+        }
+
         foreach (var it in BGPrefabNameList)
         {
             try
             {
                 var ret = Instantiate(Resources.Load(it)) as GameObject;
-                ret.transform.SetParent(transform, false);
+                ret.transform.SetParent(BGPear, false);
                 BGObjList.Add(ret);
             }
             catch (Exception excep)
