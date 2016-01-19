@@ -89,29 +89,29 @@ public class OfflineRankingMGR : MonoBehaviour {
         string ScoreString = "";
         float Ypos = 0f;
         Ypos -= ScorePos.HeadMargin;
-
+        
         // スコアの表示
-        for(int n = 1; n < 11; n++) {
+        for(int n = 1; n < 10; n++) {
             Ypos -= ScorePos.Margin * ZoomOption[n == 1 ? 10 : n - 1] + (ScorePos.WordHeight * ZoomOption[n]);  // マージン追加
+
+            // 順位を描画する
+            var Canv = ScoreWordMGR.DrawRank(n, localCanvas.transform, RankPos.WordHeight * ZoomOption[n]);
+            var CanvRectTrans = Canv.GetComponentInChildren<RectTransform>();
+            CanvRectTrans.anchorMax = new Vector2(0.5f, 1.0f);
+            CanvRectTrans.anchorMin = new Vector2(0.5f, 1.0f);
+            CanvRectTrans.pivot = new Vector2(0.0f, 0.5f);
+            CanvRectTrans.anchoredPosition = new Vector2(-RankPos.XPostiion * ZoomOption[n], Ypos);
 
             // スコア数値を描画する
             var ScoreInt = ScoreMgr.GetScore(n);                                              // スコアの値を取得
             if (ScoreInt < 0) { continue; }
             ScoreString = ScoreInt.ToString();
-            var Canv = ScoreWordMGR.Draw(ScoreString, localCanvas.transform, (ScorePos.WordHeight * ZoomOption[n]));      // 描画
-            var CanvRectTrans = Canv.GetComponentInChildren<RectTransform>();                           // 位置を調整
+            Canv = ScoreWordMGR.Draw(ScoreString, localCanvas.transform, (ScorePos.WordHeight * ZoomOption[n]));      // 描画
+            CanvRectTrans = Canv.GetComponentInChildren<RectTransform>();                           // 位置を調整
             CanvRectTrans.anchorMax = new Vector2(0.5f, 1.0f);
             CanvRectTrans.anchorMin = new Vector2(0.5f, 1.0f);
             CanvRectTrans.pivot = new Vector2(1.0f, 0.5f);
             CanvRectTrans.anchoredPosition = new Vector2(ScorePos.XPostiion * ZoomOption[n], Ypos);
-
-            // 順位を描画する
-            Canv = ScoreWordMGR.DrawRank(n, localCanvas.transform, RankPos.WordHeight * ZoomOption[n]);
-            CanvRectTrans = Canv.GetComponentInChildren<RectTransform>();
-            CanvRectTrans.anchorMax = new Vector2(0.5f, 1.0f);
-            CanvRectTrans.anchorMin = new Vector2(0.5f, 1.0f);
-            CanvRectTrans.pivot = new Vector2(0.0f, 0.5f);
-            CanvRectTrans.anchoredPosition = new Vector2(-RankPos.XPostiion * ZoomOption[n], Ypos);
 
         }
     }

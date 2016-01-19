@@ -186,10 +186,15 @@ MonoBehaviour:
   RankingPrefabFolderName: Prefabs/ScoreSystem
   OnlinePrefabName: OnlineRanking
   OfflinePrefabName: OfflineRanking
-  BGPrefabName: RankingBG
   ScorePrefabName: ScoreSystem
   CameraPrefabName: RankingCamera
   ReturnButtonName: ReturnButton
+  BGPrefabNameList:
+  - Prefabs/TitleScene/RenderTexture
+  - Prefabs/TitleScene/TitleNodeController
+  - Prefabs/TitleScene/SubCamera
+  - Prefabs/TitleScene/TitleBacks
+  BGPosition: {x: 0, y: 0, z: -6}
   Mode: 0
 --- !u!114 &11458068
 MonoBehaviour:
@@ -256,6 +261,10 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 0}
+      propertyPath: BGPrefabNameList.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
       propertyPath: RankingPrefabFolderName
       value: Prefabs/ScoreSystem
       objectReference: {fileID: 0}
@@ -311,6 +320,26 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Volume
       value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: BGPrefabNameList.Array.data[0]
+      value: Prefabs/TitleScene/RenderTexture
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: BGPrefabNameList.Array.data[1]
+      value: Prefabs/TitleScene/TitleNodeController
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: BGPrefabNameList.Array.data[2]
+      value: Prefabs/TitleScene/SubCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: BGPrefabNameList.Array.data[3]
+      value: Prefabs/TitleScene/TitleBacks
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: BGPosition.z
+      value: -6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
