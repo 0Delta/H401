@@ -347,7 +347,7 @@ public class NodeTemplate_Editor : PropertyDrawer
                     catch (System.IndexOutOfRangeException) { }
                     if (Log != null)
                     {
-                        System.IO.File.WriteAllText(Application.persistentDataPath + "/" + it + ".log", Log.ToStringReverse());
+                        Log.Export();
                     }
                 }
             }
@@ -388,7 +388,7 @@ public class NodeTemplate_Editor : PropertyDrawer
                 if (ExportBtn && Exported <= 0)
                 {
                     Exported = 20;
-                    System.IO.File.WriteAllText(Application.persistentDataPath + "/" + LogList[SelectLogIdx] + ".log", Log.ToStringReverse());
+                    Log.Export();
                 }
                 else if (Exported > 0)
                 {
