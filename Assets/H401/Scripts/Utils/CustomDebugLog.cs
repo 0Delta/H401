@@ -75,6 +75,8 @@ namespace CustomDebugLog {
         }
         #endregion
 
+        private const bool FORCE_LOG = false;
+
         // 名前のリスト
         private static List<string> NameList = new List<string>();
         public static Dictionary<string,CDebugLog> InstanceList = new Dictionary<string, CDebugLog>();
@@ -116,7 +118,10 @@ namespace CustomDebugLog {
         /// <returns>何も返しません</returns>
         public void Debug(string message) {
             LogDat.Add(new Log(LOGTYPE.DEBUG, message));
-            UnityEngine.Debug.Log(message);
+            if (FORCE_LOG)
+            {
+                UnityEngine.Debug.Log(message);
+            }
         }
         /// <summary>
         /// 情報用メッセージ
