@@ -52,6 +52,9 @@ public class LevelController : MonoBehaviour {
 
         levelChangePrefab = Resources.Load<GameObject>(levelChangePath);
         animationPrefab = Resources.Load<GameObject>(animationPath);
+
+ //       gameScene.gameUI.gameInfoCanvas.GetComponentInChildren<fieldImage>().gameObject.GetComponent<Button>().onClick.AddListener(TouchChange);
+
 	}
 	
 	// Update is called once per frame
@@ -144,6 +147,7 @@ public class LevelController : MonoBehaviour {
         fChangeScript = levelChangeObject.GetComponent<LevelChange>();
         fChangeScript.levelController = this;
 
+        
         //メインカメラをノンアクにする
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
         gameScene.mainCamera.transform.Rotate(new Vector3(0.0f, 0.0f, -lyingAngle),Space.Self);
@@ -209,5 +213,28 @@ public class LevelController : MonoBehaviour {
     public string GetFieldName(int stage)
     {
         return levelTableScript.GetFieldLevel(stage).BG_Path;
+    }
+
+    public void TouchChange()
+    {
+        switch (LevelState)
+        {
+            case _eLevelState.STAND:
+                isDebug = true;
+                //難易度選択用オブジェクトを90度回転して
+                lyingAngle = 90;
+                StartCoroutine(FieldChangeStart(FCStart));
+                break;
+            case _eLevelState.LIE:
+                isDebug = false;
+                lyingAngle = 0;
+                StartCoroutine(FieldChangeEnd(fChangeScript.Delete));
+                break;
+
+            case _eLevelState.CHANGE:
+                //変更中は何もしない
+                break;
+        }
+
     }
 }

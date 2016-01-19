@@ -114,7 +114,26 @@ public class Node : MonoBehaviour
                                                 //  5 0
                                                 // 4   1
                                                 //  3 2  とする
-
+                                                /*
+    //応急処置
+    public BitArray bitLink {
+        get {
+            //1.1の時だけ＋１回転した値を返す
+            if (nodeID.x == 1 && nodeID.y == 1)
+            {
+                BitArray bl = new BitArray(6);
+                bl = _bitLink;
+                bool bitLast = bl[5];
+                for(int i = 5; i > 0; i--)
+                {
+                    bl[i] = bl[i - 1];
+                }
+                bl[0] = bitLast;
+                return bl;
+            }
+            else { return _bitLink; }  }
+        set { _bitLink = value; }
+    }*/
     private SpriteRenderer spriteRenderer = null;
     private NodeMask NodeMask = null;
     public NodeTemplate Temp = null;               // 使用したテンプレート
@@ -223,9 +242,10 @@ public class Node : MonoBehaviour
             .Where(_ => IsAction)
             .Select(_ => transform)
             .DistinctUntilChanged()
-            .ThrottleFrame(5)
+            .ThrottleFrame(20)
             .Subscribe(x =>
             {
+                print("reset");
                 NodeDebugLog += "Force Flag Reset";
                 IsTurning = false;
                 IsSlideStart = false;

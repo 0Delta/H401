@@ -47,6 +47,11 @@ public class LevelPanel : MonoBehaviour {
             i++;
         }
 
+        Button[] stageButtons = fBG1.GetComponentsInChildren<Button>();
+        for (int j = 0; j < 5; j++)
+        {
+            stageButtons[j].onClick.AddListener(fieldScripts[j].SetLevel);
+        }
         fieldImage[transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().gameController.nodeController.currentLevel].color = Color.yellow;
         MapField.SetPanel(this);
 
