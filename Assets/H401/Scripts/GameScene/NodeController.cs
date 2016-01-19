@@ -6,7 +6,6 @@ using DG.Tweening;
 using System.Collections.Generic;
 using RandExtension;
 using BitArrayExtension;
-using ResourcePrefab;
 /*  リストIDに関して
 col のIDが奇数の行は +1 とする
 
@@ -1166,7 +1165,7 @@ public class NodeController : MonoBehaviour
         Vec2Int id = SearchNearNode(pos);
 
         // フレームなら -1 にする
-        if (id.x <= 0 || id.x >= AdjustRow(id.y) || id.y <= 0 || id.y >= col - 1)
+        if (id.x <= 0 || id.x >= AdjustRow(id.y)-1 || id.y <= 0 || id.y >= col - 1)
         {
             id.x = -1;
             id.y = -1;
@@ -1596,7 +1595,7 @@ public class NodeController : MonoBehaviour
     /// <summary>
     ///  完成した枝情報を保持するクラス
     /// </summary>
-    private class FinNode
+    public class FinNode
     {
         public Vec2Int ID;
         public int Rot;
@@ -1617,6 +1616,11 @@ public class NodeController : MonoBehaviour
             }
             return Val;
         }
+
+        public override string ToString()
+        {
+            return ID.x.ToString() + "," + ID.y.ToString() + "," + Rot.ToString() + "," + Temp.ID.ToString();
+        }
     }
     private List<List<FinNode>> FinishNodeList = new List<List<FinNode>>();
 
@@ -1627,6 +1631,10 @@ public class NodeController : MonoBehaviour
         if (List.Count > 2)
         {
             FinishNodeList.Add(FinNode.Convert(List));
+            if(List.Count > 3)
+            {
+                NodeSaver.Write(FinNode.Convert(List));
+            }
         }
 
         NodeCountInfo nodeCount = new NodeCountInfo();
@@ -1688,13 +1696,13 @@ public class NodeController : MonoBehaviour
     public void ReplaceNodeFever()
     {
         Log.Debug("ReplaceNodeFever");
-        foreach (var xList in gameNodeScripts)
-        {
-            foreach (var it in xList)
-            {
-                it.SetNodeType(NodeTemplate.GetTempFromBranchRandom(NodeTemp, 1), 0);
-            }
-        }
+        //foreach (var xList in gameNodeScripts)
+        //{
+        //    foreach (var it in xList)
+        //    {
+        //        it.SetNodeType(NodeTemplate.GetTempFromBranchRandom(NodeTemp, 1), 0);
+        //    }
+        //}
 
         if (FinishNodeList != null && FinishNodeList.Count > 0)
         {
