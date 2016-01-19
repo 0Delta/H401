@@ -22,8 +22,9 @@ public class UnChainObject : MonoBehaviour
     {
         //出現時tween
         sRenderer = gameObject.GetComponent<SpriteRenderer>();
-        sRenderer.material.DOFade(0.0f, 0.0f);
-        sRenderer.material.DOFade(1.0f, tweenDuration);
+/*        sRenderer.material.DOFade(0.0f, 0.0f);
+        sRenderer.material.DOFade(1.0f, tweenDuration);*/
+        
 
         bDeleted = false;
     }
@@ -35,14 +36,9 @@ public class UnChainObject : MonoBehaviour
             if (bDeleted)
                 return;
             bDeleted = true;
-           sRenderer.material.DOFade(0.0f, tweenDuration)
-            .OnComplete(() =>
-            {
-                this.DOKill();
-            }).OnKill(() =>
-            {
+
                 Destroy(this.gameObject);
-            });
+
         }
         catch(System.NullReferenceException) {
             return;

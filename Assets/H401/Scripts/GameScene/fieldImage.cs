@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using DG.Tweening;
-
+using UnityEngine.UI;
 public class fieldImage : MonoBehaviour {
     [SerializeField]private float rotDuration = 0.0f;
 	// Use this for initialization
 	void Start () {
         transform.DORotate(new Vector3(0.0f,0.0f,-90.0f),rotDuration * 0.5f).OnComplete(RotTurn);
+        GetComponent<Button>().onClick.AddListener(transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().gameUI.levelCotroller.TouchChange);
+
 	}
 	
 	// Update is called once per frame
