@@ -245,7 +245,7 @@ public class Node : MonoBehaviour
             .ThrottleFrame(20)
             .Subscribe(x =>
             {
-                print("reset");
+                //print("reset");
                 NodeDebugLog += "Force Flag Reset";
                 IsTurning = false;
                 IsSlideStart = false;

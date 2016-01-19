@@ -6,7 +6,6 @@ using DG.Tweening;
 using System.Collections.Generic;
 using RandExtension;
 using BitArrayExtension;
-using ResourcePrefab;
 /*  リストIDに関して
 col のIDが奇数の行は +1 とする
 
@@ -1166,7 +1165,7 @@ public class NodeController : MonoBehaviour
         Vec2Int id = SearchNearNode(pos);
 
         // フレームなら -1 にする
-        if (id.x <= 0 || id.x >= AdjustRow(id.y) || id.y <= 0 || id.y >= col - 1)
+        if (id.x <= 0 || id.x >= AdjustRow(id.y)-1 || id.y <= 0 || id.y >= col - 1)
         {
             id.x = -1;
             id.y = -1;
@@ -1688,13 +1687,13 @@ public class NodeController : MonoBehaviour
     public void ReplaceNodeFever()
     {
         Log.Debug("ReplaceNodeFever");
-        foreach (var xList in gameNodeScripts)
-        {
-            foreach (var it in xList)
-            {
-                it.SetNodeType(NodeTemplate.GetTempFromBranchRandom(NodeTemp, 1), 0);
-            }
-        }
+        //foreach (var xList in gameNodeScripts)
+        //{
+        //    foreach (var it in xList)
+        //    {
+        //        it.SetNodeType(NodeTemplate.GetTempFromBranchRandom(NodeTemp, 1), 0);
+        //    }
+        //}
 
         if (FinishNodeList != null && FinishNodeList.Count > 0)
         {
