@@ -313,17 +313,18 @@ public class NodeTemplate_Editor : PropertyDrawer
         EditorGUI.EndProperty();
     }
 
-    public class CDLogWindow : EditorWindow
+    public class CDbgLogWindow : EditorWindow
     {
 
         int SelectLogIdx;
         private static Vector2 ScrollPos = new Vector2();
         int Exported = 0;
 
-        [MenuItem("Window/CDebugLogConsole")]
+        [MenuItem("User/CustomDebugLogConsole")]
         static void ShowWindow()
         {
-            GetWindow<CDLogWindow>("CustomLogger");
+            //GetWindow<CDbgLogWindow>("CustomLogger");
+            GetWindow(typeof(CDbgLogWindow));
         }
 
         void OnGUI()

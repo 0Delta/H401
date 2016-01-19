@@ -223,7 +223,7 @@ public class Node : MonoBehaviour
             .Where(_ => IsAction)
             .Select(_ => transform)
             .DistinctUntilChanged()
-            .ThrottleFrame(5)
+            .ThrottleFrame(20)
             .Subscribe(x =>
             {
                 NodeDebugLog += "Force Flag Reset";
