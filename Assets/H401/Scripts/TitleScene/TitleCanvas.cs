@@ -3,9 +3,11 @@ using System.Collections;
 
 public class TitleCanvas : MonoBehaviour {
     
+    [SerializeField] private string titleBacksPath;
     [SerializeField] private string titleLogosPath;
     [SerializeField] private string titleButtonsPath;
     
+    private GameObject titleBacksObject;
     private GameObject titleLogosObject;
     private GameObject titleButtonsObject;
 
@@ -14,6 +16,11 @@ public class TitleCanvas : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         transform.GetComponent<Canvas>().worldCamera = Camera.main;
+
+        titleBacksObject = Instantiate(Resources.Load<GameObject>(titleBacksPath));
+        titleBacksObject.transform.SetParent(transform);
+        titleBacksObject.transform.localPosition = Vector3.zero;
+        titleBacksObject.transform.localScale = Vector3.one;
 
 	    titleLogosObject = Instantiate(Resources.Load<GameObject>(titleLogosPath));
         titleLogosObject.transform.SetParent(transform);

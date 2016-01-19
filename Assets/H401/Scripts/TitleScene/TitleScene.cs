@@ -7,7 +7,6 @@ public class TitleScene : MonoBehaviour {
     [SerializeField] private string subCameraPath;
     [SerializeField] private string renderTexturePath;
     [SerializeField] private string titleNodeControllerPath;
-    [SerializeField] private string titleBGCanvasPath;
     [SerializeField] private string titleCanvasPath;
     [SerializeField] private string eventSystemPath;
 
@@ -18,7 +17,6 @@ public class TitleScene : MonoBehaviour {
     private GameObject subCameraObject;
     private GameObject renderTextureObject;
     private GameObject titleNodeControllerObject;
-    private GameObject titleBGCanvasObject;
     private GameObject titleCanvasObject;
     private GameObject eventSystemObject;
 
@@ -49,12 +47,6 @@ public class TitleScene : MonoBehaviour {
 
 	    titleNodeControllerObject = Instantiate(Resources.Load<GameObject>(titleNodeControllerPath));
         titleNodeControllerObject.transform.SetParent(transform);
-        
-	    titleBGCanvasObject = Instantiate(Resources.Load<GameObject>(titleBGCanvasPath));
-        titleBGCanvasObject.transform.SetParent(transform);
-        Canvas bgCanvas= titleBGCanvasObject.transform.GetComponent<Canvas>();
-        bgCanvas.worldCamera = subCameraObject.GetComponent<Camera>();
-        bgCanvas.sortingLayerName = "GameUI";
 
 	    titleCanvasObject = Instantiate(Resources.Load<GameObject>(titleCanvasPath));
         titleCanvasObject.transform.SetParent(transform);
