@@ -28,7 +28,7 @@ public class FeverGauge : MonoBehaviour {
     private GameObject FPanelPrefab = null;
     private GameObject FPanelObject = null;
 
-    private AudioSource audioSource = null;
+    private AudioSource[] audioSources = null;
 
     private float gainWaitTime;
     private float fillWaitTime;
@@ -37,6 +37,12 @@ public class FeverGauge : MonoBehaviour {
     private float gainedTime;
     private float nextGain;
 
+    enum _eMusic
+    {
+        GAIN,
+        FEVERBGM,
+    };
+
     delegate void gainMethod();
 
 	void Start () {
@@ -44,7 +50,8 @@ public class FeverGauge : MonoBehaviour {
         Vector2 effectTimeInfo = gameScene.gameController.nodeController.gameObject.GetComponent<GameEffect>().effectTimeInfo;
         gainWaitTime = effectTimeInfo.x;
         fillWaitTime = effectTimeInfo.y;
-        audioSource = GetComponent<AudioSource>();
+        audioSources = GetComponents<AudioSource>();
+
 
         logoObject = Resources.Load<GameObject>(FeverLogoPath);
 
@@ -110,7 +117,7 @@ public class FeverGauge : MonoBehaviour {
                    if(feverState == _eFeverState.NORMAL)
                        ChangeState(_eFeverState.FEVER);
                }
-               audioSource.Play();
+               audioSources[(int)_eMusic.GAIN].Play();
            }));
         }
         //MAXになったらフィーバーモードへ
@@ -143,7 +150,7 @@ public class FeverGauge : MonoBehaviour {
                 
                 // ゲーム本編のBGMを再生
                 gameScene.PlayBGM();
-
+                audioSources[(int)_eMusic.FEVERBGM].Stop();
                 break;
             case _eFeverState.FEVER:
                 //中心地点を設定しなければならないらしい
@@ -156,7 +163,7 @@ public class FeverGauge : MonoBehaviour {
                 LogoPop();
                 // ゲーム本編のBGMを停止
                 gameScene.StopBGM();
-
+                audioSources[(int)_eMusic.FEVERBGM].Play();
                 break;
         }
     }
