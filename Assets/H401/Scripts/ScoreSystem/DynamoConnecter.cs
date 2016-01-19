@@ -74,7 +74,7 @@ public class DynamoConnecter : MonoBehaviour {
         }
     };
 
-
+    
     // Use this for initialization
     void Start() {
         Log.Debug("Start");
@@ -94,10 +94,19 @@ public class DynamoConnecter : MonoBehaviour {
             // データセット
             Log.Debug("DataSet");
             string str = fl.GetString();
-            publicKey = str.Substring(0, 20);
-            secretKey = str.Substring(20);
+            if (str != null)
+            {
+                publicKey = str.Substring(0, 20);
+                secretKey = str.Substring(20);
+            }
+            else
+            {
+                publicKey = "";
+                secretKey = "";
+                return;
+            }
         }
-        catch (FileNotFoundException) { Log.Error("NotFound Exception"); return; }        // ファイルが見当たらない場合
+        catch (FileNotFoundException) { Log.Error("NotFound Exception"); return; }      // ファイルが見当たらない場合
         catch (System.FormatException) { Log.Error("Format Exception"); return; }       // ファイルデータ不正
 
         // AWSへの接続
