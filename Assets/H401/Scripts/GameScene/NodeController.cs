@@ -74,6 +74,9 @@ public class NodeController : MonoBehaviour
     [SerializeField]
     private string unChainControllerPath = null;
     private GameObject unChainControllerPrefab = null;
+    
+    [SerializeField] public string gameArrowPrefabPath = null;
+    private GameObject gameArrowPrefab = null;
     #endregion
 
     #region // ノードの位置、サイズについての変数
@@ -126,11 +129,12 @@ public class NodeController : MonoBehaviour
     [SerializeField]
     private NodeTemplate[] NodeTemp = null;
 
-    private GameObject[][] gameNodePrefabs;                    // ノードのプレハブリスト
-    private Node[][] gameNodeScripts;                    // ノードのnodeスクリプトリスト
-    private Vector3[][] nodePlacePosList;                   // ノードの配置位置リスト
-    private GameObject frameController;                    // フレームコントローラープレハブ
-    private GameEffect      gameEffect;                         // GameEffect スクリプト
+    private GameObject[][] gameNodePrefabs;             // ノードのプレハブリスト
+    private Node[][]       gameNodeScripts;             // ノードのnodeスクリプトリスト
+    private Vector3[][]    nodePlacePosList;            // ノードの配置位置リスト
+    private GameObject     frameController;             // フレームコントローラープレハブ
+    private GameEffect     gameEffect;                  // GameEffect スクリプト
+    private GameObject     arrowController;             // GameEffect スクリプト
     
     private bool _isNodeAction = false;                // ノードがアクション中かフラグ
 
@@ -277,6 +281,7 @@ public class NodeController : MonoBehaviour
         // ----- プレハブデータを Resources から取得
         gameNodePrefab = Resources.Load<GameObject>(gameNodePrefabPath);
         frameNodePrefab = Resources.Load<GameObject>(frameNodePrefabPath);
+        gameArrowPrefab = Resources.Load<GameObject>(gameArrowPrefabPath);
 
         // ----- スプライトデータを Resources から取得
         gameNodeSprite = Resources.LoadAll<Sprite>(gameNodeSpritePath);
@@ -501,6 +506,11 @@ public class NodeController : MonoBehaviour
         frameController.transform.SetParent(transform.parent);
         frameController.name = "FrameController";
 
+        // 矢印を生成
+        arrowController = new GameObject();
+        arrowController.transform.SetParent(transform.parent);
+        arrowController.name = "ArrowController";
+
         Node.SetNodeController(this); //ノードにコントローラーを設定
 
         fieldLevel = levelTableScript.GetFieldLevel(0);
@@ -559,6 +569,10 @@ public class NodeController : MonoBehaviour
                         // 中央
                         frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.GROUND_C];
                     }
+
+                    // 矢印生成
+                    GameObject arrowObject = (GameObject)Instantiate(gameArrowPrefab, framePos, transform.rotation);
+                    arrowObject.transform.SetParent(arrowController.transform);
                 }
             }
 

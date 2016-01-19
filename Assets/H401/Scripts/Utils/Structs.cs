@@ -93,4 +93,6 @@ public struct NodeCountInfo
 public struct FadeTime {
     public float inTime;
     public float outTime;
+
+    public FadeTime(float _inTime, float _outTime) { inTime = _inTime; outTime = _outTime; }
 };

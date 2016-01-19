@@ -4,14 +4,19 @@ using DG.Tweening;
 using System.Linq;
 
 public class TitleButtons : MonoBehaviour {
+
+    [System.Serializable]
+    private struct SceneButton {
+        public AppliController._eSceneID order;
+        public FadeTime fadeTime;
+    };
     
     [SerializeField] private float  scaleTime   = 0.0f;       // 拡縮演出にかかる時間
     [SerializeField] private float  scaleMag    = 0.0f;       // 拡縮演出の倍率
     [SerializeField] private float  moveTime    = 0.0f;       // 移動演出にかかる時間
     [SerializeField] private float  moveEndPosX = 0.0f;       // 移動演出の移動終了座標(移動距離)
-    [SerializeField] private AppliController._eSceneID[] sceneButtonOrder;       // シーン遷移するボタンの配置順番
+    [SerializeField] private SceneButton[] sceneButtons;      // シーン遷移するボタンのリスト
     [SerializeField] private AppliController._eSceneID[] popupSceneList;       // ポップアップ的に遷移するシーンのリスト
-    [SerializeField] private FadeTime[] fadeTimes;            // シーン切り替え用演出にかかる時間リスト
 
     private TitleScene titleScene = null;   // タイトルシーンのスクリプト
     private Transform[] buttonTransList;        // ボタンの Transform リスト
@@ -39,16 +44,16 @@ public class TitleButtons : MonoBehaviour {
         // シーン遷移先を設定
         AppliController._eSceneID sceneID = AppliController._eSceneID.TITLE;
         int fadeID = 0;
-        for(int i = 0; i < sceneButtonOrder.Length; ++i) {
+        for(int i = 0; i < sceneButtons.Length; ++i) {
             if(trans.name == buttonTransList[i].name) {
-                sceneID = sceneButtonOrder[i];
+                sceneID = sceneButtons[i].order;
                 fadeID = i;
             }
         }
 
         // 遷移演出開始
         int cnt = 0;
-        for(int i = 0; i < sceneButtonOrder.Length; ++i) {
+        for(int i = 0; i < sceneButtons.Length; ++i) {
             // 選択されたボタンなら未処理
             if (i == fadeID)
                 continue;
@@ -82,9 +87,9 @@ public class TitleButtons : MonoBehaviour {
 
                     // 次のシーンへ
                     if(isPopup) {
-                        titleScene.PopupChangeScene(sceneID, fadeTimes[fadeID].inTime, fadeTimes[fadeID].outTime);
+                        titleScene.PopupChangeScene(sceneID, sceneButtons[fadeID].fadeTime.inTime, sceneButtons[fadeID].fadeTime.outTime);
                     } else {
-                        transform.root.gameObject.GetComponent<AppliController>().ChangeScene(sceneID, fadeTimes[fadeID].inTime, fadeTimes[fadeID].outTime);
+                        transform.root.gameObject.GetComponent<AppliController>().ChangeScene(sceneID, sceneButtons[fadeID].fadeTime.inTime, sceneButtons[fadeID].fadeTime.outTime);
                     }
                 })
                 .SetEase(Ease.OutCubic);
@@ -109,5 +114,18 @@ public class TitleButtons : MonoBehaviour {
 
             isOnClick = true;
         }
+    }
+
+    public FadeTime GetFadeTime(AppliController._eSceneID sceneID) {
+        FadeTime fadeTime = new FadeTime(0.0f, 0.0f);
+
+        foreach (var scene in sceneButtons) {
+            if(scene.order == sceneID) {
+                fadeTime = scene.fadeTime;
+                break;
+            }
+        }
+
+        return fadeTime;
     }
 }

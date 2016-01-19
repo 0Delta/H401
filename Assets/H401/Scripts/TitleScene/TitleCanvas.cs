@@ -4,12 +4,12 @@ using System.Collections;
 public class TitleCanvas : MonoBehaviour {
     
     [SerializeField] private string titleLogosPath;
-    [SerializeField] private string titleBacksPath;
     [SerializeField] private string titleButtonsPath;
     
     private GameObject titleLogosObject;
-    private GameObject titleBacksObject;
     private GameObject titleButtonsObject;
+
+    private TitleButtons titleButtonsScript;
 
 	// Use this for initialization
 	void Start () {
@@ -20,15 +20,12 @@ public class TitleCanvas : MonoBehaviour {
         titleLogosObject.transform.localPosition = Vector3.zero;
         titleLogosObject.transform.localScale = Vector3.one;
 
-        titleBacksObject = Instantiate(Resources.Load<GameObject>(titleBacksPath));
-        titleBacksObject.transform.SetParent(transform);
-        titleBacksObject.transform.localPosition = Vector3.zero;
-        titleBacksObject.transform.localScale = Vector3.one;
-
         titleButtonsObject = Instantiate(Resources.Load<GameObject>(titleButtonsPath));
         titleButtonsObject.transform.SetParent(transform);
         titleButtonsObject.transform.localPosition = Vector3.zero;
         titleButtonsObject.transform.localScale = Vector3.one;
+
+        titleButtonsScript = titleButtonsObject.GetComponent<TitleButtons>();
     }
     
     // タイトルシーンで使用している UI をアクティブにする
@@ -45,5 +42,9 @@ public class TitleCanvas : MonoBehaviour {
 
     public void InitButtonsTransform() {
         titleButtonsObject.GetComponent<TitleButtons>().InitButtonsTransform();
+    }
+
+    public FadeTime GetFadeTime(AppliController._eSceneID sceneID) {
+        return titleButtonsScript.GetFadeTime(sceneID);
     }
 }
