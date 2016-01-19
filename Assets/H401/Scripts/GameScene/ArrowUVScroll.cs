@@ -20,8 +20,10 @@ public class ArrowUVScroll : MonoBehaviour {
         if(offset.y < -1.0f)
             offset.y += 2.0f;
 
-//        print(offset);
-
 	    material.SetTextureOffset("_MainTex", offset);
 	}
+
+    void OnApplicationQuit() {
+	    material.SetTextureOffset("_MainTex", Vector2.zero);
+    }
 }
