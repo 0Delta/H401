@@ -124,6 +124,9 @@ public class LevelController : MonoBehaviour {
         animationObject = Instantiate(animationPrefab);
         animationObject.transform.SetParent(Camera.main.transform);
 
+        //時間を止める
+        gameScene.gameUI.gameInfoCanvas.limitTime.eventRatio = 0;
+
         audioSource.Play();
 
         //手前にあるオブジェクトを非表示
@@ -152,6 +155,8 @@ public class LevelController : MonoBehaviour {
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
         gameScene.mainCamera.transform.Rotate(new Vector3(0.0f, 0.0f, -lyingAngle),Space.Self);
         gameScene.directionalLight.color = new Color(1.0f,1.0f,1.0f);
+
+
 
         gameScene.gameController.gameObject.SetActive(false);
         gameScene.gameUI.gameInfoCanvas.gameObject.SetActive(false);
@@ -205,6 +210,8 @@ public class LevelController : MonoBehaviour {
         gameScene.gameUI.ojityanAnimator.gameObject.SetActive(true);
         gameScene.gameUI.gameInfoCanvas.gameObject.SetActive(true);
         gameScene.gameUI.gamePause.optionButton.SetActive(true);
+        //時間を戻す
+        gameScene.gameUI.gameInfoCanvas.limitTime.eventRatio = 1;
         Destroy(levelChangeObject);
         
         Camera.main.gameObject.transform.localRotation = Quaternion.identity;
