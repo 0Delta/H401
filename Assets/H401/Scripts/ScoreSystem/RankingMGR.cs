@@ -47,7 +47,8 @@ public class RankingMGR : MonoBehaviour {
     [SerializeField] public string ReturnButtonName = null;
     [SerializeField] public List<string> BGPrefabNameList = null;
     [SerializeField] public Vector3 BGPosition = new Vector3(0f, 0f, 0f);
-    [SerializeField] private Color filterColor;
+    [SerializeField] private Color filterColor = new Color(0f, 0f, 0f);
+    private Color filterColorBak = new Color(0f, 0f, 0f);
 
     public GameObject ScoreObj = null;
     GameObject OnlineObj = null;
@@ -134,6 +135,7 @@ public class RankingMGR : MonoBehaviour {
             .Subscribe(_ => {
                 try
                 {
+                    filterColorBak = BGObjList[0].GetComponentInChildren<MeshRenderer>().material.GetColor("_TexColor");
                     BGObjList[0].GetComponentInChildren<MeshRenderer>().material.SetColor("_TexColor", filterColor);     // ポップアップ中はタイトルにフィルターをかける
                     var Cont = BGObjList[1].GetComponentInChildren<TitleNodeController>();
                     Cont.InitNodesPosition();
@@ -142,8 +144,7 @@ public class RankingMGR : MonoBehaviour {
                 catch { }
 
             }).AddTo(this);
-        Sword.Load();
-
+            
         // ランキングのフリップ処理
         this.UpdateAsObservable()
             .Select(_ => FlipRanking)   // フリップフラグがONになった瞬間を感知
@@ -189,6 +190,11 @@ public class RankingMGR : MonoBehaviour {
     // ランキングを切り替えるトリガーを引く関数
     public void Flip() {
         FlipRanking = true;
+    }
+
+    public void OnDestroy()
+    {
+        BGObjList[0].GetComponentInChildren<MeshRenderer>().material.SetColor("_TexColor", filterColorBak);     // ポップアップ中はタイトルにフィルターをかける
     }
 }
 #pragma warning restore 414

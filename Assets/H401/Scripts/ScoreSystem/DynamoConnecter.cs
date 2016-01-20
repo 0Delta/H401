@@ -18,7 +18,7 @@ public class DynamoConnecter : MonoBehaviour {
     [SerializeField]    public string Password = null;
     [SerializeField]    public const string DefaultName = "NoName";
 
-    public const string TABLE_NAME = "H401_6";                                    // テーブルの名前
+    public const string TABLE_NAME = "H401";                                    // テーブルの名前
     private string publicKey = "AKIAJLMLMLC4KEYK77LQ";                            // 接続用ID
     private string secretKey = "QmbJyIdcQ+db4jho2qaea6ZdWaaU/60La8lxbCdP";        // 接続用PASSWORD
     private AmazonDynamoDBClient client = null;                                   // コネクタ
