@@ -125,6 +125,8 @@ public class RankingMGR : MonoBehaviour {
         }
         try {
             BGObjList[0].transform.localPosition = BGPosition;
+            BGObjList[1].transform.position += new Vector3(100,0,0);
+            BGObjList[2].transform.position += new Vector3(100,0,0);
         }
         catch
         {
