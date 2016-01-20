@@ -214,7 +214,7 @@ public class ScoreManager : MonoBehaviour {
     /// スコアをファイルからロードする
     /// </summary>
     /// <returns>正常で0</returns>
-    static int Load()
+    public static int Load()
     {
         if (Ready) { return 0; }
         try
