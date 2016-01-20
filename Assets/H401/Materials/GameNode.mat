@@ -151,6 +151,10 @@ Material:
         second: 0
       data:
         first:
+          name: _Threshold
+        second: 0.5
+      data:
+        first:
           name: _UVGap
         second: 0.5
       data:
@@ -192,10 +196,6 @@ Material:
       data:
         first:
           name: _DisplaceR5
-        second: 0.5
-      data:
-        first:
-          name: _Threshold
         second: 0.5
     m_Colors:
       data:
