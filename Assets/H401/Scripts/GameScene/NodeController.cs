@@ -118,7 +118,7 @@ public class NodeController : MonoBehaviour
     #region // スライドに使用する変数
     private bool isTap = false;                // タップ成功フラグ
     private bool isSlide = false;                // ノードスライドフラグ
-    public bool isNodeSlide { get { return isSlide; } }     //
+    public bool isNodeLock { get { return isSlide; } }     //
     private bool isSlideEnd = false;                // ノードがスライド終了処理中かフラグ
     private Vec2Int tapNodeID = Vec2Int.zero;         // タップしているノードのID
     private _eSlideDir slideDir = _eSlideDir.NONE;      // スライド中の方向
@@ -432,7 +432,7 @@ public class NodeController : MonoBehaviour
         // ノードのアニメーション終了と同時に接続チェック
         Observable
             .EveryUpdate()
-            .Select(x => !(IsNodeAction))
+            .Select(x =>  !(IsNodeAction) && !(isNodeLock))
             .DistinctUntilChanged()
             .Where(x => x)
             .ThrottleFrame(3)

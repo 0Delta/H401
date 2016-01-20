@@ -140,10 +140,6 @@ Material:
         second: 0
       data:
         first:
-          name: _UseUIAlphaClip
-        second: 0
-      data:
-        first:
           name: _Parallax
         second: 0.02
       data:
@@ -177,6 +173,10 @@ Material:
       data:
         first:
           name: _Metallic
+        second: 0
+      data:
+        first:
+          name: _UseUIAlphaClip
         second: 0
       data:
         first:
