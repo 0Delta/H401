@@ -54,7 +54,7 @@ public class LevelPanel : MonoBehaviour {
         }
         fieldImage[transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().gameController.nodeController.currentLevel].color = Color.yellow;
         MapField.SetPanel(this);
-
+        MapField.levelController = levelController;
         transform.Rotate(new Vector3(0.0f, 0.0f, rot));
         transform.localScale = Vector3.one;
 

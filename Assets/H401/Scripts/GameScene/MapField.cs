@@ -9,6 +9,10 @@ public class MapField : MonoBehaviour {
     static private LevelPanel levelPanel;
     static public void SetPanel(LevelPanel panel) { levelPanel = panel; }
 
+    static private LevelController _levelController;
+    static public LevelController levelController{
+        set { _levelController = value; }
+    }
     private int _mapNum = 0;
     public int mapNum { get { return _mapNum; } set { _mapNum = value; } }
     private SpriteRenderer sRenderer;
@@ -31,6 +35,10 @@ public class MapField : MonoBehaviour {
     }
     public void SetLevel()
     {
+        //遷移中は押せないように
+        if (_levelController.LevelState == _eLevelState.CHANGE)
+            return;
+
         levelPanel.NextLevel = _mapNum;
         levelPanel.ChangeText(_mapNum);
         //色変えとかここに
