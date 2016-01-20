@@ -71,9 +71,9 @@ public class LimitTime : MonoBehaviour {
             nowTime = maxTime - 0.1f;
             _eventRatio = 0.0f;
             GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
-
-            gameScene.gameController.nodeController.SetSlideAll(true); //ノードを操作不能にする
-
+            gameScene.gameController.nodeController.TapRelease();
+            gameScene.gameController.nodeController.DoKillAllNode();
+            gameScene.gameController.nodeController.isNodeLock = true; //ノードを操作不能にする
             //スコアをもってくる
             GameInfoCanvas gInfoCanvas = GetComponentInParent<GameInfoCanvas>();
             gInfoCanvas.score.Decide();
