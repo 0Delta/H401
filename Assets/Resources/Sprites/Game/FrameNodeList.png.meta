@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: fa88e6d993d597b40bbba85ddeb27430
-timeCreated: 1453094756
+guid: f8174178525558249b224617a741bbf4
+timeCreated: 1453286081
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: "tile512_5_\u4FEE\u6B63_0"
-    21300002: "tile512_5_\u4FEE\u6B63_1"
-    21300004: "tile512_5_\u4FEE\u6B63_2"
-    21300006: "tile512_5_\u4FEE\u6B63_3"
+    21300000: FrameNodeList_0
+    21300002: FrameNodeList_1
+    21300004: FrameNodeList_2
+    21300006: FrameNodeList_3
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -54,7 +54,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: "tile512_5_\u4FEE\u6B63_0"
+    - name: FrameNodeList_0
       rect:
         serializedVersion: 2
         x: 0
@@ -65,15 +65,15 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -56, y: -35}
-        - {x: -12, y: -64}
-        - {x: 9, y: -64}
-        - {x: 58, y: -37}
-        - {x: 58, y: 36}
-        - {x: 21, y: 64}
-        - {x: -9, y: 64}
-        - {x: -56, y: 43}
-    - name: "tile512_5_\u4FEE\u6B63_1"
+      - - {x: -18, y: 64}
+        - {x: -57, y: 36}
+        - {x: -57, y: -35}
+        - {x: -13, y: -64}
+        - {x: 10, y: -64}
+        - {x: 57, y: -35}
+        - {x: 57, y: 38}
+        - {x: 11, y: 64}
+    - name: FrameNodeList_1
       rect:
         serializedVersion: 2
         x: 128
@@ -84,15 +84,16 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -16, y: 64}
-        - {x: -56, y: 34}
-        - {x: -56, y: -35}
-        - {x: -10, y: -64}
-        - {x: 9, y: -64}
-        - {x: 58, y: -35}
-        - {x: 58, y: 41}
-        - {x: 13, y: 64}
-    - name: "tile512_5_\u4FEE\u6B63_2"
+      - - {x: -40, y: 64}
+        - {x: -56, y: 43}
+        - {x: -57, y: 36}
+        - {x: -57, y: -39}
+        - {x: -9, y: -64}
+        - {x: 5, y: -64}
+        - {x: 57, y: -34}
+        - {x: 57, y: 54}
+        - {x: 23, y: 64}
+    - name: FrameNodeList_2
       rect:
         serializedVersion: 2
         x: 0
@@ -111,7 +112,7 @@ TextureImporter:
         - {x: 31, y: -64}
         - {x: 58, y: -37}
         - {x: 58, y: 37}
-    - name: "tile512_5_\u4FEE\u6B63_3"
+    - name: FrameNodeList_3
       rect:
         serializedVersion: 2
         x: 128

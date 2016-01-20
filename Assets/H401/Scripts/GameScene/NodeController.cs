@@ -570,7 +570,7 @@ public class NodeController : MonoBehaviour
                     framePos.z = transform.position.z + FRAME_POSZ_MARGIN;
                     frameObject = (GameObject)Instantiate(frameNodePrefab, framePos, transform.rotation);
                     frameObject.transform.parent = frameController.transform;
-                    frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.FRAME];
+                    frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.TOP_FRAME];
                 }
                 // フレーム生成(下端)
                 if (i <= 0)
@@ -581,16 +581,7 @@ public class NodeController : MonoBehaviour
                     frameObject.transform.parent = frameController.transform;
 
                     // フレームのスプライトを変更
-                    if (j <= 1) {
-                        // 左端
-                        frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.GROUND_L];
-                    } else if(j >= AdjustRow(i) - 2) {
-                        // 右端
-                        frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.GROUND_R];
-                    } else {
-                        // 中央
-                        frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.GROUND_C];
-                    }
+                    frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.GROUND];
 
                     // 矢印生成
                     GameObject arrowObject = (GameObject)Instantiate(gameArrowPrefab, framePos, transform.rotation);
@@ -605,13 +596,14 @@ public class NodeController : MonoBehaviour
                 pos.z = transform.position.z + FRAME_POSZ_MARGIN;
                 frameObject = (GameObject)Instantiate(frameNodePrefab, pos, transform.rotation);
                 frameObject.transform.parent = frameController.transform;
-                frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.FRAME];
+                frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.SIDE_FRAME];
 
                 // フレーム生成(右端)
                 pos.x = transform.position.x + nodeSize.x * -(AdjustRow(i) * 0.5f - (AdjustRow(i) - 1 + 0.5f));
                 frameObject = (GameObject)Instantiate(frameNodePrefab, pos, transform.rotation);
                 frameObject.transform.parent = frameController.transform;
-                frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.FRAME];
+                frameObject.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 180.0f);
+                frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.SIDE_FRAME];
             }
         }
     }

@@ -173,6 +173,14 @@ Material:
         second: 0.755
       data:
         first:
+          name: _BrightnessLowThreshold
+        second: 0.254
+      data:
+        first:
+          name: _BrightnessHighThreshold
+        second: 0.45
+      data:
+        first:
           name: _BrightnessRatio
         second: 0.476
       data:
@@ -183,14 +191,6 @@ Material:
         first:
           name: _BrightnessHeightThreshold
         second: 0
-      data:
-        first:
-          name: _BrightnessLowThreshold
-        second: 0.254
-      data:
-        first:
-          name: _BrightnessHighThreshold
-        second: 0.45
     m_Colors:
       data:
         first:
@@ -203,7 +203,7 @@ Material:
       data:
         first:
           name: _TexColor
-        second: {r: 0.42647058, g: 0.42647058, b: 0.42647058, a: 1}
+        second: {r: 1, g: 1, b: 1, a: 1}
       data:
         first:
           name: _BrightnessColor
