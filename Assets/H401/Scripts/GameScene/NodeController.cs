@@ -598,6 +598,7 @@ public class NodeController : MonoBehaviour
                     frameObject = (GameObject)Instantiate(frameNodePrefab, framePos, transform.rotation);
                     frameObject.transform.parent = frameController.transform;
                     frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.TOP_FRAME];
+                    frameObject.GetComponent<SpriteRenderer>().sortingOrder = 2;
                 }
                 // フレーム生成(下端)
                 if (i <= 0)
@@ -606,7 +607,7 @@ public class NodeController : MonoBehaviour
                     framePos.z = transform.position.z + FRAME_POSZ_MARGIN;
                     frameObject = (GameObject)Instantiate(frameNodePrefab, framePos, transform.rotation);
                     frameObject.transform.parent = frameController.transform;
-
+                    frameObject.GetComponent<SpriteRenderer>().sortingOrder = 2;
                     // フレームのスプライトを変更
                     frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.GROUND];
 
@@ -624,6 +625,7 @@ public class NodeController : MonoBehaviour
                 frameObject = (GameObject)Instantiate(frameNodePrefab, pos, transform.rotation);
                 frameObject.transform.parent = frameController.transform;
                 frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.SIDE_FRAME];
+                frameObject.GetComponent<SpriteRenderer>().sortingOrder = 2;
 
                 // フレーム生成(右端)
                 pos.x = transform.position.x + nodeSize.x * -(AdjustRow(i) * 0.5f - (AdjustRow(i) - 1 + 0.5f));
@@ -631,6 +633,8 @@ public class NodeController : MonoBehaviour
                 frameObject.transform.parent = frameController.transform;
                 frameObject.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 180.0f);
                 frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.SIDE_FRAME];
+
+                frameObject.GetComponent<SpriteRenderer>().sortingOrder = 2;
             }
         }
     }
