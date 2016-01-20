@@ -28,7 +28,7 @@ public class FeverGauge : MonoBehaviour {
     private GameObject FPanelPrefab = null;
     private GameObject FPanelObject = null;
 
-    private AudioSource[] audioSources = null;
+    private AudioSource audioSource = null;
 
     private float gainWaitTime;
     private float fillWaitTime;
@@ -50,7 +50,7 @@ public class FeverGauge : MonoBehaviour {
         Vector2 effectTimeInfo = gameScene.gameController.nodeController.gameObject.GetComponent<GameEffect>().effectTimeInfo;
         gainWaitTime = effectTimeInfo.x;
         fillWaitTime = effectTimeInfo.y;
-        audioSources = GetComponents<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
 
 
         logoObject = Resources.Load<GameObject>(FeverLogoPath);
@@ -117,7 +117,7 @@ public class FeverGauge : MonoBehaviour {
                    if(feverState == _eFeverState.NORMAL)
                        ChangeState(_eFeverState.FEVER);
                }
-               audioSources[(int)_eMusic.GAIN].Play();
+               audioSource.Play();
            }));
         }
         //MAXになったらフィーバーモードへ
@@ -146,10 +146,11 @@ public class FeverGauge : MonoBehaviour {
                 Destroy(FPanelObject);
                 FGImage.material.EnableKeyword("_EMISSION");
                 FGImage.material.SetColor("_EmissionColor", Color.black);
-                
+
                 // ゲーム本編のBGMを再生
-                gameScene.PlayBGM();
-                audioSources[(int)_eMusic.FEVERBGM].Stop();
+                gameScene.StopBGM(GameScene._eGameSceneBGM.FEVER);
+                gameScene.PlayBGM(GameScene._eGameSceneBGM.GAME);
+                //audioSources[(int)_eMusic.FEVERBGM].Stop();
                 break;
             case _eFeverState.FEVER:
                 //中心地点を設定しなければならないらしい
@@ -161,8 +162,8 @@ public class FeverGauge : MonoBehaviour {
                 feverValue = GAUGE_MAX;
                 LogoPop();
                 // ゲーム本編のBGMを停止
-                gameScene.StopBGM();
-                audioSources[(int)_eMusic.FEVERBGM].Play();
+                gameScene.StopBGM(GameScene._eGameSceneBGM.GAME);
+                gameScene.PlayBGM(GameScene._eGameSceneBGM.FEVER);
                 break;
         }
     }

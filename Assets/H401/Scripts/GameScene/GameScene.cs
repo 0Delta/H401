@@ -18,7 +18,7 @@ public class GameScene : MonoBehaviour {
     private GameObject mainCameraObject;
     private GameObject lightObject;
     private GameObject probeObject;
-    private AudioSource audioSource;
+    private AudioSource[] audioSources;
 
     private GameController      _gameController;
     private GameUI              _gameUI;
@@ -31,6 +31,12 @@ public class GameScene : MonoBehaviour {
     public LevelTables      levelTables { get { return _levelTables; } }
     public Camera           mainCamera { get { return _mainCamera; } }
     public Light            directionalLight{get{return _directionalLight;}}
+
+    public enum _eGameSceneBGM
+    {
+        GAME,
+        FEVER,
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -60,14 +66,14 @@ public class GameScene : MonoBehaviour {
         _gameController = gameControllerObject.GetComponent<GameController>();
         gameControllerObject.transform.SetParent(transform);
 
-        audioSource = GetComponent<AudioSource>();
+        audioSources = GetComponents<AudioSource>();
 	}
 
-    public void PlayBGM() {
-        audioSource.Play();
+    public void PlayBGM(_eGameSceneBGM bgmNum) {
+        audioSources[(int)bgmNum].Play();
     }
     
-    public void StopBGM() {
-        audioSource.Stop();
+    public void StopBGM(_eGameSceneBGM bgmNum) {
+        audioSources[(int)bgmNum].Stop();
     }
 }

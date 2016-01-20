@@ -11,6 +11,8 @@ public class GameInfoCanvas : MonoBehaviour {
     public FeverGauge feverGauge {get {return _feverGauge;}}
     [HideInInspector]public int levelImageNum { set { levelText.text = levelStrings[value]; } }
 
+    private Button _stageSelectButton;
+    public Button stageSelectButton {  get { return _stageSelectButton; } }
     private Text levelText;
     [SerializeField]private string[] levelStrings;
 
@@ -21,6 +23,8 @@ public class GameInfoCanvas : MonoBehaviour {
         _score = GetComponentInChildren<Score>();
         _limitTime = GetComponentInChildren<LimitTime>();
         _feverGauge = GetComponentInChildren<FeverGauge>();
+
+        _stageSelectButton = GetComponentInChildren<Button>();
 
         levelText = transform.FindChild("GameInfoPanel").FindChild("LevelText").GetComponent<Text>();
         levelText.text = "Very Easy";

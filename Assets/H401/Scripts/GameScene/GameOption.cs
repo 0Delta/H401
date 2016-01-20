@@ -21,6 +21,9 @@ public class GameOption : MonoBehaviour {
 
     private AudioSource audioSource;
 
+    private bool _isPause = false;
+    public bool IsPause {  get { return _isPause; } }
+
 	// Use this for initialization
     void Start()
     {
@@ -47,12 +50,15 @@ public class GameOption : MonoBehaviour {
         //時間を止める
         Time.timeScale = 0.0f;
 
+        _isPause = true;
         audioSource.Play();
 
         _pauseState = _ePauseState.PAUSE;
         
         //オプションボタンをノンアクに
         triggerButton.interactable = false;
+
+
 
         //パネル生成
         panelObject = (GameObject)Instantiate(Resources.Load<GameObject>(pausePanelPath));
@@ -81,6 +87,10 @@ public class GameOption : MonoBehaviour {
         butttons[0].onClick.AddListener(() => { Time.timeScale = 1.0f; appController.ChangeScene(AppliController._eSceneID.GAME,0.5f,0.5f); audioSource.Play(); });
         butttons[1].onClick.AddListener(() => { Time.timeScale = 1.0f; appController.ChangeScene(AppliController._eSceneID.TITLE,1.0f,1.0f); audioSource.Play(); });
 
+        //ステージ遷移ボタンをノンアクに
+        GameScene gameScene = appController.GetCurrentScene().GetComponent<GameScene>();
+        gameScene.gameUI.gameInfoCanvas.stageSelectButton.interactable = false;
+
         //ここでもう終了時処理の設定をしておく
         triggerButton.onClick.RemoveAllListeners();
         triggerButton.onClick.AddListener(EndOption);
@@ -94,14 +104,18 @@ public class GameOption : MonoBehaviour {
         triggerButton.onClick.RemoveAllListeners();
         triggerButton.onClick.AddListener(StartOption);
         //panelObject.transform.DOScale(popScale, popTime)
+
+
+
         panelObject.transform.DOLocalMoveY(1500.0f,popTime)
             .OnComplete(() =>
             {
                 triggerButton.interactable = true;
                 Destroy(panelObject);
-
+                GameScene gameScene = transform.root.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+                gameScene.gameUI.gameInfoCanvas.stageSelectButton.interactable = true;
                 _pauseState = _ePauseState.GAME;
-
+                _isPause = false;
             });
 
     }

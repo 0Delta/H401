@@ -38,6 +38,8 @@ public class LevelController : MonoBehaviour {
 
     private AudioSource audioSource;
 
+    private GameOption gOption;
+
 	// Use this for initialization
 	void Start () {
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
@@ -53,6 +55,7 @@ public class LevelController : MonoBehaviour {
         levelChangePrefab = Resources.Load<GameObject>(levelChangePath);
         animationPrefab = Resources.Load<GameObject>(animationPath);
 
+        gOption = gameScene.gameUI.gamePause;
  //       gameScene.gameUI.gameInfoCanvas.GetComponentInChildren<fieldImage>().gameObject.GetComponent<Button>().onClick.AddListener(TouchChange);
 
 	}
@@ -61,6 +64,10 @@ public class LevelController : MonoBehaviour {
 	void Update () {
         //ノードが１つでもアクション状態であれば判定しない
         if (gameController.nodeController.isNodeLock)
+            return;
+
+        //ポーズ中は判定しない
+        if (gOption.IsPause)
             return;
 
         currentAngle = Input.acceleration.x * 90.0f;
