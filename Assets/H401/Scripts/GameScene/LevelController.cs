@@ -230,6 +230,8 @@ public class LevelController : MonoBehaviour {
 
     public void TouchChange()
     {
+     if (gameController.nodeController.isNodeLock)
+                return;
         switch (LevelState)
         {
             case _eLevelState.STAND:
