@@ -131,7 +131,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11439050, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
       propertyPath: startSceneID
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11425576, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
       propertyPath: m_Enabled

@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 236b69d39c94c1d428b0411dcc1d2e57
-timeCreated: 1453282814
+guid: 6009d3370abb654449636aace1f58c99
+timeCreated: 1453282835
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: tile_plus_0
-    21300002: tile_plus_1
-    21300004: tile_plus_2
-    21300006: tile_plus_3
+    21300000: tile_plus_mask_0
+    21300002: tile_plus_mask_1
+    21300004: tile_plus_mask_2
+    21300006: tile_plus_mask_3
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -54,7 +54,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: tile_plus_0
+    - name: tile_plus_mask_0
       rect:
         serializedVersion: 2
         x: 0
@@ -65,15 +65,11 @@ TextureImporter:
       pivot: {x: 0, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 46, y: 0}
-        - {x: 7, y: -28}
-        - {x: 7, y: -99}
-        - {x: 51, y: -128}
-        - {x: 74, y: -128}
-        - {x: 121, y: -99}
-        - {x: 121, y: -26}
-        - {x: 75, y: 0}
-    - name: tile_plus_1
+      - - {x: 0, y: 0}
+        - {x: 0, y: -128}
+        - {x: 128, y: -128}
+        - {x: 128, y: 0}
+    - name: tile_plus_mask_1
       rect:
         serializedVersion: 2
         x: 128
@@ -84,16 +80,11 @@ TextureImporter:
       pivot: {x: 0, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 24, y: 0}
-        - {x: 8, y: -21}
-        - {x: 7, y: -28}
-        - {x: 7, y: -103}
-        - {x: 55, y: -128}
-        - {x: 69, y: -128}
-        - {x: 121, y: -98}
-        - {x: 121, y: -10}
-        - {x: 87, y: 0}
-    - name: tile_plus_2
+      - - {x: 0, y: 0}
+        - {x: 0, y: -128}
+        - {x: 128, y: -128}
+        - {x: 128, y: 0}
+    - name: tile_plus_mask_2
       rect:
         serializedVersion: 2
         x: 0
@@ -104,15 +95,11 @@ TextureImporter:
       pivot: {x: 0, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 70, y: 0}
-        - {x: 60, y: 0}
-        - {x: 8, y: -28}
-        - {x: 8, y: -113}
-        - {x: 56, y: -128}
-        - {x: 95, y: -128}
-        - {x: 122, y: -101}
-        - {x: 122, y: -27}
-    - name: tile_plus_3
+      - - {x: 0, y: 0}
+        - {x: 0, y: -128}
+        - {x: 128, y: -128}
+        - {x: 128, y: 0}
+    - name: tile_plus_mask_3
       rect:
         serializedVersion: 2
         x: 128
@@ -123,14 +110,10 @@ TextureImporter:
       pivot: {x: 0, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 47, y: 0}
-        - {x: 8, y: -28}
-        - {x: 8, y: -99}
-        - {x: 52, y: -128}
-        - {x: 75, y: -128}
-        - {x: 122, y: -99}
-        - {x: 122, y: -26}
-        - {x: 76, y: 0}
+      - - {x: 0, y: 0}
+        - {x: 0, y: -128}
+        - {x: 128, y: -128}
+        - {x: 128, y: 0}
     outline: []
   spritePackingTag: 
   userData: 

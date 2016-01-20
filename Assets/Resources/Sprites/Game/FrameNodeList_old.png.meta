@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 236b69d39c94c1d428b0411dcc1d2e57
-timeCreated: 1453282814
+guid: fa88e6d993d597b40bbba85ddeb27430
+timeCreated: 1453094756
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: tile_plus_0
-    21300002: tile_plus_1
-    21300004: tile_plus_2
-    21300006: tile_plus_3
+    21300000: "tile512_5_\u4FEE\u6B63_0"
+    21300002: "tile512_5_\u4FEE\u6B63_1"
+    21300004: "tile512_5_\u4FEE\u6B63_2"
+    21300006: "tile512_5_\u4FEE\u6B63_3"
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -54,83 +54,82 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: tile_plus_0
+    - name: "tile512_5_\u4FEE\u6B63_0"
       rect:
         serializedVersion: 2
         x: 0
         y: 128
         width: 128
         height: 128
-      alignment: 1
-      pivot: {x: 0, y: 1}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 46, y: 0}
-        - {x: 7, y: -28}
-        - {x: 7, y: -99}
-        - {x: 51, y: -128}
-        - {x: 74, y: -128}
-        - {x: 121, y: -99}
-        - {x: 121, y: -26}
-        - {x: 75, y: 0}
-    - name: tile_plus_1
+      - - {x: -56, y: -35}
+        - {x: -12, y: -64}
+        - {x: 9, y: -64}
+        - {x: 58, y: -37}
+        - {x: 58, y: 36}
+        - {x: 21, y: 64}
+        - {x: -9, y: 64}
+        - {x: -56, y: 43}
+    - name: "tile512_5_\u4FEE\u6B63_1"
       rect:
         serializedVersion: 2
         x: 128
         y: 128
         width: 128
         height: 128
-      alignment: 1
-      pivot: {x: 0, y: 1}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 24, y: 0}
-        - {x: 8, y: -21}
-        - {x: 7, y: -28}
-        - {x: 7, y: -103}
-        - {x: 55, y: -128}
-        - {x: 69, y: -128}
-        - {x: 121, y: -98}
-        - {x: 121, y: -10}
-        - {x: 87, y: 0}
-    - name: tile_plus_2
+      - - {x: -16, y: 64}
+        - {x: -56, y: 34}
+        - {x: -56, y: -35}
+        - {x: -10, y: -64}
+        - {x: 9, y: -64}
+        - {x: 58, y: -35}
+        - {x: 58, y: 41}
+        - {x: 13, y: 64}
+    - name: "tile512_5_\u4FEE\u6B63_2"
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 128
         height: 128
-      alignment: 1
-      pivot: {x: 0, y: 1}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 70, y: 0}
-        - {x: 60, y: 0}
-        - {x: 8, y: -28}
-        - {x: 8, y: -113}
-        - {x: 56, y: -128}
-        - {x: 95, y: -128}
-        - {x: 122, y: -101}
-        - {x: 122, y: -27}
-    - name: tile_plus_3
+      - - {x: 6, y: 64}
+        - {x: -4, y: 64}
+        - {x: -56, y: 36}
+        - {x: -56, y: -49}
+        - {x: -8, y: -64}
+        - {x: 31, y: -64}
+        - {x: 58, y: -37}
+        - {x: 58, y: 37}
+    - name: "tile512_5_\u4FEE\u6B63_3"
       rect:
         serializedVersion: 2
         x: 128
         y: 0
         width: 128
         height: 128
-      alignment: 1
-      pivot: {x: 0, y: 1}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 47, y: 0}
-        - {x: 8, y: -28}
-        - {x: 8, y: -99}
-        - {x: 52, y: -128}
-        - {x: 75, y: -128}
-        - {x: 122, y: -99}
-        - {x: 122, y: -26}
-        - {x: 76, y: 0}
+      - - {x: -17, y: 64}
+        - {x: -56, y: 36}
+        - {x: -56, y: -35}
+        - {x: -12, y: -64}
+        - {x: 11, y: -64}
+        - {x: 58, y: -35}
+        - {x: 58, y: 38}
+        - {x: 12, y: 64}
     outline: []
   spritePackingTag: 
   userData: 
