@@ -158,7 +158,10 @@ public class LevelController : MonoBehaviour {
 
 
 
-        gameScene.gameController.gameObject.SetActive(false);
+        //gameScene.gameController.gameObject.SetActive(false);
+        gameScene.gameController.nodeController.gameObject.SetActive(false);
+        gameScene.gameController.arrowControllerObject.SetActive(false);
+        gameScene.gameController.frameControllerObject.SetActive(false);
         gameScene.gameUI.gameInfoCanvas.gameObject.SetActive(false);
     }
 
@@ -206,7 +209,10 @@ public class LevelController : MonoBehaviour {
     {
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
 
-        gameScene.gameController.gameObject.SetActive(true);
+        //gameScene.gameController.gameObject.SetActive(true);
+        gameScene.gameController.nodeController.gameObject.SetActive(true);
+        gameScene.gameController.arrowControllerObject.SetActive(true);
+        gameScene.gameController.frameControllerObject.SetActive(true);
         gameScene.gameUI.ojityanAnimator.gameObject.SetActive(true);
         gameScene.gameUI.gameInfoCanvas.gameObject.SetActive(true);
         gameScene.gameUI.gamePause.optionButton.SetActive(true);
