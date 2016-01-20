@@ -573,8 +573,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: d77f0c4903fcb7d439f19dc5b83938b4, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 06f13c6d710ebaa49b96f6880b5ea1a0, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -832,8 +832,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: d63df103fe4a37d449c637eb649adcc9, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 06f13c6d710ebaa49b96f6880b5ea1a0, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1060,8 +1060,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 898bc1d569b9a7c4ea6155a0459c7ba4, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 06f13c6d710ebaa49b96f6880b5ea1a0, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1256,8 +1256,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 898bc1d569b9a7c4ea6155a0459c7ba4, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 06f13c6d710ebaa49b96f6880b5ea1a0, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1316,8 +1316,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: d63df103fe4a37d449c637eb649adcc9, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 06f13c6d710ebaa49b96f6880b5ea1a0, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
