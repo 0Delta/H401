@@ -212,7 +212,6 @@ public class ScoreManager : MonoBehaviour {
     //----------------------------------
     // プレハブ標準の関数群
     void Start() {
-        //AWSStart();     // AWSシステムを起動
         Load();         // ファイルからスコア読み出し
     }
 
@@ -229,13 +228,7 @@ public class ScoreManager : MonoBehaviour {
         Save();
         return r;
     }
-
-    #region // 未実装
-    void SendHiScore() {
-
-    }
-    #endregion
-
+    
     /// <summary>
     /// 暗号化用文字列を生成する
     /// </summary>
@@ -279,10 +272,11 @@ public class ScoreManager : MonoBehaviour {
 
             // データを読みだして復号化
             var fl = new AESLoader(Key);
-            fl.Load("save", System.Text.Encoding.UTF8);
-
-            // データセット
-            SListInstance.FromStringData(fl.GetString());
+            if (fl.Load("save", System.Text.Encoding.UTF8) == 0)
+            {
+                // データセット
+                SListInstance.FromStringData(fl.GetString());
+            }
         }
         catch(FileNotFoundException) { return -1; }        // ファイルが見当たらない場合
         catch(System.FormatException) { return -1; }       // ファイルデータ不正

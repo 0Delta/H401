@@ -39,6 +39,15 @@ public class OnlineRankingMGR : MonoBehaviour {
         var ScoreObj = GetComponentInParent<RankingMGR>().ScoreObj.GetComponent<ScoreManager>();
         OScoreMGR.Send(ScoreObj.GetScore(1), ScoreObj.Name);
 
+        Observable
+            .EveryUpdate()
+            .Where(_ => OScoreMGR.GetOnlineRanking() != null)
+            .Take(1)
+            .Subscribe(_ => {
+                Score3D.RankingData = OScoreMGR.GetOnlineRanking();
+            }).AddTo(this);
+        
+
         // 円形に座標を設定
         Vector3 Pos;
         int n = 0;
@@ -59,6 +68,7 @@ public class OnlineRankingMGR : MonoBehaviour {
             GameObject obj = this.InstantiateChild(ScorePrefabName);
             ScoreList.Add(obj);
             obj.GetComponent<Transform>().localPosition = CenterPoint;
+            obj.GetComponent<Score3D>().Rank = i - ScorePosList.Count/2;
         }
 
         // 実際の座標を移動させる処理
