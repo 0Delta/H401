@@ -207,7 +207,89 @@ public class ScoreManager : MonoBehaviour {
 
     }
     // スコアリスト実体を宣言
-    ScoreList SListInstance = new ScoreList();
+    static ScoreList SListInstance = new ScoreList();
+    static bool Ready = false;
+
+    /// <summary>
+    /// スコアをファイルからロードする
+    /// </summary>
+    /// <returns>正常で0</returns>
+    static int Load()
+    {
+        if (Ready) { return 0; }
+        try
+        {
+            // キーを作成
+            string Key = KeyGenerator();
+
+            // データを読みだして復号化
+            var fl = new AESLoader(Key);
+            if (fl.Load("save", System.Text.Encoding.UTF8) == 0)
+            {
+                // データセット
+                SListInstance.FromStringData(fl.GetString());
+            }
+            Ready = true;
+        }
+        catch (FileNotFoundException) { return -1; }        // ファイルが見当たらない場合
+        catch (System.FormatException) { return -1; }       // ファイルデータ不正
+
+        return 0;
+    }
+
+    /// <summary>
+    /// 暗号化用文字列を生成する
+    /// </summary>
+    /// <returns>機種ごとにユニークな暗号化文字列</returns>
+    private static string KeyGenerator()
+    {
+        string Key = SystemInfo.deviceUniqueIdentifier.ToString();
+        Key.PadLeft(32, Key[0]);
+        Key = Key.Substring(0, 32);
+        return Key;
+    }
+
+    /// <summary>
+    /// スコアを暗号化してファイルにセーブする
+    /// </summary>
+    /// <returns>正常で0</returns>
+    static int Save()
+    {
+        // キーを作成
+        string Key = KeyGenerator();
+
+        // 書き込み
+        try
+        {
+            // データを読みだして暗号化
+            var fw = new AESWriter(Key);
+            fw.Save("save", SListInstance.ToStringData(), System.Text.Encoding.UTF8);
+        }
+        catch (System.IO.IsolatedStorage.IsolatedStorageException)
+        {
+            return -1;
+        }
+        return 0;
+    }
+
+    /// <summary>
+    /// スコアの取得
+    /// </summary>
+    /// <param name="Rank">取得するランク。1-10</param>
+    /// <returns>範囲外が指定されたら0</returns>
+    public static int GetScore(int Rank)
+    {
+        if (Rank < 1 || 10 < Rank)
+        {
+            return 0;
+        }
+        var ScoreVal = SListInstance[Rank];
+        if (ScoreVal != null)
+        {
+            return ScoreVal.Score;
+        }
+        return -1;
+    }
 
     //----------------------------------
     // プレハブ標準の関数群
@@ -227,77 +309,5 @@ public class ScoreManager : MonoBehaviour {
         //    + "\n" + SListInstance.ToString());
         Save();
         return r;
-    }
-    
-    /// <summary>
-    /// 暗号化用文字列を生成する
-    /// </summary>
-    /// <returns>機種ごとにユニークな暗号化文字列</returns>
-    private string KeyGenerator() {
-        string Key = SystemInfo.deviceUniqueIdentifier.ToString();
-        Key.PadLeft(32, Key[0]);
-        Key = Key.Substring(0, 32);
-        return Key;
-    }
-
-    /// <summary>
-    /// スコアを暗号化してファイルにセーブする
-    /// </summary>
-    /// <returns>正常で0</returns>
-    int Save() {
-        // キーを作成
-        string Key = KeyGenerator();
-        
-        // 書き込み
-        try
-        {
-            // データを読みだして暗号化
-            var fw = new AESWriter(Key);
-            fw.Save("save", SListInstance.ToStringData(), System.Text.Encoding.UTF8);
-        }
-        catch (System.IO.IsolatedStorage.IsolatedStorageException) {
-            return -1;
-        }
-        return 0;
-    }
-
-    /// <summary>
-    /// スコアをファイルからロードする
-    /// </summary>
-    /// <returns>正常で0</returns>
-    int Load() {
-        try {
-            // キーを作成
-            string Key = KeyGenerator();
-
-            // データを読みだして復号化
-            var fl = new AESLoader(Key);
-            if (fl.Load("save", System.Text.Encoding.UTF8) == 0)
-            {
-                // データセット
-                SListInstance.FromStringData(fl.GetString());
-            }
-        }
-        catch(FileNotFoundException) { return -1; }        // ファイルが見当たらない場合
-        catch(System.FormatException) { return -1; }       // ファイルデータ不正
-
-        return 0;
-    }
-
-    /// <summary>
-    /// スコアの取得
-    /// </summary>
-    /// <param name="Rank">取得するランク。1-10</param>
-    /// <returns>範囲外が指定されたら0</returns>
-    public int GetScore(int Rank) {
-        if(Rank < 1 || 10 < Rank) {
-            return 0;
-        }
-        var ScoreVal = SListInstance[Rank];
-        if (ScoreVal != null)
-        {
-            return ScoreVal.Score;
-        }
-        return -1;
     }
 }
