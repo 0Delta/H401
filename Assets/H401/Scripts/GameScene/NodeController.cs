@@ -2025,5 +2025,10 @@ public class NodeController : MonoBehaviour
             }
         }
     }
+
+    void ChangeLitColor(Color col)
+    {
+        gameNodePrefabs[0][0].GetComponent<SpriteRenderer>().sharedMaterial.SetColor("Tint",col);
+    }
 }
 
