@@ -58,6 +58,8 @@ public class AppliController : MonoBehaviour {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = gameFrameRate;  //シーンごとにFPSを設定するべきらしい
 
+        ScoreManager.Load();
+
 		// 次のシーンへ
 		ChangeScene(startSceneID, gameStartFadeTime.inTime, gameStartFadeTime.outTime);
 	}
