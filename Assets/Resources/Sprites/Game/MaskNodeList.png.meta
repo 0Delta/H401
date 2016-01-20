@@ -1,17 +1,17 @@
 fileFormatVersion: 2
-guid: d0de8694ae5b9774cb15be444c50f951
-timeCreated: 1452850877
+guid: be8471e312ff0084191ddaa82d4242c9
+timeCreated: 1453284609
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: NodeMaskList_0
-    21300002: NodeMaskList_1
-    21300004: NodeMaskList_2
-    21300006: NodeMaskList_3
-    21300008: NodeMaskList_4
-    21300010: NodeMaskList_5
-    21300012: NodeMaskList_6
-    21300014: NodeMaskList_7
+    21300000: MaskNodeList_0
+    21300002: MaskNodeList_1
+    21300004: MaskNodeList_2
+    21300006: MaskNodeList_3
+    21300008: MaskNodeList_4
+    21300010: MaskNodeList_5
+    21300012: MaskNodeList_6
+    21300014: MaskNodeList_7
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -58,7 +58,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: NodeMaskList_0
+    - name: MaskNodeList_0
       rect:
         serializedVersion: 2
         x: 0
@@ -73,7 +73,7 @@ TextureImporter:
         - {x: -64, y: -64}
         - {x: 64, y: -64}
         - {x: 64, y: 64}
-    - name: NodeMaskList_1
+    - name: MaskNodeList_1
       rect:
         serializedVersion: 2
         x: 128
@@ -88,7 +88,7 @@ TextureImporter:
         - {x: -64, y: -64}
         - {x: 64, y: -64}
         - {x: 64, y: 64}
-    - name: NodeMaskList_2
+    - name: MaskNodeList_2
       rect:
         serializedVersion: 2
         x: 256
@@ -103,7 +103,7 @@ TextureImporter:
         - {x: -64, y: -64}
         - {x: 64, y: -64}
         - {x: 64, y: 64}
-    - name: NodeMaskList_3
+    - name: MaskNodeList_3
       rect:
         serializedVersion: 2
         x: 384
@@ -118,7 +118,7 @@ TextureImporter:
         - {x: -64, y: -64}
         - {x: 64, y: -64}
         - {x: 64, y: 64}
-    - name: NodeMaskList_4
+    - name: MaskNodeList_4
       rect:
         serializedVersion: 2
         x: 0
@@ -133,7 +133,7 @@ TextureImporter:
         - {x: -64, y: -64}
         - {x: 64, y: -64}
         - {x: 64, y: 64}
-    - name: NodeMaskList_5
+    - name: MaskNodeList_5
       rect:
         serializedVersion: 2
         x: 128
@@ -148,7 +148,7 @@ TextureImporter:
         - {x: -64, y: -64}
         - {x: 64, y: -64}
         - {x: 64, y: 64}
-    - name: NodeMaskList_6
+    - name: MaskNodeList_6
       rect:
         serializedVersion: 2
         x: 256
@@ -163,7 +163,7 @@ TextureImporter:
         - {x: -64, y: -64}
         - {x: 64, y: -64}
         - {x: 64, y: 64}
-    - name: NodeMaskList_7
+    - name: MaskNodeList_7
       rect:
         serializedVersion: 2
         x: 384

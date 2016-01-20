@@ -60,7 +60,7 @@ public class LevelController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //ノードが１つでもアクション状態であれば判定しない
-        if (gameController.nodeController.isNodeSlide)
+        if (gameController.nodeController.isNodeLock)
             return;
 
         currentAngle = Input.acceleration.x * 90.0f;

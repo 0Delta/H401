@@ -9,10 +9,10 @@ public class GameInfoCanvas : MonoBehaviour {
     public LimitTime limitTime { get { return _limitTime; } }
     private FeverGauge _feverGauge;
     public FeverGauge feverGauge {get {return _feverGauge;}}
-    public int levelImageNum { set { levelImage.sprite = levelSprites[value]; } }
+    [HideInInspector]public int levelImageNum { set { levelText.text = levelStrings[value]; } }
 
-    private Image levelImage;
-    [SerializeField]private Sprite[] levelSprites;
+    private Text levelText;
+    [SerializeField]private string[] levelStrings;
 
 	// Use this for initialization
 	void Start () {
@@ -22,7 +22,7 @@ public class GameInfoCanvas : MonoBehaviour {
         _limitTime = GetComponentInChildren<LimitTime>();
         _feverGauge = GetComponentInChildren<FeverGauge>();
 
-        levelImage = transform.FindChild("GameInfoPanel").FindChild("LevelImage").GetComponent<Image>();
-        levelImageNum = 0;
+        levelText = transform.FindChild("GameInfoPanel").FindChild("LevelText").GetComponent<Text>();
+        levelText.text = "Very Easy";
 	}
 }

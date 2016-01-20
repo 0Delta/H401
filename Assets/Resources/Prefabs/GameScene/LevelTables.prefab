@@ -42,31 +42,31 @@ MonoBehaviour:
   fieldLevelTable:
   - fieldName: anpan
     Ratio_Cap: 2
-    Ratio_Path2: 9
-    Ratio_Path3: 1
+    Ratio_Path2: 8
+    Ratio_Path3: 0
     Ratio_Path4: 0
     lightColor: {r: 1, g: 1, b: 1, a: 0}
     NodeColor: {r: 1, g: 0.7647059, b: 0.7647059, a: 0}
     BG_Path: Sprites/easy
   - fieldName: america
-    Ratio_Cap: 1
-    Ratio_Path2: 6
+    Ratio_Cap: 2
+    Ratio_Path2: 7
     Ratio_Path3: 1
-    Ratio_Path4: 4.8
+    Ratio_Path4: 0
     lightColor: {r: 1, g: 0.44852942, b: 0.44852942, a: 0}
     NodeColor: {r: 0.95740366, g: 1, b: 0.6911765, a: 0}
     BG_Path: Sprites/normal
   - fieldName: china
     Ratio_Cap: 1
-    Ratio_Path2: 3
-    Ratio_Path3: 1
+    Ratio_Path2: 6
+    Ratio_Path3: 2
     Ratio_Path4: 0
     lightColor: {r: 1, g: 0.7352941, b: 0.7352941, a: 0}
     NodeColor: {r: 1, g: 1, b: 1, a: 0}
     BG_Path: Sprites/normal
   - fieldName: italy
     Ratio_Cap: 1
-    Ratio_Path2: 3
+    Ratio_Path2: 4
     Ratio_Path3: 2
     Ratio_Path4: 1
     lightColor: {r: 0.443205, g: 0.33823532, b: 1, a: 0}
@@ -74,49 +74,49 @@ MonoBehaviour:
     BG_Path: Sprites/hard
   - fieldName: egipt
     Ratio_Cap: 1
-    Ratio_Path2: 2
-    Ratio_Path3: 3
+    Ratio_Path2: 4
+    Ratio_Path3: 2
     Ratio_Path4: 2
     lightColor: {r: 0.9887424, g: 1, b: 0.18382353, a: 0}
     NodeColor: {r: 1, g: 0.49264705, b: 0.49264705, a: 0}
     BG_Path: Sprites/hard
-  timeLevelInterval: 60
+  timeLevelInterval: 30
   timeLevelTable:
-  - MaxRegainRatio: 0.8
-    SlipRatio: 0
-    RegainPerNodes: 0
-    RegainPerCap: 0
-    RegainPer2Path: 0.05
-    RegainPer3Path: 0.1
-    RegainPer4Path: 0
   - MaxRegainRatio: 0.7
-    SlipRatio: 1.2
+    SlipRatio: 15
+    RegainPerNodes: 0
+    RegainPerCap: 0.005
+    RegainPer2Path: 0.025
+    RegainPer3Path: 0.05
+    RegainPer4Path: 0.1
+  - MaxRegainRatio: 0.6
+    SlipRatio: 1.6
     RegainPerNodes: 0
     RegainPerCap: 0
     RegainPer2Path: 0.025
-    RegainPer3Path: 0.075
-    RegainPer4Path: 0
-  - MaxRegainRatio: 0.6
-    SlipRatio: 1.3
-    RegainPerNodes: 0
-    RegainPerCap: 0
-    RegainPer2Path: 0.01
     RegainPer3Path: 0.05
     RegainPer4Path: 0
   - MaxRegainRatio: 0.5
-    SlipRatio: 1.5
+    SlipRatio: 1.8
     RegainPerNodes: 0
     RegainPerCap: 0
-    RegainPer2Path: 0
-    RegainPer3Path: 0.05
+    RegainPer2Path: 0.01
+    RegainPer3Path: 0.03
     RegainPer4Path: 0
-  - MaxRegainRatio: 0.3
+  - MaxRegainRatio: 0.4
     SlipRatio: 2
     RegainPerNodes: 0
     RegainPerCap: 0
     RegainPer2Path: 0
     RegainPer3Path: 0.05
     RegainPer4Path: 0
+  - MaxRegainRatio: 0.3
+    SlipRatio: 2.5
+    RegainPerNodes: 0
+    RegainPerCap: 0
+    RegainPer2Path: 0
+    RegainPer3Path: 0.05
+    RegainPer4Path: 0.1
   nodeColorList:
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 0, g: 0.29655218, b: 1, a: 1}
@@ -127,12 +127,12 @@ MonoBehaviour:
     BonusPer3Path: 0.2
     BonusPer4Path: 0.5
   feverRatio:
-    gainRatio: 0.01
+    gainRatio: 0.0075
     decreaseRatio: 0.001
     gainPerCap: 0
-    gainPerPath2: 0
-    gainPerPath3: 1.2
-    gainPerPath4: 1.5
+    gainPerPath2: 0.5
+    gainPerPath3: 1
+    gainPerPath4: 2
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -302,7 +302,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: timeLevelTable.Array.data[0].SlipRatio
-      value: 0
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: fieldLevelTable.Array.data[3].Ratio_Path4
@@ -346,19 +346,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: feverRatio.gainRatio
-      value: 0.01
+      value: 0.0075
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: feverRatio.decreaseRatio
-      value: .00100000005
+      value: 0.001
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: feverRatio.gainPerPath3
-      value: 1.20000005
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: feverRatio.gainPerPath4
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: fieldLevelTable.Array.data[0].BG_Path
@@ -401,8 +401,124 @@ Prefab:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[0].Ratio_Path2
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[0].Ratio_Path3
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[1].Ratio_Cap
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[1].Ratio_Path3
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
       propertyPath: fieldLevelTable.Array.data[1].Ratio_Path4
-      value: 4.8
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[1].Ratio_Path2
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[2].Ratio_Path2
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[2].Ratio_Path3
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[2].Ratio_Cap
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[3].Ratio_Path2
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[4].Ratio_Path3
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fieldLevelTable.Array.data[4].Ratio_Path2
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelInterval
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[0].MaxRegainRatio
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[1].MaxRegainRatio
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[2].MaxRegainRatio
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[3].MaxRegainRatio
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: feverRatio.gainPerPath2
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[4].RegainPer4Path
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[4].RegainPer3Path
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[0].RegainPerCap
+      value: 0.005
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[1].RegainPer3Path
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[2].RegainPer3Path
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[1].SlipRatio
+      value: 1.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[2].SlipRatio
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[3].SlipRatio
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[4].SlipRatio
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[0].RegainPer2Path
+      value: 0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[0].RegainPer3Path
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[0].RegainPer4Path
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

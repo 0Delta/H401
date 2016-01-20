@@ -143,8 +143,7 @@ public class FeverGauge : MonoBehaviour {
         {
             case _eFeverState.NORMAL:
                 feverValue = 0.0f;
-                if (FPanelObject != null)
-                    Destroy(FPanelObject);
+                Destroy(FPanelObject);
                 FGImage.material.EnableKeyword("_EMISSION");
                 FGImage.material.SetColor("_EmissionColor", Color.black);
                 

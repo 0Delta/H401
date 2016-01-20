@@ -118,7 +118,7 @@ public class NodeController : MonoBehaviour
     #region // スライドに使用する変数
     private bool isTap = false;                // タップ成功フラグ
     private bool isSlide = false;                // ノードスライドフラグ
-    public bool isNodeSlide { get { return isSlide; } }     //
+    public bool isNodeLock { get { return isSlide; } set{ isSlide = value; } }     //
     private bool isSlideEnd = false;                // ノードがスライド終了処理中かフラグ
     private Vec2Int tapNodeID = Vec2Int.zero;         // タップしているノードのID
     private _eSlideDir slideDir = _eSlideDir.NONE;      // スライド中の方向
@@ -309,7 +309,7 @@ public class NodeController : MonoBehaviour
         gameNodeSprite = Resources.LoadAll<Sprite>(gameNodeSpritePath);
         nodeMaskSprite = Resources.LoadAll<Sprite>(nodeMaskSpritePath);
         frameNodeSprite = Resources.LoadAll<Sprite>(frameNodeSpritePath);
-        
+
         // GameEffect スクリプトを取得
         gameEffect = transform.GetComponent<GameEffect>();
 
@@ -332,7 +332,7 @@ public class NodeController : MonoBehaviour
 
         // SE準備
         cumSlideIntervalPlaySE = 0.0f;
-        
+
         // ----- インプット処理
         Observable
             .EveryUpdate()
@@ -403,7 +403,7 @@ public class NodeController : MonoBehaviour
         Observable
             .EveryUpdate()
             .Where(_ => Input.GetMouseButtonUp(0))
-            .Subscribe(_ => {
+            .Subscribe(_ => { TapRelease(); }/*{
                 // タップに成功していなければ未処理
                 if (!isTap)
                     return;
@@ -426,13 +426,13 @@ public class NodeController : MonoBehaviour
                         _isNodeAction = true;
                     }
                 }
-            })
+            }*/)
             .AddTo(gameObject);
         
         // ノードのアニメーション終了と同時に接続チェック
         Observable
             .EveryUpdate()
-            .Select(x => !(IsNodeAction))
+            .Select(x =>  !(IsNodeAction) && !(isNodeLock))
             .DistinctUntilChanged()
             .Where(x => x)
             .ThrottleFrame(3)
@@ -506,6 +506,33 @@ public class NodeController : MonoBehaviour
         Log.Info("Update");
     }
 
+    public void TapRelease()
+    {
+        // タップに成功していなければ未処理
+        if (!isTap)
+            return;
+
+        // タップ終了
+        isTap = false;
+        Log.Debug("MouseButtonUp");
+
+        if (isSlide)
+        {
+            AdjustNodeStop();
+            isSlideEnd = true;
+            tapNodeID = Vec2Int.zero;
+        }
+        else
+        {
+            if (tapNodeID.x > -1)
+            {
+                audioSources[(int)_eAudioNumber.ROTATE].Play();
+                gameNodeScripts[tapNodeID.y][tapNodeID.x].RotationNode();
+                _isNodeAction = true;
+            }
+        }
+    }
+
     // ----- ノード準備
     void InitNode()
     {
@@ -570,7 +597,7 @@ public class NodeController : MonoBehaviour
                     framePos.z = transform.position.z + FRAME_POSZ_MARGIN;
                     frameObject = (GameObject)Instantiate(frameNodePrefab, framePos, transform.rotation);
                     frameObject.transform.parent = frameController.transform;
-                    frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.FRAME];
+                    frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.TOP_FRAME];
                 }
                 // フレーム生成(下端)
                 if (i <= 0)
@@ -581,16 +608,7 @@ public class NodeController : MonoBehaviour
                     frameObject.transform.parent = frameController.transform;
 
                     // フレームのスプライトを変更
-                    if (j <= 1) {
-                        // 左端
-                        frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.GROUND_L];
-                    } else if(j >= AdjustRow(i) - 2) {
-                        // 右端
-                        frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.GROUND_R];
-                    } else {
-                        // 中央
-                        frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.GROUND_C];
-                    }
+                    frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.GROUND];
 
                     // 矢印生成
                     GameObject arrowObject = (GameObject)Instantiate(gameArrowPrefab, framePos, transform.rotation);
@@ -605,13 +623,14 @@ public class NodeController : MonoBehaviour
                 pos.z = transform.position.z + FRAME_POSZ_MARGIN;
                 frameObject = (GameObject)Instantiate(frameNodePrefab, pos, transform.rotation);
                 frameObject.transform.parent = frameController.transform;
-                frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.FRAME];
+                frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.SIDE_FRAME];
 
                 // フレーム生成(右端)
                 pos.x = transform.position.x + nodeSize.x * -(AdjustRow(i) * 0.5f - (AdjustRow(i) - 1 + 0.5f));
                 frameObject = (GameObject)Instantiate(frameNodePrefab, pos, transform.rotation);
                 frameObject.transform.parent = frameController.transform;
-                frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.FRAME];
+                frameObject.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 180.0f);
+                frameObject.GetComponent<SpriteRenderer>().sprite = frameNodeSprite[(int)_eFrameNodeSpriteIndex.SIDE_FRAME];
             }
         }
     }
@@ -2025,5 +2044,21 @@ public class NodeController : MonoBehaviour
             }
         }
     }
+
+    void ChangeLitColor(Color col)
+    {
+        gameNodePrefabs[0][0].GetComponent<SpriteRenderer>().sharedMaterial.SetColor("Tint",col);
+    }
+
+    public void DoKillAllNode()
+    {
+        foreach (var xList in gameNodePrefabs)
+        {
+            foreach (var it in xList)
+            {
+                it.transform.DOKill();
+            }
+        }
+    } 
 }
 
