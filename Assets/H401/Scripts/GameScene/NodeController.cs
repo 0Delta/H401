@@ -118,7 +118,7 @@ public class NodeController : MonoBehaviour
     #region // スライドに使用する変数
     private bool isTap = false;                // タップ成功フラグ
     private bool isSlide = false;                // ノードスライドフラグ
-    public bool isNodeLock { get { return isSlide; } }     //
+    public bool isNodeLock { get { return isSlide; } set{ isSlide = value; } }     //
     private bool isSlideEnd = false;                // ノードがスライド終了処理中かフラグ
     private Vec2Int tapNodeID = Vec2Int.zero;         // タップしているノードのID
     private _eSlideDir slideDir = _eSlideDir.NONE;      // スライド中の方向
@@ -309,7 +309,7 @@ public class NodeController : MonoBehaviour
         gameNodeSprite = Resources.LoadAll<Sprite>(gameNodeSpritePath);
         nodeMaskSprite = Resources.LoadAll<Sprite>(nodeMaskSpritePath);
         frameNodeSprite = Resources.LoadAll<Sprite>(frameNodeSpritePath);
-        
+
         // GameEffect スクリプトを取得
         gameEffect = transform.GetComponent<GameEffect>();
 
@@ -332,7 +332,7 @@ public class NodeController : MonoBehaviour
 
         // SE準備
         cumSlideIntervalPlaySE = 0.0f;
-        
+
         // ----- インプット処理
         Observable
             .EveryUpdate()
@@ -403,7 +403,7 @@ public class NodeController : MonoBehaviour
         Observable
             .EveryUpdate()
             .Where(_ => Input.GetMouseButtonUp(0))
-            .Subscribe(_ => {
+            .Subscribe(_ => { TapRelease(); }/*{
                 // タップに成功していなければ未処理
                 if (!isTap)
                     return;
@@ -426,7 +426,7 @@ public class NodeController : MonoBehaviour
                         _isNodeAction = true;
                     }
                 }
-            })
+            }*/)
             .AddTo(gameObject);
         
         // ノードのアニメーション終了と同時に接続チェック
@@ -504,6 +504,33 @@ public class NodeController : MonoBehaviour
         // @デバッグ用
         if (Input.GetKeyDown(KeyCode.A)) { StartCoroutine(ReplaceRotate(ReplaceNodeFever)); };
         Log.Info("Update");
+    }
+
+    public void TapRelease()
+    {
+        // タップに成功していなければ未処理
+        if (!isTap)
+            return;
+
+        // タップ終了
+        isTap = false;
+        Log.Debug("MouseButtonUp");
+
+        if (isSlide)
+        {
+            AdjustNodeStop();
+            isSlideEnd = true;
+            tapNodeID = Vec2Int.zero;
+        }
+        else
+        {
+            if (tapNodeID.x > -1)
+            {
+                audioSources[(int)_eAudioNumber.ROTATE].Play();
+                gameNodeScripts[tapNodeID.y][tapNodeID.x].RotationNode();
+                _isNodeAction = true;
+            }
+        }
     }
 
     // ----- ノード準備
@@ -2022,5 +2049,16 @@ public class NodeController : MonoBehaviour
     {
         gameNodePrefabs[0][0].GetComponent<SpriteRenderer>().sharedMaterial.SetColor("Tint",col);
     }
+
+    public void DoKillAllNode()
+    {
+        foreach (var xList in gameNodePrefabs)
+        {
+            foreach (var it in xList)
+            {
+                it.transform.DOKill();
+            }
+        }
+    } 
 }
 
