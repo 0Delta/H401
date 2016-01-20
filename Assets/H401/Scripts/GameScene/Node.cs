@@ -700,4 +700,14 @@ public class Node : MonoBehaviour
         transform.rotation = Quaternion.identity;
         transform.Rotate(angle);
     }
+
+    public void ForceFragClear()
+    {
+        ActStatus = ActionFlag.WAIT;
+        IsTurning = false;
+        IsSlideStart = false;
+        IsSlide = false;
+        IsSlideEnd = false;
+        IsFlip = false;
+    }
 }

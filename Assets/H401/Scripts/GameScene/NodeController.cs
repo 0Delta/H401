@@ -2065,6 +2065,13 @@ public class NodeController : MonoBehaviour
                 it.transform.DOKill();
             }
         }
+        foreach (var xList in gameNodeScripts)
+        {
+            foreach (var it in xList)
+            {
+                it.ForceFragClear();
+            }
+        }
     } 
 }
 
