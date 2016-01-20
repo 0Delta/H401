@@ -1650,10 +1650,12 @@ public class NodeController : MonoBehaviour
         if (List.Count > 2)
         {
             FinishNodeList.Add(FinNode.Convert(List));
+#if UNITY_EDITOR
             if(List.Count > 3)
             {
                 NodeSaver.Write(FinNode.Convert(List));
             }
+#endif
         }
 
         NodeCountInfo nodeCount = new NodeCountInfo();
