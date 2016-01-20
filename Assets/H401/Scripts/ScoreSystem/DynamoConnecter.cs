@@ -24,12 +24,31 @@ public class DynamoConnecter : MonoBehaviour {
     private AmazonDynamoDBClient client = null;                                   // コネクタ
     private static OnlineRankingMGR Pear = null;
     private ScoreManager ScoreMGR = null;
+    private bool Ready = false;
+    public bool isReady { get { return Ready; } }
 
     public static void SetPear(OnlineRankingMGR pear)
     {
         if (Pear == null && pear != null)
         {
             Pear = pear;
+        }
+    }
+
+    private List<ScoreTable> ScoreCash = null;
+    public List<int> OnlineScore
+    {
+        get {
+            if(ScoreCash == null)
+            {
+                return null;
+            }
+            var ret = new List<int>();
+            foreach(var it in ScoreCash)
+            {
+                ret.Add(it.Score);
+            }
+            return ret;
         }
     }
 
@@ -146,6 +165,7 @@ public class DynamoConnecter : MonoBehaviour {
             Log.Debug("AWS Initialize Failed");
             if (Pear != null) { Pear.LinkFailed(); }
         }
+        Ready = true;
     }
 
     // Update is called once per frame
@@ -159,8 +179,8 @@ public class DynamoConnecter : MonoBehaviour {
         PutItemRequest pReq = new PutItemRequest(TABLE_NAME, Dat.GetDictionary());  // リクエスト作成
 
         // Putリクエスト
-        Log.Debug("AWS Put");
         if (Pear != null) { Pear.StartLink(); }         // 親に通信開始を通知
+        Log.Debug("AWS Put");
         client.PutItemAsync(pReq, (PutCallBack) => {
             if (Pear != null) { Pear.SetResponse(); }   // 反応があったら親に通知
             if(PutCallBack.Exception == null) {
@@ -179,7 +199,7 @@ public class DynamoConnecter : MonoBehaviour {
         // 絞り込み用変数
         Condition ScoreLine = new Condition {
             AttributeValueList = {
-                new AttributeValue { N = "200" }
+                new AttributeValue { N = "1" }
             },
             ComparisonOperator = "GE"
         };
@@ -199,9 +219,9 @@ public class DynamoConnecter : MonoBehaviour {
             if (Pear != null) { Pear.SetResponse(); }   // 反応があったら親に通知
             if (sr.Exception == null) {
                 // スキャン成功
-                List<ScoreTable> GetList = new List<ScoreTable>();
+                ScoreCash = new List<ScoreTable>();
+                Log.Debug("GetData");
                 foreach(var attribs in sr.Response.Items) {
-                    Log.Debug("GetData");
                     // 取得したデータをパッキング
                     ScoreTable ScTemp = new ScoreTable();
                     foreach(var attrib in attribs) {
@@ -211,13 +231,14 @@ public class DynamoConnecter : MonoBehaviour {
                             case "Name": ScTemp.Name  = attrib.Value.S;             break;
                             case "Date": ScTemp.Date  = long.Parse(attrib.Value.N); break;
                         }
-                        GetList.Add(ScTemp);
                     }
-                    Log.Debug("AWS Scan Successed");
-                    // 取得したリストを使ってなんやかんや。
-                    foreach(var it in GetList) {
-                        Log.Info(it.Date.ToString() + " , " + it.Score);
-                    }
+                    ScoreCash.Add(ScTemp);
+                }
+                Log.Debug("AWS Scan Successed");
+                // 取得したリストを使ってなんやかんや。
+                foreach (var it in ScoreCash)
+                {
+                    Log.Info(it.Date.ToString() + " , " + it.Score);
                 }
             } else {
                 // エラー

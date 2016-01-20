@@ -203,7 +203,7 @@ Material:
       data:
         first:
           name: _TexColor
-        second: {r: 1, g: 1, b: 1, a: 1}
+        second: {r: 0.42647058, g: 0.42647058, b: 0.42647058, a: 1}
       data:
         first:
           name: _BrightnessColor

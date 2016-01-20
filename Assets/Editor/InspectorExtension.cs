@@ -1,6 +1,6 @@
 /// <summary>
-/// InspectorÇägí£ÇµÇ‹Ç∑ÅB
-/// Editorâ∫Ç»ÇÃÇ≈ÅAé¿ä¬ã´Ç≈ÉrÉãÉhÇ≥ÇÍÇ‹ÇπÇÒÅB
+/// Inspector„ÇíÊã°Âºµ„Åó„Åæ„Åô„ÄÇ
+/// Editor‰∏ã„Å™„ÅÆ„Åß„ÄÅÂÆüÁí∞Â¢É„Åß„Éì„É´„Éâ„Åï„Çå„Åæ„Åõ„Çì„ÄÇ
 /// </summary>
 using UnityEditor;
 using UnityEngine;
@@ -20,7 +20,7 @@ public class Node_Editor : Editor
         string str = "   " +
         (tgt.bitLink[5] ? "LU" : "  ") + " " +
         (tgt.bitLink[0] ? "RU" : "  ") + "  \n " +
-        (tgt.bitLink[4] ? "L" : "  ") + "   Å°   " +
+        (tgt.bitLink[4] ? "L" : "  ") + "   ‚ñ†   " +
         (tgt.bitLink[1] ? "R" : " ") + "\n   " +
         (tgt.bitLink[3] ? "LD" : "  ") + " " +
         (tgt.bitLink[2] ? "RD" : "  ") + "  \n";
@@ -78,9 +78,9 @@ public class Score3D_Editor : Editor
         EditorGUILayout.HelpBox("This is \"DEBUG ONLY\". \n Reset Value at the time of play", MessageType.Info, true);
         GUILayoutOption[] options = { GUILayout.MaxWidth(25.0f), GUILayout.MinWidth(25.0f), GUILayout.ExpandWidth(false) };
         EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true));
-        EditorGUILayout.LabelField("Éø1", options);
+        EditorGUILayout.LabelField("Œ±1", options);
         Score3D.AlphaOneZ = EditorGUILayout.FloatField(Score3D.AlphaOneZ);
-        EditorGUILayout.LabelField("Éø0", options);
+        EditorGUILayout.LabelField("Œ±0", options);
         Score3D.AlphaZeroZ = EditorGUILayout.FloatField(Score3D.AlphaZeroZ);
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.MinMaxSlider(ref Score3D.AlphaOneZ, ref Score3D.AlphaZeroZ, 0, 150);
@@ -105,7 +105,7 @@ public class NodeController_Editor : Editor
     {
         var tgt = target as NodeController;
         try {
-            // ÉXÉvÉâÉCÉg
+            // „Çπ„Éó„É©„Ç§„Éà
             SpriteLoader.SpritePath = tgt.gameNodeSpritePath;
             var spr = Resources.LoadAll<Sprite>(SpriteLoader.SpritePath);
             if (spr != null)
@@ -131,7 +131,7 @@ public class NodeController_Editor : Editor
             SpriteLoader.spr = null;
             SpriteLoader.tex = null;
         }
-        // É}ÉXÉN
+        // „Éû„Çπ„ÇØ
         try
         {
             SpriteLoader.mSpritePath = tgt.nodeMaskSpritePath;
@@ -178,11 +178,11 @@ public class NodeTemplate_Editor : PropertyDrawer
     // Draw the property inside the given rect
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-        // èâä˙ê›íË
+        // ÂàùÊúüË®≠ÂÆö
         EditorGUI.BeginProperty(position, label, property);
         EditorGUI.indentLevel = 0;
 
-        // ÉèÅ[ÉNópÇÃèÍèäÇê›íË
+        // „ÉØ„Éº„ÇØÁî®„ÅÆÂ†¥ÊâÄ„ÇíË®≠ÂÆö
         Rect contentPosition = position;
         var Link = property.FindPropertyRelative("LinkDir");
         float ImagePosXRevision = position.width / -4f;
@@ -190,26 +190,26 @@ public class NodeTemplate_Editor : PropertyDrawer
         var mIdx = property.FindPropertyRelative("MaskIdx").intValue;
 
 
-        // äOògï`âÊ
+        // Â§ñÊû†ÊèèÁîª
         contentPosition.height -= 3f;
         EditorGUI.DrawRect(contentPosition, Color.gray);
 
         EditorGUI.BeginChangeCheck();
-        // ì¸óÕÉtÉBÅ[ÉãÉh
+        // ÂÖ•Âäõ„Éï„Ç£„Éº„É´„Éâ
         EditorGUIUtility.labelWidth = position.width * 0.25f;
         contentPosition.height = 16f;
-        // ÉXÉvÉâÉCÉgÇÃÉCÉìÉfÉbÉNÉX
+        // „Çπ„Éó„É©„Ç§„Éà„ÅÆ„Ç§„É≥„Éá„ÉÉ„ÇØ„Çπ
         contentPosition.width = (position.width - 15f)/4f;
         EditorGUI.LabelField(contentPosition, "SpriteIndex");
         contentPosition.x += (position.width - 15f) / 4f;
         property.FindPropertyRelative("SpriteIdx").intValue = EditorGUI.IntField(contentPosition, sIdx);
-        // É}ÉXÉNÇÃÉCÉìÉfÉbÉNÉX
+        // „Éû„Çπ„ÇØ„ÅÆ„Ç§„É≥„Éá„ÉÉ„ÇØ„Çπ
         contentPosition.x += (position.width - 15f) / 4f + 10f;
         EditorGUI.LabelField(contentPosition, "MaskIndex");
         contentPosition.x += (position.width - 15f) / 4f;
         property.FindPropertyRelative("MaskIdx").intValue = EditorGUI.IntField(contentPosition, mIdx);
 
-        // âÊëúÇÃï\é¶
+        // ÁîªÂÉè„ÅÆË°®Á§∫
         try
         {
             if (SpriteLoader.tex != null)
@@ -266,7 +266,7 @@ public class NodeTemplate_Editor : PropertyDrawer
         catch { }
 
         contentPosition.width = 16f;
-        // äeÉ`ÉFÉbÉNÉ{ÉbÉNÉX
+        // ÂêÑ„ÉÅ„Çß„ÉÉ„ÇØ„Éú„ÉÉ„ÇØ„Çπ
         if (Link != null && Link.arraySize > 5)
         {
             contentPosition.x = position.width / 2f + 12f + ImagePosXRevision;
@@ -293,7 +293,7 @@ public class NodeTemplate_Editor : PropertyDrawer
             contentPosition.y = position.y + 17f;
             Link.GetArrayElementAtIndex(5).boolValue = EditorGUI.Toggle(contentPosition, Link.GetArrayElementAtIndex(5).boolValue);
 
-            // ÉXÉeÅ[É^ÉX
+            // „Çπ„ÉÜ„Éº„Çø„Çπ
             contentPosition.x = position.width / 5f * 2f;
             contentPosition.y = position.y + position.height / 4f * 3;
             int Cnt = 0;
@@ -309,7 +309,7 @@ public class NodeTemplate_Editor : PropertyDrawer
         }
         EditorGUI.EndChangeCheck();
 
-        // èIóπ
+        // ÁµÇ‰∫Ü
         EditorGUI.EndProperty();
     }
 

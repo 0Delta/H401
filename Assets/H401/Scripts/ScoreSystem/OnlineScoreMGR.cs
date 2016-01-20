@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using RankingExtension;
 using UniRx;
+using System.Collections.Generic;
 
 public class OnlineScoreMGR : MonoBehaviour {
 
@@ -21,19 +22,27 @@ public class OnlineScoreMGR : MonoBehaviour {
             AWSObj.name = "AWS";
             AWS = AWSObj.GetComponent<DynamoConnecter>();
             DynamoConnecter.SetPear(GetComponentInParent<OnlineRankingMGR>());
-
-            if(SendStack)
-            {
-                Send(StackScore, StackName);
-                SendStack = false;
-            }
-
-            AWS.Read();
         }
         catch
         {
             AWS = null;
+            return;
         }
+
+        Observable
+            .EveryUpdate()
+            .Where(_ => AWS.isReady)
+            .Take(1)
+            .Subscribe(_ =>
+            {
+                if (SendStack)
+                {
+                    Send(StackScore, StackName);
+                    SendStack = false;
+                }
+                AWS.Read();
+            }).AddTo(this);
+
     }
 
     /// <summary>
@@ -41,7 +50,7 @@ public class OnlineScoreMGR : MonoBehaviour {
     /// </summary>
     public void Send(int Score, string Name)
     {
-        if (AWS == null)
+        if (AWS == null || !AWS.isReady)
         {
             StackScore = Score;
             StackName = Name;
@@ -56,4 +65,9 @@ public class OnlineScoreMGR : MonoBehaviour {
 	void Update () {
 	
 	}
+
+    public List<int> GetOnlineRanking()
+    {
+        return AWS.OnlineScore;
+    }
 }

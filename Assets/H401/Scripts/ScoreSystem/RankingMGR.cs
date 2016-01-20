@@ -47,6 +47,7 @@ public class RankingMGR : MonoBehaviour {
     [SerializeField] public string ReturnButtonName = null;
     [SerializeField] public List<string> BGPrefabNameList = null;
     [SerializeField] public Vector3 BGPosition = new Vector3(0f, 0f, 0f);
+    [SerializeField] private Color filterColor;
 
     public GameObject ScoreObj = null;
     GameObject OnlineObj = null;
@@ -128,6 +129,19 @@ public class RankingMGR : MonoBehaviour {
         {
             // Failed Load BG
         }
+        Observable
+            .NextFrame(FrameCountType.EndOfFrame)
+            .Subscribe(_ => {
+                try
+                {
+                    BGObjList[0].GetComponentInChildren<MeshRenderer>().material.SetColor("_TexColor", filterColor);     // ポップアップ中はタイトルにフィルターをかける
+                    var Cont = BGObjList[1].GetComponentInChildren<TitleNodeController>();
+                    Cont.InitNodesPosition();
+                    Cont.isMoveNodes = false;                      // ノードの位置を初期位置へ戻す
+                }
+                catch { }
+
+            }).AddTo(this);
         Sword.Load();
 
         // ランキングのフリップ処理
