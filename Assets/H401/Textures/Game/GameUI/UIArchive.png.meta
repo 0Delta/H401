@@ -78,12 +78,12 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -63, y: 18.5}
-        - {x: -64, y: 16.5}
-        - {x: -64, y: -18.5}
+      - - {x: -64, y: 18.5}
+        - {x: -64, y: -14.5}
+        - {x: -62, y: -18.5}
         - {x: 64, y: -18.5}
-        - {x: 64, y: 13.5}
-        - {x: 63, y: 18.5}
+        - {x: 64, y: 7.5}
+        - {x: 62, y: 18.5}
     - name: UIArchive_1
       rect:
         serializedVersion: 2
@@ -96,13 +96,13 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: 215, y: 38}
-        - {x: 168, y: 38}
-        - {x: 163, y: 31}
-        - {x: -100, y: 38}
-        - {x: -214, y: 38}
-        - {x: -215, y: 37}
-        - {x: -215, y: -37}
-        - {x: 215, y: -37}
+        - {x: -215, y: 38}
+        - {x: -215, y: -36}
+        - {x: 215, y: -36}
+      - - {x: -189, y: 11}
+        - {x: 190, y: 11}
+        - {x: 190, y: -10}
+        - {x: -189, y: -10}
     - name: UIArchive_2
       rect:
         serializedVersion: 2
@@ -125,12 +125,11 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -91, y: 19.5}
-        - {x: -91, y: -21.5}
-        - {x: -90, y: -22.5}
+      - - {x: -90, y: 22.5}
+        - {x: -91, y: 21.5}
+        - {x: -91, y: -22.5}
         - {x: 91, y: -22.5}
         - {x: 91, y: 22.5}
-        - {x: -88, y: 22.5}
     - name: UIArchive_4
       rect:
         serializedVersion: 2
@@ -154,14 +153,13 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -43, y: 74.5}
-        - {x: -43, y: -71.5}
-        - {x: -41, y: -73.5}
-        - {x: 44, y: -73.5}
+        - {x: -43, y: -72.5}
+        - {x: 44, y: -72.5}
         - {x: 44, y: 74.5}
-      - - {x: -18, y: 50.5}
-        - {x: 21, y: 50.5}
-        - {x: 21, y: -46.5}
-        - {x: -18, y: -46.5}
+      - - {x: -19, y: 51.5}
+        - {x: 22, y: 51.5}
+        - {x: 22, y: -47.5}
+        - {x: -19, y: -47.5}
     - name: UIArchive_6
       rect:
         serializedVersion: 2
@@ -173,14 +171,14 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 23, y: 64}
-        - {x: -49, y: 64}
-        - {x: -61, y: 48}
-        - {x: -61, y: -39}
-        - {x: -49, y: -64}
-        - {x: 17, y: -64}
-        - {x: 60, y: -35}
-        - {x: 60, y: 51}
+      - - {x: -44, y: 64}
+        - {x: -61, y: 38}
+        - {x: -61, y: -47}
+        - {x: -27, y: -64}
+        - {x: 29, y: -64}
+        - {x: 60, y: -37}
+        - {x: 60, y: 53}
+        - {x: 22, y: 64}
     - name: UIArchive_7
       rect:
         serializedVersion: 2
@@ -209,8 +207,8 @@ TextureImporter:
       outline:
       - - {x: -180, y: -18.5}
         - {x: 180, y: -18.5}
-        - {x: 180, y: -5.5}
-        - {x: -180, y: -5.5}
+        - {x: 180, y: -7.5}
+        - {x: -180, y: -7.5}
     - name: UIArchive_9
       rect:
         serializedVersion: 2

@@ -84,7 +84,7 @@ public class TitleScene : MonoBehaviour {
             titleNodeControllerScript.isMoveNodes = false;
 
             // タイトルで使用している不必要なオブジェクトを非アクティブにする
-            subCameraObject.SetActive(false);
+//            subCameraObject.SetActive(false);
             titleCanvasScript.DisableTitleUI();
 
             // ポップアップ中はタイトルにフィルターをかける
@@ -123,7 +123,7 @@ public class TitleScene : MonoBehaviour {
             }
 
             // タイトルで使用しているオブジェクトをアクティブにする
-            subCameraObject.SetActive(true);
+//            subCameraObject.SetActive(true);
             titleCanvasScript.EnableTitleUI();
 
             // ノードの動きを再開する

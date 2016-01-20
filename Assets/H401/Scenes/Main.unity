@@ -128,6 +128,10 @@ Prefab:
       propertyPath: maskTexture
       value: 
       objectReference: {fileID: 2800000, guid: 3ca82ccc5c65a9543b1353640a7992d8, type: 3}
+    - target: {fileID: 11425576, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
   m_IsPrefabParent: 0
