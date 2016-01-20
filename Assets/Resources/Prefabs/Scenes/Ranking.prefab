@@ -228,7 +228,8 @@ MonoBehaviour:
   - Prefabs/TitleScene/TitleNodeController
   - Prefabs/TitleScene/SubCamera
   - Prefabs/TitleScene/TitleBacks
-  BGPosition: {x: 0, y: 0, z: -6}
+  BGPosition: {x: 0, y: 0, z: -2}
+  filterColor: {r: 0.36764705, g: 0.36764705, b: 0.36764705, a: 1}
   ScoreObj: {fileID: 0}
   Mode: 0
 --- !u!114 &11483494
@@ -293,6 +294,22 @@ Prefab:
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: d29d06fd7b6c1e143afe5419176e6e18, type: 3}
+    - target: {fileID: 0}
+      propertyPath: filterColor.r
+      value: 0.36764705
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: filterColor.g
+      value: 0.36764705
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: filterColor.b
+      value: 0.36764705
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: BGPosition.z
+      value: -2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 171892}
