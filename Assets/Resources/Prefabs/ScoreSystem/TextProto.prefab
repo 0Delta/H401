@@ -12,7 +12,7 @@ GameObject:
   - 222: {fileID: 22244322}
   - 114: {fileID: 11400042}
   m_Layer: 0
-  m_Name: NumberCanvas
+  m_Name: TextProto
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
