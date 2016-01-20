@@ -332,7 +332,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24387180, guid: 9b707a9c23c935c4e9996a7418d1ff26,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 578898b2bca78a440b705f76c1c35f86, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 2c1feaca519f58c40b73ffef65ebd13a, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -689,7 +689,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ScoreManagerPath: Prefabs/ScoreSystem/ScoreSystem
-  scoreHeight: 64
 --- !u!114 &11464470
 MonoBehaviour:
   m_ObjectHideFlags: 1
