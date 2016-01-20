@@ -144,7 +144,16 @@ public class RankingMGR : MonoBehaviour {
                 catch { }
 
             }).AddTo(this);
-            
+
+        Observable
+            .EveryUpdate()
+            .ThrottleFirstFrame(4 * 60)
+            .Subscribe(_ =>
+            {
+                Vector3 pos = UnityEngine.Random.rotation * Vector3.up * 1000f ;
+                BGObjList[3].transform.DOLocalMove(pos, 4 * 60);
+            }).AddTo(this);
+
         // ランキングのフリップ処理
         this.UpdateAsObservable()
             .Select(_ => FlipRanking)   // フリップフラグがONになった瞬間を感知
