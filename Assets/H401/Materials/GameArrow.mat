@@ -176,6 +176,10 @@ Material:
         second: 0
       data:
         first:
+          name: _Threshold
+        second: 0.5
+      data:
+        first:
           name: _UseUIAlphaClip
         second: 0
       data:
@@ -229,10 +233,6 @@ Material:
       data:
         first:
           name: _BrightnessHighThreshold
-        second: 0.5
-      data:
-        first:
-          name: _Threshold
         second: 0.5
     m_Colors:
       data:

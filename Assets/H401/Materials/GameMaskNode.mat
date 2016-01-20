@@ -104,6 +104,14 @@ Material:
         second: 0
       data:
         first:
+          name: _Threshold
+        second: 0.11
+      data:
+        first:
+          name: UseEmission
+        second: 1
+      data:
+        first:
           name: _Parallax
         second: 0.02
       data:
@@ -138,14 +146,6 @@ Material:
         first:
           name: _Metallic
         second: 0
-      data:
-        first:
-          name: _Threshold
-        second: 0.11
-      data:
-        first:
-          name: UseEmission
-        second: 1
     m_Colors:
       data:
         first:
@@ -154,7 +154,7 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 0.125, g: 0.047814988, b: 0, a: 1}
+        second: {r: 0.44852942, g: 0.2471005, b: 0.0923443, a: 1}
       data:
         first:
           name: _SpecColor
@@ -162,4 +162,4 @@ Material:
       data:
         first:
           name: _Emission
-        second: {r: 0.066176474, g: 0.066176474, b: 0.066176474, a: 1}
+        second: {r: 0.6570069, g: 0.86959785, b: 0.9117647, a: 1}
