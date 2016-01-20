@@ -103,7 +103,7 @@ public class OfflineRankingMGR : MonoBehaviour {
             CanvRectTrans.anchoredPosition = new Vector2(-RankPos.XPostiion * ZoomOption[n], Ypos);
 
             // スコア数値を描画する
-            var ScoreInt = ScoreMgr.GetScore(n);                                              // スコアの値を取得
+            var ScoreInt = ScoreManager.GetScore(n);                                              // スコアの値を取得
             if (ScoreInt < 0) { continue; }
             ScoreString = ScoreInt.ToString();
             Canv = ScoreWordMGR.Draw(ScoreString, localCanvas.transform, (ScorePos.WordHeight * ZoomOption[n]));      // 描画
