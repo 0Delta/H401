@@ -8,7 +8,7 @@ public class ScoreWordMGR {
 
     static Text Proto = null;
 
-    public static Canvas Draw(string Word,Transform pear,float Height,Color color = default(Color)) {
+    public static Canvas Draw(string Word,Transform pear,float Height,Color color = default(Color),bool Bold = false) {
 
         // Canvas作る
         var pobj = new GameObject();
@@ -33,8 +33,13 @@ public class ScoreWordMGR {
         text.fontSize = 30;
         text.resizeTextForBestFit = true;
 
+        if (Bold)
+        {
+            text.fontStyle = FontStyle.Bold;
+        }
+
         // テキストカラーを変更
-        if(color != Color.clear) {
+        if (color != Color.clear) {
             text.color = color;
         }
 
@@ -147,8 +152,13 @@ public class ScoreWordMGR {
                 break;
         }
 
+        if(Rank < 4)
+        {
+            text.fontStyle = FontStyle.Bold;
+        }
+
         // テキストカラーを変更
-        if(color != Color.clear) {
+        if (color != Color.clear) {
             text.color = color;
         }
 

@@ -152,7 +152,7 @@ public class OfflineRankingMGR : MonoBehaviour {
             var ScoreInt = ScoreManager.GetScore(n);                                              // スコアの値を取得
             if (ScoreInt < 0) { continue; }
             ScoreString = ScoreInt.ToString();
-            Canv = ScoreWordMGR.Draw(ScoreString, localCanvas.transform, (ScorePos.WordHeight * ZoomOption[n]), highRankColor[n]);      // 描画
+            Canv = ScoreWordMGR.Draw(ScoreString, localCanvas.transform, (ScorePos.WordHeight * ZoomOption[n]), highRankColor[n],(n < 4));      // 描画
             CanvRectTrans = Canv.GetComponentInChildren<RectTransform>();                           // 位置を調整
             CanvRectTrans.anchorMax = new Vector2(0.5f, 1.0f);
             CanvRectTrans.anchorMin = new Vector2(0.5f, 1.0f);
