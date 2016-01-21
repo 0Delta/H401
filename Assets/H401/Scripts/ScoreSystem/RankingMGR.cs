@@ -95,9 +95,9 @@ public class RankingMGR : MonoBehaviour {
         // オブジェクト初期化
         ScoreObj = InstantiateChild(ScorePrefabName);
         CameraObj = InstantiateChild(CameraPrefabName, false);
-        ReturnBtnObj = InstantiateChild(ReturnButtonName,false);
         OfflineObj = InstantiateChild(OfflinePrefabName, false);
         OnlineObj = null;   // オンラインオブジェは初期化しない
+        ReturnBtnObj = InstantiateChild(ReturnButtonName,false);
 
         Transform BGPear = null;
         try {
