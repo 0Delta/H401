@@ -7,13 +7,13 @@ public class OfflineRankingMGR : MonoBehaviour {
     /// </summary>
     [System.Serializable]
     private class ScorePositon {
-        [SerializeField,Range(5,20)]
+        [SerializeField,Range(5,100)]
         public float WordHeight = 0f;
-        [SerializeField, Range(10, 100)]
+        [SerializeField, Range(10, 200)]
         public float HeadMargin = 0f;
-        [SerializeField, Range(0, 30)]
-        public float Margin = 0f;
         [SerializeField, Range(0, 100)]
+        public float Margin = 0f;
+        [SerializeField, Range(0, 800)]
         public float XPostiion = 0.0f;
     }
     [SerializeField]
@@ -24,9 +24,9 @@ public class OfflineRankingMGR : MonoBehaviour {
     /// </summary>
     [System.Serializable]
     private class RankPositon {
-        [SerializeField,Range(5,25)]
+        [SerializeField,Range(5,100)]
         public float WordHeight = 0f;
-        [SerializeField, Range(0, 100)]
+        [SerializeField, Range(0, 800)]
         public float XPostiion = 0.0f;
     }
     [SerializeField]
