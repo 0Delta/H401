@@ -104,6 +104,10 @@ public class AppliController : MonoBehaviour {
             currentScenePrefab = Instantiate(Obj);
             currentScenePrefab.transform.SetParent(transform);
 
+            // ガーベジコレクション
+            System.GC.Collect();
+            Resources.UnloadUnusedAssets();     //使ってないアセットをアンロード
+
             fade.FadeOut(fadeInTime);
         });
 	}
