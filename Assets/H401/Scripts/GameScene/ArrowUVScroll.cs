@@ -7,15 +7,21 @@ public class ArrowUVScroll : MonoBehaviour {
 
     private Material material;
     private Vector2  offset;
-
+    private GameOption gameOption;
 	// Use this for initialization
 	void Start () {
 	    material = GetComponent<SpriteRenderer>().sharedMaterial;
         offset = Vector2.zero;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+
+        gameOption = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().gameUI.gamePause;
+
+
+    }
+
+    // Update is called once per frame
+    void Update () {
+        if (gameOption.IsPause)
+            return;
         offset.y -= scrollSpd;
         if(offset.y < -1.0f)
             offset.y += 2.0f;
