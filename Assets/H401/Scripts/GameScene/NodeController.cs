@@ -495,6 +495,12 @@ public class NodeController : MonoBehaviour
                 }
             })
             .AddTo(gameObject);
+
+        Observable
+            .NextFrame()
+            .Subscribe(_ => CheckLink(true, true))
+            .AddTo(this);
+
     }
 
     // Update is called once per frame
@@ -1430,6 +1436,10 @@ public class NodeController : MonoBehaviour
                     {
                         if (Unlinkmode) {
                             UnlinkNodeTree(Checker.NodeList);
+                            Observable
+                                .NextFrame()
+                                .ThrottleFrame(3)
+                                .Subscribe(x => CheckLink(true, true)).AddTo(this);
                         } else {
                             ReplaceNodeTree(Checker.NodeList);   // 消去処理
                         }
@@ -1655,13 +1665,13 @@ public class NodeController : MonoBehaviour
     void UnlinkNodeTree(List<Node> List)
     {
         int mut = RandomEx.RangeforInt(0, List.Count);
-        if(List.Count == 1)
+        if (List.Count == 1)
         {
-            
-//            List[0].NodeID
-//            gameNodeScripts[List[mut].NodeID.y][List[mut].NodeID.x].;
+            gameNodeScripts[List[0].NodeID.y][List[0].NodeID.x].SetNodeType(NodeTemp[1], 0);
         }
-        gameNodeScripts[List[mut].NodeID.y][List[mut].NodeID.x].RotationNode(true, true);
+        else {
+            gameNodeScripts[List[mut].NodeID.y][List[mut].NodeID.x].RotationNode(true, true);
+        }
     }
 
     //完成した枝に使用しているノードを再配置する
