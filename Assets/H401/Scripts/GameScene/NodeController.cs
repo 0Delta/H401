@@ -1387,7 +1387,7 @@ public class NodeController : MonoBehaviour
     }
     
     // 接続をチェックする関数
-    public void CheckLink(bool NoCheckLeftCallback = false) { 
+    public void CheckLink(bool NoCheckLeftCallback = false,bool Unlinkmode = false) { 
         Log.Debug("CheckLink");
 
         // ノードチェッカが帰ってきてないかチェック。これは結構クリティカルなんでログOFFでも出る仕様。
@@ -1425,11 +1425,14 @@ public class NodeController : MonoBehaviour
                 .Subscribe(_ => {
                     if (Debug.isDebugBuild && bNodeLinkDebugLog)
                         Debug.Log("CheckedCallback_Subscribe [" + Checker.ID + "]" + Checker.SumNode.ToString() + "/" + (Checker.NotFin ? "" : "Fin") + "\n" + Checker.ToString());
-
                     // ノード数1以上、非完成フラグが立ってないなら
                     if (Checker.SumNode >= 1 && Checker.NotFin == false)
                     {
-                        ReplaceNodeTree(Checker.NodeList);   // 消去処理
+                        if (Unlinkmode) {
+                            UnlinkNodeTree(Checker.NodeList);
+                        } else {
+                            ReplaceNodeTree(Checker.NodeList);   // 消去処理
+                        }
                     }
                     Checker.Dispose();      // チェッカは役目を終えたので消す
                 }).AddTo(this);
@@ -1645,6 +1648,22 @@ public class NodeController : MonoBehaviour
     }
     private List<List<FinNode>> FinishNodeList = new List<List<FinNode>>();
 
+    /// <summary>
+    /// 繋がっているノードを切ります。
+    /// </summary>
+    /// <param name="List"></param>
+    void UnlinkNodeTree(List<Node> List)
+    {
+        int mut = RandomEx.RangeforInt(0, List.Count);
+        if(List.Count == 1)
+        {
+            
+//            List[0].NodeID
+//            gameNodeScripts[List[mut].NodeID.y][List[mut].NodeID.x].;
+        }
+        gameNodeScripts[List[mut].NodeID.y][List[mut].NodeID.x].RotationNode(true, true);
+    }
+
     //完成した枝に使用しているノードを再配置する
     void ReplaceNodeTree(List<Node> List)
     {
@@ -1700,8 +1719,7 @@ public class NodeController : MonoBehaviour
         {
             obj.UpdateNegibor();
         }
-
-        CheckLink(true);
+        CheckLink(true, true);
     }
 
     public void ReplaceNodeAll()
@@ -1714,6 +1732,7 @@ public class NodeController : MonoBehaviour
                 ReplaceNode(it, it.NodeID.y < 2);
             }
         }
+        CheckLink(true, true);
     }
 
     public void ReplaceNodeFever()
