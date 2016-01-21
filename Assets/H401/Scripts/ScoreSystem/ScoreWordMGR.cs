@@ -8,7 +8,7 @@ public class ScoreWordMGR {
 
     static Text Proto = null;
 
-    public static Canvas Draw(string Word,Transform pear,float Height) {
+    public static Canvas Draw(string Word,Transform pear,float Height,Color color = default(Color)) {
 
         // Canvas作る
         var pobj = new GameObject();
@@ -32,6 +32,11 @@ public class ScoreWordMGR {
         text.text = Word;
         text.fontSize = 30;
         text.resizeTextForBestFit = true;
+
+        // テキストカラーを変更
+        if(color != Color.clear) {
+            text.color = color;
+        }
 
         //for (int digit = 0; digit < Word.Length; digit++) {
         //    // 数字のスプライト作る
@@ -63,7 +68,7 @@ public class ScoreWordMGR {
     }
 
 
-    public static Canvas DrawRank(int Rank, Transform pear, float Height) {
+    public static Canvas DrawRank(int Rank, Transform pear, float Height, Color color = default(Color)) {
 
         // Canvas作る
         var pobj = new GameObject();
@@ -140,6 +145,11 @@ public class ScoreWordMGR {
             default:
                 text.text = Rank.ToString() +"th";
                 break;
+        }
+
+        // テキストカラーを変更
+        if(color != Color.clear) {
+            text.color = color;
         }
 
         // 最後にCanvasごとサイズ調整

@@ -76,6 +76,51 @@ public class OfflineRankingMGR : MonoBehaviour {
     }
     [SerializeField]
     RankZoom ZoomOption = null;
+    
+    /// <summary>
+    /// トップのテキストカラーを調整するための変数群
+    /// </summary>
+    [System.Serializable]
+    private class TextColor {
+        private Color[] colors = new Color[10];
+
+        [SerializeField]
+        Color first;
+        [SerializeField]
+        Color secound;
+        [SerializeField]
+        Color Third;
+
+        /// <summary>
+        ///  初期化
+        /// </summary>
+        public void Start() {
+            colors[0] = first;
+            colors[1] = secound;
+            colors[2] = Third;
+            for(int n = 3; n < 10; n++) {
+                colors[n] = Color.white;
+            }
+        }
+
+        /// <summary>
+        /// getインデクサ
+        /// </summary>
+        /// <param name="idx">何位を取得するか</param>
+        /// <returns>Color型でテキストカラー</returns>
+        public Color this[int idx]
+        {
+            get
+            {
+                if(idx < 1 || 10 < idx) {
+                    return Color.clear;
+                }
+                return colors[idx - 1];
+            }
+        }
+    }
+    [SerializeField]
+    TextColor highRankColor = null;
 
     // Use this for initialization
     void Start() {
@@ -89,13 +134,14 @@ public class OfflineRankingMGR : MonoBehaviour {
         string ScoreString = "";
         float Ypos = 0f;
         Ypos -= ScorePos.HeadMargin;
+        highRankColor.Start();
         
         // スコアの表示
         for(int n = 1; n < 10; n++) {
             Ypos -= ScorePos.Margin * ZoomOption[n == 1 ? 10 : n - 1] + (ScorePos.WordHeight * ZoomOption[n]);  // マージン追加
 
             // 順位を描画する
-            var Canv = ScoreWordMGR.DrawRank(n, localCanvas.transform, RankPos.WordHeight * ZoomOption[n]);
+            var Canv = ScoreWordMGR.DrawRank(n, localCanvas.transform, RankPos.WordHeight * ZoomOption[n], highRankColor[n]);
             var CanvRectTrans = Canv.GetComponentInChildren<RectTransform>();
             CanvRectTrans.anchorMax = new Vector2(0.5f, 1.0f);
             CanvRectTrans.anchorMin = new Vector2(0.5f, 1.0f);
@@ -106,7 +152,7 @@ public class OfflineRankingMGR : MonoBehaviour {
             var ScoreInt = ScoreManager.GetScore(n);                                              // スコアの値を取得
             if (ScoreInt < 0) { continue; }
             ScoreString = ScoreInt.ToString();
-            Canv = ScoreWordMGR.Draw(ScoreString, localCanvas.transform, (ScorePos.WordHeight * ZoomOption[n]));      // 描画
+            Canv = ScoreWordMGR.Draw(ScoreString, localCanvas.transform, (ScorePos.WordHeight * ZoomOption[n]), highRankColor[n]);      // 描画
             CanvRectTrans = Canv.GetComponentInChildren<RectTransform>();                           // 位置を調整
             CanvRectTrans.anchorMax = new Vector2(0.5f, 1.0f);
             CanvRectTrans.anchorMin = new Vector2(0.5f, 1.0f);
