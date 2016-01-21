@@ -9,7 +9,7 @@ public class OfflineRankingMGR : MonoBehaviour {
     private class ScorePositon {
         [SerializeField,Range(5,100)]
         public float WordHeight = 0f;
-        [SerializeField, Range(10, 200)]
+        [SerializeField, Range(10, 400)]
         public float HeadMargin = 0f;
         [SerializeField, Range(0, 100)]
         public float Margin = 0f;
