@@ -4,6 +4,7 @@
 //===============================================================
 using UnityEngine;
 using System.Collections;
+using UniRx;
 
 public class AppliController : MonoBehaviour {
 //===============================================================
@@ -33,12 +34,13 @@ public class AppliController : MonoBehaviour {
     [SerializeField] private string[] scenePrefabPaths;         // シーン Prefab の Path リスト
     [SerializeField] private string fadeCanvasName = null;      // シーン切り替え時の演出用 Canvas の名前
     [SerializeField] private FadeTime gameStartFadeTime;        // ゲーム開始時のフェード演出にかかる時間
+    [SerializeField] private string tapKirakiraPath;            // タップ時のキラキラエフェクト Prefab の Path
+    [SerializeField] private float effectPosZ;                  // タップ時のキラキラエフェクトの出現位置(Z座標)
 
-    private GameObject  currentScenePrefab;     // 現在のシーンの Prefab
-    private Fade        fade;                   // シーン切り替え時の演出用 Script
+    private GameObject currentScenePrefab;      // 現在のシーンの Prefab
+    private Fade       fade;                    // シーン切り替え時の演出用 Script
+    private GameObject tapKirakiraPrefab;       // タップ時のキラキラエフェクトの Prefab
 
-    private string tapKKPath;
-    private GameObject tapKKPrefab;
 
 //===============================================================
 // メンバ関数
@@ -63,9 +65,21 @@ public class AppliController : MonoBehaviour {
 
         ScoreManager.Load();
 
-        tapKKPrefab = Resources.Load<GameObject>(tapKKPath);
-		// 次のシーンへ
+        // プレハブをロード
+        tapKirakiraPrefab = Resources.Load<GameObject>(tapKirakiraPath);
+		
+        // 次のシーンへ
 		ChangeScene(startSceneID, gameStartFadeTime.inTime, gameStartFadeTime.outTime);
+        
+        Observable
+            .EveryUpdate()
+            .Where(_ => Input.GetMouseButtonUp(0))
+            .Subscribe(_ => {
+                Vector3 worldTapPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                worldTapPos.z = effectPosZ;
+                Instantiate(tapKirakiraPrefab, worldTapPos, tapKirakiraPrefab.transform.rotation);
+            })
+            .AddTo(gameObject);
 	}
 	
 	//---------------------------------------------------------------
@@ -112,11 +126,5 @@ public class AppliController : MonoBehaviour {
 	//---------------------------------------------------------------
     public GameObject GetCurrentScene() {
         return currentScenePrefab;
-    }
-
-    void Update()
-    {
-        //if (Input.GetMouseButtonDown(0))
-            //GameObject takKK = Instantiate<GameObject>(tapKKPrefab);
     }
 }

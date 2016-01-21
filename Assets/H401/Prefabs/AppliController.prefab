@@ -116,6 +116,8 @@ MonoBehaviour:
   gameStartFadeTime:
     inTime: 2
     outTime: 0
+  tapKirakiraPath: Prefabs/Particles/TapKirakira
+  effectPosZ: -5
 --- !u!114 &11447784
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -254,6 +256,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: scenePrefabPaths.Array.data[6]
       value: Prefabs/Scenes/Credit
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: tapKirakiraPath
+      value: Prefabs/Particles/TapKirakira
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: effectPosZ
+      value: -5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

@@ -402,7 +402,7 @@ public class NodeController : MonoBehaviour
         Observable
             .EveryUpdate()
             .Where(_ => Input.GetMouseButtonUp(0))
-            .Subscribe(_ => { TapRelease(); }/*{
+            .Subscribe(_ => TapRelease()/*{
                 // タップに成功していなければ未処理
                 if (!isTap)
                     return;
