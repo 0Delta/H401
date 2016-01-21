@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using UnityEngine;
 using RankingExtension;
+using UniRx;
 
 public class ScoreManager : MonoBehaviour {
 
@@ -255,21 +256,26 @@ public class ScoreManager : MonoBehaviour {
     /// <returns>正常で0</returns>
     static int Save()
     {
-        // キーを作成
-        string Key = KeyGenerator();
+        Observable
+            .NextFrame()
+            .Subscribe(_ => {
+                // キーを作成
+                string Key = KeyGenerator();
 
-        // 書き込み
-        try
-        {
-            // データを読みだして暗号化
-            var fw = new AESWriter(Key);
-            fw.Save("save", SListInstance.ToStringData(), System.Text.Encoding.UTF8);
-        }
-        catch (System.IO.IsolatedStorage.IsolatedStorageException)
-        {
-            return -1;
-        }
-        return 0;
+                // 書き込み
+                try
+                {
+                    // データを読みだして暗号化
+                    var fw = new AESWriter(Key);
+                    fw.Save("save", SListInstance.ToStringData(), System.Text.Encoding.UTF8);
+                }
+                catch (System.IO.IsolatedStorage.IsolatedStorageException)
+                {
+                    //return -1;
+                }
+                //return 0;
+            });
+            return 0;
     }
 
     /// <summary>
@@ -283,7 +289,7 @@ public class ScoreManager : MonoBehaviour {
         {
             return 0;
         }
-        var ScoreVal = SListInstance[Rank];
+        var ScoreVal = SListInstance[Rank-1];
         if (ScoreVal != null)
         {
             return ScoreVal.Score;
