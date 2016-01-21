@@ -96,6 +96,9 @@ public class RankingMGR : MonoBehaviour {
 
         var canv = GetComponent<Canvas>();
         canv.worldCamera = CameraObj.GetComponent<Camera>();
+        CameraObj.transform.SetParent(transform.parent,true);
+        CameraObj.transform.position = new Vector3(0, 0, -10);
+        CameraObj.transform.localScale = new Vector3(1, 1, 1);
 
         // ランキングのフリップ処理
         this.UpdateAsObservable()
