@@ -680,6 +680,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ScoreManagerPath: Prefabs/ScoreSystem/ScoreSystem
+  popScoreTextPath: Prefabs/GameScene/ScorePop
 --- !u!114 &11464470
 MonoBehaviour:
   m_ObjectHideFlags: 1

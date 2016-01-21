@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class Score : MonoBehaviour {
 
@@ -20,6 +21,9 @@ public class Score : MonoBehaviour {
         set { gameScore = value; }
         get { return gameScore; }
     }
+    private int preGainScore;       //前回獲得スコア（フィーバー倍率なし）
+    [SerializeField]private string popScoreTextPath = null;
+    private GameObject popScoreTextObject = null;
 
 	// Use this for initialization
 	void Start () {
@@ -27,11 +31,29 @@ public class Score : MonoBehaviour {
         //swManager = new ScoreWordMGR();
         //swManager.Load();
         scoreText = GetComponentInChildren<Text>();
+
         scoreInfo = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().levelTables.ScoreRatio;
         //_scoreCanvas = null;
         SetScore();
-
+        popScoreTextObject = Resources.Load<GameObject>(popScoreTextPath);
+        
 	}
+
+    public void PopScoreText(Vector3 popPos)
+    {
+        GameObject psText = Instantiate<GameObject>(popScoreTextObject);
+
+        psText.GetComponentInChildren<Text>().text = preGainScore.ToString();
+        psText.transform.SetParent(transform);
+        psText.transform.localScale = new Vector3(3.0f, 3.0f,3.0f);
+        psText.transform.position = popPos;
+
+        psText.transform.DOLocalMove(psText.transform.localPosition + new Vector3(0.0f,20.0f,0.0f), 1.8f)
+            .OnComplete(() => {
+                Destroy(psText);
+            });
+
+    }
 
     //表示機構
     public void SetScore()
@@ -52,6 +74,7 @@ public class Score : MonoBehaviour {
         tempScore *= (1.0f + scoreInfo.BonusPer3Path * nodeCount.path3); //ツムツムでは加算していたが、
         tempScore *= (1.0f + scoreInfo.BonusPer4Path  * nodeCount.path4); //分岐の重みを増やすために乗算に
 
+        preGainScore = (int)tempScore;
         //とりあえずフィーバー中はポイント3倍点
         tempScore *= transform.parent.FindChild("FeverMask").FindChild("FeverGauge").gameObject.GetComponent<FeverGauge>().feverState == _eFeverState.FEVER ? 3 : 1;
 
