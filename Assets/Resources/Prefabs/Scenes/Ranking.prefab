@@ -229,7 +229,7 @@ MonoBehaviour:
   - Prefabs/TitleScene/SubCamera
   - Prefabs/TitleScene/TitleBacks
   BGPosition: {x: 0, y: 0, z: -2}
-  filterColor: {r: 0.36764705, g: 0.36764705, b: 0.36764705, a: 1}
+  filterColor: {r: 1, g: 1, b: 1, a: 1}
   ScoreObj: {fileID: 0}
   Mode: 0
 --- !u!114 &11483494
