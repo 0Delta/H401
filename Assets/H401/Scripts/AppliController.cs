@@ -37,6 +37,9 @@ public class AppliController : MonoBehaviour {
     private GameObject  currentScenePrefab;     // 現在のシーンの Prefab
     private Fade        fade;                   // シーン切り替え時の演出用 Script
 
+    private string tapKKPath;
+    private GameObject tapKKPrefab;
+
 //===============================================================
 // メンバ関数
 //===============================================================
@@ -60,6 +63,7 @@ public class AppliController : MonoBehaviour {
 
         ScoreManager.Load();
 
+        tapKKPrefab = Resources.Load<GameObject>(tapKKPath);
 		// 次のシーンへ
 		ChangeScene(startSceneID, gameStartFadeTime.inTime, gameStartFadeTime.outTime);
 	}
@@ -108,5 +112,11 @@ public class AppliController : MonoBehaviour {
 	//---------------------------------------------------------------
     public GameObject GetCurrentScene() {
         return currentScenePrefab;
+    }
+
+    void Update()
+    {
+        //if (Input.GetMouseButtonDown(0))
+            //GameObject takKK = Instantiate<GameObject>(tapKKPrefab);
     }
 }
