@@ -161,7 +161,7 @@ public class LevelController : MonoBehaviour {
         //メインカメラをノンアクにする
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
         gameScene.mainCamera.transform.Rotate(new Vector3(0.0f, 0.0f, -lyingAngle),Space.Self);
-        gameScene.directionalLight.color = new Color(1.0f,1.0f,1.0f);
+        //gameScene.directionalLight.color = new Color(1.0f,1.0f,1.0f);
 
 
 
@@ -202,11 +202,11 @@ public class LevelController : MonoBehaviour {
         if (NextLevel != -1)
         {
             gameController.nodeController.currentLevel = NextLevel;
-            gameScene.directionalLight.color = levelTableScript.GetFieldLevel(nextLevel).lightColor;
+            //gameScene.directionalLight.color = levelTableScript.GetFieldLevel(nextLevel).lightColor;
         }
         else
         {
-            gameScene.directionalLight.color = levelTableScript.GetFieldLevel(gameController.nodeController.currentLevel).lightColor;
+            //gameScene.directionalLight.color = levelTableScript.GetFieldLevel(gameController.nodeController.currentLevel).lightColor;
             print("レベル変更なし");
         }
         LevelState = _eLevelState.STAND;
