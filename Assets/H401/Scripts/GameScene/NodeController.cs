@@ -586,7 +586,7 @@ public class NodeController : MonoBehaviour
                 gameNodeScripts[i][j].RegistNodeID(j, i);
 
                 //ランダムでノードの種類と回転を設定
-                ReplaceNode(gameNodeScripts[i][j]);
+                ReplaceNode(gameNodeScripts[i][j],i < 2);
 
                 // フレーム生成(上端)
                 if (i >= col - 1)
@@ -1594,7 +1594,7 @@ public class NodeController : MonoBehaviour
     public delegate void Replace();             //回転再配置用のデリゲート
 
     //ノードの配置 割合は指定できるが完全ランダムなので再考の余地あり
-    void ReplaceNode(Node node)
+    void ReplaceNode(Node node,bool force1Exclude)
     {
         Log.Debug("ReplaceNode : " + node);
         node.CheckFlag = false;
@@ -1609,7 +1609,7 @@ public class NodeController : MonoBehaviour
             (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3) ? 3 :
             (rand <= fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3 + fieldLevel.Ratio_Path4) ? 4 :
             1;
-        
+        if(force1Exclude && branchNum == 1) { branchNum = 2; }
         node.SetNodeType(NodeTemplate.GetTempFromBranchRandom(NodeTemp, branchNum));
     }
 
@@ -1694,7 +1694,7 @@ public class NodeController : MonoBehaviour
         //ノードを再配置
         foreach (Node obj in List)
         {
-            ReplaceNode(obj);
+            ReplaceNode(obj, obj.NodeID.y < 2);
         }
         foreach (Node obj in List)
         {
@@ -1711,7 +1711,7 @@ public class NodeController : MonoBehaviour
         {
             foreach (var it in xList)
             {
-                ReplaceNode(it);
+                ReplaceNode(it, it.NodeID.y < 2);
             }
         }
     }
