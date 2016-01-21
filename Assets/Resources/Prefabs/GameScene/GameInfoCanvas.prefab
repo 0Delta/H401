@@ -640,7 +640,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Very Easy
+  m_Text: Easy
 --- !u!114 &11437122
 MonoBehaviour:
   m_ObjectHideFlags: 1

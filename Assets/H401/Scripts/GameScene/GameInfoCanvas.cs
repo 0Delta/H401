@@ -27,6 +27,6 @@ public class GameInfoCanvas : MonoBehaviour {
         _stageSelectButton = GetComponentInChildren<Button>();
 
         levelText = transform.FindChild("GameInfoPanel").FindChild("LevelText").GetComponent<Text>();
-        levelText.text = "Very Easy";
+        levelText.text = "Easy";
 	}
 }
