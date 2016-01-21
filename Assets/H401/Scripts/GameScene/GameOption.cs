@@ -72,6 +72,7 @@ public class GameOption : MonoBehaviour {
         panelObject.transform.localPosition = new Vector3(0.0f, -1500.0f,0.0f);
         panelObject.transform.DOLocalMoveY(0.0f, popTime).SetUpdate(true).OnComplete( () =>
         {
+            
             triggerButton.interactable = true;
         });
         
@@ -95,6 +96,8 @@ public class GameOption : MonoBehaviour {
         triggerButton.onClick.RemoveAllListeners();
         triggerButton.onClick.AddListener(EndOption);
 
+        
+
     }
 
     public void EndOption()
@@ -105,11 +108,12 @@ public class GameOption : MonoBehaviour {
         triggerButton.onClick.AddListener(StartOption);
         //panelObject.transform.DOScale(popScale, popTime)
 
-
+        
 
         panelObject.transform.DOLocalMoveY(1500.0f,popTime)
             .OnComplete(() =>
             {
+                
                 triggerButton.interactable = true;
                 Destroy(panelObject);
                 GameScene gameScene = transform.root.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();

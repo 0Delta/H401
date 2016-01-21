@@ -24,13 +24,13 @@ public class GameScene : MonoBehaviour {
     private GameUI              _gameUI;
     private LevelTables         _levelTables;
     private Camera              _mainCamera;
-    private Light               _directionalLight;
+//    private Light               _directionalLight;
 
     public GameController   gameController { get { return _gameController; } }
     public GameUI           gameUI { get { return _gameUI; } }
     public LevelTables      levelTables { get { return _levelTables; } }
     public Camera           mainCamera { get { return _mainCamera; } }
-    public Light            directionalLight{get{return _directionalLight;}}
+//    public Light            directionalLight{get{return _directionalLight;}}
 
     public enum _eGameSceneBGM
     {
@@ -53,7 +53,7 @@ public class GameScene : MonoBehaviour {
 
         lightObject = Instantiate(Resources.Load<GameObject>(lightPath));
         lightObject.transform.SetParent(transform);
-        _directionalLight = lightObject.GetComponent<Light>();
+        //_directionalLight = lightObject.GetComponent<Light>();
         
         eventSystemObject =  Instantiate(Resources.Load<GameObject>(eventSystemPath));
         eventSystemObject.transform.SetParent(transform);
