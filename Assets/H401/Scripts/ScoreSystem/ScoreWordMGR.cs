@@ -32,6 +32,7 @@ public class ScoreWordMGR {
         text.text = Word;
         text.fontSize = 30;
         text.resizeTextForBestFit = true;
+        text.alignment = TextAnchor.UpperRight;
 
         if (Bold)
         {

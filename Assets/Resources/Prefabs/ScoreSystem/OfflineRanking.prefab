@@ -78,7 +78,7 @@ MonoBehaviour:
     WordHeight: 85
     HeadMargin: 320
     Margin: 4
-    XPostiion: 230
+    XPostiion: 180
   RankPos:
     WordHeight: 85
     XPostiion: 170
@@ -230,7 +230,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: ScorePos.XPostiion
-      value: 230
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: ScorePos.Margin
