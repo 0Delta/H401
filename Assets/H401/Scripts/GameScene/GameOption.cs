@@ -108,7 +108,7 @@ public class GameOption : MonoBehaviour {
         triggerButton.onClick.AddListener(StartOption);
         //panelObject.transform.DOScale(popScale, popTime)
 
-        
+        audioSource.Play();
 
         panelObject.transform.DOLocalMoveY(1500.0f,popTime)
             .OnComplete(() =>

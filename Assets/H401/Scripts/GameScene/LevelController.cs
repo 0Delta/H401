@@ -142,6 +142,7 @@ public class LevelController : MonoBehaviour {
  
         yield return new WaitForSeconds(changePopTime);
         fpMethod();
+        System.GC.Collect();
         yield return new WaitForSeconds(changeEndTime);
         //アニメーションを消去
         Destroy(animationObject);
@@ -195,6 +196,7 @@ public class LevelController : MonoBehaviour {
         yield return new WaitForSeconds(changePopTime);
         fChangeScript.Delete();
         gameScene.gameUI.ojityanAnimator.gameObject.SetActive(true);
+        System.GC.Collect();
         yield return new WaitForSeconds(changeEndTime);
         //アニメーションを消去
         Destroy(animationObject);
