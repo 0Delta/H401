@@ -20,4 +20,11 @@ public class GameEndPanel : MonoBehaviour {
                 });
             });
 	}
+
+    public void SetScore(int Score,int Rank)
+    {
+        Text tex = GetComponentInChildren<Text>();
+        tex.text = "Score\n";
+        tex.text += Score.ToString() + "\n";
+    }
 }

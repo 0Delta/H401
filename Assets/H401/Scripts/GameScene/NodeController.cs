@@ -246,7 +246,7 @@ public class NodeController : MonoBehaviour
             return _feverScript;
         }
     }
-    private int _currentLevel;
+    private int _currentLevel =1;
     public int currentLevel
     {
         get { return _currentLevel; }
@@ -316,7 +316,6 @@ public class NodeController : MonoBehaviour
         // ----- ノード準備
         NodeTemplate.AllCalc(NodeTemp);
         InitNode();
-
         //開始演出が終わるまでは操作を受け付けない
         SetSlideAll(true);
 
@@ -562,9 +561,8 @@ public class NodeController : MonoBehaviour
 
         Node.SetNodeController(this); //ノードにコントローラーを設定
 
-        fieldLevel = levelTableScript.GetFieldLevel(0);
+        fieldLevel = levelTableScript.GetFieldLevel(1);
         RatioSum = fieldLevel.Ratio_Cap + fieldLevel.Ratio_Path2 + fieldLevel.Ratio_Path3 + fieldLevel.Ratio_Path4;  //全体割合を記憶
-        
         // ノードを生成
         for (int i = 0; i < col; ++i)
         {

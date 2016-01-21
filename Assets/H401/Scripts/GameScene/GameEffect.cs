@@ -247,6 +247,7 @@ public class GameEffect : MonoBehaviour {
             --scoreRank;
 
             flowerPos /= tipCnt;
+            transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().gameUI.gameInfoCanvas.score.PopScoreText(flowerPos);
             flowerPos.z = effectPopPosZ;
 
             EffectSearchParticlePool(_eParticleType.FLOWERS, scoreRank, flowerPos);

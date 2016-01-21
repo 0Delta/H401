@@ -96,6 +96,9 @@ public class FeverGauge : MonoBehaviour {
             tempRegain *= 1.0f + nodeCount.path3 * feverInfo.gainPerPath3;
             tempRegain *= 1.0f + nodeCount.path4 * feverInfo.gainPerPath4;
 
+            if (tempRegain > feverInfo.MaxGainRatio)
+                tempRegain = feverInfo.MaxGainRatio;
+
             feverValue += nextGain;
             if (feverValue > GAUGE_MAX)
             {
