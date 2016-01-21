@@ -61,7 +61,7 @@ public class Score : MonoBehaviour {
         return (int)tempScore;
     }
 
-    public int Decide() {
+    public int Decide(Transform Pear) {
         // スコア登録
         GameObject obj = Resources.Load(ScoreManagerPath) as GameObject;
         if(obj == null) {
@@ -73,6 +73,7 @@ public class Score : MonoBehaviour {
             Debug.LogError("Failed GetComponent : RankingSystem");
             return 0;
         }
+        scoreManager.transform.SetParent(Pear);
         return scoreManager.AddScore(gameScore);
     }
 }
