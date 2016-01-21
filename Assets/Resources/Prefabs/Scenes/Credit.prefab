@@ -233,7 +233,6 @@ GameObject:
   - 224: {fileID: 22468746}
   - 222: {fileID: 22267832}
   - 114: {fileID: 11477124}
-  - 114: {fileID: 11422036}
   m_Layer: 5
   m_Name: CreditTitle
   m_TagString: Untagged
@@ -598,7 +597,7 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 0
+    m_Top: 30
     m_Bottom: 0
   m_ChildAlignment: 0
   m_Spacing: 0
@@ -738,7 +737,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 22414076}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.8333333
+  m_Size: 0.8064516
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -832,24 +831,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Hashimoto Kei
---- !u!114 &11422036
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 151192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1679637790, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: 110
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
 --- !u!114 &11422382
 MonoBehaviour:
   m_ObjectHideFlags: 1
