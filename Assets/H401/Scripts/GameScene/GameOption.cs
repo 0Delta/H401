@@ -74,7 +74,6 @@ public class GameOption : MonoBehaviour {
         {
             
             triggerButton.interactable = true;
-            triggerButton.gameObject.AddComponent<ButtonHighLight>();
         });
         
         /*
@@ -116,7 +115,6 @@ public class GameOption : MonoBehaviour {
             {
                 
                 triggerButton.interactable = true;
-                Destroy( triggerButton.GetComponent<ButtonHighLight>());
                 Destroy(panelObject);
                 GameScene gameScene = transform.root.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
                 gameScene.gameUI.gameInfoCanvas.stageSelectButton.interactable = true;

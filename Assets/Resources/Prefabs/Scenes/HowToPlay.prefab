@@ -172,7 +172,6 @@ GameObject:
   - 114: {fileID: 11490676}
   - 114: {fileID: 11445706}
   - 114: {fileID: 11407950}
-  - 114: {fileID: 11460306}
   m_Layer: 5
   m_Name: ReturnButton
   m_TagString: Untagged
@@ -1194,17 +1193,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
---- !u!114 &11460306
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 125262}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 968a4bd06f18c324c899fb25f85378bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &11467294
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1325,7 +1313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.822}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.485}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
