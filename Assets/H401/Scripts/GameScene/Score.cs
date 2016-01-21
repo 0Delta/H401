@@ -24,6 +24,15 @@ public class Score : MonoBehaviour {
     private int preGainScore;       //前回獲得スコア（フィーバー倍率なし）
     [SerializeField]private string popScoreTextPath = null;
     private GameObject popScoreTextObject = null;
+    private FeverGauge _feverGauge;
+    private FeverGauge feverGauge {
+        get {
+            if (_feverGauge == null)
+                _feverGauge = transform.parent.FindChild("FeverMask").FindChild("FeverGauge").gameObject.GetComponent<FeverGauge>();
+
+            return _feverGauge;
+        }
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -33,6 +42,7 @@ public class Score : MonoBehaviour {
         scoreText = GetComponentInChildren<Text>();
 
         scoreInfo = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>().levelTables.ScoreRatio;
+       
         //_scoreCanvas = null;
         SetScore();
         popScoreTextObject = Resources.Load<GameObject>(popScoreTextPath);
@@ -48,6 +58,9 @@ public class Score : MonoBehaviour {
         psText.transform.localScale = new Vector3(3.0f, 3.0f,3.0f);
         psText.transform.position = popPos;
 
+        if (feverGauge.feverState == _eFeverState.FEVER)
+            psText.transform.FindChild("SanbaiIceCream").gameObject.SetActive(true);
+        
         psText.transform.DOLocalMove(psText.transform.localPosition + new Vector3(0.0f,20.0f,0.0f), 1.8f)
             .OnComplete(() => {
                 Destroy(psText);
@@ -76,7 +89,7 @@ public class Score : MonoBehaviour {
 
         preGainScore = (int)tempScore;
         //とりあえずフィーバー中はポイント3倍点
-        tempScore *= transform.parent.FindChild("FeverMask").FindChild("FeverGauge").gameObject.GetComponent<FeverGauge>().feverState == _eFeverState.FEVER ? 3 : 1;
+        tempScore *= feverGauge.feverState == _eFeverState.FEVER ? 3 : 1;
 
         gameScore += (int)tempScore;
         SetScore();
