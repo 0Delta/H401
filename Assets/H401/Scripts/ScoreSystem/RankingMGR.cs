@@ -45,17 +45,12 @@ public class RankingMGR : MonoBehaviour {
     [SerializeField] public string ScorePrefabName = null;
     [SerializeField] public string CameraPrefabName = null;
     [SerializeField] public string ReturnButtonName = null;
-    [SerializeField] public List<string> BGPrefabNameList = null;
-    [SerializeField] public Vector3 BGPosition = new Vector3(0f, 0f, 0f);
-    [SerializeField] private Color filterColor = new Color(0f, 0f, 0f);
-    private Color filterColorBak = new Color(0f, 0f, 0f);
 
     public GameObject ScoreObj = null;
     GameObject OnlineObj = null;
     GameObject OfflineObj = null;
     GameObject CameraObj = null;
     GameObject ReturnBtnObj = null;
-    List<GameObject> BGObjList = new List<GameObject>();
     ScoreWordMGR Sword = new ScoreWordMGR();
     private bool FlipRanking = false;
     public enum RANKING_MODE : byte{
@@ -99,54 +94,9 @@ public class RankingMGR : MonoBehaviour {
         OnlineObj = null;   // オンラインオブジェは初期化しない
         ReturnBtnObj = InstantiateChild(ReturnButtonName,false);
 
-        Transform BGPear = null;
-        try {
-            var Objtemp = GetComponentsInChildren<Transform>();
-            BGPear = Objtemp[2].transform;
-        }
-        catch
-        {
-            BGPear = transform;
-        }
+        var canv = GetComponent<Canvas>();
+        canv.worldCamera = CameraObj.GetComponent<Camera>();
 
-        foreach (var it in BGPrefabNameList)
-        {
-            try
-            {
-                var ret = Instantiate(Resources.Load(it)) as GameObject;
-                ret.transform.SetParent(BGPear, false);
-                BGObjList.Add(ret);
-            }
-            catch (Exception excep)
-            {
-                Debug.LogError("Exception ! : " + it);
-                Debug.LogException(excep);
-            }
-        }
-        try {
-            BGObjList[0].transform.localPosition = BGPosition;
-            BGObjList[1].transform.position += new Vector3(100,0,0);
-            BGObjList[2].transform.position += new Vector3(100,0,0);
-        }
-        catch
-        {
-            // Failed Load BG
-        }
-        Observable
-            .NextFrame(FrameCountType.EndOfFrame)
-            .Subscribe(_ => {
-                try
-                {
-                    filterColorBak = BGObjList[0].GetComponentInChildren<MeshRenderer>().material.GetColor("_TexColor");
-                    BGObjList[0].GetComponentInChildren<MeshRenderer>().material.SetColor("_TexColor", filterColor);     // ポップアップ中はタイトルにフィルターをかける
-                    var Cont = BGObjList[1].GetComponentInChildren<TitleNodeController>();
-                    Cont.InitNodesPosition();
-                    Cont.isMoveNodes = false;                      // ノードの位置を初期位置へ戻す
-                }
-                catch { }
-
-            }).AddTo(this);
-        
         // ランキングのフリップ処理
         this.UpdateAsObservable()
             .Select(_ => FlipRanking)   // フリップフラグがONになった瞬間を感知
@@ -192,11 +142,6 @@ public class RankingMGR : MonoBehaviour {
     // ランキングを切り替えるトリガーを引く関数
     public void Flip() {
         FlipRanking = true;
-    }
-
-    public void OnDestroy()
-    {
-        BGObjList[0].GetComponentInChildren<MeshRenderer>().material.SetColor("_TexColor", filterColorBak);     // ポップアップ中はタイトルにフィルターをかける
     }
 }
 #pragma warning restore 414
