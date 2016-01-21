@@ -97,18 +97,19 @@ public class Score : MonoBehaviour {
         return (int)tempScore;
     }
 
-    public void Decide() {
+    public int Decide(Transform Pear) {
         // スコア登録
         GameObject obj = Resources.Load(ScoreManagerPath) as GameObject;
         if(obj == null) {
             Debug.LogError("Failed Instantiate : RankingSystem");
-            return;
+            return 0;
         }
         ScoreManager scoreManager = Instantiate(obj).GetComponent<ScoreManager>();
         if(scoreManager == null) {
             Debug.LogError("Failed GetComponent : RankingSystem");
-            return;
+            return 0;
         }
-        scoreManager.AddScore(gameScore);
+        scoreManager.transform.SetParent(Pear);
+        return scoreManager.AddScore(gameScore);
     }
 }

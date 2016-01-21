@@ -669,14 +669,14 @@ RectTransform:
   m_GameObject: {fileID: 183748}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.1, z: 1}
   m_Children: []
   m_Father: {fileID: 455936}
   m_RootOrder: 2
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -280}
-  m_SizeDelta: {x: 555, y: 46.5}
+  m_AnchoredPosition: {x: 0, y: -310}
+  m_SizeDelta: {x: 832.5, y: 69.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22408500
 RectTransform:
@@ -692,8 +692,8 @@ RectTransform:
   m_RootOrder: 3
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -370}
-  m_SizeDelta: {x: 555, y: 46.5}
+  m_AnchoredPosition: {x: 0, y: -410}
+  m_SizeDelta: {x: 832.5, y: 69.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22429254
 RectTransform:
@@ -710,7 +710,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -100}
-  m_SizeDelta: {x: 555, y: 46.5}
+  m_SizeDelta: {x: 832.5, y: 69.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22439836
 RectTransform:
@@ -720,14 +720,14 @@ RectTransform:
   m_GameObject: {fileID: 197476}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.2, z: 1}
   m_Children: []
   m_Father: {fileID: 455936}
   m_RootOrder: 1
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -190}
-  m_SizeDelta: {x: 555, y: 46.5}
+  m_AnchoredPosition: {x: 0, y: -200}
+  m_SizeDelta: {x: 832.5, y: 69.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22477964
 RectTransform:
@@ -737,14 +737,14 @@ RectTransform:
   m_GameObject: {fileID: 103702}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.1, z: 1}
   m_Children: []
   m_Father: {fileID: 455936}
   m_RootOrder: 4
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -460}
-  m_SizeDelta: {x: 555, y: 46.5}
+  m_AnchoredPosition: {x: 0, y: -515}
+  m_SizeDelta: {x: 832.5, y: 69.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &100100000
 Prefab:

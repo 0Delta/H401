@@ -76,13 +76,14 @@ public class LimitTime : MonoBehaviour {
             gameScene.gameController.nodeController.isNodeLock = true; //ノードを操作不能にする
             //スコアをもってくる
             GameInfoCanvas gInfoCanvas = GetComponentInParent<GameInfoCanvas>();
-            gInfoCanvas.score.Decide();
+            int Rank = gInfoCanvas.score.Decide(transform);
             //ゲームオーバー時のパネルを出して、タップでリザルト画面に行く
             GameObject gameEndPanelObject = (GameObject)Instantiate(Resources.Load<GameObject>(gameEndPanelPath));
             GameEndPanel gameEndpanel = gameEndPanelObject.GetComponent<GameEndPanel>();
             gameEndpanel.transform.SetParent(gameScene.gameUI.gamePause.optionCanvas.transform);
             gameEndpanel.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
             gameEndpanel.transform.localPosition = new Vector3(0.0f, 1334.0f, 0.0f);
+            gameEndpanel.SetScore(gInfoCanvas.score.GameScore, Rank);
 
             //ボタンでなく時間経過で勝手に移行するように
             // リザルトへ戻るボタンを設定
