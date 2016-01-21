@@ -61,7 +61,7 @@ public class Score : MonoBehaviour {
         if (feverGauge.feverState == _eFeverState.FEVER)
             psText.transform.FindChild("SanbaiIceCream").gameObject.SetActive(true);
         
-        psText.transform.DOLocalMove(psText.transform.localPosition + new Vector3(0.0f,20.0f,0.0f), 1.8f)
+        psText.transform.DOLocalMove(psText.transform.localPosition + new Vector3(0.0f,20.0f,0.0f), 1.8f).SetEase(Ease.OutCirc)
             .OnComplete(() => {
                 Destroy(psText);
             });

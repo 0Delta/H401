@@ -37,8 +37,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b956e7b33fed4b3418c1835de940967a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   fieldLevelTable:
   - fieldName: anpan
     Ratio_Cap: 2
@@ -83,36 +83,36 @@ MonoBehaviour:
   timeLevelInterval: 30
   timeLevelTable:
   - MaxRegainRatio: 0.7
-    SlipRatio: 120
-    RegainPerNodes: 0
-    RegainPerCap: 0.005
-    RegainPer2Path: 0.025
-    RegainPer3Path: 0.05
-    RegainPer4Path: 0.1
-  - MaxRegainRatio: 0.6
-    SlipRatio: 1.6
-    RegainPerNodes: 0
-    RegainPerCap: 0
-    RegainPer2Path: 0.025
-    RegainPer3Path: 0.05
-    RegainPer4Path: 0
-  - MaxRegainRatio: 0.5
-    SlipRatio: 1.8
-    RegainPerNodes: 0
-    RegainPerCap: 0
-    RegainPer2Path: 0.01
-    RegainPer3Path: 0.03
-    RegainPer4Path: 0
-  - MaxRegainRatio: 0.4
-    SlipRatio: 2
-    RegainPerNodes: 0
+    SlipRatio: 1.2
+    RegainPerNodes: 0.02
     RegainPerCap: 0
     RegainPer2Path: 0
-    RegainPer3Path: 0.05
-    RegainPer4Path: 0
+    RegainPer3Path: 0.15
+    RegainPer4Path: 0.3
+  - MaxRegainRatio: 0.6
+    SlipRatio: 1.6
+    RegainPerNodes: 0.015
+    RegainPerCap: 0
+    RegainPer2Path: 0
+    RegainPer3Path: 0.12
+    RegainPer4Path: 0.2
+  - MaxRegainRatio: 0.5
+    SlipRatio: 1.8
+    RegainPerNodes: 0.01
+    RegainPerCap: 0
+    RegainPer2Path: 0
+    RegainPer3Path: 0.1
+    RegainPer4Path: 0.15
+  - MaxRegainRatio: 0.4
+    SlipRatio: 2
+    RegainPerNodes: 0.01
+    RegainPerCap: 0
+    RegainPer2Path: 0
+    RegainPer3Path: 0.08
+    RegainPer4Path: 0.13
   - MaxRegainRatio: 0.3
     SlipRatio: 2.5
-    RegainPerNodes: 0
+    RegainPerNodes: 0.005
     RegainPerCap: 0
     RegainPer2Path: 0
     RegainPer3Path: 0.05
@@ -127,13 +127,13 @@ MonoBehaviour:
     BonusPer3Path: 0.2
     BonusPer4Path: 0.5
   feverRatio:
-    gainRatio: 0.0075
+    gainRatio: 0.01
     decreaseRatio: 0.001
     MaxGainRatio: 0.25
     gainPerCap: 0
-    gainPerPath2: 0.5
-    gainPerPath3: 1
-    gainPerPath4: 2
+    gainPerPath2: 0
+    gainPerPath3: 0.3
+    gainPerPath4: 0.5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -347,7 +347,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: feverRatio.gainRatio
-      value: 0.0075
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: feverRatio.decreaseRatio
@@ -355,11 +355,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: feverRatio.gainPerPath3
-      value: 1
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: feverRatio.gainPerPath4
-      value: 2
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: fieldLevelTable.Array.data[0].BG_Path
@@ -471,7 +471,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: feverRatio.gainPerPath2
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: timeLevelTable.Array.data[4].RegainPer4Path
@@ -483,15 +483,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: timeLevelTable.Array.data[0].RegainPerCap
-      value: 0.005
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: timeLevelTable.Array.data[1].RegainPer3Path
-      value: 0.05
+      value: 0.12
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: timeLevelTable.Array.data[2].RegainPer3Path
-      value: 0.03
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: timeLevelTable.Array.data[1].SlipRatio
@@ -511,19 +511,63 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: timeLevelTable.Array.data[0].RegainPer2Path
-      value: 0.025
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: timeLevelTable.Array.data[0].RegainPer3Path
-      value: 0.05
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: timeLevelTable.Array.data[0].RegainPer4Path
-      value: 0.1
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: feverRatio.MaxGainRatio
       value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[3].RegainPer4Path
+      value: 0.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[1].RegainPer4Path
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[0].RegainPerNodes
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[1].RegainPerNodes
+      value: 0.015
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[3].RegainPerNodes
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[4].RegainPerNodes
+      value: 0.005
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[1].RegainPer2Path
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[3].RegainPer3Path
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[2].RegainPer4Path
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[2].RegainPerNodes
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: timeLevelTable.Array.data[2].RegainPer2Path
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
