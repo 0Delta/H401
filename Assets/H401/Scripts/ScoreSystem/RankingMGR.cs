@@ -139,6 +139,7 @@ public class RankingMGR : MonoBehaviour {
                 {
                     filterColorBak = BGObjList[0].GetComponentInChildren<MeshRenderer>().material.GetColor("_TexColor");
                     BGObjList[0].GetComponentInChildren<MeshRenderer>().material.SetColor("_TexColor", filterColor);     // ポップアップ中はタイトルにフィルターをかける
+                    BGObjList[0].transform.localScale *= 2;     // ※大きさを強制的に調整... 後日修正しよう！
                     var Cont = BGObjList[1].GetComponentInChildren<TitleNodeController>();
                     Cont.InitNodesPosition();
                     Cont.isMoveNodes = false;                      // ノードの位置を初期位置へ戻す
