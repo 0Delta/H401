@@ -1,0 +1,501 @@
+fileFormatVersion: 2
+guid: ee7ef5c381d17fe49b3ea9764c2cf1df
+timeCreated: 1453356109
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: master1-3P_0
+    21300002: master1-3P_1
+    21300004: master1-3P_2
+    21300006: master1-3P_3
+    21300008: master1-3P_4
+    21300010: master1-3P_5
+    21300012: master1-3P_10
+    21300014: master1-3P_14
+    21300016: master1-3P_17
+    21300018: master1-3P_19
+    21300020: master1-3P_22
+    21300022: how1-3P_0
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: master1-3P_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 860
+        width: 191
+        height: 164
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 31.5, y: 82}
+        - {x: -11.5, y: 67}
+        - {x: -19.5, y: 82}
+        - {x: -79.5, y: 82}
+        - {x: -95.5, y: 75}
+        - {x: -95.5, y: -50}
+        - {x: -93.5, y: -55}
+        - {x: 88.5, y: -55}
+        - {x: 95.5, y: -31}
+        - {x: 95.5, y: 82}
+    - name: master1-3P_1
+      rect:
+        serializedVersion: 2
+        x: 606
+        y: 802
+        width: 418
+        height: 222
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 200, y: -36}
+        - {x: 180, y: -10}
+        - {x: 157, y: 41}
+        - {x: 119, y: 63}
+        - {x: 113, y: 111}
+        - {x: 96, y: 111}
+        - {x: 85, y: 105}
+        - {x: 36, y: 93}
+        - {x: 18, y: 66}
+        - {x: 16, y: 21}
+        - {x: -208, y: 19}
+        - {x: -209, y: 18}
+        - {x: -209, y: -79}
+        - {x: 27, y: -80}
+        - {x: 60, y: -86}
+        - {x: 88, y: -102}
+        - {x: 109, y: -111}
+        - {x: 157, y: -111}
+        - {x: 209, y: -79}
+        - {x: 209, y: -61}
+        - {x: 206, y: -49}
+    - name: master1-3P_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 660
+        width: 425
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 4.5, y: 51}
+        - {x: 6.5, y: 65}
+        - {x: 2.5, y: 74}
+        - {x: -26.5, y: 90}
+        - {x: -45.5, y: 99}
+        - {x: -54.5, y: 100}
+        - {x: -63.5, y: 98}
+        - {x: -99.5, y: 75}
+        - {x: -116.5, y: 81}
+        - {x: -124.5, y: 86}
+        - {x: -148.5, y: 100}
+        - {x: -171.5, y: 100}
+        - {x: -210.5, y: 72}
+        - {x: -212.5, y: 69}
+        - {x: -212.5, y: 1}
+        - {x: -204.5, y: -5}
+        - {x: -158.5, y: -28}
+        - {x: -161.5, y: -31}
+        - {x: -159.5, y: -87}
+        - {x: -149.5, y: -94}
+        - {x: -143.5, y: -98}
+        - {x: -138.5, y: -100}
+        - {x: 212.5, y: -100}
+        - {x: 212.5, y: 50}
+        - {x: 211.5, y: 51}
+    - name: master1-3P_3
+      rect:
+        serializedVersion: 2
+        x: 444
+        y: 661
+        width: 407
+        height: 172
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 203.5, y: 56}
+        - {x: 202.5, y: 57}
+        - {x: -91.5, y: 57}
+        - {x: -94.5, y: 61}
+        - {x: -110.5, y: 70}
+        - {x: -125.5, y: 79}
+        - {x: -140.5, y: 86}
+        - {x: -147.5, y: 86}
+        - {x: -152.5, y: 85}
+        - {x: -179.5, y: 71}
+        - {x: -194.5, y: 62}
+        - {x: -203.5, y: 54}
+        - {x: -203.5, y: -14}
+        - {x: -184.5, y: -27}
+        - {x: -161.5, y: -39}
+        - {x: -162.5, y: -56}
+        - {x: -159.5, y: -66}
+        - {x: -125.5, y: -86}
+        - {x: -104.5, y: -86}
+        - {x: -88.5, y: -78}
+        - {x: -87.5, y: -75}
+        - {x: 203.5, y: -75}
+    - name: master1-3P_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 205
+        width: 354
+        height: 439
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 152, y: 94.5}
+        - {x: 152, y: 119.5}
+        - {x: 151, y: 127.5}
+        - {x: 145, y: 135.5}
+        - {x: 133, y: 141.5}
+        - {x: 123, y: 147.5}
+        - {x: 117, y: 150.5}
+        - {x: 105, y: 157.5}
+        - {x: 101, y: 158.5}
+        - {x: 93, y: 159.5}
+        - {x: 87, y: 159.5}
+        - {x: 79, y: 158.5}
+        - {x: 75, y: 157.5}
+        - {x: 67, y: 153.5}
+        - {x: 57, y: 147.5}
+        - {x: 48, y: 143.5}
+        - {x: 42, y: 147.5}
+        - {x: 37, y: 150.5}
+        - {x: 29, y: 155.5}
+        - {x: 29, y: 190.5}
+        - {x: 28, y: 198.5}
+        - {x: 22, y: 205.5}
+        - {x: 13, y: 210.5}
+        - {x: 3, y: 216.5}
+        - {x: -3, y: 219.5}
+        - {x: -64, y: 219.5}
+        - {x: -70, y: 216.5}
+        - {x: -85, y: 207.5}
+        - {x: -88, y: 205.5}
+        - {x: -95, y: 198.5}
+        - {x: -95, y: 179.5}
+        - {x: -96, y: 178.5}
+        - {x: -96, y: 153.5}
+        - {x: -101, y: 151.5}
+        - {x: -107, y: 159.5}
+        - {x: -111, y: 160.5}
+        - {x: -123, y: 162.5}
+        - {x: -135, y: 162.5}
+        - {x: -145, y: 160.5}
+        - {x: -151, y: 156.5}
+        - {x: -156, y: 157.5}
+        - {x: -176, y: 157.5}
+        - {x: -177, y: 156.5}
+        - {x: -177, y: 65.5}
+        - {x: -168, y: 56.5}
+        - {x: -168, y: -200.5}
+        - {x: -165, y: -203.5}
+        - {x: 177, y: -203.5}
+        - {x: 177, y: 93.5}
+        - {x: 176, y: 94.5}
+    - name: master1-3P_5
+      rect:
+        serializedVersion: 2
+        x: 389
+        y: 476
+        width: 450
+        height: 183
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -225, y: 91.5}
+        - {x: -225, y: -91.5}
+        - {x: 225, y: -91.5}
+        - {x: 225, y: 91.5}
+    - name: master1-3P_10
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 372
+        width: 442
+        height: 102
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -218, y: 42}
+        - {x: -218, y: -51}
+        - {x: -149, y: -51}
+        - {x: -149, y: 42}
+        - {x: -151, y: 44}
+        - {x: -216, y: 44}
+      - - {x: 131, y: -20}
+        - {x: 111, y: -20}
+        - {x: 107, y: -23}
+        - {x: 94, y: -20}
+        - {x: 129, y: -20}
+        - {x: 133, y: -17}
+        - {x: 139, y: -21}
+        - {x: 143, y: -21}
+        - {x: 153, y: -17}
+        - {x: 160, y: 51}
+        - {x: -43, y: 51}
+        - {x: -47, y: 50}
+        - {x: -68, y: 37}
+        - {x: -73, y: 29}
+        - {x: -73, y: 27}
+        - {x: -69, y: 20}
+        - {x: -63, y: 20}
+        - {x: -58, y: 11}
+        - {x: -52, y: 13}
+        - {x: -47, y: 17}
+        - {x: -39, y: 26}
+        - {x: -14, y: 19}
+        - {x: -2, y: 14}
+        - {x: 3, y: 21}
+        - {x: 16, y: 16}
+        - {x: 22, y: 16}
+        - {x: 25, y: 17}
+        - {x: 29, y: 20}
+        - {x: 64, y: 13}
+        - {x: 68, y: 14}
+        - {x: 79, y: 23}
+        - {x: 76, y: 14}
+        - {x: 61, y: 13}
+        - {x: 55, y: 12}
+        - {x: 47, y: 15}
+        - {x: 34, y: 15}
+        - {x: 23, y: 16}
+        - {x: 14, y: 16}
+        - {x: 3, y: 18}
+        - {x: -3, y: 10}
+        - {x: -21, y: 20}
+        - {x: -31, y: 19}
+        - {x: -48, y: 14}
+        - {x: -58, y: 11}
+        - {x: -63, y: 16}
+        - {x: -76, y: 16}
+        - {x: -79, y: 11}
+        - {x: -84, y: 14}
+        - {x: -76, y: 25}
+        - {x: -74, y: 28}
+        - {x: -71, y: 33}
+        - {x: -68, y: 41}
+        - {x: -67, y: 46}
+        - {x: -68, y: 51}
+        - {x: -139, y: 51}
+        - {x: -139, y: -46}
+        - {x: -138, y: -49}
+        - {x: -137, y: -51}
+        - {x: 165, y: -51}
+        - {x: 165, y: -27}
+        - {x: 163, y: -26}
+      - - {x: 210, y: -18}
+        - {x: 166, y: -18}
+        - {x: 165, y: -20}
+        - {x: 165, y: -51}
+        - {x: 213, y: -51}
+        - {x: 220, y: -47}
+        - {x: 220, y: -40}
+    - name: master1-3P_14
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 271
+        width: 442
+        height: 99
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 109, y: -3.5}
+        - {x: 104, y: -2.5}
+        - {x: 110, y: -2.5}
+        - {x: 115, y: -17.5}
+        - {x: 154, y: -49.5}
+        - {x: 161, y: -49.5}
+        - {x: 221, y: -13.5}
+        - {x: 221, y: 49.5}
+        - {x: -137, y: 49.5}
+        - {x: -137, y: -49.5}
+        - {x: 26, y: -49.5}
+        - {x: 110, y: -20.5}
+        - {x: 111, y: -12.5}
+        - {x: 111, y: -7.5}
+      - - {x: -220, y: 33.5}
+        - {x: -220, y: -41.5}
+        - {x: -150, y: -41.5}
+        - {x: -148, y: -39.5}
+        - {x: -148, y: 31.5}
+        - {x: -150, y: 33.5}
+    - name: master1-3P_17
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 200
+        width: 442
+        height: 69
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -221, y: 1.5}
+        - {x: -221, y: -34.5}
+        - {x: -137, y: -34.5}
+        - {x: -137, y: 1.5}
+      - - {x: 37, y: 34.5}
+        - {x: 26, y: 33.5}
+        - {x: 26, y: 22.5}
+        - {x: 22, y: 26.5}
+        - {x: 10, y: 34.5}
+        - {x: -134, y: 34.5}
+        - {x: -134, y: -34.5}
+        - {x: 49, y: -34.5}
+        - {x: 63, y: 13.5}
+        - {x: 63, y: 28.5}
+        - {x: 41, y: 34.5}
+      - - {x: -136, y: 34.5}
+        - {x: -137, y: 33.5}
+        - {x: -137, y: 31.5}
+        - {x: -135, y: 29.5}
+        - {x: -131, y: 29.5}
+        - {x: -129, y: 31.5}
+        - {x: -129, y: 33.5}
+        - {x: -130, y: 34.5}
+    - name: master1-3P_19
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 124
+        width: 442
+        height: 66
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -221, y: 0}
+        - {x: -221, y: -33}
+        - {x: -138, y: -33}
+        - {x: -138, y: 0}
+      - - {x: 88, y: -28}
+        - {x: 91, y: -33}
+        - {x: 108, y: -33}
+        - {x: 117, y: -22}
+        - {x: 117, y: 8}
+        - {x: 47, y: 33}
+        - {x: -127, y: 33}
+        - {x: -133, y: 26}
+        - {x: -133, y: -33}
+        - {x: 84, y: -33}
+        - {x: 87, y: -29}
+        - {x: 88, y: -26}
+        - {x: 88, y: -22}
+    - name: master1-3P_22
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 7
+        width: 442
+        height: 102
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -11, y: 51}
+        - {x: -18, y: 38}
+        - {x: -21, y: 13}
+        - {x: -21, y: 4}
+        - {x: -22, y: 12}
+        - {x: -24, y: 51}
+        - {x: -132, y: 51}
+        - {x: -132, y: -39}
+        - {x: -125, y: -51}
+        - {x: 68, y: -51}
+        - {x: 146, y: -20}
+        - {x: 146, y: 25}
+        - {x: 133, y: 51}
+      - - {x: -221, y: 29}
+        - {x: -221, y: -28}
+        - {x: -132, y: -28}
+        - {x: -132, y: 29}
+        - {x: -134, y: 31}
+        - {x: -219, y: 31}
+    - name: how1-3P_0
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 860
+        width: 407
+        height: 164
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 196.5, y: 29}
+        - {x: -33.5, y: 28}
+        - {x: -31.5, y: 47}
+        - {x: -36.5, y: 63}
+        - {x: -71.5, y: 82}
+        - {x: -173.5, y: 82}
+        - {x: -203.5, y: 59}
+        - {x: -203.5, y: 6}
+        - {x: -165.5, y: -19}
+        - {x: -165.5, y: -64}
+        - {x: -128.5, y: -82}
+        - {x: -109.5, y: -82}
+        - {x: -88.5, y: -68}
+        - {x: 193.5, y: -68}
+        - {x: 196.5, y: -67}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
