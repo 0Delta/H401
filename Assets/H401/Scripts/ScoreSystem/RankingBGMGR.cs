@@ -23,7 +23,7 @@ public class RankingBGMGR : MonoBehaviour {
         try
         {
             RetObj = Instantiate(Resources.Load(Name)) as GameObject;
-            RetObj.transform.SetParent(transform.parent, true);
+            RetObj.transform.SetParent(transform, true);
         }
         catch (Exception excep)
         {
@@ -46,7 +46,7 @@ public class RankingBGMGR : MonoBehaviour {
         try
         {
             TitleBacksPrefab = Instantiate(Resources.Load(TitleBacksPrefabName)) as GameObject;
-            TitleBacksPrefab.transform.SetParent(transform.parent.FindChild("Contents").transform, false);
+            TitleBacksPrefab.transform.SetParent(transform.FindChild("Contents").transform, false);
             TitleBacksPrefab.transform.localScale = new Vector3(1.01f, 1.01f, 1f);
         }
         catch (Exception excep)
@@ -81,8 +81,6 @@ public class RankingBGMGR : MonoBehaviour {
 
             }).AddTo(this);
 
-        var canv = GetComponent<Canvas>();
-        canv.worldCamera = transform.parent.GetComponentInChildren<Camera>();
     }
 	
 	// Update is called once per frame
