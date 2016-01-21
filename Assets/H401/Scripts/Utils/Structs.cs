@@ -82,6 +82,7 @@ public struct NodeCountInfo
 {
     public float gainRatio;
     public float decreaseRatio;
+    public float MaxGainRatio;
     public float gainPerCap;
     public float gainPerPath2;
     public float gainPerPath3;
