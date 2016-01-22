@@ -42,6 +42,8 @@ public class LimitTime : MonoBehaviour {
     //private Tweener fillTweener;
     private float changedValueTime; //tweenのDurationにつかう 前回Durationを変更した時間
 
+    private bool IsPinch;
+
    public delegate void TMethod(); 
 
 	// Use this for initialization
@@ -65,7 +67,25 @@ public class LimitTime : MonoBehaviour {
         nowTime += Time.deltaTime * timeLevel.SlipRatio * _eventRatio;
         SetImage();
 
-        if(nowTime > maxTime)
+        if (_eventRatio != 0)
+        {
+            if (!IsPinch && nowTime > maxTime / 4.0f * 3.0f)
+            {
+                GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+                gameScene.gameUI.gamePause.IsPinch = true;
+                IsPinch = true;
+                timeImage.color = Color.red;
+            }
+            if (IsPinch && nowTime <= maxTime / 4.0f * 3.0f)
+            {
+                GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+                gameScene.gameUI.gamePause.IsPinch = false;
+                IsPinch = false;
+                timeImage.color = Color.white;
+            }
+        }
+
+        if (nowTime > maxTime)
         {
             //ここにゲームオーバー処理
             nowTime = maxTime - 0.1f;
@@ -84,7 +104,8 @@ public class LimitTime : MonoBehaviour {
             gameEndpanel.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
             gameEndpanel.transform.localPosition = new Vector3(0.0f, 1334.0f, 0.0f);
             gameEndpanel.SetScore(gInfoCanvas.score.GameScore, Rank);
-
+            gameScene.gameUI.gamePause.IsPinch = false;
+            IsPinch = false;
             //ボタンでなく時間経過で勝手に移行するように
             // リザルトへ戻るボタンを設定
             TMethod del = () => {
@@ -98,10 +119,13 @@ public class LimitTime : MonoBehaviour {
 
             //オプションボタンをノンアクに
             gameScene.gameUI.gamePause.optionCanvas.gameObject.GetComponentInChildren<Button>().interactable = false;
+            return;
         }
 
+
+
         //時間経過による難易度変更処理
-        if(nowTimeLevel < levelTableScript.TimeLevelCount && Time.time - startTime > timeLevelInterval * (nowTimeLevel + 1) )
+        if(nowTimeLevel < levelTableScript.TimeLevelCount -1 && Time.time - startTime > timeLevelInterval * (nowTimeLevel + 1) )
         {
             nowTimeLevel++;
             timeLevel = levelTableScript.GetTimeLevel(nowTimeLevel);
