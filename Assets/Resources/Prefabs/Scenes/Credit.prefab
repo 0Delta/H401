@@ -812,8 +812,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 11425762}
   m_HandleRect: {fileID: 22414076}
   m_Direction: 2
-  m_Value: 0.9999995
-  m_Size: 0.860215
+  m_Value: 1
+  m_Size: 0.8602151
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1477,7 +1477,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Plnner
+  m_Text: Planner
 --- !u!114 &11475656
 MonoBehaviour:
   m_ObjectHideFlags: 1
