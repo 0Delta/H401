@@ -22,7 +22,7 @@ Material:
         second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0.9600023}
+          m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _BumpMap
@@ -140,10 +140,6 @@ Material:
         second: 0
       data:
         first:
-          name: _UseUIAlphaClip
-        second: 0
-      data:
-        first:
           name: _Parallax
         second: 0.02
       data:
@@ -177,6 +173,10 @@ Material:
       data:
         first:
           name: _Metallic
+        second: 0
+      data:
+        first:
+          name: _UseUIAlphaClip
         second: 0
       data:
         first:

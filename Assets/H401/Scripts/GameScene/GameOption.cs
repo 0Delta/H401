@@ -24,6 +24,23 @@ public class GameOption : MonoBehaviour {
     private bool _isPause = false;
     public bool IsPause {  get { return _isPause; } }
 
+    private Image pinchPanel;
+    public bool IsPinch
+    {
+        set
+        {
+            if (value == true)
+            {
+                pinchPanel.DOFade(0.2f, 0.5f).SetEase(Ease.InCubic).SetLoops(-1, LoopType.Yoyo);
+            }
+            else
+            {
+                pinchPanel.DOKill();
+                pinchPanel.color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
+            }
+        }
+    }
+
 	// Use this for initialization
     void Start()
     {
@@ -43,6 +60,8 @@ public class GameOption : MonoBehaviour {
         triggerButton.onClick.AddListener(StartOption);
 
         audioSource = GetComponent<AudioSource>();
+
+        pinchPanel = optionCanvas.gameObject.transform.FindChild("GamePinchFade").gameObject.GetComponent<Image>();
     }
 
     public void StartOption()
