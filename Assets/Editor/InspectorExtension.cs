@@ -316,15 +316,18 @@ public class NodeTemplate_Editor : PropertyDrawer
     public class CDbgLogWindow : EditorWindow
     {
 
-        int SelectLogIdx;
+        int SelectLogIdx = 0;
         private static Vector2 ScrollPos = new Vector2();
         int Exported = 0;
+        static CDbgLogWindow window = new CDbgLogWindow();
 
         [MenuItem("Window/CustomDebugLogConsole")]
-        static void ShowWindow()
+        static void Initialize()
         {
-            GetWindow<CDbgLogWindow>("CustomLogger");
+            window = (CDbgLogWindow)GetWindow(typeof(CDbgLogWindow), true, "CustomLogger");
+            Debug.Log(window == null ? "NULL" : window.ToString());
         }
+
 
         [MenuItem("Window/CustomDebugLogAllExport")]
         static void AllExport()
