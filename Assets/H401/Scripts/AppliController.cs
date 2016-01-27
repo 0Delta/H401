@@ -90,6 +90,10 @@ public class AppliController : MonoBehaviour {
         fade.FadeIn(fadeOutTime, () => {
             // 現在のシーンを削除
             Destroy(currentScenePrefab);
+
+            // ガーベジコレクション
+            System.GC.Collect();
+            Resources.UnloadUnusedAssets();     //使ってないアセットをアンロード
             
             // 新しいシーンを生成
             GameObject Obj = Resources.Load<GameObject>(scenePrefabPaths[(int)id]);
@@ -104,10 +108,6 @@ public class AppliController : MonoBehaviour {
             currentScenePrefab = Instantiate(Obj);
             currentScenePrefab.transform.SetParent(transform);
 
-            // ガーベジコレクション
-            System.GC.Collect();
-            Resources.UnloadUnusedAssets();     //使ってないアセットをアンロード
-
             fade.FadeOut(fadeInTime);
         });
 	}
@@ -117,9 +117,10 @@ public class AppliController : MonoBehaviour {
 	//---------------------------------------------------------------
     public void FadeInOut(float fadeInTime, float fadeOutTime, System.Action action) {
         fade.FadeIn(fadeOutTime, () => {
-            action();
             System.GC.Collect();                //GC
             Resources.UnloadUnusedAssets();     //使ってないアセットをアンロード
+            
+            action();
 
             fade.FadeOut(fadeInTime);
         });
