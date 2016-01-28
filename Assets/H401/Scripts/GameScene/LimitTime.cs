@@ -42,7 +42,7 @@ public class LimitTime : MonoBehaviour {
     //private Tweener fillTweener;
     private float changedValueTime; //tweenのDurationにつかう 前回Durationを変更した時間
 
-    private bool IsPinch;
+    public bool IsPinch;
 
    public delegate void TMethod(); 
 
@@ -75,6 +75,12 @@ public class LimitTime : MonoBehaviour {
                 gameScene.gameUI.gamePause.IsPinch = true;
                 IsPinch = true;
                 timeImage.color = Color.red;
+                if(gameScene.gameUI.gameInfoCanvas.feverGauge.feverState != _eFeverState.FEVER)
+                {
+                    gameScene.StopBGM(GameScene._eGameSceneBGM.GAME);
+                    gameScene.PlayBGM(GameScene._eGameSceneBGM.PINCH);
+                }
+                
             }
             if (IsPinch && nowTime <= maxTime / 4.0f * 3.0f)
             {
@@ -82,6 +88,11 @@ public class LimitTime : MonoBehaviour {
                 gameScene.gameUI.gamePause.IsPinch = false;
                 IsPinch = false;
                 timeImage.color = Color.white;
+                if (gameScene.gameUI.gameInfoCanvas.feverGauge.feverState != _eFeverState.FEVER)
+                {
+                    gameScene.StopBGM(GameScene._eGameSceneBGM.PINCH);
+                    gameScene.PlayBGM(GameScene._eGameSceneBGM.GAME);
+                }
             }
         }
 

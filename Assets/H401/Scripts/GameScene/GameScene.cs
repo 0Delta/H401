@@ -36,6 +36,7 @@ public class GameScene : MonoBehaviour {
     {
         GAME,
         FEVER,
+        PINCH,
     }
 
 	// Use this for initialization
