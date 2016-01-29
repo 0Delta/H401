@@ -37,12 +37,6 @@ public class FeverGauge : MonoBehaviour {
     private float gainedTime;
     private float nextGain;
 
-    enum _eMusic
-    {
-        GAIN,
-        FEVERBGM,
-    };
-
     delegate void gainMethod();
 
 	void Start () {
@@ -151,8 +145,16 @@ public class FeverGauge : MonoBehaviour {
                 FGImage.material.SetColor("_EmissionColor", Color.black);
 
                 // ゲーム本編のBGMを再生
+
                 gameScene.StopBGM(GameScene._eGameSceneBGM.FEVER);
-                gameScene.PlayBGM(GameScene._eGameSceneBGM.GAME);
+                if (gameScene.gameUI.gameInfoCanvas.limitTime.IsPinch)
+                {
+                    gameScene.PlayBGM(GameScene._eGameSceneBGM.PINCH);
+                }
+                else
+                {
+                    gameScene.PlayBGM(GameScene._eGameSceneBGM.GAME);
+                }
                 //audioSources[(int)_eMusic.FEVERBGM].Stop();
                 break;
             case _eFeverState.FEVER:
@@ -165,7 +167,14 @@ public class FeverGauge : MonoBehaviour {
                 feverValue = GAUGE_MAX;
                 LogoPop();
                 // ゲーム本編のBGMを停止
-                gameScene.StopBGM(GameScene._eGameSceneBGM.GAME);
+                if (gameScene.gameUI.gameInfoCanvas.limitTime.IsPinch)
+                {
+                    gameScene.StopBGM(GameScene._eGameSceneBGM.PINCH);
+                }
+                else
+                {
+                    gameScene.StopBGM(GameScene._eGameSceneBGM.GAME);
+                }
                 gameScene.PlayBGM(GameScene._eGameSceneBGM.FEVER);
                 break;
         }
