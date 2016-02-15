@@ -89,14 +89,14 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleIdentifier: com.edaedabonbon.Linx
-  bundleVersion: 1.0
+  bundleVersion: 1.01
   preloadedAssets: []
   metroEnableIndependentInputSource: 0
   metroEnableLowLatencyPresentationAPI: 0
   xboxOneDisableKinectGpuReservation: 0
   virtualRealitySupported: 0
   productGUID: 0ee1c895f2a062840b532be139e984b6
-  AndroidBundleVersionCode: 1
+  AndroidBundleVersionCode: 2
   AndroidMinSdkVersion: 9
   AndroidPreferredInstallLocation: 1
   aotOptions: 
@@ -154,8 +154,8 @@ PlayerSettings:
   AndroidTargetDevice: 3
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: 
-  AndroidKeyaliasName: 
+  AndroidKeystoreName: C:/Users/nhs20036/Desktop/Linx.keystore
+  AndroidKeyaliasName: linx
   AndroidTVCompatibility: 1
   AndroidIsGame: 1
   androidEnableBanner: 1

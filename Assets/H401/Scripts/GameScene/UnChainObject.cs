@@ -4,8 +4,10 @@ using DG.Tweening;
 
 public class UnChainObject : MonoBehaviour
 {
-    [SerializeField]
-    private float tweenDuration;
+    //[SerializeField]
+    //private float tweenEndValue;
+    //[SerializeField]
+    //private float tweenDuration;
 
     //位置と方向を覚えておいて、追加時に同じものを検索して追加するかを判定
     private Vec2Int _nodeVec;
@@ -22,9 +24,7 @@ public class UnChainObject : MonoBehaviour
     {
         //出現時tween
         sRenderer = gameObject.GetComponent<SpriteRenderer>();
-/*        sRenderer.material.DOFade(0.0f, 0.0f);
-        sRenderer.material.DOFade(1.0f, tweenDuration);*/
-        
+//        sRenderer.material.DOFade(tweenEndValue, tweenDuration).SetLoops(-1, LoopType.Restart);
 
         bDeleted = false;
     }

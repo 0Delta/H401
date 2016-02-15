@@ -40,7 +40,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22d9e7c68ff6c9b41b4bf079b13bd307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tweenDuration: 0.3
+  tweenEndValue: 0.5
+  tweenDuration: 1
 --- !u!212 &21251422
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -84,7 +85,7 @@ Prefab:
       objectReference: {fileID: 2100000, guid: 0eba07e2b62e3c34c890f4632470fc01, type: 2}
     - target: {fileID: 0}
       propertyPath: tweenDuration
-      value: 0.3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_LocalRotation.z
@@ -101,6 +102,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_SortingOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: tweenEndValue
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

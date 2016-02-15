@@ -1379,12 +1379,12 @@ public class NodeController : MonoBehaviour
             {
                 if (!it.Use)
                 {
-                    Debug.Log("<color=green>HitHeap</color>");
+                    //Debug.Log("<color=green>HitHeap</color>");
                     it.Init();
                     return it;
                 }
             }
-            Debug.Log("<color=orange>Heap Grow</color>");
+            //Debug.Log("<color=orange>Heap Grow</color>");
             var ret = new NodeLinkTaskChecker();
             heap.Add(ret);
             ret.Init();

@@ -7,19 +7,38 @@ public class UnChainController : MonoBehaviour {
     //private static readonly CustomDebugLog.CDebugLog Log = new CustomDebugLog.CDebugLog("UnChainController");
 
     //枝途切れ字のオブジェクトはこっちで管理する
-    [SerializeField]private string unChainCubePath = null;
-    [SerializeField]private float linkDistance = 0; //ノードとこのオブジェクトの距離
+    [SerializeField] private string unChainCubePath = null;
+    [SerializeField] private float linkDistance = 0; //ノードとこのオブジェクトの距離
+    [SerializeField] private float fadeLimit = 0.0f;
+    [SerializeField] private float fadeSpan = 0.0f;
+
     private GameObject unChainCubePrefab = null;    //枝未完成協調表示のためのオブジェクト
 
     private List<UnChainObject> unChainCubeList;
+    private Material unChainCubeMaterial = null;
+    private float fadeCnt = 0.0f;
+
+    void Awake() {
+        unChainCubeList = new List<UnChainObject>();
+    }
 
 	// Use this for initialization
 	void Start () {
         //Log.Info("Start");
         unChainCubePrefab = Resources.Load<GameObject>(unChainCubePath);
 
-        unChainCubeList = new List<UnChainObject>();
+        fadeCnt = 1.0f;
+    }
 
+    void Update() {
+        if(unChainCubeList.Count <= 0)
+            return;
+        
+        fadeCnt -= fadeSpan;
+        if (fadeCnt < fadeLimit)
+            fadeCnt = 1.0f;
+
+        unChainCubeMaterial.SetFloat("_Fade", fadeCnt);
     }
 
     public void AddObj(Node node, _eLinkDir linkTo)
@@ -56,6 +75,11 @@ public class UnChainController : MonoBehaviour {
         uco.nodeVec = node.NodeID;
 
         unChainCubeList.Add(uco);
+
+        // 1つ目の cube の material を取得
+        if(unChainCubeList.Count <= 1) {
+            unChainCubeMaterial = unChainCubeList[0].GetComponent<SpriteRenderer>().sharedMaterial;
+        }
     }
     public void Remove()
     {
@@ -103,4 +127,11 @@ public class UnChainController : MonoBehaviour {
             unChainCubeList.Remove(ucObj);
         }
 	}
+    
+    void OnApplicationQuit() {
+        if(unChainCubeList.Count <= 0)
+            return;
+
+        unChainCubeMaterial.SetFloat("_Fade", 1.0f);
+    }
 }
