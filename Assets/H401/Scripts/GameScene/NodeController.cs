@@ -21,7 +21,8 @@ col のIDが奇数の行は +1 とする
 
 public class NodeController : MonoBehaviour
 {
-    private static readonly CustomDebugLog.CDebugLog Log = new CustomDebugLog.CDebugLog("NodeController");
+    
+    //private static readonly CustomDebug//Log.CDebugLog Log = new CustomDebug//Log.CDebugLog("NodeController");
     
     private const float FRAME_POSZ_MARGIN = -1.0f;              // フレームとノードとの距離(Z座標)
     private const float NODE_EASE_STOP_THRESHOLD = 0.01f;       // ノードの easing を終了するための、タップ位置とノード位置との閾値
@@ -277,7 +278,7 @@ public class NodeController : MonoBehaviour
 
     void Awake()
     {
-        Log.Debug("Awake");
+        ////Log.Debug("Awake");
         gameNodePrefabs = new GameObject[col][];
         gameNodeScripts = new Node[col][];
         nodePlacePosList = new Vector3[col][];
@@ -293,7 +294,7 @@ public class NodeController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Log.Debug("Start");
+        ////Log.Debug("Start");
 
         //音声データを取得 添字をenum化すべきか
         audioSources = GetComponents<AudioSource>();
@@ -390,7 +391,7 @@ public class NodeController : MonoBehaviour
 
                 // タップ成功
                 isTap = true;
-                Log.Debug("MouseButtonDown");
+                ////Log.Debug("MouseButtonDown");
 
                 Vector3 worldTapPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 startTapPos = new Vector2(worldTapPos.x, worldTapPos.y);
@@ -409,7 +410,7 @@ public class NodeController : MonoBehaviour
 
                 // タップ終了
                 isTap = false;
-                Log.Debug("MouseButtonUp");
+                //Log.Debug("MouseButtonUp");
 
                 if (isSlide)
                 {
@@ -508,7 +509,7 @@ public class NodeController : MonoBehaviour
     {
         // @デバッグ用
         if (Input.GetKeyDown(KeyCode.A)) { StartCoroutine(ReplaceRotate(ReplaceNodeFever)); };
-        Log.Info("Update");
+        ////Log.Info("Update");
     }
 
     public void TapRelease()
@@ -519,7 +520,7 @@ public class NodeController : MonoBehaviour
 
         // タップ終了
         isTap = false;
-        Log.Debug("MouseButtonUp");
+        ////Log.Debug("MouseButtonUp");
 
         if (isSlide)
         {
@@ -646,7 +647,7 @@ public class NodeController : MonoBehaviour
     // ノードのスライド移動処理
     void SlideNodes()
     {
-        Log.Debug("SlideNodes");
+        ////Log.Debug("SlideNodes");
         // スライド対象となるノードの準備
         Vector2 deltaSlideDist = tapPos - prevTapPos;   // 前回フレームからのスライド量
         float checkDir = 0.0f;                          // スライド方向チェック用
@@ -757,7 +758,7 @@ public class NodeController : MonoBehaviour
 
     public void StartSlideNodes(Vec2Int nextNodeID, _eSlideDir newSlideDir)
     {
-        Log.Debug("StartSlideNodes : " + nextNodeID + " / " + newSlideDir);
+        ////Log.Debug("StartSlideNodes : " + nextNodeID + " / " + newSlideDir);
         moveNodeDist = new Vector2(gameNodePrefabs[nextNodeID.y][nextNodeID.x].transform.position.x, gameNodePrefabs[nextNodeID.y][nextNodeID.x].transform.position.y)
                      - new Vector2(gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.x, gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.y);   // スライド方向ベクトル兼移動量を算出
         moveNodeInitPos = gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position;      // ノードの移動開始位置を保存
@@ -789,7 +790,7 @@ public class NodeController : MonoBehaviour
     // ゲームの画面外にはみ出したノードを逆側に移動する
     void LoopBackNode()
     {
-        Log.Debug("LoopBackNode");
+        ////Log.Debug("LoopBackNode");
         if (gameNodeScripts[slidingLimitNodeID.y][slidingLimitNodeID.x].IsOutScreen)
         {
             gameNodeScripts[slidingLimitNodeID.y][slidingLimitNodeID.x].IsOutScreen = false;
@@ -864,7 +865,7 @@ public class NodeController : MonoBehaviour
     // 移動を終了するノードの位置を調整する
     void AdjustNodeStop()
     {
-        Log.Debug("AdjustNodeStop");
+        ////Log.Debug("AdjustNodeStop");
         Vec2Int nearNodeID = SearchNearNode(gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position);
         Vec2Int nextNodeID = SearchLimitNode(tapNodeID, ConvertSlideDirToLinkDir(slideDir));
         _eSlideDir reverseDir = ReverseDirection(slideDir);
@@ -983,7 +984,7 @@ public class NodeController : MonoBehaviour
     // 任意のノード情報をコピーする
     void CopyNodeInfo(int x, int y, GameObject prefab, Node script)
     {
-        Log.Debug("CopyNodeInfo : " + x + "/" + y + "/" + script);
+        //Log.Debug("CopyNodeInfo : " + x + "/" + y + "/" + script);
         gameNodePrefabs[y][x] = prefab;
         gameNodeScripts[y][x] = script;
         gameNodeScripts[y][x].RegistNodeID(x, y);
@@ -992,7 +993,7 @@ public class NodeController : MonoBehaviour
     // タップノードを中心に、スライド方向のノードの位置を設定する
     void AdjustSlideNodePosition()
     {
-        Log.Debug("AdjustSlideNodePosition");
+        //Log.Debug("AdjustSlideNodePosition");
         // スライド対象となるノードの準備
         Vector2 pos = tapPos;      // 移動位置
         Vector2 standardPos = tapPos;
@@ -1106,7 +1107,7 @@ public class NodeController : MonoBehaviour
     // タップ位置から、タップしているノードの、移動ライン上の座標を算出する
     Vector2 AdjustNodeLinePosition(_eSlideDir dir)
     {
-        Log.Debug("AdjustNodeLinePosition : " + dir);
+        //Log.Debug("AdjustNodeLinePosition : " + dir);
         Vector2 adjustPos = tapPos;
         Vector2 slideDist = tapPos - startTapPos;     // スライド量
         Vector2 moveDist = moveNodeDist.normalized * Vector2.Dot(moveNodeDist.normalized, slideDist);      // 斜め移動量
@@ -1163,7 +1164,7 @@ public class NodeController : MonoBehaviour
     // 任意の座標に最も近いノードのIDを、座標を基準に検索する
     Vec2Int SearchNearNode(Vector3 pos)
     {
-        Log.Debug("SerchNearNode : " + pos);
+        //Log.Debug("SerchNearNode : " + pos);
         Vec2Int id = new Vec2Int(-1, -1);
         float minDist = 99999.0f;
 
@@ -1188,7 +1189,7 @@ public class NodeController : MonoBehaviour
     // 任意の座標に最も近いノードのIDを、座標を基準に検索する(フレームノードを除く)
     Vec2Int SearchNearNodeRemoveFrame(Vector3 pos)
     {
-        Log.Debug("SerchNearNodeRemoveFrame");
+        //Log.Debug("SerchNearNodeRemoveFrame");
         Vec2Int id = SearchNearNode(pos);
 
         // フレームなら -1 にする
@@ -1204,7 +1205,7 @@ public class NodeController : MonoBehaviour
     // リンク方向の端のノードIDを算出する
     Vec2Int SearchLimitNode(Vec2Int id, _eLinkDir dir)
     {
-        Log.Debug("SearchLimitNode : " + id + "/" + dir);
+        //Log.Debug("SearchLimitNode : " + id + "/" + dir);
         Vec2Int limitNodeID = id;
         Vec2Int limitNodeIDTmp = GetDirNode(limitNodeID, dir);
         while (limitNodeIDTmp.x > -1)
@@ -1219,14 +1220,14 @@ public class NodeController : MonoBehaviour
     // リンク方向の端のノードIDを算出する
     Vec2Int SearchLimitNode(int x, int y, _eLinkDir dir)
     {
-        Log.Debug("SerchLimitNode : " + x + "/" + y + "/" + dir);
+        //Log.Debug("SerchLimitNode : " + x + "/" + y + "/" + dir);
         return SearchLimitNode(new Vec2Int(x, y), dir);
     }
 
     // リンク方向の端のノードIDを算出する(フレームノードを除く)
     Vec2Int SearchLimitNodeRemoveFrame(Vec2Int id, _eLinkDir dir)
     {
-        Log.Debug("SearchLimitNodeRemoveFrame : " + id + "/" + dir);
+        //Log.Debug("SearchLimitNodeRemoveFrame : " + id + "/" + dir);
         Vec2Int limitNodeID = id;
         Vec2Int limitNodeIDTmp = GetDirNodeRemoveFrame(limitNodeID, dir);
         while (limitNodeIDTmp.x > -1)
@@ -1241,7 +1242,7 @@ public class NodeController : MonoBehaviour
     // リンク方向の端のノードIDを算出する(フレームノードを除く)
     Vec2Int SearchLimitNodeRemoveFrame(int x, int y, _eLinkDir dir)
     {
-        Log.Debug("SearchLimitNodeRemoveFrame : " + x + "/" + y);
+        //Log.Debug("SearchLimitNodeRemoveFrame : " + x + "/" + y);
         return SearchLimitNodeRemoveFrame(new Vec2Int(x, y), dir);
     }
     #endregion
@@ -1249,7 +1250,7 @@ public class NodeController : MonoBehaviour
     // スライドしている列が画面外にはみ出ているかチェックする(フレームノードより外側にいるかどうか)
     void CheckSlideOutLimitNode()
     {
-        Log.Debug("CheckSlideOutLimitNode");
+        //Log.Debug("CheckSlideOutLimitNode");
         switch (slideDir)
         {
             case _eSlideDir.LEFT:
@@ -1299,7 +1300,7 @@ public class NodeController : MonoBehaviour
     // スライド方向を算出
     _eSlideDir CheckSlideDir(Vector2 pos, Vector2 toPos)
     {
-        Log.Debug("CheckSlideDir : " + pos + "/" + toPos);
+        //Log.Debug("CheckSlideDir : " + pos + "/" + toPos);
         float angle = Mathf.Atan2(toPos.y - pos.y, toPos.x - pos.x);
         angle *= 180.0f / Mathf.PI;
 
@@ -1394,7 +1395,7 @@ public class NodeController : MonoBehaviour
     
     // 接続をチェックする関数
     public void CheckLink(bool NoCheckLeftCallback = false,bool Unlinkmode = false) { 
-        Log.Debug("CheckLink");
+        //Log.Debug("CheckLink");
 
         // ノードチェッカが帰ってきてないかチェック。これは結構クリティカルなんでログOFFでも出る仕様。
         if (NodeLinkTaskChecker.Collector.Count != 0 && Debug.isDebugBuild && !NoCheckLeftCallback)
@@ -1453,7 +1454,7 @@ public class NodeController : MonoBehaviour
     //閲覧済みフラグを戻す処理
     public void ResetCheckedFragAll()
     {
-        Log.Debug("ResetCheckedFragAll");
+        //Log.Debug("ResetCheckedFragAll");
         for (int i = 0; i < col; ++i)
         {
             foreach (var nodes in gameNodeScripts[i])
@@ -1609,7 +1610,7 @@ public class NodeController : MonoBehaviour
     //ノードの配置 割合は指定できるが完全ランダムなので再考の余地あり
     void ReplaceNode(Node node,bool force1Exclude)
     {
-        Log.Debug("ReplaceNode : " + node);
+        //Log.Debug("ReplaceNode : " + node);
         node.CheckFlag = false;
         node.ChainFlag = false;
 
@@ -1677,7 +1678,7 @@ public class NodeController : MonoBehaviour
     //完成した枝に使用しているノードを再配置する
     void ReplaceNodeTree(List<Node> List)
     {
-        Log.Debug("ReplaceNodeTree : " + List);
+        //Log.Debug("ReplaceNodeTree : " + List);
         if (List.Count > 2)
         {
             FinishNodeList.Add(FinNode.Convert(List));
@@ -1734,7 +1735,7 @@ public class NodeController : MonoBehaviour
 
     public void ReplaceNodeAll()
     {
-        Log.Debug("ReplaceNodeAll");
+        //Log.Debug("ReplaceNodeAll");
         foreach (var xList in gameNodeScripts)
         {
             foreach (var it in xList)
@@ -1747,7 +1748,7 @@ public class NodeController : MonoBehaviour
 
     public void ReplaceNodeFever()
     {
-        Log.Debug("ReplaceNodeFever");
+        //Log.Debug("ReplaceNodeFever");
         //foreach (var xList in gameNodeScripts)
         //{
         //    foreach (var it in xList)
@@ -1858,7 +1859,7 @@ public class NodeController : MonoBehaviour
     //ノード全変更時の演出
     public void RotateAllNode(float movedAngle, Ease easeType)
     {
-        Log.Debug("RotateAllNode : " + movedAngle + "/" + easeType);
+        //Log.Debug("RotateAllNode : " + movedAngle + "/" + easeType);
         foreach (var xList in gameNodeScripts)
         {
             foreach (var it in xList)
@@ -1871,7 +1872,7 @@ public class NodeController : MonoBehaviour
 
     public void SetSlideAll(bool slide)
     {
-        Log.Debug("SetSlideAll : " + slide);
+        //Log.Debug("SetSlideAll : " + slide);
 
         isSlide = slide;
     }
@@ -1879,7 +1880,7 @@ public class NodeController : MonoBehaviour
     //全ノードがくるっと回転して状態遷移するやつ 再配置関数を引数に
     public IEnumerator ReplaceRotate(Replace repMethod)
     {
-        Log.Debug("ReplaceRotate : " + repMethod);
+        //Log.Debug("ReplaceRotate : " + repMethod);
         isSlide = true;     //この回転中に操作できないように
         //全ノードを90°回転tween
         RotateAllNode(90.0f, Ease.InSine);
@@ -1910,7 +1911,7 @@ public class NodeController : MonoBehaviour
     //操作終了時の処理をここで
     public void TouchEnd()
     {
-        Log.Debug("TouchEnd");
+        //Log.Debug("TouchEnd");
         //状況に応じて別の処理をする
         switch (feverScript.feverState)
         {
@@ -2047,7 +2048,7 @@ public class NodeController : MonoBehaviour
     // スライド開始時の easing をストップする
     void StopSlideStartEasing()
     {
-        Log.Debug("StopSlideStartEasing");
+        //Log.Debug("StopSlideStartEasing");
         if (gameNodeScripts[tapNodeID.y][tapNodeID.x].IsSlideStart)
         {
             Vector2 nodePos2D = new Vector2(gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.x, gameNodePrefabs[tapNodeID.y][tapNodeID.x].transform.position.y);

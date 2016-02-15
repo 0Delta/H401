@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class UnChainController : MonoBehaviour {
 
-    private static readonly CustomDebugLog.CDebugLog Log = new CustomDebugLog.CDebugLog("UnChainController");
+    //private static readonly CustomDebugLog.CDebugLog Log = new CustomDebugLog.CDebugLog("UnChainController");
 
     //枝途切れ字のオブジェクトはこっちで管理する
     [SerializeField]private string unChainCubePath = null;
@@ -15,7 +15,7 @@ public class UnChainController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        Log.Info("Start");
+        //Log.Info("Start");
         unChainCubePrefab = Resources.Load<GameObject>(unChainCubePath);
 
         unChainCubeList = new List<UnChainObject>();
@@ -24,7 +24,7 @@ public class UnChainController : MonoBehaviour {
 
     public void AddObj(Node node, _eLinkDir linkTo)
     {
-        Log.Debug("AddObj : " + node + "/" + linkTo);
+        //Log.Debug("AddObj : " + node + "/" + linkTo);
 
         //リストに同じものがあれば新規作成はしないように
         UnChainObject uc = unChainCubeList.Find(x =>
@@ -72,7 +72,7 @@ public class UnChainController : MonoBehaviour {
         }
             
         if(delList.Count != 0) {
-            Log.Debug("Remove");
+            //Log.Debug("Remove");
         }
         
         //foreach中にリストをいじるとエラーになるようなので

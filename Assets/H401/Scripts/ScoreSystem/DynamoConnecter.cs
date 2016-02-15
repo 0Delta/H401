@@ -10,7 +10,7 @@ using CustomDebugLog;
 
 public class DynamoConnecter : MonoBehaviour {
     // 固有関数
-    private static readonly CDebugLog Log = new CDebugLog("DynamoConnecter");
+    //private static readonly CDebugLog Log = new CDebugLog("DynamoConnecter");
     [SerializeField]    public bool UseProxy = false;
     [SerializeField]    public string ProxyHost = null;
     [SerializeField]    public int ProxyPort = 8080;
@@ -100,7 +100,7 @@ public class DynamoConnecter : MonoBehaviour {
     
     // Use this for initialization
     void Start() {
-        Log.Debug("Start");
+        //Log.Debug("Start");
         //キーをロード
         // データを読みだして暗号化
         //Log.Debug("KeyWrite");
@@ -119,12 +119,12 @@ public class DynamoConnecter : MonoBehaviour {
         try
         {
             // データを読みだして復号化
-            Log.Debug("DataLoad");
+            //Log.Debug("DataLoad");
             var fl = new AESLoader(@"H401_AESEnctyptSystemFirstVector");
             fl.Load("AWS", System.Text.Encoding.UTF8);
 
             // データセット
-            Log.Debug("DataSet");
+            //Log.Debug("DataSet");
             string str = fl.GetString();
             if (str != null)
             {
@@ -138,11 +138,11 @@ public class DynamoConnecter : MonoBehaviour {
                 return;
             }
         }
-        catch (FileNotFoundException) { Log.Error("NotFound Exception"); return; }      // ファイルが見当たらない場合
-        catch (System.FormatException) { Log.Error("Format Exception"); return; }       // ファイルデータ不正
+        catch (FileNotFoundException) { /*Log.Error("NotFound Exception"); */return; }      // ファイルが見当たらない場合
+        catch (System.FormatException) { /*Log.Error("Format Exception"); */return; }       // ファイルデータ不正
 
         // AWSへの接続
-        Log.Debug("Initialize AWS System");
+       // Log.Debug("Initialize AWS System");
         try {
             var awsCredentials = new BasicAWSCredentials(publicKey, secretKey);
             var Cconfig = new AmazonDynamoDBConfig();
@@ -151,7 +151,7 @@ public class DynamoConnecter : MonoBehaviour {
             Cconfig.Timeout = new System.TimeSpan(3);
 
             if (UseProxy) {
-                Log.Info("Proxy Enabled");
+                //Log.Info("Proxy Enabled");
                 Cconfig.ProxyPort = ProxyPort;
                 Cconfig.ProxyHost = ProxyHost;
                 Cconfig.ProxyCredentials = new System.Net.NetworkCredential(UserName, Password);
@@ -162,7 +162,7 @@ public class DynamoConnecter : MonoBehaviour {
         }
         catch
         {
-            Log.Debug("AWS Initialize Failed");
+            //Log.Debug("AWS Initialize Failed");
             if (Pear != null) { Pear.LinkFailed(); }
         }
         Ready = true;
@@ -180,16 +180,16 @@ public class DynamoConnecter : MonoBehaviour {
 
         // Putリクエスト
         if (Pear != null) { Pear.StartLink(); }         // 親に通信開始を通知
-        Log.Debug("AWS Put");
+        //Log.Debug("AWS Put");
         client.PutItemAsync(pReq, (PutCallBack) => {
             if (Pear != null) { Pear.SetResponse(); }   // 反応があったら親に通知
             if(PutCallBack.Exception == null) {
                 // 正常完了
-                Log.Debug("AWS Put Successed");
+                //Log.Debug("AWS Put Successed");
             } else {
                 // エラー
                 if (Pear != null) { Pear.LinkFailed(); }
-                Log.Error("AWS Put Failed\n" + PutCallBack.Exception.ToString());
+                //Log.Error("AWS Put Failed\n" + PutCallBack.Exception.ToString());
             }
         });
     }
@@ -213,14 +213,14 @@ public class DynamoConnecter : MonoBehaviour {
         };
 
         // Scanリクエスト
-        Log.Debug("AWS Scan");
+        //Log.Debug("AWS Scan");
         if (Pear != null) { Pear.StartLink(); }         // 親に通信開始を通知
         client.ScanAsync(ScanRequest, sr => {
             if (Pear != null) { Pear.SetResponse(); }   // 反応があったら親に通知
             if (sr.Exception == null) {
                 // スキャン成功
                 ScoreCash = new List<ScoreTable>();
-                Log.Debug("GetData");
+                //Log.Debug("GetData");
                 foreach(var attribs in sr.Response.Items) {
                     // 取得したデータをパッキング
                     ScoreTable ScTemp = new ScoreTable();
@@ -234,16 +234,16 @@ public class DynamoConnecter : MonoBehaviour {
                     }
                     ScoreCash.Add(ScTemp);
                 }
-                Log.Debug("AWS Scan Successed");
+                //Log.Debug("AWS Scan Successed");
                 // 取得したリストを使ってなんやかんや。
                 foreach (var it in ScoreCash)
                 {
-                    Log.Info(it.Date.ToString() + " , " + it.Score);
+                    //Log.Info(it.Date.ToString() + " , " + it.Score);
                 }
             } else {
                 // エラー
                 if (Pear != null) { Pear.LinkFailed(); }
-                Log.Error("AWS Scan Failed\n" + sr.Exception.ToString());
+                //Log.Error("AWS Scan Failed\n" + sr.Exception.ToString());
             }
         });
     }

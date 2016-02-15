@@ -310,7 +310,7 @@ public class ScoreManager : MonoBehaviour {
     public int AddScore(int Score) {
         Load();
         int r = SListInstance.Insert(Score) + 1;
-        //Debug.Log(
+        //Debug.
         //    (r == -1) ? ("Out of Ranking.") : ("Rank : " + r)
         //    + "\n" + SListInstance.ToString());
         Save();
