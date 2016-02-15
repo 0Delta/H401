@@ -1339,10 +1339,11 @@ public class NodeController : MonoBehaviour
     static bool bNodeLinkDebugLog = false;
 
     // ノードの接続を確認するチェッカー
-    public class NodeLinkTaskChecker : System.IDisposable
+    public class NodeLinkTaskChecker
     {
         static int IDCnt = 0;           // 管理用IDの発行に使用
         static public List<NodeLinkTaskChecker> Collector = new List<NodeLinkTaskChecker>();    // 動いているチェッカをしまっておくリスト
+        static private List<NodeLinkTaskChecker> heap = new List<NodeLinkTaskChecker>();        // チェッカーヒープ
 
         public int ID = 0;              // 管理用ID
         public int Branch = 0;          // 枝の数
@@ -1350,20 +1351,50 @@ public class NodeController : MonoBehaviour
         public int SumNode = 0;         // 合計ノード数(下の数取得で良いような。)
         public List<Node> NodeList = new List<Node>();    // 枝に含まれるノード。これを永続させて、クリック判定と組めば大幅な負荷軽減できるかも、
         private string Log = "";
+        private bool Use = false;
 
         // コンストラクタ
-        public NodeLinkTaskChecker()
+        private NodeLinkTaskChecker() { }
+
+        IObservable<int> CheckerRx;
+        public void Init()
         {
             // IDを発行し、コレクタに格納
             ID = ++IDCnt;
             Collector.Add(this);
+            Log = "";
             Log += "ID : " + ID.ToString() + "\n";
+            Use = true;
+            Branch = 0;
+            NotFin = false;
+            SumNode = 0;
+            NodeList.Clear();
         }
 
-        // Disposeできるように
+
+
+        static public NodeLinkTaskChecker GetChecker()
+        {
+            foreach(var it in heap)
+            {
+                if (!it.Use)
+                {
+                    Debug.Log("<color=green>HitHeap</color>");
+                    it.Init();
+                    return it;
+                }
+            }
+            Debug.Log("<color=orange>Heap Grow</color>");
+            var ret = new NodeLinkTaskChecker();
+            heap.Add(ret);
+            ret.Init();
+            return ret;
+        }
+
         public void Dispose()
         {
             Collector.Remove(this);     // コレクタから削除
+            Use = false;
         }
 
         // デバック用ToString
@@ -1392,7 +1423,7 @@ public class NodeController : MonoBehaviour
             return Ins;
         }
     }
-    
+
     // 接続をチェックする関数
     public void CheckLink(bool NoCheckLeftCallback = false,bool Unlinkmode = false) { 
         //Log.Debug("CheckLink");
@@ -1413,42 +1444,51 @@ public class NodeController : MonoBehaviour
         for (int i = 1; i < row - 1; i++)
         {
             // チェッカを初期化
-            var Checker = new NodeLinkTaskChecker();
+            var Checker = NodeLinkTaskChecker.GetChecker();
 
             // 根っこを叩いて処理スタート
             Observable
                 .Return(i)
-                .Subscribe(x => {
-                    Checker += "firstNodeAct_Subscribe [" + Checker.ID + "]";
-                    Checker.Branch++;                                                   // 最初に枝カウンタを1にしておく(規定値が0なので+でいいはず)
-                    gameNodeScripts[1][x].NodeCheckAction(Checker, _eLinkDir.NONE);     // 下から順にチェックスタート。来た方向はNONEにしておいて根っこを識別。
-                }).AddTo(this);
+                .Subscribe(x => Seacher(Checker, x)).AddTo(this);                
 
             // キャッチャを起動
             Observable
                 .NextFrame()
                 .Repeat()
                 .First(_ => Checker.Branch == 0)    // 処理中の枝が0なら終了
-                .Subscribe(_ => {
-                    if (Debug.isDebugBuild && bNodeLinkDebugLog)
-                        Debug.Log("CheckedCallback_Subscribe [" + Checker.ID + "]" + Checker.SumNode.ToString() + "/" + (Checker.NotFin ? "" : "Fin") + "\n" + Checker.ToString());
-                    // ノード数1以上、非完成フラグが立ってないなら
-                    if (Checker.SumNode >= 1 && Checker.NotFin == false)
-                    {
-                        if (Unlinkmode) {
-                            UnlinkNodeTree(Checker.NodeList);
-                            Observable
-                                .NextFrame()
-                                .ThrottleFrame(3)
-                                .Subscribe(x => CheckLink(true, true)).AddTo(this);
-                        } else {
-                            ReplaceNodeTree(Checker.NodeList);   // 消去処理
-                        }
-                    }
-                    Checker.Dispose();      // チェッカは役目を終えたので消す
-                }).AddTo(this);
+                .Subscribe(_ => Catcher(Checker, Unlinkmode)).AddTo(this);
         }
         unChainController.Remove();
+
+    }
+
+    void Seacher(NodeLinkTaskChecker Checker, int x)
+    {
+        Checker += "firstNodeAct_Subscribe [" + Checker.ID + "]";
+        Checker.Branch++;                                                   // 最初に枝カウンタを1にしておく(規定値が0なので+でいいはず)
+        gameNodeScripts[1][x].NodeCheckAction(Checker, _eLinkDir.NONE);     // 下から順にチェックスタート。来た方向はNONEにしておいて根っこを識別。
+    }
+
+    void Catcher(NodeLinkTaskChecker Checker, bool Unlinkmode)
+    {
+        if (Debug.isDebugBuild && bNodeLinkDebugLog)
+            Debug.Log("CheckedCallback_Subscribe [" + Checker.ID + "]" + Checker.SumNode.ToString() + "/" + (Checker.NotFin ? "" : "Fin") + "\n" + Checker.ToString());
+        // ノード数1以上、非完成フラグが立ってないなら
+        if (Checker.SumNode >= 1 && Checker.NotFin == false)
+        {
+            if (Unlinkmode)
+            {
+                UnlinkNodeTree(Checker.NodeList);
+                Observable
+                    .NextFrame()
+                    .ThrottleFrame(3)
+                    .Subscribe(x => CheckLink(true, true)).AddTo(this);
+            }
+            else {
+                ReplaceNodeTree(Checker.NodeList);   // 消去処理
+            }
+        }
+        Checker.Dispose();      // チェッカは役目を終えたので消す
     }
 
     //閲覧済みフラグを戻す処理
@@ -1682,12 +1722,12 @@ public class NodeController : MonoBehaviour
         if (List.Count > 2)
         {
             FinishNodeList.Add(FinNode.Convert(List));
-#if UNITY_EDITOR
-            if(List.Count > 3)
-            {
-                NodeSaver.Write(FinNode.Convert(List));
-            }
-#endif
+//#if UNITY_EDITOR
+//            if(List.Count > 3)
+//            {
+//                NodeSaver.Write(FinNode.Convert(List));
+//            }
+//#endif
         }
 
         NodeCountInfo nodeCount = new NodeCountInfo();
