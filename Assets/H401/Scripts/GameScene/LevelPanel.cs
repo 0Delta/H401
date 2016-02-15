@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class LevelPanel : MonoBehaviour {
 
     [SerializeField]private float popTime = 0.0f;
-    [SerializeField]private float popScale = 0.0f;
+//    [SerializeField]private float popScale = 0.0f;
     private LevelController levelController;
     public void SetLevelController(LevelController lev) { levelController = lev; }
     

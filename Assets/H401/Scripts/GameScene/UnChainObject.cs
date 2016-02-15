@@ -18,12 +18,12 @@ public class UnChainObject : MonoBehaviour
     public bool bChecked { get { return _bChecked; } set { _bChecked = value; } }
     private bool bDeleted;
 
-    private SpriteRenderer sRenderer = null;
+//    private SpriteRenderer sRenderer = null;
 
     void Start()
     {
         //出現時tween
-        sRenderer = gameObject.GetComponent<SpriteRenderer>();
+//        sRenderer = gameObject.GetComponent<SpriteRenderer>();
 //        sRenderer.material.DOFade(tweenEndValue, tweenDuration).SetLoops(-1, LoopType.Restart);
 
         bDeleted = false;

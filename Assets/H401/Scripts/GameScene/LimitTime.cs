@@ -40,7 +40,7 @@ public class LimitTime : MonoBehaviour {
     private float fillWaitTime;
     private float nextGain;
     //private Tweener fillTweener;
-    private float changedValueTime; //tweenのDurationにつかう 前回Durationを変更した時間
+//    private float changedValueTime; //tweenのDurationにつかう 前回Durationを変更した時間
 
     public bool IsPinch;
 
@@ -173,7 +173,7 @@ public class LimitTime : MonoBehaviour {
             timeImage.DOKill();
             timeImage.DOFillAmount(lastRate,fillWaitTime);
             
-            changedValueTime = Time.frameCount;
+ //           changedValueTime = Time.frameCount;
 
             nowTime -= nextGain;
             if (nowTime < 0)
