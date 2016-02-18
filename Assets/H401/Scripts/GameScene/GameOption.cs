@@ -9,7 +9,7 @@ public class GameOption : MonoBehaviour {
     [SerializeField]private string pausePanelPath = null;
     [SerializeField]private string gameStartPanelPath = null;
     [SerializeField]private float popTime = 0.0f;
-    [SerializeField]private float popScale = 0.0f;
+//    [SerializeField]private float popScale = 0.0f;
 
     private GameObject panelObject = null;
 

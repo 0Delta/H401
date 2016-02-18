@@ -26,7 +26,7 @@ public class Node : MonoBehaviour
     [SerializeField]
     private float slideEndTime = 0.0f;    // スライド終了時の移動にかかる時間
     [SerializeField]
-    private float colorDuration = 0.0f;
+//    private float colorDuration = 0.0f;
 
     static private NodeController nodeControllerScript = null;      // NodeController のスクリプト
 
@@ -297,6 +297,7 @@ public class Node : MonoBehaviour
             }
             RotCounter = RotCounter + 1;
             BitLinkRotate(_RotCounter);
+            
             // 強制離脱
             return;
         }

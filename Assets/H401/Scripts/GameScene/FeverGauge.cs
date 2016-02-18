@@ -31,7 +31,7 @@ public class FeverGauge : MonoBehaviour {
     private AudioSource audioSource = null;
 
     private float gainWaitTime;
-    private float fillWaitTime;
+//    private float fillWaitTime;
 
     //private Tweener fillTweener;
     private float gainedTime;
@@ -43,7 +43,7 @@ public class FeverGauge : MonoBehaviour {
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
         Vector2 effectTimeInfo = gameScene.gameController.nodeController.gameObject.GetComponent<GameEffect>().effectTimeInfo;
         gainWaitTime = effectTimeInfo.x;
-        fillWaitTime = effectTimeInfo.y;
+//        fillWaitTime = effectTimeInfo.y;
         audioSource = GetComponent<AudioSource>();
 
 

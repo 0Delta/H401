@@ -93,7 +93,7 @@ public class AppliController : MonoBehaviour {
 
             // ガーベジコレクション
             Resources.UnloadUnusedAssets();     //使ってないアセットをアンロード
-            System.GC.Collect();            
+            System.GC.Collect();
 
             // 新しいシーンを生成
             GameObject Obj = Resources.Load<GameObject>(scenePrefabPaths[(int)id]);
