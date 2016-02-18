@@ -297,6 +297,7 @@ public class Node : MonoBehaviour
             }
             RotCounter = RotCounter + 1;
             BitLinkRotate(_RotCounter);
+            
             // 強制離脱
             return;
         }

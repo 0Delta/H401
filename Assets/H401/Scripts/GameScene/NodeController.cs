@@ -1456,7 +1456,7 @@ public class NodeController : MonoBehaviour
                 .NextFrame()
                 .Repeat()
                 .First(_ => Checker.Branch == 0)    // 処理中の枝が0なら終了
-                .Subscribe(_ => Catcher(Checker, Unlinkmode)).AddTo(this);
+                .Subscribe(_ =>  Catcher(Checker, Unlinkmode) ).AddTo(this);
         }
         unChainController.Remove();
 
@@ -1481,7 +1481,7 @@ public class NodeController : MonoBehaviour
                 UnlinkNodeTree(Checker.NodeList);
                 Observable
                     .NextFrame()
-                    .ThrottleFrame(3)
+                    //.ThrottleFrame(3)
                     .Subscribe(x => CheckLink(true, true)).AddTo(this);
             }
             else {
@@ -1709,6 +1709,7 @@ public class NodeController : MonoBehaviour
         if (List.Count == 1)
         {
             gameNodeScripts[List[0].NodeID.y][List[0].NodeID.x].SetNodeType(NodeTemp[1], 0);
+            //gameNodeScripts[List[0].NodeID.y][List[0].NodeID.x].ForceRotateWithBit();
         }
         else {
             gameNodeScripts[List[mut].NodeID.y][List[mut].NodeID.x].RotationNode(true, true);
@@ -1936,7 +1937,10 @@ public class NodeController : MonoBehaviour
 
         //置き換え処理
         repMethod();
-        //yield return new WaitForSeconds(repRotateTime);
+
+        //若干遅らせることで再生成時に完成した枝ができてた時の処理を先にさせる
+        yield return new WaitForSeconds(0.01f);
+
         ForceRotateZ();
 
         //全ノードを90°回転

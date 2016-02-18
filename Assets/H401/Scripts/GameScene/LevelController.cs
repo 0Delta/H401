@@ -143,9 +143,6 @@ public class LevelController : MonoBehaviour {
         yield return new WaitForSeconds(changePopTime);
         fpMethod();
 
-        Resources.UnloadUnusedAssets();     //使ってないアセットをアンロード
-        System.GC.Collect();
-
         yield return new WaitForSeconds(changeEndTime);
         //アニメーションを消去
         Destroy(animationObject);
@@ -161,7 +158,6 @@ public class LevelController : MonoBehaviour {
         fChangeScript = levelChangeObject.GetComponent<LevelChange>();
         fChangeScript.levelController = this;
 
-        
         //メインカメラをノンアクにする
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
         gameScene.mainCamera.transform.Rotate(new Vector3(0.0f, 0.0f, -lyingAngle),Space.Self);
@@ -200,9 +196,6 @@ public class LevelController : MonoBehaviour {
         fChangeScript.Delete();
         gameScene.gameUI.ojityanAnimator.gameObject.SetActive(true);
 
-        Resources.UnloadUnusedAssets();     //使ってないアセットをアンロード
-        System.GC.Collect();
-
         yield return new WaitForSeconds(changeEndTime);
         //アニメーションを消去
         Destroy(animationObject);
@@ -215,7 +208,7 @@ public class LevelController : MonoBehaviour {
         else
         {
             //gameScene.directionalLight.color = levelTableScript.GetFieldLevel(gameController.nodeController.currentLevel).lightColor;
-            print("レベル変更なし");
+//            print("レベル変更なし");
         }
         LevelState = _eLevelState.STAND;
     }
