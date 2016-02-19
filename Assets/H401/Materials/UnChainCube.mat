@@ -135,7 +135,7 @@ Material:
       data:
         first:
           name: _Fade
-        second: 1
+        second: 0.53000045
     m_Colors:
       data:
         first:
