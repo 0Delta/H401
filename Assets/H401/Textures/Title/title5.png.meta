@@ -1,0 +1,192 @@
+fileFormatVersion: 2
+guid: 05f1ff1674d194842842c749f1e4e184
+timeCreated: 1455847877
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: title5_0
+    21300002: title5_1
+    21300004: title5_2
+    21300006: title5_3
+    21300008: title5_4
+    21300010: title5_5
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: title5_0
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 768
+        width: 750
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 274, y: 8}
+        - {x: 274, y: 17}
+        - {x: 108, y: 28}
+        - {x: 105, y: 39}
+        - {x: 103, y: 41}
+        - {x: 40, y: 45}
+        - {x: -167, y: 45}
+        - {x: -255, y: 34}
+        - {x: -255, y: 15}
+        - {x: -241, y: -30}
+        - {x: -254, y: -30}
+        - {x: -255, y: -32}
+        - {x: -255, y: -41}
+        - {x: -199, y: -45}
+        - {x: 150, y: -45}
+        - {x: 272, y: -43}
+        - {x: 274, y: -39}
+        - {x: 274, y: -31}
+        - {x: 253, y: -12}
+    - name: title5_1
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 640
+        width: 750
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 285, y: 25}
+        - {x: 264, y: 30}
+        - {x: 205, y: 31}
+        - {x: -246, y: 31}
+        - {x: -275, y: 20}
+        - {x: -275, y: -21}
+        - {x: -248, y: -32}
+        - {x: 108, y: -32}
+        - {x: 271, y: -30}
+        - {x: 294, y: -19}
+        - {x: 294, y: 20}
+    - name: title5_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 512
+        width: 750
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -270, y: 23}
+        - {x: -292, y: 22}
+        - {x: -292, y: -21}
+        - {x: -276, y: -22}
+        - {x: 210, y: -22}
+        - {x: 308, y: -20}
+        - {x: 308, y: 22}
+        - {x: 288, y: 23}
+    - name: title5_3
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 384
+        width: 750
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -228, y: 23}
+        - {x: -228, y: -18}
+        - {x: -193, y: -22}
+        - {x: 247, y: -22}
+        - {x: 247, y: 23}
+    - name: title5_4
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 256
+        width: 750
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -139, y: 31}
+        - {x: -203, y: 29}
+        - {x: -213, y: 16}
+        - {x: -213, y: -14}
+        - {x: -207, y: -29}
+        - {x: -121, y: -32}
+        - {x: 120, y: -32}
+        - {x: 209, y: -30}
+        - {x: 231, y: -18}
+        - {x: 231, y: 24}
+        - {x: 207, y: 31}
+    - name: title5_5
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 128
+        width: 750
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 200, y: 23}
+        - {x: -204, y: 23}
+        - {x: -211, y: 17}
+        - {x: -211, y: -9}
+        - {x: -207, y: -20}
+        - {x: -135, y: -22}
+        - {x: 175, y: -22}
+        - {x: 229, y: -19}
+        - {x: 229, y: 21}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

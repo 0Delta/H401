@@ -696,6 +696,7 @@ MonoBehaviour:
   gameEndPanelPath: Prefabs/GameScene/GameEndPanel
   gainDuration: 0.1
   timeImage: {fileID: 11401964}
+  IsPinch: 0
 --- !u!114 &11467304
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -754,7 +755,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 887323d8d12c78d4bab82308f6550d19, type: 3}
+  m_Sprite: {fileID: 21300002, guid: 6e1b13394ef5cd14aa040d5917e04c7f, type: 3}
   m_Type: 2
   m_PreserveAspect: 0
   m_FillCenter: 1
