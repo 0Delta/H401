@@ -42,8 +42,8 @@ MonoBehaviour:
   row: 7
   col: 13
   nodePrefabPath: Prefabs/Common/Node
-  widthMargin: 0.015
-  heightMargin: 0.32
+  widthMargin: 0.18
+  heightMargin: 0.29
   moveCol: 03000000070000000a000000
   moveDir: 000000000100000000000000
   moveSpd:
@@ -67,11 +67,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: widthMargin
-      value: 0.015
+      value: 0.18
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: heightMargin
-      value: 0.32
+      value: 0.29
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

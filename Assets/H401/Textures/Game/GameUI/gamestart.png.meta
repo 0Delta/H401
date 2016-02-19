@@ -1,0 +1,218 @@
+fileFormatVersion: 2
+guid: 40af1cd38711060409dc8152c9cc7dcc
+timeCreated: 1455846650
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: gamestart_0
+    21300002: gamestart_1
+    21300004: gamestart_2
+    21300006: gamestart_3
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: gamestart_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 384
+        width: 512
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -107, y: 33}
+        - {x: -139, y: 54}
+        - {x: -153, y: 59}
+        - {x: -163, y: 59}
+        - {x: -207, y: 32}
+        - {x: -207, y: -33}
+        - {x: -159, y: -59}
+        - {x: -148, y: -59}
+        - {x: -104, y: -31}
+        - {x: -104, y: 29}
+      - - {x: 89, y: 59}
+        - {x: -104, y: 59}
+        - {x: -104, y: -59}
+        - {x: 89, y: -59}
+        - {x: 103, y: -38}
+        - {x: 103, y: 34}
+      - - {x: 144, y: 59}
+        - {x: 103, y: 31}
+        - {x: 103, y: -30}
+        - {x: 143, y: -59}
+        - {x: 161, y: -59}
+        - {x: 206, y: -36}
+        - {x: 206, y: 33}
+        - {x: 162, y: 59}
+    - name: gamestart_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 512
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -213, y: 59}
+        - {x: -256, y: 36}
+        - {x: -256, y: -34}
+        - {x: -214, y: -59}
+        - {x: -202, y: -59}
+        - {x: -155, y: -38}
+        - {x: -155, y: 36}
+        - {x: -194, y: 59}
+      - - {x: -100, y: 59}
+        - {x: -110, y: 59}
+        - {x: -155, y: 31}
+        - {x: -155, y: -35}
+        - {x: -112, y: -59}
+        - {x: -89, y: -59}
+        - {x: -52, y: -32}
+        - {x: -52, y: 36}
+      - - {x: -9, y: 59}
+        - {x: -52, y: 31}
+        - {x: -52, y: -39}
+        - {x: -9, y: -59}
+        - {x: 15, y: -59}
+        - {x: 50, y: -32}
+        - {x: 50, y: 34}
+        - {x: 2, y: 59}
+      - - {x: 108, y: 59}
+        - {x: 90, y: 59}
+        - {x: 50, y: 31}
+        - {x: 50, y: -37}
+        - {x: 94, y: -59}
+        - {x: 116, y: -59}
+        - {x: 153, y: -34}
+        - {x: 153, y: 34}
+      - - {x: 200, y: 59}
+        - {x: 153, y: 33}
+        - {x: 153, y: -31}
+        - {x: 192, y: -59}
+        - {x: 210, y: -59}
+        - {x: 255, y: -35}
+        - {x: 255, y: 33}
+        - {x: 213, y: 59}
+    - name: gamestart_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 512
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -107, y: 33}
+        - {x: -139, y: 54}
+        - {x: -153, y: 59}
+        - {x: -163, y: 59}
+        - {x: -207, y: 32}
+        - {x: -207, y: -33}
+        - {x: -159, y: -59}
+        - {x: -148, y: -59}
+        - {x: -104, y: -31}
+        - {x: -104, y: 29}
+      - - {x: -91, y: 59}
+        - {x: -104, y: 43}
+        - {x: -104, y: -59}
+        - {x: 89, y: -59}
+        - {x: 103, y: -32}
+        - {x: 103, y: 59}
+      - - {x: 140, y: 59}
+        - {x: 103, y: 40}
+        - {x: 103, y: -36}
+        - {x: 105, y: -49}
+        - {x: 146, y: -59}
+        - {x: 163, y: -59}
+        - {x: 206, y: -31}
+        - {x: 206, y: 33}
+        - {x: 162, y: 59}
+    - name: gamestart_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 512
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -159, y: 59}
+        - {x: -207, y: 33}
+        - {x: -207, y: -33}
+        - {x: -172, y: -59}
+        - {x: -145, y: -59}
+        - {x: -104, y: -36}
+        - {x: -104, y: 31}
+        - {x: -148, y: 59}
+      - - {x: -86, y: 59}
+        - {x: -104, y: 33}
+        - {x: -104, y: -38}
+        - {x: -84, y: -59}
+        - {x: 78, y: -59}
+        - {x: 103, y: -53}
+        - {x: 103, y: 56}
+        - {x: 87, y: 59}
+      - - {x: 146, y: 59}
+        - {x: 103, y: 32}
+        - {x: 103, y: -31}
+        - {x: 144, y: -59}
+        - {x: 161, y: -59}
+        - {x: 206, y: -34}
+        - {x: 206, y: 31}
+        - {x: 160, y: 59}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
