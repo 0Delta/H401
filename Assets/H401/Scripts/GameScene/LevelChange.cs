@@ -39,7 +39,7 @@ public class LevelChange : MonoBehaviour {
         foreach(var mf in _mapFields)
         {
             if (i == cLevel)
-                mapArrowObj.transform.position = mf.gameObject.transform.position + new Vector3(0.0f, 1.0f, 0.0f);
+                mapArrowObj.transform.position = mf.gameObject.transform.position + new Vector3(0.0f, 1.2f, 0.0f);
 
             mf.mapNum = i;
             mf.SetColor(true);
@@ -62,7 +62,7 @@ public class LevelChange : MonoBehaviour {
     public void SetArrowPos(int selectedNum)
     {
         //Vector3 vBounds =  _mapFields[selectedNum].gameObject.GetComponent<MeshRenderer>().bounds.size;
-        mapArrowObj.transform.position = _mapFields[selectedNum].transform.position + new Vector3(0.0f, 1.0f, 0.0f);// + Vector3.Normalize(Camera.main.transform.position - _mapFields[selectedNum].transform.position) * 2.0f + new Vector3(0.0f,1.0f,0.0f);
+        mapArrowObj.transform.position = _mapFields[selectedNum].transform.position + new Vector3(0.0f, 1.2f, 0.0f);
 
     }
     public void SetArrowRot()
