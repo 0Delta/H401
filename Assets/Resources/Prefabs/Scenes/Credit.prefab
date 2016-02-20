@@ -1686,7 +1686,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 2a3f15f4fe6ce84449f0e8c7f74d5e77, type: 3}
+  m_Sprite: {fileID: 21300004, guid: 556e0ec4836312844910d6c91c3d4967, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2393,7 +2393,7 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 3f0fab39cd13b374ca6dd93da7a6dfbf,
+      objectReference: {fileID: 21300004, guid: 556e0ec4836312844910d6c91c3d4967,
         type: 3}
     - target: {fileID: 0}
       propertyPath: fadeTimes.inTime

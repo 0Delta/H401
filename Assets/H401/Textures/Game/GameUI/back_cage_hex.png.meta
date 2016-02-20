@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 6e1b13394ef5cd14aa040d5917e04c7f
-timeCreated: 1455849929
+guid: 556e0ec4836312844910d6c91c3d4967
+timeCreated: 1455854002
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -64,21 +64,21 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -36, y: -148}
-        - {x: -27, y: -119}
-        - {x: -12, y: -71}
-        - {x: -2, y: -38}
-        - {x: 4, y: -19}
-        - {x: 17, y: 23}
-        - {x: 29, y: 62}
-        - {x: 35, y: 81}
-        - {x: 51, y: 133}
-        - {x: 63, y: 171}
-        - {x: 67, y: 184}
-        - {x: 77, y: 217}
-        - {x: 79, y: 224}
-        - {x: 80, y: 228}
-        - {x: 83, y: 238}
+      - - {x: -19, y: -93}
+        - {x: -16, y: -83}
+        - {x: -6, y: -51}
+        - {x: 7, y: -9}
+        - {x: 11, y: 4}
+        - {x: 14, y: 14}
+        - {x: 24, y: 46}
+        - {x: 27, y: 56}
+        - {x: 36, y: 85}
+        - {x: 41, y: 101}
+        - {x: 48, y: 124}
+        - {x: 66, y: 182}
+        - {x: 78, y: 222}
+        - {x: 82, y: 235}
+        - {x: 84, y: 241}
         - {x: 84, y: 247}
         - {x: 82, y: 249}
         - {x: -119, y: 249}
@@ -86,8 +86,9 @@ TextureImporter:
         - {x: -121, y: -247}
         - {x: -119, y: -249}
         - {x: -69, y: -249}
-        - {x: -67, y: -247}
-        - {x: -42, y: -167}
+        - {x: -67, y: -248}
+        - {x: -53, y: -202}
+        - {x: -27, y: -119}
     - name: back_cage_hex_1
       rect:
         serializedVersion: 2
