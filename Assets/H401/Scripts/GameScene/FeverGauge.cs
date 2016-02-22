@@ -24,6 +24,8 @@ public class FeverGauge : MonoBehaviour {
         get { return _feverState; }
     }
 
+    private int nowFeverSpeed;     //現在フィーバーゲージ減少速度
+    private float feverPassTime;    //フィーバーしてからの経過時間
 
     private GameObject FPanelPrefab = null;
     private GameObject FPanelObject = null;
@@ -39,13 +41,29 @@ public class FeverGauge : MonoBehaviour {
 
     delegate void gainMethod();
 
-	void Start () {
+    private LevelTables _levelTableScript = null;
+    public LevelTables levelTableScript
+    {
+        get
+        {
+            if (!_levelTableScript)
+            {
+                GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+                _levelTableScript = gameScene.levelTables;
+            }
+            return _levelTableScript;
+        }
+    }
+
+    void Start () {
         GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
         Vector2 effectTimeInfo = gameScene.gameController.nodeController.gameObject.GetComponent<GameEffect>().effectTimeInfo;
         gainWaitTime = effectTimeInfo.x;
 //        fillWaitTime = effectTimeInfo.y;
         audioSource = GetComponent<AudioSource>();
 
+        feverPassTime = 0.0f;
+        nowFeverSpeed = 0;
 
         logoObject = Resources.Load<GameObject>(FeverLogoPath);
 
@@ -63,10 +81,20 @@ public class FeverGauge : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //FGImage.
+        if(Input.GetKeyDown( KeyCode.P))
+        {
+            feverValue = GAUGE_MAX;
+            ChangeState(_eFeverState.FEVER);
+        }
+
         if (_feverState == _eFeverState.FEVER)
         {
+            //フィーバー時間の加速処理
+            feverPassTime += Time.deltaTime;
+            if (nowFeverSpeed < levelTableScript.feverSpeedCount - 1 && feverPassTime > levelTableScript.FeverSpeedInterval * (nowFeverSpeed + 1))
+                nowFeverSpeed++;
 
-            feverValue -= feverInfo.decreaseRatio;
+            feverValue -= feverInfo.decreaseRatio * levelTableScript.GetFeverSpeedInfo(nowFeverSpeed);
 
             if (feverValue < 0.0f)
             {
@@ -158,6 +186,8 @@ public class FeverGauge : MonoBehaviour {
                 //audioSources[(int)_eMusic.FEVERBGM].Stop();
                 break;
             case _eFeverState.FEVER:
+                feverPassTime = 0.0f;
+                nowFeverSpeed = 0;
                 //中心地点を設定しなければならないらしい
                 FPanelObject = Instantiate(FPanelPrefab);
                 FPanelObject.transform.SetParent(gameScene.gameUI.gameInfoCanvas.transform,false);
