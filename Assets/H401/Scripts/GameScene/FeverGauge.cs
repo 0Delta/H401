@@ -173,6 +173,7 @@ public class FeverGauge : MonoBehaviour {
                 FGImage.material.SetColor("_EmissionColor", Color.black);
 
                 // ゲーム本編のBGMを再生
+                gameScene.gameUI.gameInfoCanvas.limitTime.fEventRatio = 1.0f;
 
                 gameScene.StopBGM(GameScene._eGameSceneBGM.FEVER);
                 if (gameScene.gameUI.gameInfoCanvas.limitTime.IsPinch)
@@ -195,6 +196,8 @@ public class FeverGauge : MonoBehaviour {
                 FGImage.material.EnableKeyword("_EMISSION");
                 FGImage.material.SetColor("_EmissionColor",FGEmission);
                 feverValue = GAUGE_MAX;
+
+                gameScene.gameUI.gameInfoCanvas.limitTime.fEventRatio = 0.0f;
                 LogoPop();
                 // ゲーム本編のBGMを停止
                 if (gameScene.gameUI.gameInfoCanvas.limitTime.IsPinch)
