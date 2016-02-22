@@ -39,8 +39,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f984e9229dac5245b812a4fa71e9723, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  row: 7
-  col: 13
+  row: 9
+  col: 15
   nodePrefabPath: Prefabs/Common/Node
   widthMargin: 0.18
   heightMargin: 0.29
@@ -72,6 +72,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: heightMargin
       value: 0.29
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: row
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: col
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
