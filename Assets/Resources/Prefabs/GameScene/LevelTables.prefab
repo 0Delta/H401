@@ -37,8 +37,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b956e7b33fed4b3418c1835de940967a, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   fieldLevelTable:
   - fieldName: anpan
     Ratio_Cap: 2
@@ -134,6 +134,12 @@ MonoBehaviour:
     gainPerPath2: 0
     gainPerPath3: 0.3
     gainPerPath4: 0.5
+  feverSpeedInterval: 10
+  feverSpeedTable:
+  - 1
+  - 1.6
+  - 2.3
+  - 3
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -144,6 +150,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: nodeColorList.Array.size
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: feverSpeedTable.Array.size
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: nodeColorList.Array.data[3].r
@@ -568,6 +578,30 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: timeLevelTable.Array.data[2].RegainPer2Path
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: feverLevelInterval
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: feverSpeedTable.Array.data[3]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: feverSpeedTable.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: feverSpeedTable.Array.data[1]
+      value: 1.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: feverSpeedTable.Array.data[2]
+      value: 2.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: feverSpeedInterval
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

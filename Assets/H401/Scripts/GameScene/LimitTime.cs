@@ -13,6 +13,8 @@ public class LimitTime : MonoBehaviour {
     private float _eventRatio;   //状態ごとの時間の減り
     public float eventRatio { set { _eventRatio = value; } }
 
+    private float _fEventRatio;
+    public float fEventRatio { set { _fEventRatio = value; } }
     private Animator ojityanAnimator = null;
 
     private TimeLevelInfo timeLevel;
@@ -55,16 +57,17 @@ public class LimitTime : MonoBehaviour {
         timeLevel = levelTableScript.GetTimeLevel(0);
         timeLevelInterval = levelTableScript.TimeLevelInterval;
         startTime = Time.time;
-
+        
         nowTimeLevel = 0;
 
         ojityanAnimator = gameScene.gameUI.ojityanAnimator;
         _eventRatio = 0.0f; //開始演出が終わるまでは時間が減らない
+        _fEventRatio = 1.0f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        nowTime += Time.deltaTime * timeLevel.SlipRatio * _eventRatio;
+        nowTime += Time.deltaTime * timeLevel.SlipRatio * _eventRatio * _fEventRatio;
         SetImage();
 
         if (_eventRatio != 0)

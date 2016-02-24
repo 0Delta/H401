@@ -9,6 +9,8 @@ public class LevelTables : MonoBehaviour {
     [SerializeField]private Color[] nodeColorList = null;
     [SerializeField]private ScoreInfo scoreRatio;
     [SerializeField]private FeverInfo feverRatio;
+    [SerializeField]private float feverSpeedInterval = 0.0f;
+    [SerializeField]private float[] feverSpeedTable;
 
     //難易度調整用クラス ここから各スクリプトに変数を渡す形に
     private int fieldLevelCount;        //フィールド難易度がいくつあるか？
@@ -33,11 +35,20 @@ public class LevelTables : MonoBehaviour {
     {
         get { return feverRatio;}
     }
-
-	// Use this for initialization
-	void Start () {
+    private int _feverSpeedCount;
+    public int feverSpeedCount
+    {
+        get { return _feverSpeedCount; }
+    }
+    public float FeverSpeedInterval
+    {
+        get { return feverSpeedInterval; }
+    }
+    // Use this for initialization
+    void Start () {
         fieldLevelCount = fieldLevelTable.Length;
         timeLevelCount = timeLevelTable.Length;
+        _feverSpeedCount = feverSpeedTable.Length;
 	}
 
     public TimeLevelInfo GetTimeLevel(int i)
@@ -51,5 +62,10 @@ public class LevelTables : MonoBehaviour {
     public Color GetNodeColor(int i)
     {
         return nodeColorList[i];
+    }
+
+    public float GetFeverSpeedInfo(int i)
+    {
+        return feverSpeedTable[i];
     }
 }
