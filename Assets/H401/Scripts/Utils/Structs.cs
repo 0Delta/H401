@@ -97,3 +97,13 @@ public struct FadeTime {
 
     public FadeTime(float _inTime, float _outTime) { inTime = _inTime; outTime = _outTime; }
 };
+
+//structはNull非許容だったのでClassにした
+[Serializable]
+public class OptionIOData
+{
+    public float fMasterVol;
+    public float fBGMVol;
+    public float fSEVol;
+    public bool bGyroEnable;
+}

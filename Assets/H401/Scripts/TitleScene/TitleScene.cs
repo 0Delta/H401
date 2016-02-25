@@ -104,6 +104,8 @@ public class TitleScene : MonoBehaviour {
         foreach(var key in popupSceneTable.Keys) {
             if(popupSceneTable[key].activeSelf) {
                 sceneID = key;
+                if (sceneID == AppliController._eSceneID.OPTION)
+                    transform.root.gameObject.GetComponent<OptionIO>().save();
                 break;
             }
         }

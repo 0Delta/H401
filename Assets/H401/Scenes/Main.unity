@@ -85,6 +85,22 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &915154057 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 188584, guid: 384487508efa3454190ee73f0a1c850a, type: 2}
+  m_PrefabInternal: {fileID: 1762121664}
+--- !u!114 &915154058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 915154057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f38c45a51c354bf47b045ca73ebb5d02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: 9b707a9c23c935c4e9996a7418d1ff26, type: 2}
 --- !u!1001 &1762121664
 Prefab:
   m_ObjectHideFlags: 0

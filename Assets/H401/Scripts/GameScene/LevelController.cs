@@ -39,10 +39,12 @@ public class LevelController : MonoBehaviour {
     private AudioSource audioSource;
 
     private GameOption gOption;
+    private AppliController appController;
 
 	// Use this for initialization
 	void Start () {
-        GameScene gameScene = transform.root.gameObject.GetComponent<AppliController>().GetCurrentScene().GetComponent<GameScene>();
+        appController = transform.root.gameObject.GetComponent<AppliController>();
+        GameScene gameScene = appController.GetCurrentScene().GetComponent<GameScene>();
         gameController = gameScene.gameController;
         nextLevel = -1;
 
@@ -62,6 +64,9 @@ public class LevelController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (!appController.gyroEnable)  //ジャイロ設定がオフなら判定しない
+            return;
+
         //ノードが１つでもアクション状態であれば判定しない
         if (gameController.nodeController.isNodeLock)
             return;

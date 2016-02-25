@@ -42,6 +42,10 @@ public class AppliController : MonoBehaviour {
     private GameObject tapKirakiraPrefab;       // タップ時のキラキラエフェクトの Prefab
 
 
+
+    private bool _gyroEnable;
+    public bool gyroEnable { set { _gyroEnable = value; } get { return _gyroEnable; } }
+
 //===============================================================
 // メンバ関数
 //===============================================================
@@ -59,6 +63,13 @@ public class AppliController : MonoBehaviour {
 	//---------------------------------------------------------------
 	void Start() {
         fade = transform.FindChild(fadeCanvasName).gameObject.GetComponentInChildren<Fade>();
+
+
+        _gyroEnable = true;//ここにファイル読み込みからのセットを
+
+        OptionIO opIO = GetComponent<OptionIO>();
+        opIO.appController = this;
+        opIO.load();
 
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = gameFrameRate;  //シーンごとにFPSを設定するべきらしい
